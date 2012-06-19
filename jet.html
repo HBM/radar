@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Jet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script data-main="js/jet_main.js" src="js/require.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <link type="text/css" href="style/jet.css" rel="stylesheet"></link>
+  </head>
+  <body>    
+    <div class="container">
+      <div class="row">        
+      <h1 class="page-header span12">
+        <i class="icon-star"></i>Jet-Viewer
+        <span class="label label-important pull-right" id="status-label">
+          <h2 id="status-text">offline
+          </h2>
+        </span>
+      </h1>
+      </div>
+      <div class="row" style="opacity:.2" id="main">
+        <div class="span4" id="sidebar">
+          <h2>Tree</h2> 
+          <div id="tree">
+            <ul class="breadcrumb" data-active-path="">
+              <li>
+                <a href="#">root</a> <span class="divider">/</span>
+              </li>           
+            </ul>
+            <div id="dirs">
+              <ul class="nav nav-tabs nav-stacked dir" data-path="" id="dirs">
+              </ul>        
+            </div>
+          </div>
+          <h2>Search</h2> 
+          <div class="form-search breadcrumb" id="search">
+            <input type="text" class="input search-query"></input>
+            <i class="unselect-all icon-star-empty pull-right"></i>
+            <i class="select-all icon-star pull-right"></i>
+          </div>
+          <ul class="nav nav-tabs nav-stacked" id="search-leafs">
+          </ul>        
+
+        </div>
+        <div class="span8" id="main">            
+          <div class="row">
+            <h2 class="span8">Preview</h2>
+            <div id="preview-container" class="span8">
+            </div>
+          </div>
+          <div class="row">
+            <h2 class="span8">Dash</h2>
+            <div id="dash-container" class="span8">
+            </div>
+            </div>
+        </div>
+      </div>
+
+    <script type="text/template" id="dir-container-template">
+      <ul class="nav nav-tabs nav-stacked dir" data-path="<%= path %>">     
+      </ul>        
+    </script>
+
+    <script type="text/template" id="breadcrumb-template">
+      <li>
+        <a href="#"><%= name %></a> <span class="divider">/</span>
+      </li>
+    </script>
+
+    <script type="text/template" id="dir-entry-template">
+      <li data-path="<%= path %>" data-selected="<%= selected %>">
+        <a href="#">
+          <i class="icon-folder-open"></i> <span><%= name %></span>
+          <i class="toggle-button
+          <% if(selected){print('icon-star');}else{print('icon-star-empty');}
+          %> pull-right"></i>
+        </a>
+      </li>
+    </script>
+
+    <script type="text/template" id="leaf-entry-template" >
+      <li data-path="<%= path %>" class="leaf" data-selected="<%= selected %>">
+        <a href="#"><i class="icon-leaf">
+          </i> <span><%= name %></span>
+          <i class="toggle-button
+          <% if(selected){print('icon-star');}else{print('icon-star-empty');}
+          %> pull-right"></i>
+        </a>
+      </li>
+    </script>
+
+    <script type="text/template" id="search-entry-template" >
+      <li data-path="<%= path %>" class="leaf" data-selected="<%= selected %>">
+        <a href="#"><i class="icon-leaf">
+          </i> <span><%= path %></span>
+          <i class="toggle-button
+          <% if(selected){print('icon-star');}else{print('icon-star-empty');}
+          %> pull-right"></i>
+        </a>
+      </li>
+    </script>
+
+    <script type="text/template" id="row-template">
+      <div data-path=<%= path %> class="jet-row row">
+        <div class="span8 jet-row-content">
+        <div class="row">
+          <div class="jet-label span3 ">
+            <%= path%>
+            <span class="badge badge-inverse count pull-right"
+                  style="display:none"></span>
+          </div>
+          <div class="jet-input span4">
+            <div class="form-inline pull-left">
+              <div class="control-group">
+                <div class="input-prepend input-append">
+                  <span class="add-on">[</span>
+                  <input type="text" class="method-view
+                                            input-xlarge jet-current-value"
+                         value=""></input>
+                  <span class="add-on">]</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="btn-group span1">
+            <button class="btn jet-close">&times;</button>
+            <button class="btn execute-call pull-right">
+              <i class="icon-arrow-right"></i>
+            </button>    
+          </div>
+        </div>
+        <div class="history">
+        </div>
+      </div>
+</div>
+    </script>
+
+    <script type="text/template" id="history-template">      
+      <div class="row">     
+        <div class="span3">
+          <div class="pull-right">
+            <%= date %>
+          </div>
+        </div>
+          <div class="jet-input span5">
+            <div class="form-inline pull-left">
+              <div class="control-group">
+                <div class="input-prepend input-append">
+                  <span class="add-on">[</span>
+                  <input type="text" class="method-view
+                                            input-xlarge"></input>
+                  <span class="add-on">]</span>
+                </div>            
+              </div>
+            </div>
+          </div>
+      </div>
+    </script>
+    
+    <script type="text/template" id="method-result-template">      
+      <div class="alert alert-success fade in">
+        <a class="close" data-dismiss="alert">x</a>
+        <strong>Result:</strong>
+        <% print(JSON.stringify(value)); %>
+      </div>
+    </script>
+
+    <script type="text/template" id="method-warning-template">      
+      <div class="alert fade in">
+        <a class="close" data-dismiss="alert">x</a>
+        <strong><%= heading %></strong>
+        <%= message %>
+      </div>
+    </script>
+
+    <script type="text/template" id="method-error-template">      
+      <div class="alert alert-error fade in">
+        <a class="close" data-dismiss="alert">x</a>
+        <strong>Error:</strong>
+        <%= value.message %>, code=<%= value.code %>
+      </div>
+    </script>   
+  </body>
+</html>
