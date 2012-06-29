@@ -1,16 +1,7 @@
-body {
-   width-min: 1260px;
-   overflow: auto;
-}
-
-.jet-input input{
-   width: 299px;
-}
-
-#dash{
-   height: 650px;
-   overflow:auto;
-}
+#dash textarea {
+   height: 18;
+   resize:vertical;
+};
 
 .history .span3{
    color:darkgray;
@@ -20,28 +11,10 @@ body {
    margin-top: 3px;
 }
 
-#dash-container div.span8 {
-   padding-top: 5px;
-   padding-bottom: 5px;
-   border-top: 1px solid #eeeeee;
-}
 
-#preview-container div.span8 {
-   padding-top: 5px;
-   padding-bottom: 5px;
-   border-top: 1px solid #eeeeee;
-}
-
-.highlight .span8 {
+.jet-row:hover {
    background-color:#f5f5f5;
 }
 
-.jet-row .span8:hover {
-   background-color:#f5f5f5;
-}
-
-.jet-row .span8{
-   width-min:770px ! important;
-}
 
 

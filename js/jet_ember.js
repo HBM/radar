@@ -66,6 +66,7 @@ define(
                     selected: false,
                     toggling: false,
                     toggleSelected: function(){
+//                        event.preventDefault();
                         this.set('toggling',true);
                         this.toggleProperty('selected');
                         this.set('toggling',false);
@@ -239,7 +240,8 @@ define(
                     childMethodsBinding: Ember.Binding.oneWay('JetViewer.treeController.childMethods'),
                     breadcrumbsBinding: Ember.Binding.oneWay('JetViewer.treeController.breadcrumbs'),
                     clickBreadcrumb: function(event) {
-                        var dir = event.context.get('path');
+                        event.preventDefault();
+                        var dir = event.context.get('path');                        
                         this.setDirectory(dir);
                     },
                     setDirectory: function(dir) {
@@ -286,13 +288,38 @@ define(
                         }
                         return '';                        
                     }).property('item.history.@each'),
+                    valueInputNotChanged: true,
                     JSONArrayInputView: Ember.View.extend({
                         templateName: 'ember-json-array-input-template',
-                        inputView: Ember.TextField.extend({                            
-                            valueBinding: Ember.Binding.oneWay('parentView.item.value').transform(function(value,binding){                      
-                                return JSON.stringify(value);
+                        inputView: Ember.TextArea.extend({
+                            didInsertElement: function() {
+                                this.heightAdjuster();
+                                this.$().val(this.get('value'));
+                            },
+                            valueBinding: Ember.Binding.oneWay('parentView.item.value').transform(function(value,binding){
+                                return JSON.stringify(value,undefined,2);
                             }),
-                            change: function() {
+                            heightAdjuster: function() {
+                                var lines = this.get('value').split('\n').length;                                
+                                var heightStyle = '' + lines*18 + 'px';
+                                this.$().height(heightStyle);
+                            }.observes('value'),
+                            keyUp: function() {
+                                try {
+                                    var parent = this.get('parentView');
+                                    var oldValueJSON =  JSON.stringify(parent.get('item').get('value'));
+                                    var newValueJSON =  JSON.stringify(JSON.parse(this.$().val()));
+                                    this.$().removeClass('alert-error');
+                                    if (newValueJSON !== oldValueJSON) {
+                                        console.log(oldValueJSON,parent.get('valueInputNotChanged'));
+                                        parent.set('valueInputNotChanged',false);
+                                    }
+                                }
+                                catch(e) {
+                                    this.$().addClass('alert-error');
+                                }
+                            },
+                            changeState: function() {
                                 try {
                                     var newValue =  JSON.parse(this.get('value'));
                                     console.log('setting',this.get('parentView').get('item').get('path'),'to',newValue);
@@ -305,7 +332,8 @@ define(
                         })
                     }),
                     showHistory: false,
-                    toggleHistory: function() {
+                    toggleHistory: function(event) {
+                        event.preventDefault();
                         this.toggleProperty('showHistory');
                     },
                     unselect: function() {
@@ -339,7 +367,8 @@ define(
                             }
                         })
                     }),
-                    unselect: function() {
+                    unselect: function(event) {
+                        event.preventDefault();
                         this.get('item').set('selected',false);
                     }
                 });
@@ -348,10 +377,16 @@ define(
                     templateName: 'ember-tree-element-template',
                     isSelectedBinding: 'item.selected',
                     isNotSelectedBinding: Ember.Binding.not('item.selected'),
-                    toggleSelected:function() {
+                    toggleSelected:function(event) {
+//                        if (event) {
+                            // dont let default <a> click handler apply (reloads page with href)
+                            event.preventDefault();                            
+  //                      }
                         var selected = this.get('item').toggleSelected();
                     },
-                    onClick: function() {
+                    onClick: function(event) {
+                        // dont let default <a> click handler apply (reloads page with href)
+                        event.preventDefault();
                         toggleSelected();
                         this.get('parentView').setDirectory(this.get('item').get('path'));
                     }
@@ -363,7 +398,9 @@ define(
 
                 JetViewer.NodeView = JetViewer.TreeElementView.extend({
                     isNode: true,
-                    onClick: function() {
+                    onClick: function(event) {
+                        // dont let default <a> click handler apply (reloads page with href)
+                        event.preventDefault();
                         JetViewer.treeController.set('directory',this.get('item').get('path'));
                     }
                 });
@@ -395,12 +432,14 @@ define(
                     inputView: Ember.TextField.extend({
                         valueBinding: 'parentView.searchExpression',
                     }),
-                    selectAll: function() {
+                    selectAll: function(event) {
+                        event.preventDefault();
                         this.get('matches').forEach(function(item) {
                             item.set('selected',true);
                         });
                     },
-                    unselectAll: function() {
+                    unselectAll: function(event) {
+                        event.preventDefault();
                         this.get('matches').forEach(function(item) {
                             item.set('selected',false);
                         });

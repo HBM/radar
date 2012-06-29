@@ -1,5 +1,5 @@
 define(
-    ["jquery","event","jet","underscore"],
+    ["jquery","event","jet_ember","underscore"],
     function($,event,jet) {      
         var cjet;
         var _ = window._;

@@ -32,24 +32,40 @@
         </h1>
       </div>
       <div class="row" style="opacity:.2" id="main">
-        <div class="span4" id="sidebar">
-          <h2>Tree</h2> 
-          <div id="tree">
+          <div class="span12" id="select">
+            <ul class="nav nav-tabs" id="select_tab">
+              <li>
+                <a href="#tree">Tree</a> 
+              </li>
+              <li>
+                <a href="#search">Search</a> 
+              </li>
+              <li>
+                <a href="#none">None</a> 
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div id="tree" class="tab-pane fade">
+              </div>
+              <div id="search" class="tab-pane fade">
+              </div>
+              <div id="none" class="tab-pane fade">
+              </div>
+            </div>
           </div>
-          <h2>Search</h2>
-          <div id="search"></div>
         </div>
-        <div class="span8" id="main">
-          <h2>Dash</h2>
-          <div id="dash"></div>        
+        <div class="row">
+          <div class="span12" id="main">
+            <div id="dash"></div>        
+          </div>
         </div>
-      </div>
+    </div>
   </body>
   
 
   <script type="text/x-handlebars" id="ember-search-template">      
     <div class="form-search breadcrumb" id="search">
-      {{view inputView classNames="input search-query"}}
+      {{view inputView classNames="input search-query span11"}}
       <i class="unselect-all icon-star-empty pull-right" {{action "unselectAll"}}></i>
       <i class="select-all icon-star pull-right" {{action "selectAll"}}></i>
     </div>
@@ -93,56 +109,55 @@
     </a>
   </script>
 
+      <!-- <span class="btn-group pull-right"> -->
+      <!--   <button {{action "unselect"}} class="btn-xsmall">&times;</button> -->
+      <!--   <button {{bindAttr class=":btn-xsmall item.schema.read_only:disabled"}} {{action "execute"}}> -->
+      <!--     set -->
+      <!--   </button> -->
+      <!-- </span> -->
+
+      <!-- <span class="badge badge-inverse pull-right" {{bindAttr -->
+      <!--           style="badgeStyle"}} {{action "toggleHistory"}}>{{item.history.updateCount}}</span> -->
   <script type="text/x-handlebars" id="ember-dash-template">
     {{#each selectedStates}}
-    {{#view JetViewer.StateRowView itemBinding="this" classNames="jet-row row"}}
-      <div class="span8 jet-row-content">
-        <div class="row">
-          <div class="jet-label span3 ">
-            {{item.path}}
-            <span class="badge badge-inverse pull-right" {{bindAttr
-            style="badgeStyle"}} {{action "toggleHistory"}}>{{item.history.updateCount}}</span>
-          </div>
-          {{view JSONArrayInputView itemBinding="item"}}
-          <div class="btn-group span1">
-            <button {{action "unselect"}} class="btn">&times;</button>
-            <button {{bindAttr class=":btn :pull-right item.schema.read_only:disabled"}} {{action "execute"}}>
-              <i class="icon-arrow-right"></i>
-            </button>    
-          </div>
-        </div>
-        {{#if showHistory}}
-        {{#each item.history.content}}
-        {{#view JetViewer.FadeInView contentBinding="this" classNames="row history"}}
-          <div class="span3">
-            <div class="pull-right">
-              {{content.date}}
-            </div>
-          </div>
-          <div class="jet-input span5">
-            <div class="form-inline pull-left">
-              <div class="control-group">
-                <div class="input-prepend input-append">
-                  <span class="add-on">[</span>
-                  <input type="text" class="method-view
-                                            input-xlarge" {{bindAttr value="content.value"}}></input>
-                  <span class="add-on">]</span>
-                </div>            
-              </div>
-            </div>
-          </div>
-        {{/view}}
-        {{/each}}
-        {{/if}}
+    {{#view JetViewer.StateRowView itemBinding="this"
+    classNames="jet-row row"}}
+    <div class="jet-label span5 ">{{item.path}}
+      <button {{bindAttr class=":btn :btn-primary :pull-right
+      item.schema.read_only:disabled valueInputNotChanged:disabled"}}>change</button>
+    </div>
+    {{view JSONArrayInputView itemBinding="item" classNames="span7"}}    
+    {{#if showHistory}}
+    {{#each item.history.content}}
+    {{#view JetViewer.FadeInView contentBinding="this" classNames="row history"}}
+    <div class="span4">
+      <div class="pull-right">
+        {{content.date}}
       </div>
+    </div>
+    <div class="jet-input span8">
+      <div class="form-inline pull-left">
+        <div class="control-group">
+          <div class="input-prepend input-append">
+            <span class="add-on">[</span>
+            <input type="text" class="method-view
+                                      input-xlarge" {{bindAttr value="content.value"}}></input>
+            <span class="add-on">]</span>
+          </div>            
+        </div>
+            </div>
+    </div>
+    {{/view}}
+    {{/each}}
+    {{/if}}
     {{/view}}
     {{/each}}
 
     {{#each selectedMethods}}
     {{#view JetViewer.MethodRowView itemBinding="this" classNames="jet-row row"}}
-      <div class="span8 jet-row-content">
+      <div class="span12 jet-row-content">
         <div class="row">
-          <div class="jet-label span3 ">
+          <div class="jet-label span4 ">
             {{item.path}}            
           </div>
           {{view JSONArrayInputView itemBinding="item"}}
@@ -160,17 +175,7 @@
 
 
   <script type="text/x-handlebars" id="ember-json-array-input-template">
-    <div class="jet-input span4">
-      <div class="form-inline pull-left">
-        <div class="control-group">
-          <div class="input-prepend input-append">
-            <span class="add-on">[</span>
-            {{view inputView}}
-            <span class="add-on">]</span>
-          </div>
-        </div>
-      </div>
-    </div>
+      {{view inputView classNames="span7" }}
   </script>
 
 
