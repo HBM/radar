@@ -13,55 +13,61 @@
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <script data-main="js/jet_main.js" src="js/require.js"></script>
+        <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    <script data-main="js/main.js" src="js/require.js"></script>
     <script src="js/jquery.js"></script>
     <script src="bootstrap/js/bootstrap.js"></script>
     <link type="text/css" href="style/jet.css" rel="stylesheet"></link>
   </head>
   <body>    
+  </body>
+  
+
+  <script type="text/x-handlebars" id="ember-main-template">      
     <div class="container">
       <div class="row">        
         <h1 class="page-header span12">
-          <i class="icon-star"></i>Jet-Viewer
-          <span class="label label-important pull-right" id="status-label">
-            <h2 id="status-text">offline
-            </h2>
+          <i class="icon-star"></i>Jet-Viewer {{version}}
+          <span {{bindAttr class=":label labelType :pull-right"}}>
+            <h2 id="status-text">{{status}}</h2>
           </span>
         </h1>
       </div>
-      <div class="row" style="opacity:.2" id="main">
-          <div class="span12" id="select">
-            <ul class="nav nav-tabs" id="select_tab">
-              <li>
-                <a href="#tree">Tree</a> 
-              </li>
-              <li>
-                <a href="#search">Search</a> 
-              </li>
-              <li>
-                <a href="#none">None</a> 
-              </li>
-            </ul>
-            <div class="tab-content">
-              <div id="tree" class="tab-pane fade">
-              </div>
-              <div id="search" class="tab-pane fade">
-              </div>
-              <div id="none" class="tab-pane fade">
-              </div>
+      <div class="row" style="opacity:1.0" id="main">
+        <div class="span12" id="select">
+          <ul class="nav nav-tabs" id="select_tab">
+            <li>
+              <a href="#tree">Tree</a> 
+            </li>
+            <li>
+              <a href="#search">Search</a> 
+            </li>
+            <li>
+              <a href="#none">None</a> 
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div id="tree" class="tab-pane fade">
+              {{view JetViewer.TreeView}}
+            </div>
+            <div id="search" class="tab-pane fade">
+              {{view JetViewer.SearchView}}
+            </div>
+            <div id="none" class="tab-pane fade">
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="span12" id="main">
-            <div id="dash"></div>        
-          </div>
+      </div>
+      <div class="row">
+        <div class="span12" id="main">
+          <div id="dash"></div>
+          {{view JetViewer.DashView}}        
         </div>
+      </div>
     </div>
-  </body>
-  
+</script>
+
 
   <script type="text/x-handlebars" id="ember-search-template">      
     <div class="form-search breadcrumb" id="search">
@@ -77,27 +83,27 @@
   </script>
 
   <script type="text/x-handlebars" id="ember-nodes-template">      
-      <ul class="breadcrumb">
-        {{#each breadcrumbs}}
-        <li {{action "clickBreadcrumb"}} >
-          <a href="#">{{name}}</a>
-          <span class="divider">/</span>
-        </li> 
+    <ul class="breadcrumb">
+      {{#each breadcrumbs}}
+      <li {{action "clickBreadcrumb"}} >
+        <a href="#">{{name}}</a>
+        <span class="divider">/</span>
+      </li> 
+      {{/each}}
+    </ul>
+    <div>
+      <ul class="nav nav-tabs nav-stacked">
+        {{#each childNodes}}
+        {{view JetViewer.NodeView itemBinding="this" tagName="li" displayNameBinding="name"}}
         {{/each}}
-      </ul>
-      <div>
-        <ul class="nav nav-tabs nav-stacked">
-          {{#each childNodes}}
-          {{view JetViewer.NodeView itemBinding="this" tagName="li" displayNameBinding="name"}}
-          {{/each}}
-          {{#each childStates}}
-          {{view JetViewer.LeafView itemBinding="this" tagName="li" displayNameBinding="name"}}
-          {{/each}}
-          {{#each childMethods}}
-          {{view JetViewer.LeafView itemBinding="this" tagName="li" displayNameBinding="name"}}
-          {{/each}}
-        </ul>        
-      </div>
+        {{#each childStates}}
+        {{view JetViewer.LeafView itemBinding="this" tagName="li" displayNameBinding="name"}}
+        {{/each}}
+        {{#each childMethods}}
+        {{view JetViewer.LeafView itemBinding="this" tagName="li" displayNameBinding="name"}}
+        {{/each}}
+      </ul>        
+    </div>
   </script>
 
 
@@ -109,24 +115,26 @@
     </a>
   </script>
 
-      <!-- <span class="btn-group pull-right"> -->
-      <!--   <button {{action "unselect"}} class="btn-xsmall">&times;</button> -->
-      <!--   <button {{bindAttr class=":btn-xsmall item.schema.read_only:disabled"}} {{action "execute"}}> -->
-      <!--     set -->
-      <!--   </button> -->
-      <!-- </span> -->
+  <!-- <span class="btn-group pull-right"> -->
+  <!--   <button {{action "unselect"}} class="btn-xsmall">&times;</button> -->
+  <!--   <button {{bindAttr class=":btn-xsmall item.schema.read_only:disabled"}} {{action "execute"}}> -->
+  <!--     set -->
+  <!--   </button> -->
+  <!-- </span> -->
 
-      <!-- <span class="badge badge-inverse pull-right" {{bindAttr -->
-      <!--           style="badgeStyle"}} {{action "toggleHistory"}}>{{item.history.updateCount}}</span> -->
+  <!-- <span class="badge badge-inverse pull-right" {{bindAttr -->
+  <!--           style="badgeStyle"}} {{action "toggleHistory"}}>{{item.history.updateCount}}</span> -->
   <script type="text/x-handlebars" id="ember-dash-template">
     {{#each selectedStates}}
     {{#view JetViewer.StateRowView itemBinding="this"
     classNames="jet-row row"}}
     <div class="jet-label span5 ">{{item.path}}
       <button {{bindAttr class=":btn :btn-primary :pull-right
-      item.schema.read_only:disabled valueInputNotChanged:disabled"}}>change</button>
+                                item.schema.read_only:disabled isDisabled:disabled"}}>change</button>
     </div>
-    {{view JSONArrayInputView itemBinding="item" classNames="span7"}}    
+    <div class="control-group span7">
+      {{view JSONArrayInputView classNames="span7"}}    
+    </div>
     {{#if showHistory}}
     {{#each item.history.content}}
     {{#view JetViewer.FadeInView contentBinding="this" classNames="row history"}}
@@ -145,7 +153,7 @@
             <span class="add-on">]</span>
           </div>            
         </div>
-            </div>
+      </div>
     </div>
     {{/view}}
     {{/each}}
@@ -155,27 +163,22 @@
 
     {{#each selectedMethods}}
     {{#view JetViewer.MethodRowView itemBinding="this" classNames="jet-row row"}}
-      <div class="span12 jet-row-content">
-        <div class="row">
-          <div class="jet-label span4 ">
-            {{item.path}}            
-          </div>
-          {{view JSONArrayInputView itemBinding="item"}}
-          <div class="btn-group span1">
-            <button {{action "unselect"}} class="btn">&times;</button>
-            <button class="btn pull-right" {{action "execute"}}>
-              <i class="icon-arrow-right"></i>
-            </button>    
-          </div>
+    <div class="span12 jet-row-content">
+      <div class="row">
+        <div class="jet-label span4 ">
+          {{item.path}}            
+        </div>
+        {{view JSONArrayInputView itemBinding="item"}}
+        <div class="btn-group span1">
+          <button {{action "unselect"}} class="btn">&times;</button>
+          <button class="btn pull-right" {{action "execute"}}>
+            <i class="icon-arrow-right"></i>
+          </button>    
         </div>
       </div>
+    </div>
     {{/view}}
     {{/each}}
-  </script>
-
-
-  <script type="text/x-handlebars" id="ember-json-array-input-template">
-      {{view inputView classNames="span7" }}
   </script>
 
 
