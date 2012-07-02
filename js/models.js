@@ -36,7 +36,7 @@ define(['ember','app'],function(Ember,JetViewer){
             //console.log('JetViewer.methodsController.create({path:"'+this.path+'"});');
         },
         call: function(args,callbacks) {
-            that.call(this.get('path'),args,callbacks);
+            JetViewer.callMethod(this.get('path'),args,callbacks);
         },
     });
 
@@ -71,13 +71,19 @@ define(['ember','app'],function(Ember,JetViewer){
             this._super();
             //console.log('JetViewer.statesController.create({path:"'+this.path+'"});');
         },
-        change: function(new_val) {    
-            that.set(this.get('path'),new_val,{
+        change: function(new_val,callbacks) {    
+            JetViewer.changeState(this.get('path'),new_val,{
                 success: function() {                            
                     console.log('SET SUCCEEDED');
+                    if(callbacks.success) {
+                        callbacks.success();
+                    }
                 },
-                error: function() {
-                    console.log('SET FAILED');
+                error: function(err) {
+                    console.log('SET FAILED',err);
+                    if(callbacks.error) {
+                        callbacks.error();
+                    }
                 }
             });
         },

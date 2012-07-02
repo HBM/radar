@@ -62,10 +62,12 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
         isDisabled: true,
         buttonResetter: function() {
             if (this.inputView) {
-                this.inputView.controlGroup().removeClass('warning');
-                this.inputView.controlGroup().removeClass('error');
+                if(!this.inputView.get('uncomittedChanges')) {
+                    this.inputView.controlGroup().removeClass('warning');
+                    this.inputView.controlGroup().removeClass('error');
+                    this.set('isDisabled',true);
+                }                                
             }
-            this.set('isDisabled',true);
         }.observes('item.value'),
         JSONInputView: Ember.TextArea.extend({
             didInsertElement: function() {
@@ -76,10 +78,13 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
 	                   this.$().css('resize','none');
                 }
             },
-            valueBinding: Ember.Binding.oneWay('parentView.item.value').transform(function(value,binding){
-                
+            value: Ember.computed(function(){               
+                var value = this.get('parentView').get('item').get('value');
+                if (this.get('uncomittedChanges')) {
+                    return this.$().val(); 
+                }
                 return JSON.stringify(value,undefined,2);
-            }),
+            }).property('parentView.item.value'),
             controlGroup: function() {
                 return this.$().parent('.control-group');
             },
@@ -92,6 +97,9 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
                 var heightStyle = '' + px + 'px';
                 this.$().height(heightStyle);
             }.observes('value'),
+            focusIn: function() {
+                this.set('uncomittedChanges',true);
+            },
             keyUp: function() {
                 var controlGroup = this.controlGroup();
                 var parent = this.get('parentView');
@@ -119,12 +127,28 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
         }),
         changeState: function() {
             if (this.get('isDisabled') == false) {
+                this.inputView.set('uncomittedChanges',false);
+                var oldValue = this.get('item').get('value');
+                var that = this;
+                var revert = function() {
+                    that.inputView.controlGroup().removeClass('warning');
+                    that.inputView.controlGroup().removeClass('error');
+                    that.set('isDisabled',true);
+                    that.inputView.$().val(JSON.stringify(oldValue,null,2));                    
+                }
                 try {
-                    var newValue =  JSON.parse(this.inputView.get('value'));
+                    var newValue =  JSON.parse(this.inputView.$().val());
                     console.log('setting',this.get('item').get('path'),'to',newValue);
-                    this.get('item').change(newValue);
+                    this.get('item').change(newValue,{
+                        success: function(){
+                        },
+                        error: function(){
+                            revert();
+                        }
+                    });
                 }
                 catch(e) {
+                    revert();
                     console.log('ERROR:',e);
                 }
             }
