@@ -50,13 +50,13 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
             }
             this.set('isDisabled',true);
         }.observes('item.value'),
-        JSONArrayInputView: Ember.TextArea.extend({
+        JSONInputView: Ember.TextArea.extend({
             didInsertElement: function() {
                 this.heightAdjuster();
                 this.$().val(this.get('value'));
                 if(this.get('isReadonly')) {
                     this.$().attr('readonly',true);
-                    this.$().css('resize','none');
+	                   this.$().css('resize','none');
                 }
             },
             valueBinding: Ember.Binding.oneWay('parentView.item.value').transform(function(value,binding){
@@ -68,14 +68,17 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
             },
             heightAdjuster: function() {
                 var lines = this.get('value').split('\n').length;                                
-                var heightStyle = '' + lines*18 + 'px';
+                var px = lines*18;
+                if (lines > 1) {
+                    px += 10;
+                }
+                var heightStyle = '' + px + 'px';
                 this.$().height(heightStyle);
             }.observes('value'),
             keyUp: function() {
                 var controlGroup = this.controlGroup();
+                var parent = this.get('parentView');
                 try {
-                    var parent = this.get('parentView');
-                    controlGroup.removeClass('warning');
                     var oldValueJSON =  JSON.stringify(parent.get('item').get('value'));
                     var newValueJSON =  JSON.stringify(JSON.parse(this.$().val()));
                     controlGroup.removeClass('error');
@@ -98,13 +101,15 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
             }
         }),
         changeState: function() {
-            try {
-                var newValue =  JSON.parse(this.inputView.get('value'));
-                console.log('setting',this.get('item').get('path'),'to',newValue);
-                this.get('item').change(newValue);
-            }
-            catch(e) {
-                console.log('ERROR:',e);
+            if (this.get('isDisabled') == false) {
+                try {
+                    var newValue =  JSON.parse(this.inputView.get('value'));
+                    console.log('setting',this.get('item').get('path'),'to',newValue);
+                    this.get('item').change(newValue);
+                }
+                catch(e) {
+                    console.log('ERROR:',e);
+                }
             }
         },
         showHistory: false,
@@ -118,35 +123,60 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
     });
 
     JetViewer.MethodRowView = Ember.View.extend({
-        JSONArrayInputView: Ember.View.extend({
-            templateName: 'ember-json-array-input-template',
-            inputView: Ember.TextField.extend({
-                callMethod: function() {
-                    try {
-                        var args = JSON.parse('[' + this.get('value') + ']');
-                        console.log('calling',this.get('parentView').get('item').get('path'));
-                        this.get('parentView').get('item').call(args,{
-                            success: function() {
-                                console.log('success');
-                            },
-                            error: function() {
-                                console.log('error');
-                            }
-                        });
+        isDisabled: true,
+        JSONArrayInputView: Ember.TextArea.extend({
+            didInsertElement: function() {
+                this.$().height('18px');
+            },
+            controlGroup: function() {
+                return this.$().parent('.control-group');
+            },
+            keyUp: function() {
+                var controlGroup = this.controlGroup();
+                var parent = this.get('parentView');
+                try {
+                    var args = JSON.parse(this.$().val());
+                    if ($.isArray(args)) {
+                        controlGroup.removeClass('error');
+                        parent.set('isDisabled',false);
                     }
-                    catch(e) {
-                        console.log('ERROR:',e);
+                    else {
+                        controlGroup.addClass('error');
+                        parent.set('isDisabled',true);
                     }
-                },
-                insertNewline: function() {
-                    this.callMethod();
                 }
-            })
+                catch(e) {
+                    controlGroup.addClass('error');
+                    parent.set('isDisabled',true);
+                }
+            }
         }),
-        unselect: function(event) {
-            event.preventDefault();
+        callMethod: function() {
+            if (this.get('isDisabled') == false) {
+                var that = this;
+                try {
+                    var args = JSON.parse(this.inputView.$().val());
+                    this.set('isDisabled',true);
+                    console.log('calling',this.get('item').get('path'));
+                    this.get('item').call(args,{
+                        success: function() {
+                            that.set('isDisabled',false);
+                            console.log('success');
+                        },
+                        error: function() {
+                            that.set('isDisabled',false);
+                            console.log('error');
+                        }
+                    });
+                }
+                catch(e) {
+                    console.log('ERROR:',e);
+                }
+            }
+        },
+        unselect: function() {
             this.get('item').set('selected',false);
-        }
+        },
     });
 
     JetViewer.TreeElementView = Ember.View.extend({

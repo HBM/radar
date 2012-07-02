@@ -134,51 +134,27 @@
                                  isDisabled:disabled"}}>change</button>
     </div>
     <div class="control-group span7">
-      {{view JSONArrayInputView viewName="inputView"
-      isReadonlyBinding="item.schema.read_only"
-      classBinding="isReadonly:uneditable-input" classNames="span7"}}    
+      {{view JSONInputView viewName="inputView"
+      isReadonlyBinding="item.schema.read_only" classNames="span7"}}    
     </div>
     {{#if showHistory}}
     {{#each item.history.content}}
     {{#view JetViewer.FadeInView contentBinding="this" classNames="row history"}}
-    <div class="span4">
-      <div class="pull-right">
-        {{content.date}}
-      </div>
-    </div>
-    <div class="jet-input span8">
-      <div class="form-inline pull-left">
-        <div class="control-group">
-          <div class="input-prepend input-append">
-            <span class="add-on">[</span>
-            <input type="text" class="method-view
-                                      input-xlarge" {{bindAttr value="content.value"}}></input>
-            <span class="add-on">]</span>
-          </div>            
-        </div>
-      </div>
-    </div>
+    {{content.date}}
     {{/view}}
     {{/each}}
     {{/if}}
     {{/view}}
     {{/each}}
-
     {{#each selectedMethods}}
-    {{#view JetViewer.MethodRowView itemBinding="this" classNames="jet-row row"}}
-    <div class="span12 jet-row-content">
-      <div class="row">
-        <div class="jet-label span4 ">
-          {{item.path}}            
-        </div>
-        {{view JSONArrayInputView itemBinding="item"}}
-        <div class="btn-group span1">
-          <button {{action "unselect"}} class="btn">&times;</button>
-          <button class="btn pull-right" {{action "execute"}}>
-            <i class="icon-arrow-right"></i>
-          </button>    
-        </div>
-      </div>
+    {{#view JetViewer.MethodRowView itemBinding="this"
+    classNames="jet-row row"}}
+    <div class="jet-label span5 ">{{item.path}}
+      <button {{action callMethod}} {{bindAttr class=":btn :btn-primary :pull-right
+                                 isDisabled:disabled"}}>call</button>
+    </div>
+    <div class="control-group span7">
+      {{view JSONArrayInputView viewName="inputView" classNames="span7"}}    
     </div>
     {{/view}}
     {{/each}}

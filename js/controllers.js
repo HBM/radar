@@ -119,6 +119,23 @@ define(['ember','models'],function(Ember,JetViewer){
                 this.set('value',newVal);
             }
         });
+        JetViewer.Method.reopen({
+            count: 0,
+            call: function(args,callbacks) {
+                this.set('count',this.get('count')+1);
+                if (this.get('count')%3 == 0) {
+                    if(callbacks.error) {
+                        callbacks.error({message:"oh ohoh",id:1234});
+                    }
+                }
+                else {
+                    if(callbacks.success) {
+                        callbacks.success({bla:123});
+                    }
+                }
+                that.call(this.get('path'),args,callbacks);
+            },
+        });
         JetViewer.set('status','debug');
         JetViewer.nodesController.create({
             path: 'test'
@@ -139,6 +156,9 @@ define(['ember','models'],function(Ember,JetViewer){
             path: 'test.horst',
             value: {sub:111,pi:3.1415},
             schema: 'asdds'
+        });
+        JetViewer.methodsController.create({
+            path: 'test.funcy'
         });
     }
     
