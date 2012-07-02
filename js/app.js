@@ -1,4 +1,4 @@
-define(['/z/ember.js.gz'], function(Ember) {
+define(['/js/ember.js.gz'], function(Ember) {
     Ember = window.Ember;
     window.JetViewer = Ember.Application.create({
         version: 'v0.1',

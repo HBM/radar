@@ -1,16 +1,17 @@
-define(['/z/jquery.js.gz',
-        'bootstrap/js/bootstrap.js',
-        '/z/ember.js.gz',
+define(['/js/jquery.js.gz',
+        '/js/bootstrap-tab.js',
+        '/js/ember.js.gz',
         'app',
         'text!/templates/dash.handlebars',
         'text!/templates/main.handlebars',
         'text!/templates/nodes.handlebars',
         'text!/templates/search.handlebars',
         'text!/templates/tree-element.handlebars',],
-       function($,bs,Ember,JetViewer,dashTemplate,mainTemplate,nodesTemplate,searchTemplate,treeElementTemplate) {
+       function(_,bs,Ember,JetViewer,dashTemplate,mainTemplate,nodesTemplate,searchTemplate,treeElementTemplate) {
             
             Ember = window.Ember;
             JetViewer = window.JetViewer;
+           $ = window.jQuery;
             
 
             
