@@ -133,7 +133,6 @@ define(['ember','models'],function(Ember,JetViewer){
                         callbacks.success({bla:123});
                     }
                 }
-                that.call(this.get('path'),args,callbacks);
             },
         });
         JetViewer.set('status','debug');
@@ -159,6 +158,9 @@ define(['ember','models'],function(Ember,JetViewer){
         });
         JetViewer.methodsController.create({
             path: 'test.funcy'
+        });
+        JetViewer.methodsController.create({
+            path: 'test.popoapoapoa'
         });
     }
     
