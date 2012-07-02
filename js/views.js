@@ -55,14 +55,16 @@ define(['/js/jquery.js.gz',
             this.$().val(this.get('value'));
         },
         heightAdjuster: function() {
-            var value = this.get('value').toString();
-            var lines = value.split('\n').length;                                
-            var px = lines*18;
-            if (lines > 1) {
-                px += 10;
+            if( this.get('value')) {
+                var value = this.get('value').toString();
+                var lines = value.split('\n').length;                                
+                var px = lines*18;
+                if (lines > 1) {
+                    px += 10;
+                }
+                var heightStyle = '' + px + 'px';
+                this.$().height(heightStyle);
             }
-            var heightStyle = '' + px + 'px';
-            this.$().height(heightStyle);
         }.observes('value')
     });
 
@@ -195,7 +197,13 @@ define(['/js/jquery.js.gz',
                 var controlGroup = this.controlGroup();
                 var parent = this.get('parentView');
                 try {
-                    var args = JSON.parse(this.$().val());
+                    var input = this.$().val();
+                    if( input === '') {
+                        controlGroup.removeClass('error');
+                        parent.set('isDisabled',true);
+                        return;
+                    }
+                    var args = JSON.parse(input);
                     if ($.isArray(args)) {
                         controlGroup.removeClass('error');
                         parent.set('isDisabled',false);
