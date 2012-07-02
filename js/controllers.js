@@ -114,6 +114,11 @@ define(['ember','models'],function(Ember,JetViewer){
     });
 
     if (true) {
+        JetViewer.State.reopen({
+            change: function(newVal) {
+                this.set('value',newVal);
+            }
+        });
         JetViewer.set('status','debug');
         JetViewer.nodesController.create({
             path: 'test'
@@ -121,6 +126,18 @@ define(['ember','models'],function(Ember,JetViewer){
         JetViewer.statesController.create({
             path: 'test.horst',
             value: 1234,
+            schema: {
+                read_only: true
+            }
+        });
+        JetViewer.statesController.create({
+            path: 'test.peter',
+            value: 'hallo',
+            schema: 'asdds'
+        });
+        JetViewer.statesController.create({
+            path: 'test.horst',
+            value: {sub:111,pi:3.1415},
             schema: 'asdds'
         });
     }

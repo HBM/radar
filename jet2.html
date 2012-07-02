@@ -109,8 +109,8 @@
 
   <script type="text/x-handlebars" id="ember-tree-element-template">
     <a href="#">
-      <i {{action "onClick"}} {{bindAttr class="isLeaf:icon-leaf isNode:icon-folder-open"}}></i>
-      <span> {{displayName}}</span>
+      <i {{action "onIconClick"}} {{bindAttr class="isLeaf:icon-leaf isNode:icon-folder-open"}}></i>
+      <span {{action "onNameClick"}}> {{displayName}}</span>
       <i {{action "toggleSelected"}} {{bindAttr class="isSelected:icon-star isNotSelected:icon-star-empty :toggle-button :pull-right"}}></i>
     </a>
   </script>
@@ -129,11 +129,13 @@
     {{#view JetViewer.StateRowView itemBinding="this"
     classNames="jet-row row"}}
     <div class="jet-label span5 ">{{item.path}}
-      <button {{bindAttr class=":btn :btn-primary :pull-right
-                                item.schema.read_only:disabled isDisabled:disabled"}}>change</button>
+      <button {{action changeState}} {{bindAttr class=":btn :btn-primary :pull-right
+                                 isDisabled:disabled"}}>change</button>
     </div>
     <div class="control-group span7">
-      {{view JSONArrayInputView classNames="span7"}}    
+      {{view JSONArrayInputView viewName="inputView"
+      isReadonlyBinding="item.schema.read_only"
+      classBinding="isReadonly:uneditable-input" classNames="span7"}}    
     </div>
     {{#if showHistory}}
     {{#each item.history.content}}

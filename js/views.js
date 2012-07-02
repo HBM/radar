@@ -44,48 +44,69 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
             return '';                        
         }).property('item.history.@each'),
         isDisabled: true,
+        buttonResetter: function() {
+            if (this.inputView) {
+                this.inputView.controlGroup().removeClass('warning');
+                this.inputView.controlGroup().removeClass('error');
+            }
+            this.set('isDisabled',true);
+        }.observes('item.value'),
         JSONArrayInputView: Ember.TextArea.extend({
             didInsertElement: function() {
                 this.heightAdjuster();
                 this.$().val(this.get('value'));
+                if(this.get('isReadonly')) {
+                    this.$().attr('readonly',true);
+                }
             },
             valueBinding: Ember.Binding.oneWay('parentView.item.value').transform(function(value,binding){
+                
                 return JSON.stringify(value,undefined,2);
             }),
+            controlGroup: function() {
+                return this.$().parent('.control-group');
+            },
             heightAdjuster: function() {
                 var lines = this.get('value').split('\n').length;                                
                 var heightStyle = '' + lines*18 + 'px';
                 this.$().height(heightStyle);
             }.observes('value'),
             keyUp: function() {
+                var controlGroup = this.controlGroup();
                 try {
                     var parent = this.get('parentView');
+                    controlGroup.removeClass('warning');
                     var oldValueJSON =  JSON.stringify(parent.get('item').get('value'));
                     var newValueJSON =  JSON.stringify(JSON.parse(this.$().val()));
-                    this.$().removeClass('alert-error');
+                    controlGroup.removeClass('error');
+                    controlGroup.removeClass('warning');
                     if (newValueJSON !== oldValueJSON) {
+                        this.set('hasChanged',true);
+                        controlGroup.addClass('warning');
                         parent.set('isDisabled',false);
                     }
                     else {
+                        this.set('hasChanged',false);
                         parent.set('isDisabled',true);
                     }
                 }
                 catch(e) {
+                    this.set('hasChanged',false);
                     parent.set('isDisabled',true);
-                    this.$().addClass('alert-error');
-                }
-            },
-            changeState: function() {
-                try {
-                    var newValue =  JSON.parse(this.get('value'));
-                    console.log('setting',this.get('parentView').get('item').get('path'),'to',newValue);
-                    this.get('parentView').get('item').change(newValue);
-                }
-                catch(e) {
-                    console.log('ERROR:',e);
+                    controlGroup.addClass('error');
                 }
             }
         }),
+        changeState: function() {
+            try {
+                var newValue =  JSON.parse(this.inputView.get('value'));
+                console.log('setting',this.get('item').get('path'),'to',newValue);
+                this.get('item').change(newValue);
+            }
+            catch(e) {
+                console.log('ERROR:',e);
+            }
+        },
         showHistory: false,
         toggleHistory: function(event) {
             event.preventDefault();
@@ -133,30 +154,34 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
         isSelectedBinding: 'item.selected',
         isNotSelectedBinding: Ember.Binding.not('item.selected'),
         toggleSelected:function(event) {
-            //                        if (event) {
             // dont let default <a> click handler apply (reloads page with href)
             event.preventDefault();                            
-            //                      }
             var selected = this.get('item').toggleSelected();
         },
-        onClick: function(event) {
-            // dont let default <a> click handler apply (reloads page with href)
-            event.preventDefault();
-            toggleSelected();
-            this.get('parentView').setDirectory(this.get('item').get('path'));
-        }
     });
 
     JetViewer.LeafView = JetViewer.TreeElementView.extend({
-        isLeaf: true                   
+        isLeaf: true,
+        onIconClick: function(event) {
+            event.preventDefault();
+        },
+        onNameClick: function(event) {
+            this.toggleSelected(event);
+        }
     });
 
     JetViewer.NodeView = JetViewer.TreeElementView.extend({
         isNode: true,
-        onClick: function(event) {
+        changeDirectory: function(event) {
             // dont let default <a> click handler apply (reloads page with href)
             event.preventDefault();
             JetViewer.treeController.set('directory',this.get('item').get('path'));
+        },
+        onIconClick: function(event) {
+            this.changeDirectory(event);
+        },
+        onNameClick: function(event) {
+            this.changeDirectory(event);            
         }
     });
 
