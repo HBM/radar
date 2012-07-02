@@ -141,9 +141,13 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
                     console.log('setting',this.get('item').get('path'),'to',newValue);
                     this.get('item').change(newValue,{
                         success: function(){
+                            that.set('error',false);
                         },
-                        error: function(){
+                        error: function(err){
                             revert();
+                            var err_string = JSON.stringify(err,null,2);                            
+                            that.set('error',err_string);
+                            console.log('error:',err_string);
                         }
                     });
                 }

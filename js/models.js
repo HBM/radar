@@ -82,7 +82,7 @@ define(['ember','app'],function(Ember,JetViewer){
                 error: function(err) {
                     console.log('SET FAILED',err);
                     if(callbacks.error) {
-                        callbacks.error();
+                        callbacks.error(err);
                     }
                 }
             });

@@ -130,6 +130,11 @@
     <div class="control-group span7">
       {{view JSONInputView viewName="inputView"
       isReadonlyBinding="item.schema.read_only" classNames="span7"}}    
+      {{#if error}}
+      <div class="error control-group">
+        {{view JetViewer.AutoHeightTextArea valueBinding="error" classNames="span7"}}
+      </div>
+      {{/if}}
     </div>
     {{#if showHistory}}
     {{#each item.history.content}}
