@@ -148,7 +148,18 @@
                                  isDisabled:disabled"}}>call</button>
     </div>
     <div class="control-group span7">
-      {{view JSONArrayInputView viewName="inputView" classNames="span7"}}    
+      {{view JSONArrayInputView viewName="inputView"
+      classNames="span7"}}    
+      {{#if result}}
+      <div class="success control-group">
+        {{view JetViewer.AutoHeightTextArea valueBinding="result" classNames="span7"}}
+      </div>
+      {{/if}}
+      {{#if error}}
+      <div class="error control-group">
+        {{view JetViewer.AutoHeightTextArea valueBinding="error" classNames="span7"}}
+      </div>
+      {{/if}}
     </div>
     {{/view}}
     {{/each}}

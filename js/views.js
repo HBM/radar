@@ -35,6 +35,23 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
         }
     });
 
+    JetViewer.AutoHeightTextArea = Ember.TextArea.extend({
+        didInsertElement: function() {
+            this.heightAdjuster();
+            this.$().val(this.get('value'));
+        },
+        heightAdjuster: function() {
+            var value = this.get('value').toString();
+            var lines = value.split('\n').length;                                
+            var px = lines*18;
+            if (lines > 1) {
+                px += 10;
+            }
+            var heightStyle = '' + px + 'px';
+            this.$().height(heightStyle);
+        }.observes('value')
+    });
+
     JetViewer.StateRowView = Ember.View.extend({
         badgeStyle: Ember.computed(function() {
             if(this.get('item').get('history').get('updateCount') < 1) { 
@@ -122,6 +139,7 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
         },
     });
 
+
     JetViewer.MethodRowView = Ember.View.extend({
         isDisabled: true,
         JSONArrayInputView: Ember.TextArea.extend({
@@ -159,12 +177,18 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
                     this.set('isDisabled',true);
                     console.log('calling',this.get('item').get('path'));
                     this.get('item').call(args,{
-                        success: function() {
+                        success: function(res) {
+                            var res_string = JSON.stringify(res,null,2);
                             that.set('isDisabled',false);
+                            that.set('error',false);                            
+                            that.set('result',res_string);
                             console.log('success');
                         },
-                        error: function() {
+                        error: function(err) {
+                            var err_string = JSON.stringify(err,null,2);
                             that.set('isDisabled',false);
+                            that.set('result',false);
+                            that.set('error',err_string);
                             console.log('error');
                         }
                     });
