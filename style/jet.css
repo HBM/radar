@@ -1,5 +1,4 @@
-#dash textarea {
-   height: 18;
+#main #dash textarea {
    resize:vertical;
 };
 

@@ -32,7 +32,6 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
         },
         destroyElement: function(){
             this.$().slideUp();
-            //                        this._super();
         }
     });
 
@@ -57,6 +56,7 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
                 this.$().val(this.get('value'));
                 if(this.get('isReadonly')) {
                     this.$().attr('readonly',true);
+                    this.$().css('resize','none');
                 }
             },
             valueBinding: Ember.Binding.oneWay('parentView.item.value').transform(function(value,binding){
@@ -213,14 +213,11 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
         labelType: Ember.computed(function(){
             var status = JetViewer.get('status');
             if( status=='online' ){
-          //      this.$('#main').fadeTo('slow',1);
                 return 'label-success';
             }
             else if (status=='offline'){
-        //        this.$('#main').fadeTo('slow',0.5);
                 return 'label-important';
             }                
-      //      this.$('#main').fadeTo('slow',1);
             return 'label-warning';
         }).property('JetViewer.status'),
         didInsertElement: function(){
