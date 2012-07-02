@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="row">        
+    <h1 class="page-header span12">
+      <i class="icon-star"></i>Jet-Viewer {{version}}
+      <span {{bindAttr class=":label labelType :pull-right"}}>
+        <h2 id="status-text">{{status}}</h2>
+      </span>
+    </h1>
+  </div>
+  <div class="row" style="opacity:1.0" id="main">
+    <div class="span12" id="select">
+      <ul class="nav nav-tabs" id="select_tab">
+        <li>
+          <a href="#tree">Tree</a> 
+        </li>
+        <li>
+          <a href="#search">Search</a> 
+        </li>
+        <li>
+          <a href="#none">None</a> 
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div id="tree" class="tab-pane fade">
+          {{view JetViewer.TreeView}}
+        </div>
+        <div id="search" class="tab-pane fade">
+          {{view JetViewer.SearchView}}
+        </div>
+        <div id="none" class="tab-pane fade">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span12" id="main">
+      <div id="dash">
+        {{view JetViewer.DashView}}        
+      </div>
+    </div>
+  </div>
+</div>

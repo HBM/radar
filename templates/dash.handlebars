@@ -1,0 +1,50 @@
+{{#each selectedStates}}
+{{#view JetViewer.StateRowView itemBinding="this"
+classNames="jet-row row"}}
+<div class="jet-label span5 ">{{item.path}}
+  {{#unless item.schema.read_only}}
+  <button {{action changeState}} {{bindAttr class=":btn :btn-primary :pull-right
+                                                   isDisabled:disabled"}}>change</button>
+  {{/unless}}
+</div>
+<div class="control-group span7">
+  {{view JSONInputView viewName="inputView"
+  isReadonlyBinding="item.schema.read_only" classNames="span7"}}    
+  {{#if error}}
+  <div class="error control-group">
+    {{view JetViewer.AutoHeightTextArea valueBinding="error" classNames="span7"}}
+  </div>
+  {{/if}}
+</div>
+{{#if showHistory}}
+{{#each item.history.content}}
+{{#view JetViewer.FadeInView contentBinding="this" classNames="row history"}}
+{{content.date}}
+{{/view}}
+{{/each}}
+{{/if}}
+{{/view}}
+{{/each}}
+{{#each selectedMethods}}
+{{#view JetViewer.MethodRowView itemBinding="this"
+classNames="jet-row row"}}
+<div class="jet-label span5 ">{{item.path}}
+  <button {{action callMethod}} {{bindAttr class=":btn :btn-primary :pull-right
+                                                  isDisabled:disabled"}}>call</button>
+</div>
+<div class="control-group span7">
+  {{view JSONArrayInputView viewName="inputView"
+  classNames="span7"}}    
+  {{#if result}}
+  <div class="success control-group">
+    {{view JetViewer.AutoHeightTextArea valueBinding="result" classNames="span7"}}
+  </div>
+  {{/if}}
+  {{#if error}}
+  <div class="error control-group">
+    {{view JetViewer.AutoHeightTextArea valueBinding="error" classNames="span7"}}
+  </div>
+  {{/if}}
+</div>
+{{/view}}
+{{/each}}

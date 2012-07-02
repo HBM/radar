@@ -1,4 +1,4 @@
-define(['ember','app'],function(Ember,JetViewer){
+define(['/z/ember.js.gz','app'],function(Ember,JetViewer){
     Ember = window.Ember;
     JetViewer.Base = Ember.Object.extend({
         path: null,

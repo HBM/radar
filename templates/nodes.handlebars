@@ -1,0 +1,21 @@
+<ul class="breadcrumb">
+  {{#each breadcrumbs}}
+  <li {{action "clickBreadcrumb"}} >
+    <a href="#">{{name}}</a>
+    <span class="divider">/</span>
+  </li> 
+  {{/each}}
+</ul>
+<div>
+  <ul class="nav nav-tabs nav-stacked">
+    {{#each childNodes}}
+    {{view JetViewer.NodeView itemBinding="this" tagName="li" displayNameBinding="name"}}
+    {{/each}}
+    {{#each childStates}}
+    {{view JetViewer.LeafView itemBinding="this" tagName="li" displayNameBinding="name"}}
+    {{/each}}
+    {{#each childMethods}}
+    {{view JetViewer.LeafView itemBinding="this" tagName="li" displayNameBinding="name"}}
+    {{/each}}
+  </ul>        
+</div>

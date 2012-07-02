@@ -1,8 +1,21 @@
-define(['jquery','ember','app'],function($,Ember,JetViewer) {
-    Ember = window.Ember;
-    JetViewer = window.JetViewer;
-    JetViewer.TreeView = Ember.View.extend({
-        templateName:  'ember-nodes-template',
+define(['/z/jquery.js.gz',
+        'bootstrap/js/bootstrap.js',
+        '/z/ember.js.gz',
+        'app',
+        'text!/templates/dash.handlebars',
+        'text!/templates/main.handlebars',
+        'text!/templates/nodes.handlebars',
+        'text!/templates/search.handlebars',
+        'text!/templates/tree-element.handlebars',],
+       function($,bs,Ember,JetViewer,dashTemplate,mainTemplate,nodesTemplate,searchTemplate,treeElementTemplate) {
+            
+            Ember = window.Ember;
+            JetViewer = window.JetViewer;
+            
+
+            
+            JetViewer.TreeView = Ember.View.extend({
+                template: Ember.Handlebars.compile(nodesTemplate),
         directoryBinding: Ember.Binding.oneWay('JetViewer.treeController.directory'),
         childStatesBinding: Ember.Binding.oneWay('JetViewer.treeController.childStates'),
         childNodesBinding: Ember.Binding.oneWay('JetViewer.treeController.childNodes'),
@@ -19,7 +32,7 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
     });
 
     JetViewer.DashView = Ember.View.extend({
-        templateName:'ember-dash-template',
+        template: Ember.Handlebars.compile(dashTemplate),
         selectedStatesBinding: Ember.Binding.oneWay('JetViewer.selectedController.selectedStates'),
         selectedMethodsBinding: Ember.Binding.oneWay('JetViewer.selectedController.selectedMethods')
     });
@@ -232,7 +245,7 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
     });
 
     JetViewer.TreeElementView = Ember.View.extend({
-        templateName: 'ember-tree-element-template',
+        template: Ember.Handlebars.compile(treeElementTemplate),
         isSelectedBinding: 'item.selected',
         isNotSelectedBinding: Ember.Binding.not('item.selected'),
         toggleSelected:function(event) {
@@ -268,7 +281,7 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
     });
 
     JetViewer.SearchView = Ember.View.extend({
-        templateName:  'ember-search-template',
+        template: Ember.Handlebars.compile(searchTemplate),
         matchesBinding: 'JetViewer.searchController.matches',
         searchExpressionBinding: 'JetViewer.searchController.searchExpression',
         inputView: Ember.TextField.extend({
@@ -287,9 +300,9 @@ define(['jquery','ember','app'],function($,Ember,JetViewer) {
             });
         }
     });
-
-    JetViewer.mainView = Ember.View.create({
-        templateName:  'ember-main-template',
+    
+    JetViewer.MainView = Ember.View.extend({
+        template: Ember.Handlebars.compile(mainTemplate),
         versionBinding: 'JetViewer.version',
         statusBinding: 'JetViewer.status',
         labelType: Ember.computed(function(){

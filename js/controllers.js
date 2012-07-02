@@ -1,4 +1,4 @@
-define(['ember','models'],function(Ember,JetViewer){
+define(['/z/ember.js.gz','models'],function(Ember,JetViewer){
     Ember = window.Ember;
     JetViewer.Container = Ember.ArrayProxy.extend({                    
         factory: null,
