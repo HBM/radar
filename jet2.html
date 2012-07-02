@@ -67,7 +67,7 @@
         </div>
       </div>
     </div>
-</script>
+  </script>
 
 
   <script type="text/x-handlebars" id="ember-search-template">      
@@ -116,22 +116,16 @@
     </a>
   </script>
 
-  <!-- <span class="btn-group pull-right"> -->
-  <!--   <button {{action "unselect"}} class="btn-xsmall">&times;</button> -->
-  <!--   <button {{bindAttr class=":btn-xsmall item.schema.read_only:disabled"}} {{action "execute"}}> -->
-  <!--     set -->
-  <!--   </button> -->
-  <!-- </span> -->
 
-  <!-- <span class="badge badge-inverse pull-right" {{bindAttr -->
-  <!--           style="badgeStyle"}} {{action "toggleHistory"}}>{{item.history.updateCount}}</span> -->
   <script type="text/x-handlebars" id="ember-dash-template">
     {{#each selectedStates}}
     {{#view JetViewer.StateRowView itemBinding="this"
     classNames="jet-row row"}}
     <div class="jet-label span5 ">{{item.path}}
+      {{#unless item.schema.read_only}}
       <button {{action changeState}} {{bindAttr class=":btn :btn-primary :pull-right
                                  isDisabled:disabled"}}>change</button>
+      {{/unless}}
     </div>
     <div class="control-group span7">
       {{view JSONInputView viewName="inputView"
