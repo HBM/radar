@@ -1,39 +1,44 @@
 {{#each selectedStates}}
-{{#view JetViewer.StateRowView itemBinding="this"
-classNames="jet-row row"}}
-<div class="jet-label span5 ">{{item.path}}
-  {{#unless item.schema.read_only}}
-  <button {{action changeState}} {{bindAttr class=":btn :btn-primary :pull-right
-                                                   isDisabled:disabled"}}>change</button>
-  {{/unless}}
-</div>
-<div class="control-group span7 jet-state-input">
-  {{view JSONInputView viewName="inputView"
-  isReadonlyBinding="item.schema.read_only" classNames="span7"}}
-  {{#if item.history.updateCount}}
-  <div class="badge badge-important
-  jet-history">{{item.history.updateCount}}</div>
-  {{/if}}
-  {{#if errorString}}
-  <div class="control-group error  closable">
-    {{view JetViewer.AutoHeightTextArea valueBinding="errorString"
-    classNames="span7"}}
-    <a {{action hideErrorString}} class="close" href="#">&times;</a>
+{{#view JetViewer.StateRowView itemBinding="this" classNames="jet-row"}}
+<div class="row">
+  <div class="jet-label span5 ">{{item.path}}
+    {{#unless item.schema.read_only}}
+    <button {{action changeState}} {{bindAttr class=":btn :btn-primary :pull-right
+                                                     isDisabled:disabled"}}>change</button>
+    {{/unless}}
   </div>
-  {{/if}}
+  <div class="control-group span7 jet-state-input">
+    {{view JSONInputView viewName="inputView" isReadonlyBinding="item.schema.read_only" classNames="span7"}}
+    {{#if item.history.updateCount}}
+    <div {{action toggleShowHistory}} class="badge badge-important jet-history">{{item.history.updateCount}}</div>
+    {{/if}}
+    {{#if errorString}}
+    <div class="control-group error  closable">
+      {{view JetViewer.AutoHeightTextArea valueBinding="errorString"
+      classNames="span7"}}
+      <a {{action hideErrorString}} class="close" href="#">&times;</a>
+    </div>
+    {{/if}}
+  </div>
+</div>
 </div>
 {{#if showHistory}}
 {{#each item.history.content}}
-{{#view JetViewer.FadeInView contentBinding="this" classNames="row history"}}
-{{content.date}}
-{{/view}}
+<div class="row jet-history">
+  <div class="span5">
+    <i class="pull-right">{{date}}</i>
+  </div>
+  <div class="span7">
+    {{view JetViewer.AutoHeightTextArea valueBinding="value" classNames="span7"}}
+  </div>
+</div>
 {{/each}}
 {{/if}}
 {{/view}}
+
 {{/each}}
 {{#each selectedMethods}}
-{{#view JetViewer.MethodRowView itemBinding="this"
-classNames="jet-row row"}}
+{{#view JetViewer.MethodRowView itemBinding="this" classNames="jet-row row"}}
 <div class="jet-label span5 ">{{item.path}}
   <button {{action callMethod}} {{bindAttr class=":btn :btn-primary :pull-right
                                                   isDisabled:disabled"}}>call</button>
