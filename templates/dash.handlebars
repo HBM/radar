@@ -7,9 +7,12 @@ classNames="jet-row row"}}
                                                    isDisabled:disabled"}}>change</button>
   {{/unless}}
 </div>
-<div class="control-group span7">
+<div class="control-group span7 jet-state-input">
   {{view JSONInputView viewName="inputView"
-  isReadonlyBinding="item.schema.read_only" classNames="span7"}}    
+  isReadonlyBinding="item.schema.read_only" classNames="span7"}}
+  {{#if item.history.updateCount}}
+  <div class="badge badge-important jet-history">{{item.history.updateCount}}</div>
+  {{/if}}
   {{#if error}}
   <div class="error control-group">
     {{view JetViewer.AutoHeightTextArea valueBinding="error" classNames="span7"}}

@@ -1,6 +1,19 @@
 #main #dash textarea {
    resize:vertical;
-};
+}
+
+.jet-state-input {
+   position: relative;
+}
+
+.badge.jet-history {
+   display: inline-block;
+   position: absolute;
+   top: -7px;
+   right: -11px;
+   padding-right:7px;
+   padding-top:3px;
+}
 
 .history .span3{
    color:darkgray;
