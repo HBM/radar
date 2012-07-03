@@ -61,8 +61,8 @@ define(['/js/ember.js.gz','app'],function(Ember,JetViewer){
                 content: [],
                 updateCount: 0,
                 add: function(value) {                            
-                    if(this.length > 10) {
-                        this.shiftObject();
+                    if(this.content.length > 3) {
+                        this.popObject();
                     }
                     this.incrementProperty('updateCount');
                     this.unshiftObject(Ember.Object.create(value));
