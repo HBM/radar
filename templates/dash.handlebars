@@ -11,11 +11,14 @@ classNames="jet-row row"}}
   {{view JSONInputView viewName="inputView"
   isReadonlyBinding="item.schema.read_only" classNames="span7"}}
   {{#if item.history.updateCount}}
-  <div class="badge badge-important jet-history">{{item.history.updateCount}}</div>
+  <div class="badge badge-important
+  jet-history">{{item.history.updateCount}}</div>
   {{/if}}
-  {{#if error}}
-  <div class="error control-group">
-    {{view JetViewer.AutoHeightTextArea valueBinding="error" classNames="span7"}}
+  {{#if errorString}}
+  <div class="control-group error  closable">
+    {{view JetViewer.AutoHeightTextArea valueBinding="errorString"
+    classNames="span7"}}
+    <a {{action hideErrorString}} class="close" href="#">&times;</a>
   </div>
   {{/if}}
 </div>
@@ -39,13 +42,11 @@ classNames="jet-row row"}}
   {{view JSONArrayInputView viewName="inputView"
   classNames="span7"}}    
   {{#if result}}
-  <div class="success control-group">
-    {{view JetViewer.AutoHeightTextArea valueBinding="result" classNames="span7"}}
-  </div>
-  {{/if}}
-  {{#if error}}
-  <div class="error control-group">
-    {{view JetViewer.AutoHeightTextArea valueBinding="error" classNames="span7"}}
+  <div {{bindAttr class=":control-group :closable
+  result.isSuccess:success result.isError:error"}}>
+  {{view JetViewer.AutoHeightTextArea valueBinding="result.jsonString"
+  classNames="span7"}}
+  <a {{action hideResult}} class="close" href="#">&times;</a>
   </div>
   {{/if}}
 </div>

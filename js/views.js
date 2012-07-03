@@ -6,8 +6,9 @@ define(['/js/jquery.js.gz',
         'text!/templates/main.handlebars',
         'text!/templates/nodes.handlebars',
         'text!/templates/search.handlebars',
-        'text!/templates/tree-element.handlebars',],
-       function(_,bs,Ember,JetViewer,dashTemplate,mainTemplate,nodesTemplate,searchTemplate,treeElementTemplate) {
+        'text!/templates/tree-element.handlebars',
+       ],
+       function(_,bs,Ember,JetViewer,dashTemplate,mainTemplate,nodesTemplate,searchTemplate,treeElementTemplate,closableTextareaTemplate) {
             
             Ember = window.Ember;
             JetViewer = window.JetViewer;
@@ -66,7 +67,7 @@ define(['/js/jquery.js.gz',
                 this.$().height(heightStyle);
             }
         }.observes('value')
-    });
+           });
 
     JetViewer.StateRowView = Ember.View.extend({
         badgeStyle: Ember.computed(function() {
@@ -141,6 +142,10 @@ define(['/js/jquery.js.gz',
                 }
             }
         }),
+        hideErrorString: function(event) {
+            event.preventDefault();
+            this.set('errorString',null);
+        },
         changeState: function() {
             if (this.get('isDisabled') == false) {
                 this.inputView.set('uncomittedChanges',false);
@@ -156,14 +161,10 @@ define(['/js/jquery.js.gz',
                     var newValue =  JSON.parse(this.inputView.$().val());
                     console.log('setting',this.get('item').get('path'),'to',newValue);
                     this.get('item').change(newValue,{
-                        success: function(){
-                            that.set('error',false);
-                        },
-                        error: function(err){
-                            revert();
-                            var err_string = JSON.stringify(err,null,2);                            
-                            that.set('error',err_string);
-                            console.log('error:',err_string);
+                        error: function(err){                            
+                            console.log('error:',err);
+                            revert();        
+                            that.set('errorString',JSON.stringify(err,null,2));
                         }
                     });
                 }
@@ -219,6 +220,10 @@ define(['/js/jquery.js.gz',
                 }
             }
         }),
+        hideResult: function(event) {
+            event.preventDefault();
+            this.set('result',null);
+        },
         callMethod: function() {
             if (this.get('isDisabled') == false) {
                 var that = this;
@@ -230,16 +235,20 @@ define(['/js/jquery.js.gz',
                         success: function(res) {
                             var res_string = JSON.stringify(res,null,2);
                             that.set('isDisabled',false);
-                            that.set('error',false);                            
-                            that.set('result',res_string);
+                            that.set('result',Ember.Object.create({
+                                isSuccess: true,
+                                jsonString: res_string
+                            }));
                             console.log('success');
                         },
                         error: function(err) {
                             var err_string = JSON.stringify(err,null,2);
                             that.set('isDisabled',false);
-                            that.set('result',false);
-                            that.set('error',err_string);
-                            console.log('error');
+                            that.set('result',Ember.Object.create({
+                                isError: true,
+                                jsonString: err_string
+                            }));
+                            console.log('error',err_string);
                         }
                     });
                 }
