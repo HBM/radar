@@ -1,5 +1,5 @@
 define(['/js/jquery.js.gz',
-        '/js/bootstrap-tab.js',
+        '/js/bootstrap-button.js',
         '/js/ember.js.gz',
         'app',
         'text!/templates/dash.handlebars',
@@ -334,13 +334,18 @@ define(['/js/jquery.js.gz',
             return 'label-warning';
         }).property('JetViewer.status'),
         didInsertElement: function(){
-            // init bootstrap tabs
-            this.$('#select_tab a').click(function(e) {
-                e.preventDefault();
-                $(this).tab('show');
-            });
-            this.$('#select_tab a:first').tab('show');
-        }
+            // init bootstrap toggle button
+            this.$('button').button();
+            this.$('#jet-button-tree').button('toggle');
+        },
+        showSearch: false,
+        toggleShowSearch: function() {
+            this.toggleProperty('showSearch');
+        },
+        showTree: true,
+        toggleShowTree: function() {
+            this.toggleProperty('showTree');
+        },
     });
     return JetViewer;
 });
