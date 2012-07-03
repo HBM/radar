@@ -175,7 +175,7 @@ define(['/js/jquery.js.gz',
             }
         },
         showHistory: false,
-        toggleHistory: function(event) {
+        toggleShowHistory: function(event) {
             event.preventDefault();
             this.toggleProperty('showHistory');
         },
