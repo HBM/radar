@@ -44,6 +44,7 @@ define(['/js/ember.js.gz','app'],function(Ember,JetViewer){
         schema: null,
         prev: null,                    
         value: Ember.computed(function(key,value) {
+            var date;
             var prev = this.get('prev');
             if(arguments.length===1) {
                 return prev.value;
@@ -51,8 +52,16 @@ define(['/js/ember.js.gz','app'],function(Ember,JetViewer){
             else {
                 if(prev) {
                     this.get('history').add(prev);
-                }
-                this.set('prev',{date:new Date(), value:value});
+                }    
+                date = new Date();
+                var days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];                
+                this.set('prev',{
+                    date:{
+                        time: date.toLocaleTimeString(),
+                        day: days[date.getDay()-1]
+                    },
+                    value:value
+                });
                 return value;
             }
         }),
