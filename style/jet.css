@@ -4,45 +4,70 @@ body {
    background-repeat: repeat-x;
 }
 
-.closable {
-   position: relative;
-}
+/* .closable { */
+/*    position: relative; */
+/* } */
 
-.closable a{
-   position: absolute;
-   top: 4px;
-   right: 6px;  
+/* .closable a{ */
+/*    position: absolute; */
+/*    top: 4px; */
+/*    right: 6px;   */
+/* } */
+
+.jet-item a.close {
+   float:none;
 }
 
 #main #dash textarea {
    resize:vertical;
+   display:inline-block;
 }
 
-.jet-state-input {
+.input-anchor {
    position: relative;
+   display: inline;
 }
 
-.badge.jet-history {
+.badge.history-badge {
    display: inline-block;
    position: absolute;
-   top: -7px;
-   right: -11px;
-   padding-right:7px;
+   top: -15px;
+   right: 0px;
    padding-top:3px;
 }
 
-row.jet-history{
+.badge.refresh-badge {
+   display: inline-block;
+   position: absolute;
+   top: 12px;
+   right: 0px;
+   padding-top:3px;
+}
+
+
+
+.history *{
    color:darkgray;
 }
+
+li.jet-item {
+   /* margin-bottom: 0px; */
+}
+
+
+/* div.jet-row{ */
+/*    display:inline-block; */
+/*    margin-left:0px; */
+/* } */
 
 .badge.count {
    margin-top: 3px;
 }
 
 
-.jet-row:hover {
-   background-color:#f5f5f5;
-}
+/* .jet-row:hover { */
+/*    background-color:#f5f5f5; */
+/* } */
 
 
 

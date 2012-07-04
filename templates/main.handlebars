@@ -1,9 +1,11 @@
 <div class="navbar">
-  <div class="navbar-inner">       
-    <div class="container">
+  <div class="navbar-inner">
+    <div class="container-fluid">
       <div class="row">
-        <a class="brand span3" href="#"><i class="icon-star
-                                            icon-white"></i>Jet-Viewer {{version}}</a>
+        <a class="brand span3" href="#">
+          <i class="icon-star icon-white"></i>
+          Jet-Viewer {{version}}
+        </a>
         <div class="btn-group span3 offset4" data-toggle="buttons-checkbox">
           <button {{action toggleShowTree}} class="btn btn-primary" id="jet-button-tree">Tree</button>
           <button {{action toggleShowSearch}} class="btn btn-primary" "jet-button-search">Search</button>
@@ -17,17 +19,11 @@
 </div>
 <div class="container">
   {{#if showSearch}}
-    {{view JetViewer.SearchView}}
+  {{view JetViewer.SearchView}}
   {{/if}}
   {{#if showTree}}
-    {{view JetViewer.TreeView}}
+  {{view JetViewer.TreeView}}
   {{/if}}
-  <div class="row">
-    <div class="span12" id="main">
-      <div id="dash">
-        {{view JetViewer.DashView}}        
-      </div>
-    </div>
-  </div>
+  {{view JetViewer.DashView}}  
 </div>
-</div>
+
