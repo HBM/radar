@@ -102,9 +102,9 @@ define(['/js/jquery.js.gz',
         didInsertElement: function() {
             var that = this;
             this.$().hover(function(){
-                that.$('.close-badge').fadeIn();
+                that.$('.close-badge').show();
             },function(){
-                that.$('.close-badge').fadeOut();
+                that.$('.close-badge').hide();
             });
         },
         JSONInputView: Ember.TextArea.extend({
@@ -217,9 +217,9 @@ define(['/js/jquery.js.gz',
         didInsertElement: function() {
             var that = this;
             this.$().hover(function(){
-                that.$('.close-badge').fadeIn();
+                that.$('.close-badge').show();
             },function(){
-                that.$('.close-badge').fadeOut();
+                that.$('.close-badge').hide();
             });
         },
         JSONArrayInputView: Ember.TextArea.extend({

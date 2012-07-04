@@ -47,9 +47,17 @@ background-image: -webkit-gradient(
 	color-stop(0.6, rgb(245,245,245))
    );
 
-/* -webkit-box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.5); */
-/* box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.5); */
+-webkit-transition: all 0.1s linear;
+-moz-transition: all 0.1s linear;
+-ms-transition: all 0.1s linear;
+-o-transition: all 0.1s linear;
+transition: all 0.1s linear;
 
+}
+
+.thumbnail:hover {
+-webkit-box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.5);
+box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.5);
 }
 
 .input-anchor {
