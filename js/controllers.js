@@ -97,7 +97,7 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
     JetViewer.searchController = Ember.Object.create({
         statesBinding: Ember.Binding.oneWay('JetViewer.statesController.content'),
         methodsBinding: Ember.Binding.oneWay('JetViewer.methodsController.content'),
-        searchExpression:'horst',
+        searchExpression:'',
         matches: function() {
             var pathMatches = function(item,index,self) {
                 var expr = this.get('searchExpression');
