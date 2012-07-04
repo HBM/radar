@@ -77,13 +77,26 @@ define(['/js/jquery.js.gz',
             return '';                        
         }).property('item.history.@each'),
         isDisabled: true,
+        refreshAvailable: false,
+        refreshInputView: function(event){
+            event.preventDefault();
+            this.set('uncomittedChanges',false);
+            this.set('refreshAvailable',false);
+            this.inputView.controlGroup().removeClass('warning');
+            this.inputView.controlGroup().removeClass('error');
+            this.set('isDisabled',true);
+            this.inputView.$().val(JSON.stringify(this.item.get('value'),null,2));
+        },
         buttonResetter: function() {
             if (this.inputView) {
                 if(!this.inputView.get('uncomittedChanges')) {
                     this.inputView.controlGroup().removeClass('warning');
                     this.inputView.controlGroup().removeClass('error');
                     this.set('isDisabled',true);
-                }                                
+                }
+                else {
+                    this.set('refreshAvailable',true);
+                }
             }
         }.observes('item.value'),
         JSONInputView: Ember.TextArea.extend({
@@ -103,14 +116,11 @@ define(['/js/jquery.js.gz',
                 return JSON.stringify(value,undefined,2);
             }).property('parentView.item.value'),
             controlGroup: function() {
-                return this.$().parent('.control-group');
+                return this.$().parents('.control-group');
             },
             heightAdjuster: function() {
                 var lines = this.get('value').split('\n').length;                                
                 var px = lines*18;
-                if (lines > 1) {
-                    px += 10;
-                }
                 var heightStyle = '' + px + 'px';
                 this.$().height(heightStyle);
             }.observes('value'),
