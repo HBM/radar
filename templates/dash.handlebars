@@ -3,30 +3,37 @@
   {{#view JetViewer.StateRowView itemBinding="this" classNames="jet-item
   " tagName="li"}}
   <div class="thumbnail">
-    <label>{{item.path}}</label>
-    <div class="control-group">
-      <div class="horst input-anchor">
-        {{view JSONInputView viewName="inputView" isReadonlyBinding="item.schema.read_only" classNames="input"}}
-        {{#if item.history.updateCount}}
-        <div {{action toggleShowHistory}} class="badge badge-important
-                                                 history-badge">
-          {{item.history.updateCount}}
-        </div>
-        {{/if}}
-        {{#unless item.schema.read_only}}
-        {{#if refreshAvailable}}        
-        <div {{action refreshInputView}} class="badge badge-warning refresh-badge">
-          <i class="icon-refresh"></i>
-        </div>
-        {{/if}}
-        {{/unless}}
+    <div class="input-anchor">
+      <div {{action unselect}} class="badge 
+                                      badge-inverse
+                                      close-badge"
+           style="display:none;">
+        &times;
       </div>
+      <label>{{item.path}}</label>
+      {{#if item.history.updateCount}}
+      <div {{action toggleShowHistory}} class="badge badge-important
+                                               history-badge">
+        {{item.history.updateCount}}
+      </div>
+      {{/if}}    
       {{#unless item.schema.read_only}}
+      {{#if refreshAvailable}}        
+      <div {{action refreshInputView}} class="badge badge-inverse refresh-badge">
+        <i class="icon-refresh icon-white"></i>
+      </div>
+      {{/if}}
+      {{/unless}}    
+      <div class="control-group">
+        {{view JSONInputView viewName="inputView"
+        isReadonlyBinding="item.schema.read_only" classNames="input"}}
       <button {{action changeState}} {{bindAttr class=":btn
                                                        :btn-primary
                                                        isDisabled:disabled"}}>
         <i class="icon-download icon-white"></i>
       </button>
+      </div>
+      {{#unless item.schema.read_only}}
       {{/unless}}
     </div>
     {{#if errorString}}
@@ -38,7 +45,7 @@
     {{/if}}
     {{#if showHistory}}    
     {{#each item.history.content}}    
-    <label><i>{{date.day}}{{date.time}}</i></label>
+    <label><i>{{date.day}}, {{date.time}}</i></label>
     {{view JetViewer.AutoHeightTextArea classNames="history" valueBinding="value"}}
     {{/each}}
     {{/if}}
@@ -48,22 +55,30 @@
   {{#each selectedMethods}}
   {{#view JetViewer.MethodRowView itemBinding="this" classNames="jet-item " tagName="li"}}
   <div class="thumbnail">
-    <label>{{item.path}}</label>
-    <div class="control-group">
-      {{view JSONArrayInputView viewName="inputView" placeholder="[]"}}
-      <button {{action callMethod}} {{bindAttr class=":btn 
-                                                      :btn-primary
-                                                      isDisabled:disabled"}}>
-        <i class="icon-cog icon-white"></i>
-      </button>
-      {{#if result}}
-      <div {{bindAttr class=":control-group :closable
-                             result.isSuccess:success 
-                             result.isError:error"}}>
+    <div class="input-anchor">
+      <div {{action unselect}} class="badge 
+                                      badge-inverse
+                                      close-badge"
+           style="display:none;">
+        &times;
+      </div>
+      <label>{{item.path}}</label>
+      <div class="control-group">
+        {{view JSONArrayInputView viewName="inputView" placeholder="[]"}}
+        <button {{action callMethod}} {{bindAttr class=":btn 
+                                                        :btn-primary
+                                                        isDisabled:disabled"}}>
+          <i class="icon-cog icon-white"></i>
+        </button>
+        {{#if result}}
+        <div {{bindAttr class=":control-group :closable
+                               result.isSuccess:success 
+                               result.isError:error"}}>
         {{view JetViewer.AutoHeightTextArea valueBinding="result.jsonString"}}
         <a {{action hideResult}} class="close" href="#">&times;</a>
+        </div>
+        {{/if}}
       </div>
-      {{/if}}
     </div>
   </div>
   {{/view}}

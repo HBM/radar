@@ -45,30 +45,40 @@ background-image: -webkit-gradient(
 	left top,
 	color-stop(0.2, rgb(207,207,207)),
 	color-stop(0.6, rgb(245,245,245))
-);
+   );
+
+/* -webkit-box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.5); */
+/* box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.5); */
+
 }
 
 .input-anchor {
    position: relative;
-   display: inline;
 }
 
 .badge.history-badge {
    display: inline-block;
    position: absolute;
-   top: -15px;
-   right: 0px;
+   top: -12px;
+   right: -14px;
    padding-top:3px;
 }
 
 .badge.refresh-badge {
    display: inline-block;
    position: absolute;
-   top: 12px;
-   right: 0px;
-   padding-top:3px;
+   top: -12px;
+   right: 16px;
+   padding:2px;
 }
 
+.badge.close-badge {
+   display: inline-block;
+   position: absolute;
+   top: -11px;
+   left: -11px;
+   padding:0px 4px;
+}
 
 
 .history *{

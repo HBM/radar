@@ -99,6 +99,14 @@ define(['/js/jquery.js.gz',
                 }
             }
         }.observes('item.value'),
+        didInsertElement: function() {
+            var that = this;
+            this.$().hover(function(){
+                that.$('.close-badge').fadeIn();
+            },function(){
+                that.$('.close-badge').fadeOut();
+            });
+        },
         JSONInputView: Ember.TextArea.extend({
             didInsertElement: function() {
                 this.heightAdjuster();
@@ -124,12 +132,21 @@ define(['/js/jquery.js.gz',
                 var heightStyle = '' + px + 'px';
                 this.$().height(heightStyle);
             }.observes('value'),
-            focusIn: function() {
-                this.set('uncomittedChanges',true);
+            focusOut: function() {
+                try {
+                    var oldValueJSON =  JSON.stringify(parent.get('item').get('value'));
+                    var newValueJSON =  JSON.stringify(JSON.parse(this.$().val()));
+                    if (newValueJSON == oldValueJSON) {
+                        this.set('uncomittedChanges',false);
+                    }
+                }
+                catch(e) {
+                }
             },
             keyUp: function() {
                 var controlGroup = this.controlGroup();
                 var parent = this.get('parentView');
+                this.set('uncomittedChanges',true);
                 try {
                     var oldValueJSON =  JSON.stringify(parent.get('item').get('value'));
                     var newValueJSON =  JSON.stringify(JSON.parse(this.$().val()));
@@ -197,6 +214,14 @@ define(['/js/jquery.js.gz',
 
     JetViewer.MethodRowView = Ember.View.extend({
         isDisabled: true,
+        didInsertElement: function() {
+            var that = this;
+            this.$().hover(function(){
+                that.$('.close-badge').fadeIn();
+            },function(){
+                that.$('.close-badge').fadeOut();
+            });
+        },
         JSONArrayInputView: Ember.TextArea.extend({
             didInsertElement: function() {
                 this.$().height('18px');
