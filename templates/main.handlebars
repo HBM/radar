@@ -2,14 +2,12 @@
   <div class="navbar-inner">
     <div class="container-fluid">
       <div class="row">
-        <a class="brand span3" href="#">
+        <a class="brand" href="#">
           <i class="icon-star icon-white"></i>
-          Jet-Viewer {{version}}
+          Radar
         </a>
-        <div class="btn-group span3 offset4" data-toggle="buttons-checkbox">
-          <button {{action toggleShowTree}} class="btn btn-primary" id="jet-button-tree">Tree</button>
-          <button {{action toggleShowSearch}} class="btn btn-primary" "jet-button-search">Search</button>
-        </div>
+        <button {{action toggleShowTools}} class="btn btn-primary"
+                data-toggle="button" id="jet-button-tools">Tools</button>
         <span {{bindAttr class=":label labelType :pull-right"}}>
           <h3 id="status-text">{{status}}</h3>
         </span>
@@ -17,13 +15,17 @@
     </div>
   </div>
 </div>
-<div class="container">
-  {{#if showSearch}}
-  {{view JetViewer.SearchView}}
-  {{/if}}
-  {{#if showTree}}
-  {{view JetViewer.TreeView}}
-  {{/if}}
-  {{view JetViewer.DashView}}  
+<div class="container-fluid">  
+  <div class="row-fluid">
+    <div class="span3" id="sidebar">
+      {{#if showTools}}
+      {{view JetViewer.SearchView}}
+      {{view JetViewer.TreeView}}
+      {{/if}}
+    </div>
+    <div class="span9" id="dashx">
+      {{view JetViewer.DashView}}  
+    </div>
+  </div>
 </div>
 

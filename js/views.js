@@ -315,7 +315,10 @@ define(['/js/jquery.js.gz',
         },
         onNameClick: function(event) {
             this.toggleSelected(event);
-        }
+        },
+        parts: Ember.computed(function(){
+            return this.get('item').get('path').split('/');
+        }).property('item.path')
     });
 
     JetViewer.NodeView = JetViewer.TreeElementView.extend({
@@ -370,16 +373,25 @@ define(['/js/jquery.js.gz',
         }).property('JetViewer.status'),
         didInsertElement: function(){
             // init bootstrap toggle button
-            this.$('button').button();
-            this.$('#jet-button-tree').button('toggle');
+            this.$('#jet-button-tools').button('toggle');
         },
-        showSearch: false,
-        toggleShowSearch: function() {
-            this.toggleProperty('showSearch');
+        toggleTools: function() {
+            this.toggleProperty('showTools');
         },
-        showTree: true,
-        toggleShowTree: function() {
-            this.toggleProperty('showTree');
+        showTools: true,
+        toggleShowTools: function() {
+            if( this.get('showTools') ){
+                this.$('#sidebar').hide();
+                this.$('#dashx').removeClass('span9');
+                this.$('#dashx').addClass('span12');
+            }
+            else {
+                this.$('#sidebar').show();
+                this.$('#dashx').addClass('span9');
+                this.$('#dashx').removeClass('span12');
+            }
+
+            this.toggleProperty('showTools');
         },
     });
     return JetViewer;
