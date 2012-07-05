@@ -1,10 +1,21 @@
-<div class="form-search breadcrumb" id="search">
-  {{view inputView classNames="input search-query span11" placeholder="test.foo"}}
-  <i class="unselect-all icon-star-empty pull-right" {{action "unselectAll"}}></i>
-  <i class="select-all icon-star pull-right" {{action "selectAll"}}></i>
-</div>
-<ul class="nav nav-tabs nav-stacked" id="search-leafs">
-  {{#each matches}}
-  {{view JetViewer.LeafView itemBinding="this" tagName="li" displayNameBinding="path"}}
-  {{/each}}
-</ul>        
+<form class="navbar-search pull-left dropdown dropdown-toggle"
+      data-toggle="dropdown" action="">
+  <div data-toggle="dropdown">
+  {{view Ember.TextField valueBinding="searchExpression"
+  classNames="search-query span2" placeholder="test.foo"}}
+  </div>
+  <ul class="dropdown-menu search-nav">
+    <li>
+      <a><i>all matches</i>
+        <i class="unselect-all icon-star-empty pull-right" {{action "unselectAll"}}></i>
+        <i class="select-all icon-star pull-right" {{action
+           "selectAll"}}></i>
+      </a>
+    </li>
+    <li class="divider"></li>
+    {{#each matches}}
+    {{view JetViewer.LeafView itemBinding="this" tagName="li" displayNameBinding="path"}}
+    {{/each}}
+  </ul>
+</form>
+

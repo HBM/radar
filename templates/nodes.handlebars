@@ -1,21 +1,23 @@
-<ul class="breadcrumb">
-  {{#each breadcrumbs}}
-  <li {{action "clickBreadcrumb"}} >
-    <a href="#">{{name}}</a>
-    <span class="divider">/</span>
-  </li> 
-  {{/each}}
-</ul>
-<div>
-  <ul class="nav nav-tabs nav-stacked">
+{{#each breadcrumbs}}
+<li {{action "treeView.clickBreadcrumb"}} class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{name}}</a>
+  <ul class="dropdown-menu tree-nav">
     {{#each childNodes}}
     {{view JetViewer.NodeView itemBinding="this" tagName="li" displayNameBinding="name"}}
     {{/each}}
+    {{#if childStates}}
+    <li class="divider"></li>
     {{#each childStates}}
-    {{view JetViewer.LeafView itemBinding="this" tagName="li" displayNameBinding="name"}}
+      {{view JetViewer.LeafView itemBinding="this" tagName="li" displayNameBinding="name"}}
     {{/each}}
+    {{/if}}
+    {{#if childMethods}}
+    <li class="divider"></li>
     {{#each childMethods}}
     {{view JetViewer.LeafView itemBinding="this" tagName="li" displayNameBinding="name"}}
     {{/each}}
+    {{/if}}
   </ul>        
-</div>
+</li> 
+{{/each}}
+

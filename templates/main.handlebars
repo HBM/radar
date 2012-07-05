@@ -1,31 +1,23 @@
 <div class="navbar">
   <div class="navbar-inner">
     <div class="container-fluid">
-      <div class="row">
-        <a class="brand" href="#">
-          <i class="icon-star icon-white"></i>
-          Radar
-        </a>
-        <button {{action toggleShowTools}} class="btn btn-primary"
-                data-toggle="button" id="jet-button-tools">Tools</button>
-        <span {{bindAttr class=":label labelType :pull-right"}}>
-          <h3 id="status-text">{{status}}</h3>
-        </span>
-      </div>
+      <a class="brand" href="#">
+        <i class="icon-star icon-white"></i>
+        Radar
+      </a>
+      {{view JetViewer.SearchView}}
+      {{view JetViewer.TreeView tagName="ul" classNames="nav"}}
+      <span {{bindAttr class=":label labelType :pull-right"}}>
+        <h3 id="status-text">{{status}}</h3>
+      </span>
     </div>
   </div>
 </div>
 <div class="container-fluid">  
   <div class="row-fluid">
-    <div class="span3" id="sidebar">
-      {{#if showTools}}
-      {{view JetViewer.SearchView}}
-      {{view JetViewer.TreeView}}
-      {{/if}}
-    </div>
-    <div class="span9" id="dashx">
+    <div class="span12" id="dashx">
       {{view JetViewer.DashView}}  
     </div>
-  </div>
+  </div>  
 </div>
 

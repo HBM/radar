@@ -12,9 +12,26 @@ body {
    float:none;
 }
 
-.breadcrumb .divider {
-   padding: 0px;
+/* save dome space between the breadcrumbs */
+.nav .dropdown a.dropdown-toggle {
+   padding-right:0px;
 }
+
+/* make dropdown big for breadcrumbs */
+.dropdown-menu.tree-nav {
+   width: 250px;
+}
+
+/* make breadcrumbs a bit bigger */
+a.dropdown-toggle {
+   font-size:15px;
+}
+
+/* make dropdown very big for search */
+.dropdown-menu.search-nav {
+   width: 400px;
+}
+
 
 /* generated with http://gradients.glrzad.com/ */
 .thumbnail {
