@@ -40,15 +40,6 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
         nodesBinding: Ember.Binding.oneWay('JetViewer.nodesController.content'),
         statesBinding: Ember.Binding.oneWay('JetViewer.statesController.content'),
         methodsBinding: Ember.Binding.oneWay('JetViewer.methodsController.content'),
-        childMethods: function(){
-            return this.get('methods').filterProperty('parent',this.directory);
-        }.property('directory','methods.@each'),
-        childStates: function(){
-            return this.get('states').filterProperty('parent',this.directory);
-        }.property('directory','states.@each'),
-        childNodes: function(){
-            return this.get('nodes').filterProperty('parent',this.directory);
-        }.property('directory','nodes.@each'),
         checkNodeExists: function(){
             var exists = this.directory == '' || this.get('nodes').filterProperty('path',this.directory).get('length') > 0;
             if(!exists) {
@@ -58,11 +49,15 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
             
         }.observes('nodes.@each','directory'),
         breadcrumbs: function(){
+            var that = this;
             var i;
             var bcs = [];
             bcs.push(Ember.Object.create({
                 name: 'root',
-                path: ''
+                path: '',
+                childNodes: this.get('nodes').filterProperty('parent',''),
+                childMethods: this.get('methods').filterProperty('parent',''),
+                childStates: this.get('states').filterProperty('parent','')
             }));
             if(this.directory.length>0) { 
                 var dirs = this.directory.split('.');
@@ -71,13 +66,16 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
                     fullPath += dirs[i];
                     bcs.push(Ember.Object.create({
                         path: fullPath,
-                        name: dirs[i]
+                        name: dirs[i],
+                        childNodes: this.get('nodes').filterProperty('parent',fullPath),
+                        childMethods: this.get('methods').filterProperty('parent',fullPath),
+                        childStates: this.get('states').filterProperty('parent',fullPath)
                     }));
                     fullPath += '.';
                 }
             }                        
             return bcs;
-        }.property('directory')
+        }.property('directory','nodes.@each','methods.@each','states.@each')
     });
 
     JetViewer.selectedController = Ember.Object.create({
