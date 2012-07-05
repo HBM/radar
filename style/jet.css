@@ -4,62 +4,48 @@ body {
    background-repeat: repeat-x;
 }
 
-/* .closable { */
-/*    position: relative; */
-/* } */
-
-/* .closable a{ */
-/*    position: absolute; */
-/*    top: 4px; */
-/*    right: 6px;   */
-/* } */
+.navbar .label {
+   margin-top:4px;
+}
 
 .jet-item a.close {
    float:none;
 }
 
-.navbar .btn-group {
-   display:inline-block;
-}
-
-.navbar .label {
-   margin-top:4px;
-}
-
-#main #dash textarea {
-   resize:vertical;
-   display:inline-block;
+.breadcrumb .divider {
+   padding: 0px;
 }
 
 /* generated with http://gradients.glrzad.com/ */
 .thumbnail {
-background-image: linear-gradient(bottom, rgb(207,207,207) 20%, rgb(245,245,245) 60%);
-background-image: -o-linear-gradient(bottom, rgb(207,207,207) 20%, rgb(245,245,245) 60%);
-background-image: -moz-linear-gradient(bottom, rgb(207,207,207) 20%, rgb(245,245,245) 60%);
-background-image: -webkit-linear-gradient(bottom, rgb(207,207,207) 20%, rgb(245,245,245) 60%);
-background-image: -ms-linear-gradient(bottom, rgb(207,207,207) 20%, rgb(245,245,245) 60%);
+   background-image: linear-gradient(bottom, rgb(207,207,207) 20%, rgb(245,245,245) 60%);
+   background-image: -o-linear-gradient(bottom, rgb(207,207,207) 20%, rgb(245,245,245) 60%);
+   background-image: -moz-linear-gradient(bottom, rgb(207,207,207) 20%, rgb(245,245,245) 60%);
+   background-image: -webkit-linear-gradient(bottom, rgb(207,207,207) 20%, rgb(245,245,245) 60%);
+   background-image: -ms-linear-gradient(bottom, rgb(207,207,207) 20%, rgb(245,245,245) 60%);
+   background-image: -webkit-gradient(
+      linear,
+	 left bottom,
+	    left top,
+	       color-stop(0.2, rgb(207,207,207)),
+	          color-stop(0.6, rgb(245,245,245))
+      );
 
-background-image: -webkit-gradient(
-	linear,
-	left bottom,
-	left top,
-	color-stop(0.2, rgb(207,207,207)),
-	color-stop(0.6, rgb(245,245,245))
-   );
-
--webkit-transition: all 0.1s linear;
--moz-transition: all 0.1s linear;
--ms-transition: all 0.1s linear;
--o-transition: all 0.1s linear;
-transition: all 0.1s linear;
+   -webkit-transition: all 0.12s linear;
+   -moz-transition: all 0.12s linear;
+   -ms-transition: all 0.12s linear;
+   -o-transition: all 0.12s linear;
+   transition: all 0.12s linear;
 
 }
 
 .thumbnail:hover {
--webkit-box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.5);
-box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.5);
+   -webkit-box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.5);
+   box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.5);
 }
 
+
+/* for (absolute) positioning of update badges etc. */
 .input-anchor {
    position: relative;
 }
@@ -87,30 +73,5 @@ box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.5);
    left: -11px;
    padding:0px 4px;
 }
-
-
-.history *{
-   color:darkgray;
-}
-
-li.jet-item {
-   /* margin-bottom: 0px; */
-}
-
-
-/* div.jet-row{ */
-/*    display:inline-block; */
-/*    margin-left:0px; */
-/* } */
-
-.badge.count {
-   margin-top: 3px;
-}
-
-
-/* .jet-row:hover { */
-/*    background-color:#f5f5f5; */
-/* } */
-
 
 
