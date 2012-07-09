@@ -37,17 +37,6 @@ define(['/js/jquery.js.gz',
                selectedMethodsBinding: Ember.Binding.oneWay('JetViewer.selectedController.selectedMethods')
            });
 
-           
-           JetViewer.FadeInView = Ember.View.extend({
-               isVisible: false,
-               didInsertElement: function(){
-                   this.$().slideDown();
-               },
-               destroyElement: function(){
-                   this.$().slideUp();
-               }
-           });
-
            JetViewer.AutoHeightTextArea = Ember.TextArea.extend({
                didInsertElement: function() {
                    this.heightAdjuster();
@@ -300,9 +289,8 @@ define(['/js/jquery.js.gz',
                isSelectedBinding: 'item.selected',
                isNotSelectedBinding: Ember.Binding.not('item.selected'),
                toggleSelected:function(event) {
-                   // dont let default <a> click handler apply (reloads page with href)
                    event.stopPropagation();                       
-                   var selected = this.get('item').toggleSelected();
+                   this.get('item').toggleProperty('selected');
                },
            });
 
@@ -364,13 +352,13 @@ define(['/js/jquery.js.gz',
                statusBinding: 'JetViewer.status',
                labelType: Ember.computed(function(){
                    var status = JetViewer.get('status');
-                   if( status=='online' ){
+                   if( status=='on' ){
                        return 'label-success';
                    }
-                   else if (status=='offline'){
-                       return 'label-important';
+                   else if (status=='debug'){
+                       return 'label-warning';
                    }                
-                   return 'label-warning';
+                   return 'label-important';
                }).property('JetViewer.status')               
            });
            return JetViewer;
