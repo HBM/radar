@@ -131,7 +131,8 @@ define(['/js/jquery.js.gz',
                        catch(e) {
                        }
                    },
-                   keyUp: function() {
+                   keyUp: function(event) {
+                       event.stopPropagation();
                        var controlGroup = this.controlGroup();
                        var parent = this.get('parentView');
                        this.set('uncomittedChanges',true);
