@@ -12,6 +12,10 @@ body {
    float:none;
 }
 
+.control-group {
+   margin-bottom: 0px;
+}
+
 /* save dome space between the breadcrumbs */
 .nav .dropdown a.dropdown-toggle {
    padding-right:0px;
@@ -73,6 +77,7 @@ a.dropdown-toggle {
    top: -12px;
    right: -14px;
    padding-top:3px;
+   cursor:pointer;
 }
 
 .badge.refresh-badge {
@@ -81,6 +86,7 @@ a.dropdown-toggle {
    top: -12px;
    right: 16px;
    padding:2px;
+   cursor:pointer;
 }
 
 .badge.close-badge {
@@ -89,6 +95,7 @@ a.dropdown-toggle {
    top: -11px;
    left: -11px;
    padding:0px 4px;
+   cursor:pointer;
 }
 
 
