@@ -46,12 +46,10 @@ define(['/js/jquery.js.gz',
                    if( this.get('value')) {
                        var value = this.get('value').toString();
                        var lines = value.split('\n').length;                                
-                       var px = lines*18;
-                       if (lines > 1) {
-                           px += 10;
-                       }
-                       var heightStyle = '' + px + 'px';
-                       this.$().height(heightStyle);
+                       this.$().attr('rows',lines);
+                   }
+				   else {
+                       this.$().attr('rows',1);
                    }
                }.observes('value')
            });
@@ -114,10 +112,14 @@ define(['/js/jquery.js.gz',
                        return this.$().parents('.control-group');
                    },
                    heightAdjuster: function() {
-                       var lines = this.get('value').split('\n').length;                                
-                       var px = lines*18;
-                       var heightStyle = '' + px + 'px';
-                       this.$().height(heightStyle);
+                       var value = this.get('value');
+                       if(value) {
+                           var lines = value.split('\n').length;
+                           this.$().attr('rows',lines);
+                       } 
+                       else {
+                           this.$().attr('rows',1);
+                       }
                    }.observes('value'),
                    focusOut: function() {
                        try {
