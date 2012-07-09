@@ -307,10 +307,7 @@ define(['/js/jquery.js.gz',
                onNameClick: function(event) {
                    event.stopPropagation();
                    this.toggleSelected(event);
-               },
-               parts: Ember.computed(function(){
-                   return this.get('item').get('path').split('/');
-               }).property('item.path')
+               }
            });
 
            JetViewer.NodeView = JetViewer.TreeElementView.extend({
