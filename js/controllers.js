@@ -3,12 +3,8 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
     JetViewer.Container = Ember.ArrayProxy.extend({                    
         factory: null,
         create: function(n){
-            var obj = this.factory.create({path:n.path});
-            for(var key in n) {
-                obj.set(key,n[key]);
-            }
+            var obj = this.factory.create(n);
             this.pushObject(obj);
-            //this.pushObject(this.factory.create(n));
         },
         destroy: function(n){
             this.filterProperty('path',n.path).forEach(this.removeObject,this);
@@ -26,7 +22,6 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
         updateChild: function(n){
             var state = this.findProperty('path',n.path);
             state.set('value',n.value);
-            state.get('value');
         }
     });
 
@@ -40,14 +35,6 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
         nodesBinding: Ember.Binding.oneWay('JetViewer.nodesController.content'),
         statesBinding: Ember.Binding.oneWay('JetViewer.statesController.content'),
         methodsBinding: Ember.Binding.oneWay('JetViewer.methodsController.content'),
-        checkNodeExists: function(){
-            var exists = this.directory == '' || this.get('nodes').filterProperty('path',this.directory).get('length') > 0;
-            if(!exists) {
-                console.log('dir disappeared!',this.directory);
-                this.set('directory','');
-            }
-            
-        }.observes('nodes.@each','directory'),
         breadcrumbs: function(){
             var that = this;
             var i;
@@ -324,7 +311,7 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
                     }
                 });                                    
             }();
-            JetViewer.set('status','online');
+            JetViewer.set('status','on');
 //            that.fetch();
         };
     }

@@ -6,7 +6,7 @@ define(['/js/ember.js.gz'], function(Ember) {
     });
     window.JetViewer = Ember.Application.create({
         version: 'v0.1',
-        status: 'offline'
+        status: 'off'
     });
     
     return window.JetViewer;

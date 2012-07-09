@@ -5,28 +5,25 @@ define(['/js/ember.js.gz','app'],function(Ember,JetViewer){
         name:null,
         parent: null,                    
         selected: false,
-        toggling: false,
-        toggleSelected: function(){
-            //                        event.preventDefault();
-            this.set('toggling',true);
-            this.toggleProperty('selected');
-            this.set('toggling',false);
-        },                    
         init: function(){
+            var parentNodes;
+            var that = this;
+            var parent = this.get('path').substring(0,this.path.lastIndexOf('.'))
             this.set('name',this.get('path').split('.').pop());
-            this.set('parent',this.get('path').substring(0,this.path.lastIndexOf('.')));  
-        },
-        watchParentIsSelected: function(){
-            var parent_nodes;
-            var parent;                        
-            if(this.parent !== '' && !this.get('toggling')) {
-                parent_nodes = JetViewer.nodesController.content.filterProperty('path',this.parent);
-                if(parent_nodes && parent_nodes[0]) {
-                    parent = parent_nodes[0];
-                    this.set('selected',parent.get('selected'));                           
-                }                            
+            this.set('parent',parent);  
+            if(parent !== '' ) {                
+                parentNodes = JetViewer.nodesController.content.filterProperty('path',this.parent);
+                if(parentNodes && parentNodes[0]) {
+                    if( parentNodes[0].get('selected') ) {
+                        this.set('selected',true);
+                    }
+                    parentNodes[0].addObserver('selected',this,function(sender,key,value,rev){
+                        console.log(sender,key,value,rev,this,that);
+                        that.set('selected',value);
+                    });
+                }
             }
-        }.observes('JetViewer.nodesController.content.@each.selected')
+        }
     });
 
     JetViewer.Method = JetViewer.Base.extend({
