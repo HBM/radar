@@ -163,6 +163,7 @@ define(['/js/jquery.js.gz',
                changeState: function() {
                    if (this.get('isDisabled') == false) {
                        this.inputView.set('uncomittedChanges',false);
+                       this.set('refreshAvailable',false);
                        var oldValue = this.get('item').get('value');
                        var that = this;
                        var revert = function() {
