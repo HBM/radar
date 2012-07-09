@@ -67,7 +67,7 @@ define(['/js/jquery.js.gz',
                refreshAvailable: false,
                refreshInputView: function(event){
                    event.preventDefault();
-                   this.set('uncomittedChanges',false);
+                   this.inputView.set('uncomittedChanges',false);
                    this.set('refreshAvailable',false);
                    this.inputView.controlGroup().removeClass('warning');
                    this.inputView.controlGroup().removeClass('error');
@@ -125,6 +125,7 @@ define(['/js/jquery.js.gz',
                            var newValueJSON =  JSON.stringify(JSON.parse(this.$().val()));
                            if (newValueJSON == oldValueJSON) {
                                this.set('uncomittedChanges',false);
+                               this.get('parentView').set('refreshAvailable',false);
                            }
                        }
                        catch(e) {
