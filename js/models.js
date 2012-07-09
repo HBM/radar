@@ -7,7 +7,6 @@ define(['/js/ember.js.gz','app'],function(Ember,JetViewer){
         selected: false,
         init: function(){
             var parentNodes;
-            var that = this;
             var parent = this.get('path').substring(0,this.path.lastIndexOf('.'))
             this.set('name',this.get('path').split('.').pop());
             this.set('parent',parent);  
@@ -18,8 +17,7 @@ define(['/js/ember.js.gz','app'],function(Ember,JetViewer){
                         this.set('selected',true);
                     }
                     parentNodes[0].addObserver('selected',this,function(sender,key,value,rev){
-                        console.log(sender,key,value,rev,this,that);
-                        that.set('selected',value);
+                        this.set('selected',value);
                     });
                 }
             }
@@ -30,7 +28,6 @@ define(['/js/ember.js.gz','app'],function(Ember,JetViewer){
         schema: null,
         init: function(){
             this._super();
-            //console.log('JetViewer.methodsController.create({path:"'+this.path+'"});');
         },
         call: function(args,callbacks) {
             JetViewer.callMethod(this.get('path'),args,callbacks);
@@ -75,7 +72,6 @@ define(['/js/ember.js.gz','app'],function(Ember,JetViewer){
                 }
             });
             this._super();
-            //console.log('JetViewer.statesController.create({path:"'+this.path+'"});');
         },
         change: function(new_val,callbacks) {    
             JetViewer.changeState(this.get('path'),new_val,{
@@ -101,7 +97,6 @@ define(['/js/ember.js.gz','app'],function(Ember,JetViewer){
         nodes: [],
         init: function(){
             this._super();
-            //console.log('JetViewer.nodesController.create({path:"'+this.path+'"});');
         },
     });
     return JetViewer;
