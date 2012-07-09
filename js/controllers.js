@@ -3,7 +3,10 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
     JetViewer.Container = Ember.ArrayProxy.extend({                    
         factory: null,
         create: function(n){
-            var obj = this.factory.create(n);
+            var obj = this.factory.create({path:n.path});
+            for(var key in n) {
+                obj.set(key,n[key]);
+            }
             this.pushObject(obj);
         },
         destroy: function(n){
@@ -227,7 +230,6 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
                     if($.isArray(resp)) {
                         notifications = resp;
 			for(i = 0; i < notifications.length; ++i) {
-                            console.log(notifications.length);
                             makeJetViewerState(notifications[i]);
 			}
                     }
