@@ -63,12 +63,16 @@ define(['/js/ember.js.gz','app'],function(Ember,JetViewer){
             this.history = Ember.ArrayProxy.create({
                 content: [],
                 updateCount: 0,
-                add: function(value) {                            
+                add: function(obj) {  
+                    var histItem = {
+                        date: obj.date,
+                        value: JSON.stringify(obj.value,null,2)
+                    }
                     if(this.content.length > 3) {
                         this.popObject();
                     }
                     this.incrementProperty('updateCount');
-                    this.unshiftObject(Ember.Object.create(value));
+                    this.unshiftObject(Ember.Object.create(histItem));
                 }
             });
             this._super();
