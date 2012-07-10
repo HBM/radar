@@ -13,9 +13,16 @@
       </a>
     </li>
     <li class="divider"></li>
-    {{#each matches}}
+    {{#each first20Matches}}    
     {{view Radar.LeafView itemBinding="this" tagName="li" displayNameBinding="path"}}
-    {{/each}}
+    {{/each}}    
+    {{#if moreMatchesNumber}}
+    <li class="divider"></li>
+    <li>
+      <a><i>{{moreMatchesNumber}} more matches</i>
+      </a>
+    </li>
+    {{/if}}
   </ul>
 </form>
 

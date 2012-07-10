@@ -86,7 +86,7 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
         statesBinding: Ember.Binding.oneWay('Radar.statesController.content'),
         methodsBinding: Ember.Binding.oneWay('Radar.methodsController.content'),
         searchExpression:'',
-        matches: function() {
+        allMatches: function() {
             var pathMatches = function(item,index,self) {
                 var expr = this.get('searchExpression');
                 if( expr !== '' ) {
@@ -98,7 +98,10 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
             var s = this.get('states').filter(pathMatches,this);
             var m = this.get('methods').filter(pathMatches,this);
             return s.concat(m);
-        }.property('searchExpression','states.@each','methods.@each')
+        }.property('searchExpression','states.@each','methods.@each'),
+        first20Matches: function() {
+            return this.get('allMatches').slice(0,20);
+        }.property('allMatches')
     });
 
     var debug = false;

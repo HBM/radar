@@ -295,7 +295,7 @@ define(['/js/jquery.js.gz',
                isNotSelectedBinding: Ember.Binding.not('item.selected'),
                toggleSelected:function(event) {
                    event.stopPropagation();                       
-                   this.get('item').toggleProperty('selected');
+                   this.toggleProperty('isSelected');
                },
            });
 
@@ -329,20 +329,25 @@ define(['/js/jquery.js.gz',
 
            Radar.SearchView = Ember.View.extend({
                template: Ember.Handlebars.compile(searchTemplate),
-               matchesBinding: 'Radar.searchController.matches',
+               allMatchesBinding: Ember.Binding.oneWay('Radar.searchController.allMatches'),
+               moreMatchesNumber: Ember.computed(function(){
+                   var size = Radar.searchController.get('allMatches').get('length');
+                   if (size > 20) {
+                       return size - 20;
+                   }                   
+                   return 0;
+               }).property('allMatches','first20Matches'),
+               first20MatchesBinding: Ember.Binding.oneWay('Radar.searchController.first20Matches'),
                searchExpressionBinding: 'Radar.searchController.searchExpression',
-               inputView: Ember.TextField.extend({
-                   valueBinding: 'parentView.searchExpression',
-               }),
                selectAll: function(event) {
                    event.stopPropagation();
-                   this.get('matches').forEach(function(item) {
+                   this.get('allMatches').forEach(function(item) {
                        item.set('selected',true);
                    });
                },
                unselectAll: function(event) {
                    event.stopPropagation();
-                   this.get('matches').forEach(function(item) {
+                   this.get('allMatches').forEach(function(item) {
                        item.set('selected',false);
                    });
                }
