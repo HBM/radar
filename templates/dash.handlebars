@@ -9,7 +9,10 @@
            style="display:none;">
         &times;
       </div>
-      <label>{{unbound item.path}}</label>
+      <label>
+        <div class="parent-node">{{unbound item.parent}}</div>
+        <div><strong>{{unbound item.name}}</strong></div>
+      </label>
       {{#if item.history.updateCount}}
       <div {{action toggleShowHistory}} class="badge badge-important
                                                history-badge">
@@ -59,7 +62,10 @@
            style="display:none;">
         &times;
       </div>
-      <label>{{unbound item.path}}</label>
+      <label>
+        <div class="parent-node">{{unbound item.parent}}</div>
+        <div><strong>{{unbound item.name}}</strong></div>
+      </label>
       <div class="control-group">
         {{view JSONArrayInputView viewName="inputView" placeholder="[]"}}
         <button {{action callMethod}} {{bindAttr class=":btn 
