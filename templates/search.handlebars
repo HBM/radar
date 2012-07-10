@@ -7,9 +7,11 @@
   <ul class="dropdown-menu search-nav">
     <li>
       <a><i>all matches</i>
-        <i class="unselect-all icon-star-empty pull-right" {{action "unselectAll"}}></i>
-        <i class="select-all icon-star pull-right" {{action
-           "selectAll"}}></i>
+        <span class="buttons">
+          <i class="unselect-all icon-star-empty" {{action "unselectAll"}}></i>
+          <i class="select-all icon-star" {{action
+             "selectAll"}}></i>
+        </span>
       </a>
     </li>
     <li class="divider"></li>

@@ -1,5 +1,9 @@
 <a href="#">
   <i {{action "onIconClick"}} {{bindAttr class="isLeaf:icon-leaf isNode:icon-folder-open"}}></i>
   <span {{action "onNameClick"}}>{{unbound displayName}}</span>
-  <i {{action "toggleSelected"}} {{bindAttr class="isSelected:icon-star isNotSelected:icon-star-empty :toggle-button :pull-right"}}></i>
+  <span class="buttons">    
+    <i {{action "toggleSelected"}} {{bindAttr
+    class="isSelected:icon-star isNotSelected:icon-star-empty
+    :toggle-button"}}></i>
+  </span>
 </a>

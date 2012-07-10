@@ -21,6 +21,15 @@ body {
    margin-bottom: 0px;
 }
 
+.dropdown li {
+   position: relative;
+}
+
+.dropdown li .buttons{
+   position: absolute;
+   right:13px;
+}
+
 /* save dome space between the breadcrumbs */
 .nav .dropdown a.dropdown-toggle {
    padding-right:0px;
