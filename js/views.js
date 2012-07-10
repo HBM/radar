@@ -8,36 +8,36 @@ define(['/js/jquery.js.gz',
         'text!/templates/search.handlebars',
         'text!/templates/tree-element.handlebars',
        ],
-       function(_,bs,Ember,JetViewer,dashTemplate,mainTemplate,nodesTemplate,searchTemplate,treeElementTemplate,closableTextareaTemplate) {
+       function(_,bs,Ember,Radar,dashTemplate,mainTemplate,nodesTemplate,searchTemplate,treeElementTemplate,closableTextareaTemplate) {
            
            Ember = window.Ember;
-           JetViewer = window.JetViewer;
+           Radar = window.Radar;
            $ = window.jQuery;
                       
-           JetViewer.TreeView = Ember.View.extend({
+           Radar.TreeView = Ember.View.extend({
                template: Ember.Handlebars.compile(nodesTemplate),
-               directoryBinding: Ember.Binding.oneWay('JetViewer.treeController.directory'),
-               childStatesBinding: Ember.Binding.oneWay('JetViewer.treeController.childStates'),
-               childNodesBinding: Ember.Binding.oneWay('JetViewer.treeController.childNodes'),
-               childMethodsBinding: Ember.Binding.oneWay('JetViewer.treeController.childMethods'),
-               breadcrumbsBinding: Ember.Binding.oneWay('JetViewer.treeController.breadcrumbs'),              
+               directoryBinding: Ember.Binding.oneWay('Radar.treeController.directory'),
+               childStatesBinding: Ember.Binding.oneWay('Radar.treeController.childStates'),
+               childNodesBinding: Ember.Binding.oneWay('Radar.treeController.childNodes'),
+               childMethodsBinding: Ember.Binding.oneWay('Radar.treeController.childMethods'),
+               breadcrumbsBinding: Ember.Binding.oneWay('Radar.treeController.breadcrumbs'),              
                clickBreadcrumb: function(event) {
                    event.stopPropagation();
                    var dir = event.context.get('path');                        
                    this.setDirectory(dir);
                },
                setDirectory: function(dir) {
-                   JetViewer.treeController.set('directory',dir);
+                   Radar.treeController.set('directory',dir);
                }
            });
 
-           JetViewer.DashView = Ember.View.extend({
+           Radar.DashView = Ember.View.extend({
                template: Ember.Handlebars.compile(dashTemplate),
-               selectedStatesBinding: Ember.Binding.oneWay('JetViewer.selectedController.selectedStates'),
-               selectedMethodsBinding: Ember.Binding.oneWay('JetViewer.selectedController.selectedMethods')
+               selectedStatesBinding: Ember.Binding.oneWay('Radar.selectedController.selectedStates'),
+               selectedMethodsBinding: Ember.Binding.oneWay('Radar.selectedController.selectedMethods')
            });
 
-           JetViewer.AutoHeightTextArea = Ember.TextArea.extend({
+           Radar.AutoHeightTextArea = Ember.TextArea.extend({
                didInsertElement: function() {
                    this.heightAdjuster();
                    this.$().val(this.get('value'));
@@ -54,7 +54,7 @@ define(['/js/jquery.js.gz',
                }.observes('value')
            });
 
-           JetViewer.StateRowView = Ember.View.extend({
+           Radar.StateRowView = Ember.View.extend({
                badgeStyle: Ember.computed(function() {
                    if(this.get('item').get('history').get('updateCount') < 1) { 
                        return 'display: none;';
@@ -204,7 +204,7 @@ define(['/js/jquery.js.gz',
            });
 
 
-           JetViewer.MethodRowView = Ember.View.extend({
+           Radar.MethodRowView = Ember.View.extend({
                isDisabled: true,
                didInsertElement: function() {
                    var that = this;
@@ -289,7 +289,7 @@ define(['/js/jquery.js.gz',
                },
            });
 
-           JetViewer.TreeElementView = Ember.View.extend({
+           Radar.TreeElementView = Ember.View.extend({
                template: Ember.Handlebars.compile(treeElementTemplate),
                isSelectedBinding: 'item.selected',
                isNotSelectedBinding: Ember.Binding.not('item.selected'),
@@ -299,7 +299,7 @@ define(['/js/jquery.js.gz',
                },
            });
 
-           JetViewer.LeafView = JetViewer.TreeElementView.extend({
+           Radar.LeafView = Radar.TreeElementView.extend({
                isLeaf: true,
                onIconClick: function(event) {
                    event.stopPropagation();
@@ -310,12 +310,12 @@ define(['/js/jquery.js.gz',
                }
            });
 
-           JetViewer.NodeView = JetViewer.TreeElementView.extend({
+           Radar.NodeView = Radar.TreeElementView.extend({
                isNode: true,
                changeDirectory: function(event) {
                    // dont let default <a> click handler apply (reloads page with href)
                    event.stopPropagation();
-                   JetViewer.treeController.set('directory',this.get('item').get('path'));
+                   Radar.treeController.set('directory',this.get('item').get('path'));
                },
                onIconClick: function(event) {
                    event.stopPropagation();
@@ -327,10 +327,10 @@ define(['/js/jquery.js.gz',
                }
            });
 
-           JetViewer.SearchView = Ember.View.extend({
+           Radar.SearchView = Ember.View.extend({
                template: Ember.Handlebars.compile(searchTemplate),
-               matchesBinding: 'JetViewer.searchController.matches',
-               searchExpressionBinding: 'JetViewer.searchController.searchExpression',
+               matchesBinding: 'Radar.searchController.matches',
+               searchExpressionBinding: 'Radar.searchController.searchExpression',
                inputView: Ember.TextField.extend({
                    valueBinding: 'parentView.searchExpression',
                }),
@@ -348,12 +348,12 @@ define(['/js/jquery.js.gz',
                }
            });
            
-           JetViewer.MainView = Ember.View.extend({
+           Radar.MainView = Ember.View.extend({
                template: Ember.Handlebars.compile(mainTemplate),
-               versionBinding: 'JetViewer.version',
-               statusBinding: 'JetViewer.status',
+               versionBinding: 'Radar.version',
+               statusBinding: 'Radar.status',
                labelType: Ember.computed(function(){
-                   var status = JetViewer.get('status');
+                   var status = Radar.get('status');
                    if( status=='on' ){
                        return 'label-success';
                    }
@@ -361,8 +361,8 @@ define(['/js/jquery.js.gz',
                        return 'label-warning';
                    }                
                    return 'label-important';
-               }).property('JetViewer.status')               
+               }).property('Radar.status')               
            });
-           return JetViewer;
+           return Radar;
        });
 

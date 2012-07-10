@@ -1,8 +1,8 @@
 require(
     ["views","controllers"],
-    function(JetViewer) {
+    function(Radar) {
         // add ember views to DOM
-        JetViewer.mainView = JetViewer.MainView.create();
-        JetViewer.mainView.appendTo('body');       
+        Radar.mainView = Radar.MainView.create();
+        Radar.mainView.appendTo('body');       
     }
 );

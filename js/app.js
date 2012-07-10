@@ -4,10 +4,10 @@ define(['/js/ember.js.gz'], function(Ember) {
         var value = Ember.getPath(this, path);
         return JSON.stringify(value,null,2);
     });
-    window.JetViewer = Ember.Application.create({
+    window.Radar = Ember.Application.create({
         version: 'v0.1',
         status: 'off'
     });
     
-    return window.JetViewer;
+    return window.Radar;
 });

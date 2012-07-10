@@ -3,18 +3,18 @@
   <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{name}}</a>
   <ul class="dropdown-menu tree-nav">
     {{#each childNodes}}
-    {{view JetViewer.NodeView itemBinding="this" tagName="li" displayNameBinding="name"}}
+    {{view Radar.NodeView itemBinding="this" tagName="li" displayNameBinding="name"}}
     {{/each}}
     {{#if childStates}}
     <li class="divider"></li>
     {{#each childStates}}
-      {{view JetViewer.LeafView itemBinding="this" tagName="li" displayNameBinding="name"}}
+      {{view Radar.LeafView itemBinding="this" tagName="li" displayNameBinding="name"}}
     {{/each}}
     {{/if}}
     {{#if childMethods}}
     <li class="divider"></li>
     {{#each childMethods}}
-    {{view JetViewer.LeafView itemBinding="this" tagName="li" displayNameBinding="name"}}
+    {{view Radar.LeafView itemBinding="this" tagName="li" displayNameBinding="name"}}
     {{/each}}
     {{/if}}
   </ul>        

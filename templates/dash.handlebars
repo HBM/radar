@@ -1,6 +1,6 @@
 <ul class="thumbnails">
   {{#each selectedStates}}
-  {{#view JetViewer.StateRowView itemBinding="this" classNames="jet-item" tagName="li"}}
+  {{#view Radar.StateRowView itemBinding="this" classNames="jet-item" tagName="li"}}
   <div class="thumbnail">
     <div class="input-anchor">
       <div {{action unselect}} class="badge 
@@ -36,21 +36,21 @@
     </div>
     {{#if errorString}}
     <div class="control-group error closable">
-      {{view JetViewer.AutoHeightTextArea valueBinding="errorString"}}
+      {{view Radar.AutoHeightTextArea valueBinding="errorString"}}
       <a {{action hideErrorString}} class="close" href="#">&times;</a>
     </div>    
     {{/if}}
     {{#if showHistory}}    
     {{#each item.history.content}}    
     <label><i>{{date.day}}, {{date.time}}</i></label>
-    {{view JetViewer.AutoHeightTextArea valueBinding="value"}}
+    {{view Radar.AutoHeightTextArea valueBinding="value"}}
     {{/each}}
     {{/if}}
     {{/view}}
   </div>
   {{/each}}
   {{#each selectedMethods}}
-  {{#view JetViewer.MethodRowView itemBinding="this" classNames="jet-item" tagName="li"}}
+  {{#view Radar.MethodRowView itemBinding="this" classNames="jet-item" tagName="li"}}
   <div class="thumbnail">
     <div class="input-anchor">
       <div {{action unselect}} class="badge 
@@ -71,7 +71,7 @@
         <div {{bindAttr class=":control-group :closable
                                result.isSuccess:success 
                                result.isError:error"}}>
-          {{view JetViewer.AutoHeightTextArea valueBinding="result.jsonString"}}
+          {{view Radar.AutoHeightTextArea valueBinding="result.jsonString"}}
           <a {{action hideResult}} class="close" href="#">&times;</a>
         </div>
         {{/if}}

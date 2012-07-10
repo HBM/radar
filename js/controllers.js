@@ -1,6 +1,6 @@
-define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
+define(['/js/ember.js.gz','models'],function(Ember,Radar){
     Ember = window.Ember;
-    JetViewer.Container = Ember.ArrayProxy.extend({                    
+    Radar.Container = Ember.ArrayProxy.extend({                    
         factory: null,
         create: function(n){
             var obj = this.factory.create({path:n.path});
@@ -14,30 +14,30 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
         }
     });
 
-    JetViewer.nodesController = JetViewer.Container.create({
+    Radar.nodesController = Radar.Container.create({
         content: [],
-        factory: JetViewer.Node
+        factory: Radar.Node
     });
 
-    JetViewer.statesController = JetViewer.Container.create({
+    Radar.statesController = Radar.Container.create({
         content: [],
-        factory: JetViewer.State,
+        factory: Radar.State,
         updateChild: function(n){
             var state = this.findProperty('path',n.path);
             state.set('value',n.value);
         }
     });
 
-    JetViewer.methodsController = JetViewer.Container.create({
+    Radar.methodsController = Radar.Container.create({
         content: [],
-        factory: JetViewer.Method
+        factory: Radar.Method
     });
 
-    JetViewer.treeController = Ember.Object.create({
+    Radar.treeController = Ember.Object.create({
         directory:'',
-        nodesBinding: Ember.Binding.oneWay('JetViewer.nodesController.content'),
-        statesBinding: Ember.Binding.oneWay('JetViewer.statesController.content'),
-        methodsBinding: Ember.Binding.oneWay('JetViewer.methodsController.content'),
+        nodesBinding: Ember.Binding.oneWay('Radar.nodesController.content'),
+        statesBinding: Ember.Binding.oneWay('Radar.statesController.content'),
+        methodsBinding: Ember.Binding.oneWay('Radar.methodsController.content'),
         breadcrumbs: function(){
             var that = this;
             var i;
@@ -68,10 +68,10 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
         }.property('directory','nodes.@each','methods.@each','states.@each')
     });
 
-    JetViewer.selectedController = Ember.Object.create({
-        statesBinding: Ember.Binding.oneWay('JetViewer.statesController.content'),
-        methodsBinding: Ember.Binding.oneWay('JetViewer.methodsController.content'),
-        nodesBinding: Ember.Binding.oneWay('JetViewer.nodesController.content'),
+    Radar.selectedController = Ember.Object.create({
+        statesBinding: Ember.Binding.oneWay('Radar.statesController.content'),
+        methodsBinding: Ember.Binding.oneWay('Radar.methodsController.content'),
+        nodesBinding: Ember.Binding.oneWay('Radar.nodesController.content'),
         selectedStates: function() {
             var s = this.get('states').filterProperty('selected',true);
             return s;
@@ -82,9 +82,9 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
         }.property('methods.@each.selected'),
     });
 
-    JetViewer.searchController = Ember.Object.create({
-        statesBinding: Ember.Binding.oneWay('JetViewer.statesController.content'),
-        methodsBinding: Ember.Binding.oneWay('JetViewer.methodsController.content'),
+    Radar.searchController = Ember.Object.create({
+        statesBinding: Ember.Binding.oneWay('Radar.statesController.content'),
+        methodsBinding: Ember.Binding.oneWay('Radar.methodsController.content'),
         searchExpression:'',
         matches: function() {
             var pathMatches = function(item,index,self) {
@@ -103,12 +103,12 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
 
     var debug = false;
     if (debug) {
-        JetViewer.State.reopen({
+        Radar.State.reopen({
             change: function(newVal) {
                 this.set('value',newVal);
             }
         });
-        JetViewer.Method.reopen({
+        Radar.Method.reopen({
             count: 0,
             call: function(args,callbacks) {
                 this.set('count',this.get('count')+1);
@@ -124,31 +124,31 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
                 }
             },
         });
-        JetViewer.set('status','debug');
-        JetViewer.nodesController.create({
+        Radar.set('status','debug');
+        Radar.nodesController.create({
             path: 'test'
         });
-        JetViewer.statesController.create({
+        Radar.statesController.create({
             path: 'test.horst',
             value: 1234,
             schema: {
                 read_only: true
             }
         });
-        JetViewer.statesController.create({
+        Radar.statesController.create({
             path: 'test.peter',
             value: 'hallo',
             schema: 'asdds'
         });
-        JetViewer.statesController.create({
+        Radar.statesController.create({
             path: 'test.horst',
             value: {sub:111,pi:3.1415},
             schema: 'asdds'
         });
-        JetViewer.methodsController.create({
+        Radar.methodsController.create({
             path: 'test.funcy'
         });
-        JetViewer.methodsController.create({
+        Radar.methodsController.create({
             path: 'test.popoapoapoa'
         });
     }
@@ -186,7 +186,7 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
         ws.onopen = function() {
 	    var pending = {};
 	    var id = 0;
-            var makeJetViewerState = function(n) {                    
+            var makeRadarState = function(n) {                    
                 var parts = n.method.split(':');
                 var path = parts[0];
                 var event = parts[1];
@@ -198,18 +198,18 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
                     if(event=='create') {
                         desc.value = data.value;
                         desc.schema = data.schema;
-                        JetViewer[data.type+'sController'].create(desc);
+                        Radar[data.type+'sController'].create(desc);
                     }
                     else if(event=='delete') {
-                        JetViewer[data.type+'sController'].destroy(desc);
+                        Radar[data.type+'sController'].destroy(desc);
                     }
                     else if(event=='value') {
                         desc.value = data;
-                        JetViewer.statesController.updateChild(desc);
+                        Radar.statesController.updateChild(desc);
                     }
                     else if(event=='schema') {
                         desc.schema = data;
-                        JetViewer.statesController.updateChild(desc);
+                        Radar.statesController.updateChild(desc);
                     }
                 }
                 else {
@@ -230,7 +230,7 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
                     if($.isArray(resp)) {
                         notifications = resp;
 			for(i = 0; i < notifications.length; ++i) {
-                            makeJetViewerState(notifications[i]);
+                            makeRadarState(notifications[i]);
 			}
                     }
                     else if(resp.id) {
@@ -264,7 +264,7 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
                 ws.close();
 	    }*/
 
-            JetViewer.changeState = function(prop,val,callbacks) {
+            Radar.changeState = function(prop,val,callbacks) {
                 callbacks = callbacks || {};
                 rpc('set',[prop,val],function(response){
                     if(response.result) {
@@ -281,7 +281,7 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
                 
             };
 
-            JetViewer.callMethod = function(method,args,callbacks) {
+            Radar.callMethod = function(method,args,callbacks) {
                 callbacks = callbacks || {};
                 args.unshift(method);
                 rpc('call',args,function(response){
@@ -313,10 +313,10 @@ define(['/js/ember.js.gz','models'],function(Ember,JetViewer){
                     }
                 });                                    
             }();
-            JetViewer.set('status','on');
+            Radar.set('status','on');
 //            that.fetch();
         };
     }
     
-    return JetViewer;
+    return Radar;
 });
