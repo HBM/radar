@@ -21,6 +21,9 @@ define(['/js/ember.js.gz','app'],function(Ember,Radar){
                     });
                 }
             }
+            if(Radar.urlController.get('selectedFromURL').indexOf(this.path) != -1) {
+                this.set('selected',true);
+            }
         }
     });
 

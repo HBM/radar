@@ -71,7 +71,6 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
     Radar.selectedController = Ember.Object.create({
         statesBinding: Ember.Binding.oneWay('Radar.statesController.content'),
         methodsBinding: Ember.Binding.oneWay('Radar.methodsController.content'),
-        nodesBinding: Ember.Binding.oneWay('Radar.nodesController.content'),
         selectedStates: function() {
             var s = this.get('states').filterProperty('selected',true);
             return s;
@@ -79,7 +78,34 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
         selectedMethods: function() {
             var s = this.get('methods').filterProperty('selected',true);
             return s;
-        }.property('methods.@each.selected'),
+        }.property('methods.@each.selected')
+    });
+    
+    var getSelectedFromURL = function() {
+        var urlParts = document.URL.split('?');
+        var selectedExpr = /selected=(.*)/g;
+        try {
+            var selectedString = selectedExpr.exec(decodeURIComponent(urlParts[1]))[1];
+            return JSON.parse(selectedString);
+        }
+        catch(e) {
+            window.history.pushState('','',urlParts[0]);
+            return [];
+        }
+    };
+
+
+    Radar.urlController = Ember.Object.create({
+        selectedStatesBinding: Ember.Binding.oneWay('Radar.selectedController.selectedStates'),
+        selectedMethodsBinding: Ember.Binding.oneWay('Radar.selectedController.selectedMethods'),
+        selectedFromURL: getSelectedFromURL(),
+        urlUpdated: function() {
+            var selectedStates = this.get('selectedStates').getEach('path');
+            var selectedMethods = this.get('selectedMethods').getEach('path');
+            var selected = selectedStates.concat(selectedMethods);
+            var url = document.URL.split('?')[0] + '?selected=' + encodeURIComponent(JSON.stringify(selected));
+            window.history.pushState('','',url);
+        }.observes('selectedStates.@each','selectedMethods.@each')
     });
 
     Radar.searchController = Ember.Object.create({
