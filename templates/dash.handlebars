@@ -40,7 +40,7 @@
     {{#if errorString}}
     <div class="control-group error closable">
       {{view Radar.AutoHeightTextArea valueBinding="errorString"}}
-      <a {{action hideErrorString}} class="close" href="#">&times;</a>
+      <a {{action hideErrorString}} class="close">&times;</a>
     </div>    
     {{/if}}
     {{#if showHistory}}    
@@ -78,7 +78,7 @@
                                result.isSuccess:success 
                                result.isError:error"}}>
           {{view Radar.AutoHeightTextArea valueBinding="result.jsonString"}}
-          <a {{action hideResult}} class="close" href="#">&times;</a>
+          <a {{action hideResult}} class="close">&times;</a>
         </div>
         {{/if}}
       </div>

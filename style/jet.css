@@ -94,6 +94,10 @@ a.dropdown-toggle {
    cursor:pointer;
 }
 
+ul li a {
+   cursor:pointer;
+}
+
 .badge.refresh-badge {
    display: inline-block;
    position: absolute;

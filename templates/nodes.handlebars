@@ -1,6 +1,6 @@
 {{#each breadcrumbs}}
 <li {{action "treeView.clickBreadcrumb"}} class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{name}}</a>
+  <a class="dropdown-toggle" data-toggle="dropdown">{{name}}</a>
   <ul class="dropdown-menu tree-nav">
     {{#each childNodes}}
     {{view Radar.NodeView itemBinding="this" tagName="li" displayNameBinding="name"}}
