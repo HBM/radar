@@ -97,9 +97,6 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
     var compareArrays = function(a,b) {
         if (a.length != b.length) return false;
         for (var i = 0; i < b.length; i++) {
-            if (a[i].compare) { 
-                if (!a[i].compare(b[i])) return false;
-            }
             if (a[i] !== b[i]) return false;
         }
         return true;
@@ -109,31 +106,46 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
         selectedStatesBinding: Ember.Binding.oneWay('Radar.selectedController.selectedStates'),
         selectedMethodsBinding: Ember.Binding.oneWay('Radar.selectedController.selectedMethods'),
         selectedFromURL: getSelectedFromURL(),
-        restoring: false,
+        toBeRestored: null,
         urlUpdated: function() {
             var selectedStates = this.get('selectedStates').getEach('path');
             var selectedMethods = this.get('selectedMethods').getEach('path');
             var selected = selectedStates.concat(selectedMethods);
-            if (selected.length == 0 || (window.history.state && window.history.state.selected && compareArrays(selected,window.history.state.selected)) ) {
+            var toBeRestored = this.get('toBeRestored');
+            if (selected.length == 0) {
                 return;
             }
+            if( window.history.state && window.history.state.selected ) {
+                if( compareArrays(selected,window.history.state.selected)) {
+                    if(toBeRestored && compareArrays(selected,toBeRestored)){
+                        this.set('toBeRestored',null);
+                    }
+                    console.log('now equal');
+                    return;
+                }
+            }
             var url = document.URL.split('?')[0] + '?selected=' + encodeURIComponent(JSON.stringify(selected));
-            if (!this.get('restoring')) {
+
+            if (!toBeRestored) {
                 var state = {
                     isRadar: true,
                     selected: selected
                 };
-//                console.log('pushing state',JSON.stringify(state.selected));
-                window.history.pushState(state,'',url);            
+                console.log('pushing state',JSON.stringify(state.selected));
+                window.history.pushState(state,'',url);
+                this.set('restoring',false);
             }
-        }.observes('selectedStates.@each','selectedMethods.@each','restoring')
+            else if(compareArrays(selected,toBeRestored)){
+                this.set('toBeRestored',null);
+            }
+        }.observes('selectedStates.@each','selectedMethods.@each','toBeRestored')
     });
 
     window.onpopstate = function(event) {
         try {
             if(event.state && event.state.isRadar) {
                 console.log('popping state',JSON.stringify(event.state.selected));
-                Radar.urlController.set('restoring',true);
+                Radar.urlController.set('toBeRestored',event.state.selected);
                 Radar.urlController.set('selectedFromURL',event.state.selected);
             }
         }
