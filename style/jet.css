@@ -1,10 +1,16 @@
+@-webkit-keyframes 'blink' {
+    0% { background-color: #468847; }   
+    50% { background-color: #333 }
+    100% { background-color: #468847; }   
+}
+
 body {
    background-color: #fff;
    background-image: url(../grid-18px-masked.png);
    background-repeat: repeat-x;
 }
 
-.navbar .label {
+#status-label {
    margin-top:4px;
 }
 
@@ -73,6 +79,7 @@ a.dropdown-toggle {
    transition: all 0.12s linear;
 
 }
+
 
 .thumbnail:hover {
    -webkit-box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.5);

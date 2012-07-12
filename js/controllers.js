@@ -112,9 +112,6 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
             var selectedMethods = this.get('selectedMethods').getEach('path');
             var selected = selectedStates.concat(selectedMethods);
             var toBeRestored = this.get('toBeRestored');
-            if (selected.length == 0) {
-                return;
-            }
             if( window.history.state && window.history.state.selected ) {
                 if( compareArrays(selected,window.history.state.selected)) {
                     if(toBeRestored && compareArrays(selected,toBeRestored)){
@@ -262,6 +259,7 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
         ws.onopen = function() {
 	    var pending = {};
 	    var id = 0;
+            var comTimer;
             var makeRadarState = function(n) {                    
                 var parts = n.method.split(':');
                 var path = parts[0];
@@ -294,13 +292,17 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
                     });
                 }
             };
-
+            $('#status-label').css('-webkit-animation','none');
 	    ws.onmessage = function(msg) {
                 var i;
 		var notifications;
                 var resp;
                 var notification;
-                var rpc;
+                var rpc;                
+                if( $('#status-label').css('-webkit-animation') != 'blink 1s infinite') {
+                    $('body').css('cursor','progress');
+                    $('#status-label').css('-webkit-animation','blink 1s infinite');
+                }
                 try {
 		    resp = JSON.parse(msg.data);
                     if($.isArray(resp)) {
@@ -319,6 +321,13 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
                 catch(e) {
                     console.log('message is no JSON',msg.data,e);
                 }
+                if(comTimer) {
+                    clearTimeout(comTimer);
+                }
+                comTimer = setTimeout(function(){
+                    $('body').css('cursor','');
+                    $('#status-label').css('-webkit-animation','');
+                },1000);
 	    };
             
 	    rpc = function(method,params,on_response) {

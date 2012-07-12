@@ -7,7 +7,7 @@
       </a>
       {{view Radar.SearchView}}
       {{view Radar.TreeView tagName="ul" classNames="nav"}}
-      <span {{bindAttr class=":label labelType :pull-right"}}>
+      <span id="status-label" {{bindAttr class=":label labelType :pull-right"}}>
         <h3 id="status-text">{{status}}</h3>
       </span>
     </div>
