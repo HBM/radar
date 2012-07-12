@@ -20,11 +20,19 @@ define(['/js/ember.js.gz','app'],function(Ember,Radar){
                         this.set('selected',value);
                     });
                 }
-            }
+            }          
             if(Radar.urlController.get('selectedFromURL').indexOf(this.path) != -1) {
                 this.set('selected',true);
             }
-        }
+        },
+        urlObserver: function() {
+            if(Radar.urlController.get('selectedFromURL').indexOf(this.path) != -1) {
+                this.set('selected',true);
+            }
+            else {
+                this.set('selected',false);
+            }
+        }.observes('Radar.urlController.selectedFromURL')
     });
 
     Radar.Method = Radar.Base.extend({
