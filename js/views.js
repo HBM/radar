@@ -356,9 +356,27 @@ define(['/js/jquery.js.gz',
                }
            });
 
+
            Radar.LogView = Ember.View.extend({
-               statusBinding: 'Radar.status',
                template: Ember.Handlebars.compile(logTemplate),
+               statusBinding: 'Radar.status',
+               logEntriesBinding: Ember.Binding.oneWay('Radar.logEntriesController.content'),
+               last10Entries: Ember.computed(function(){
+                   try {
+                       var n = 10;
+                       var logEntries = this.get('logEntries');
+                       var l = logEntries.get('length');
+                       if (l > n) {
+                           return logEntries.slice(l-n,l).reverse();
+                       }
+                       else {
+                           return logEntries.reverse();
+                       }                       
+                   }
+                   catch(e) {
+                       console.log(e);
+                   }
+               }).property('logEntries.@each'),
                labelType: Ember.computed(function(){
                    var status = Radar.get('status');
                    if( status=='on' ){
@@ -370,11 +388,18 @@ define(['/js/jquery.js.gz',
                    return 'label-important';
                }).property('Radar.status'),
                ItemView: Ember.View.extend({
-                   details: function() {
-                       var d = JSON.stringify(this.get('item').get('value'));
-                       return d;
-                   }.property('item.value'),
+                   dataShort: function() {
+                       var d = JSON.stringify(this.get('item').get('data'));                       
+                       if (d) {
+                           return d.substr(0,30);
+                       }
+                       return '';
+                   }.property('item.data'),
+                   dataLong: function() {
+                       return JSON.stringify(this.get('item').get('data'),null,2) || ''                  
+                   }.property('item.data'),
                    pathBinding: Ember.Binding.oneWay('item.path'),
+                   eventBinding: Ember.Binding.oneWay('item.event'),
                    icon: function() {
                        var event = this.get('item').get('event');
                        if( event === 'create' ) {
@@ -388,8 +413,11 @@ define(['/js/jquery.js.gz',
                        }
                        return 'icon-info-sign';                       
                    }.property('item.event'),
-                   date: function() {
+                   dateShort: function() {
                        return this.get('item').get('date').toLocaleTimeString();
+                   }.property('item.date'),
+                   dateLong: function() {
+                       return this.get('item').get('date').toString();
                    }.property('item.date')
                })
            });

@@ -28,41 +28,28 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
         }
     });
 
-    Radar.stateChangeEventsController = Ember.ArrayProxy.create({
+    Radar.methodsController = Radar.Container.create({
         content: [],
-        create: function(obj) {
+        factory: Radar.Method
+    });
+
+    Radar.LogEntry = Ember.Object.extend({
+        path: null,
+        event: null,
+        data: null,
+        init: function() {
+            this.set('date',new Date());
+        }
+    });
+
+    Radar.logEntriesController = Ember.ArrayProxy.create({
+        content: [],
+        add: function(obj) {
             this.pushObject(obj);
             if(this.content.length > 1000) {
                 this.popObject();
             }
         }
-    });
-
-    Radar.logController = Ember.Object.create({
-        stateChangeEventsBinding: Ember.Binding.oneWay('Radar.stateChangeEventsController.content'),
-        logEntries: 10,
-        lastNEntries: Ember.computed(function(){
-            try {
-                var n = this.get('logEntries');
-                var l = this.get('stateChangeEvents').get('length');
-                var entries;
-                if (l > n) {
-                    entries = this.get('stateChangeEvents').slice(l-n,l).reverse();
-                }
-                else {
-                    entries = this.get('stateChangeEvents').reverse();
-                }
-                return entries;
-            }
-            catch(e) {
-                console.log(e);
-            }
-        }).property('stateChangeEvents.@each')
-    });
-
-    Radar.methodsController = Radar.Container.create({
-        content: [],
-        factory: Radar.Method
     });
 
     Radar.treeController = Ember.Object.create({
@@ -296,56 +283,28 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
                 var desc = {
                     path: path
                 };
-                var date = new Date();
-                if(path.split('.').length < 20) {
-                    if(event=='create') {
-                        if (data.type == 'state') {
-                            Radar.stateChangeEventsController.create(
-                                Ember.Object.create({
-                                    event: 'create',
-                                    path: path,
-                                    date: date
-                                })
-                            )
-                        }
-                        desc.value = data.value;
-                        desc.schema = data.schema;
-                        Radar[data.type+'sController'].create(desc);
-                    }
-                    else if(event=='delete') {
-                        if (data.type == 'state') {
-                            Radar.stateChangeEventsController.create(
-                                Ember.Object.create({
-                                    event: 'delete',
-                                    path: path,
-                                    date: date
-                                })
-                            )
-                        }
-                        Radar[data.type+'sController'].destroy(desc);
-                    }
-                    else if(event=='value') {
-                        Radar.stateChangeEventsController.create(
-                            Ember.Object.create({
-                                event: 'value',
-                                path: path,
-                                value: data,
-                                date: date
-                            })
-                        );
-                        desc.value = data;
-                        Radar.statesController.updateChild(desc);
-                    }
-                    else if(event=='schema') {
-                        desc.schema = data;
-                        Radar.statesController.updateChild(desc);
-                    }
+
+                Radar.logEntriesController.add(Radar.LogEntry.create({
+                    event: event,
+                    path: path,
+                    data: data
+                }));
+                
+                if(event=='create') {               
+                    desc.value = data.value;
+                    desc.schema = data.schema;
+                    Radar[data.type+'sController'].create(desc);
                 }
-                else {
-                    Ember.Object.create({
-                        path: path
-                    });
+                else if(event=='delete') {
+                    Radar[data.type+'sController'].destroy(desc);
                 }
+                else if(event=='value') {
+                    Radar.statesController.updateChild(desc);
+                }
+                else if(event=='schema') {
+                    desc.schema = data;
+                    Radar.statesController.updateChild(desc);
+                }            
             };
 
 	    ws.onmessage = function(msg) {

@@ -8,13 +8,13 @@
       <table class="table table-condensed">
         <thead>
         </thead>
-        <tbody>          
-          {{#each Radar.logController.lastNEntries}}
+        <tbody>         
+          {{#each logView.last10Entries}}
           {{#view logView.ItemView tagName="tr" itemBinding="this"}}
-            <td><i class={{unbound icon}}></i></td>
+            <td><i class="{{unbound icon}}" title="{{unbound event}}"></i></td>
             <td>{{unbound path}}</td>
-            <td title="{{unbound item.date}}">{{unbound date}}</td>
-            <td>{{unbound details}}</td>
+            <td title="{{unbound dateLong}}">{{unbound dateShort}}</td>
+            <td title="{{unbound dataLong}}">{{unbound dataShort}}</td>
           {{/view}}
           {{/each}}
         </tbody>
