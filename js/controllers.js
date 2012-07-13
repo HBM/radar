@@ -45,7 +45,6 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
             try {
                 var n = this.get('logEntries');
                 var l = this.get('stateChangeEvents').get('length');
-                console.log(n,l);
                 var entries;
                 if (l > n) {
                     entries = this.get('stateChangeEvents').slice(l-n,l).reverse();
@@ -53,7 +52,6 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
                 else {
                     entries = this.get('stateChangeEvents').reverse();
                 }
-                console.log('n entries',entries.length);
                 return entries;
             }
             catch(e) {
@@ -151,7 +149,6 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
                     if(toBeRestored && compareArrays(selected,toBeRestored)){
                         this.set('toBeRestored',null);
                     }
-                    console.log('now equal');
                     return;
                 }
             }
@@ -162,7 +159,6 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
                     isRadar: true,
                     selected: selected
                 };
-                console.log('pushing state',JSON.stringify(state.selected));
                 window.history.pushState(state,'',url);
                 this.set('restoring',false);
             }
@@ -175,7 +171,6 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
     window.onpopstate = function(event) {
         try {
             if(event.state && event.state.isRadar) {
-                console.log('popping state',JSON.stringify(event.state.selected));
                 Radar.urlController.set('toBeRestored',event.state.selected);
                 Radar.urlController.set('selectedFromURL',event.state.selected);
             }
@@ -358,7 +353,7 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
 		var notifications;
                 var resp;
                 var notification;
-                var rpc;                
+                var rpc;              
                 $('body').css('cursor','progress');
 
                 try {
@@ -377,7 +372,7 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
                     }
                 }
                 catch(e) {
-                    console.log('message is no JSON',msg.data,e);
+                    console.log('Error handling message',msg.data,e);
                 }
                 $('body').css('cursor','');
 	    };
