@@ -28,6 +28,40 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
         }
     });
 
+    Radar.stateChangeEventsController = Ember.ArrayProxy.create({
+        content: [],
+        create: function(obj) {
+            this.pushObject(obj);
+            if(this.content.length > 1000) {
+                this.popObject();
+            }
+        }
+    });
+
+    Radar.logController = Ember.Object.create({
+        stateChangeEventsBinding: Ember.Binding.oneWay('Radar.stateChangeEventsController.content'),
+        logEntries: 10,
+        lastNEntries: Ember.computed(function(){
+            try {
+                var n = this.get('logEntries');
+                var l = this.get('stateChangeEvents').get('length');
+                console.log(n,l);
+                var entries;
+                if (l > n) {
+                    entries = this.get('stateChangeEvents').slice(l-n,l).reverse();
+                }
+                else {
+                    entries = this.get('stateChangeEvents').reverse();
+                }
+                console.log('n entries',entries.length);
+                return entries;
+            }
+            catch(e) {
+                console.log(e);
+            }
+        }).property('stateChangeEvents.@each')
+    });
+
     Radar.methodsController = Radar.Container.create({
         content: [],
         factory: Radar.Method
@@ -239,27 +273,26 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
 		return new WebSocket(url,protocol);
 	    }
 	}
-        ping_ws = new_websocket('ws://' + window.document.domain + ':8004','ping');
-        /*            ping_ws.onopen = function(){
-                var ping = function(){                    
-                    var t;
-                    t = setTimeout(function(){
-                        t = null;
-                        event.trigger({event:'close'});
-                    },3000);
-                    ping_ws.onmessage = function(){
-                        clearTimeout(t);
-                        setTimeout(ping,3000);
-                    }
-                    ping_ws.send('ping');
-                };
-                ping();
-            };*/
+/*        ping_ws = new_websocket('ws://' + window.document.domain + ':8004','ping');
+        ping_ws.onopen = function(){
+            var ping = function(){                    
+                var t;
+                t = setTimeout(function(){
+                    t = null;                    
+                    event.trigger({event:'close'});
+                },3000);
+                ping_ws.onmessage = function(){
+                    clearTimeout(t);
+                    setTimeout(ping,3000);
+                }
+                ping_ws.send('ping');
+            };
+            ping();
+        };*/
         var ws = new_websocket('ws://' + window.document.domain + ':8004','jet');
         ws.onopen = function() {
 	    var pending = {};
 	    var id = 0;
-            var comTimer;
             var makeRadarState = function(n) {                    
                 var parts = n.method.split(':');
                 var path = parts[0];
@@ -268,16 +301,43 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
                 var desc = {
                     path: path
                 };
+                var date = new Date();
                 if(path.split('.').length < 20) {
                     if(event=='create') {
+                        if (data.type == 'state') {
+                            Radar.stateChangeEventsController.create(
+                                Ember.Object.create({
+                                    event: 'create',
+                                    path: path,
+                                    date: date
+                                })
+                            )
+                        }
                         desc.value = data.value;
                         desc.schema = data.schema;
                         Radar[data.type+'sController'].create(desc);
                     }
                     else if(event=='delete') {
+                        if (data.type == 'state') {
+                            Radar.stateChangeEventsController.create(
+                                Ember.Object.create({
+                                    event: 'delete',
+                                    path: path,
+                                    date: date
+                                })
+                            )
+                        }
                         Radar[data.type+'sController'].destroy(desc);
                     }
                     else if(event=='value') {
+                        Radar.stateChangeEventsController.create(
+                            Ember.Object.create({
+                                event: 'value',
+                                path: path,
+                                value: data,
+                                date: date
+                            })
+                        );
                         desc.value = data;
                         Radar.statesController.updateChild(desc);
                     }
@@ -292,17 +352,15 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
                     });
                 }
             };
-            $('#status-label').css('-webkit-animation','none');
+
 	    ws.onmessage = function(msg) {
                 var i;
 		var notifications;
                 var resp;
                 var notification;
                 var rpc;                
-                if( $('#status-label').css('-webkit-animation') != 'blink 1s infinite') {
-                    $('body').css('cursor','progress');
-                    $('#status-label').css('-webkit-animation','blink 1s infinite');
-                }
+                $('body').css('cursor','progress');
+
                 try {
 		    resp = JSON.parse(msg.data);
                     if($.isArray(resp)) {
@@ -321,13 +379,7 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
                 catch(e) {
                     console.log('message is no JSON',msg.data,e);
                 }
-                if(comTimer) {
-                    clearTimeout(comTimer);
-                }
-                comTimer = setTimeout(function(){
-                    $('body').css('cursor','');
-                    $('#status-label').css('-webkit-animation','');
-                },1000);
+                $('body').css('cursor','');
 	    };
             
 	    rpc = function(method,params,on_response) {

@@ -1,23 +1,21 @@
-<div class="navbar">
+<div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container-fluid">
-      <a class="brand">
+      <a class="brand" title="{{unbound version}}">
         <i class="icon-star icon-white"></i>
         Radar
       </a>
       {{view Radar.SearchView}}
       {{view Radar.TreeView tagName="ul" classNames="nav"}}
-      <span id="status-label" {{bindAttr class=":label labelType :pull-right"}}>
-        <h3 id="status-text">{{status}}</h3>
-      </span>
+      {{view Radar.LogView}}          
     </div>
   </div>
 </div>
 <div class="container-fluid">  
   <div class="row-fluid">
-    <div class="span12" id="dashx">
+    <div class="span12" id="dash">
       {{view Radar.DashView}}  
     </div>
-  </div> 
+  </div>
 </div>
 

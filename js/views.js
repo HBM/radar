@@ -7,8 +7,11 @@ define(['/js/jquery.js.gz',
         'text!/templates/nodes.handlebars',
         'text!/templates/search.handlebars',
         'text!/templates/tree-element.handlebars',
+        'text!/templates/log.handlebars'
        ],
-       function(_,bs,Ember,Radar,dashTemplate,mainTemplate,nodesTemplate,searchTemplate,treeElementTemplate,closableTextareaTemplate) {
+       function(_,bs,Ember,Radar,
+                dashTemplate,mainTemplate,nodesTemplate,
+                searchTemplate,treeElementTemplate,logTemplate) {
            
            Ember = window.Ember;
            Radar = window.Radar;
@@ -352,11 +355,10 @@ define(['/js/jquery.js.gz',
                    });
                }
            });
-           
-           Radar.MainView = Ember.View.extend({
-               template: Ember.Handlebars.compile(mainTemplate),
-               versionBinding: 'Radar.version',
+
+           Radar.LogView = Ember.View.extend({
                statusBinding: 'Radar.status',
+               template: Ember.Handlebars.compile(logTemplate),
                labelType: Ember.computed(function(){
                    var status = Radar.get('status');
                    if( status=='on' ){
@@ -366,7 +368,35 @@ define(['/js/jquery.js.gz',
                        return 'label-warning';
                    }                
                    return 'label-important';
-               }).property('Radar.status')               
+               }).property('Radar.status'),
+               ItemView: Ember.View.extend({
+                   details: function() {
+                       var d = JSON.stringify(this.get('item').get('value'));
+                       return d;
+                   }.property('item.value'),
+                   pathBinding: Ember.Binding.oneWay('item.path'),
+                   icon: function() {
+                       var event = this.get('item').get('event');
+                       if( event === 'create' ) {
+                           return 'icon-plus-sign';
+                       }
+                       else if( event === 'delete' ) {
+                           return 'icon-minus-sign';
+                       }
+                       else if( event === 'value' ) {
+                           return 'icon-exclamation-sign';
+                       }
+                       return 'icon-info-sign';                       
+                   }.property('item.event'),
+                   date: function() {
+                       return this.get('item').get('date').toLocaleTimeString();
+                   }.property('item.date')
+               })
+           });
+           
+           Radar.MainView = Ember.View.extend({
+               template: Ember.Handlebars.compile(mainTemplate),
+               versionBinding: Ember.Binding.oneWay('Radar.version')
            });
            return Radar;
        });

@@ -1,0 +1,26 @@
+{{#with this as logView}}
+<div class="dropdown pull-right">
+  <div data-toggle="dropdown" id="status-label" {{bindAttr class=":label labelType"}}>
+    <h3 id="status-text">{{status}}</h3>
+  </div>
+  <ul class="dropdown-menu span10">
+    <li>
+      <table class="table table-condensed">
+        <thead>
+        </thead>
+        <tbody>          
+          {{#each Radar.logController.lastNEntries}}
+          {{#view logView.ItemView tagName="tr" itemBinding="this"}}
+            <td><i class={{unbound icon}}></i></td>
+            <td>{{unbound path}}</td>
+            <td title="{{unbound item.date}}">{{unbound date}}</td>
+            <td>{{unbound details}}</td>
+          {{/view}}
+          {{/each}}
+        </tbody>
+      </table>
+    </li>
+  </ul>
+</div>
+{{/with}}
+
