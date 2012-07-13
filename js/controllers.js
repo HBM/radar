@@ -299,6 +299,7 @@ define(['/js/ember.js.gz','models'],function(Ember,Radar){
                     Radar[data.type+'sController'].destroy(desc);
                 }
                 else if(event=='value') {
+                    desc.value = data;
                     Radar.statesController.updateChild(desc);
                 }
                 else if(event=='schema') {
