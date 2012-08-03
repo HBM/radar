@@ -1,21 +1,20 @@
-define(['/js/jquery.js.gz',
-        '/js/bootstrap-dropdown.js',
-        '/js/ember.js.gz',
+define(['jquery',
+        'js/bootstrap-dropdown.js',
+        'js/ember.js',
         'app',
-        'text!/templates/dash.handlebars',
-        'text!/templates/main.handlebars',
-        'text!/templates/nodes.handlebars',
-        'text!/templates/search.handlebars',
-        'text!/templates/tree-element.handlebars',
-        'text!/templates/log.handlebars'
+        'text!../templates/dash.handlebars',
+        'text!../templates/main.handlebars',
+        'text!../templates/nodes.handlebars',
+        'text!../templates/search.handlebars',
+        'text!../templates/tree-element.handlebars',
+        'text!../templates/log.handlebars'
        ],
-       function(_,bs,Ember,Radar,
+       function($,bs,Ember,Radar,
                 dashTemplate,mainTemplate,nodesTemplate,
                 searchTemplate,treeElementTemplate,logTemplate) {
            
            Ember = window.Ember;
            Radar = window.Radar;
-           $ = window.jQuery;
                       
            Radar.TreeView = Ember.View.extend({
                template: Ember.Handlebars.compile(nodesTemplate),

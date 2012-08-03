@@ -1,4 +1,4 @@
-define(['/js/ember.js.gz','app'],function(Ember,Radar){
+define(['js/ember.js','app'],function(Ember,Radar){
     Ember = window.Ember;
     Radar.Base = Ember.Object.extend({
         path: null,

@@ -1,4 +1,4 @@
-define(['/js/ember.js.gz'], function(Ember) {
+define(['js/ember.js'], function(Ember) {
     Ember = window.Ember;
     Ember.Handlebars.registerHelper("JSON",function(path) {
         var value = Ember.getPath(this, path);
