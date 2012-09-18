@@ -24,7 +24,7 @@ define(['js/ember.js','models','jquery'],function(Ember,Radar,$){
         factory: Radar.State,
         updateChild: function(n){
             var state = this.findProperty('path',n.path);
-            state.set('value',n.value);
+            state.set('value',n.data.value);
         }
     });
 
@@ -299,7 +299,7 @@ define(['js/ember.js','models','jquery'],function(Ember,Radar,$){
                     var notification;
                     var rpc;              
                     var dispatch_message = function(message) {
-                        if (message.id && (message.result || message.result)) {
+                        if (message.id && (message.result || message.error)) {
                             pending[message.id](message);
                         }
                         else if(message.method && message.params) {
@@ -333,9 +333,6 @@ define(['js/ember.js','models','jquery'],function(Ember,Radar,$){
 		        method: method,
 		        params: params                            
                     };
-                    if( $.isArray(params) == false ) {
-		        throw "invalid arguments to jet.call";
-                    }                            
                     id += 1;
                     request.id = id;
                     pending[id] = on_response;
@@ -349,7 +346,7 @@ define(['js/ember.js','models','jquery'],function(Ember,Radar,$){
 
                 Radar.changeState = function(prop,val,callbacks) {
                     callbacks = callbacks || {};
-                    rpc('set',[prop,val],function(response){
+                    rpc('set',{path:prop,value:val},function(response){
                         if(response.result) {
                             if(callbacks.success) {
                                 callbacks.success();
@@ -366,8 +363,7 @@ define(['js/ember.js','models','jquery'],function(Ember,Radar,$){
 
                 Radar.callMethod = function(method,args,callbacks) {
                     callbacks = callbacks || {};
-                    args.unshift(method);
-                    rpc('call',args,function(response){
+                    rpc('call',{path:method,args:args},function(response){
                         if(response.result) {
                             if(callbacks.success) {
                                 callbacks.success(response.result);
@@ -383,7 +379,7 @@ define(['js/ember.js','models','jquery'],function(Ember,Radar,$){
 
 	        var fetch = function(path,callbacks) {
                     callbacks = callbacks || {};                    
-                    rpc('fetch',['radar','.*'],function(response){
+                    rpc('fetch',{id:'radar',match:['.*']},function(response){
                         if(response.result) {
                             if(callbacks.success) {
                                 callbacks.success(response.result);
