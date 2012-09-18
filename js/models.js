@@ -7,8 +7,8 @@ define(['js/ember.js','app'],function(Ember,Radar){
         selected: false,
         init: function(){
             var parentNodes;
-            var parent = this.get('path').substring(0,this.path.lastIndexOf('.'))
-            this.set('name',this.get('path').split('.').pop());
+            var parent = this.get('path').substring(0,this.path.lastIndexOf('/'))
+            this.set('name',this.get('path').split('/').pop());
             this.set('parent',parent);  
             if(parent !== '' ) {                
                 parentNodes = Radar.nodesController.content.filterProperty('path',this.parent);

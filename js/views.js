@@ -168,6 +168,7 @@ define(['jquery',
                },
                changeState: function() {
                    if (this.get('isDisabled') == false) {
+                       this.set('isDisabled',true);
                        this.inputView.set('uncomittedChanges',false);
                        this.set('refreshAvailable',false);
                        var oldValue = this.get('item').get('value');
@@ -175,7 +176,6 @@ define(['jquery',
                        var revert = function() {
                            that.inputView.controlGroup().removeClass('warning');
                            that.inputView.controlGroup().removeClass('error');
-                           that.set('isDisabled',true);
                            that.inputView.$().val(JSON.stringify(oldValue,null,2));                    
                        }
                        try {
@@ -186,6 +186,10 @@ define(['jquery',
                                    console.log('error:',err);
                                    revert();        
                                    that.set('errorString',JSON.stringify(err,null,2));
+                               },
+                               success: function(){
+                                   console.log('changeState succeeded');
+                                   that.set('isDisabled',false);
                                }
                            });
                        }
@@ -341,6 +345,19 @@ define(['jquery',
                }).property('allMatches','first20Matches'),
                first20MatchesBinding: Ember.Binding.oneWay('Radar.searchController.first20Matches'),
                searchExpressionBinding: 'Radar.searchController.searchExpression',
+               keyDown: function(event) {                 
+                   if (event.keyCode == 13) { // return key
+                       event.preventDefault();  // prevent page reload
+                       this.get('allMatches').forEach(function(item) {
+                           item.set('selected',true);
+                       });
+                   }
+                   else if (event.keyCode == 27) { // escape key 
+                       event.preventDefault();
+                       this.$().trigger('click'); // hides the search
+                       // drop down
+                   }
+               },
                selectAll: function(event) {
                    event.stopPropagation();
                    this.get('allMatches').forEach(function(item) {

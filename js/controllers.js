@@ -4,8 +4,8 @@ define(['js/ember.js','models','jquery'],function(Ember,Radar,$){
         factory: null,
         create: function(n){
             var obj = this.factory.create({path:n.path});
-            for(var key in n) {
-                obj.set(key,n[key]);
+            for(var key in n.data) {
+                obj.set(key,n.data[key]);
             }
             this.pushObject(obj);
         },
@@ -272,41 +272,24 @@ define(['js/ember.js','models','jquery'],function(Ember,Radar,$){
             };
             ping();
         };*/
-            var ws = new_websocket('ws://' + window.document.domain + ':8004','jet');
+            var ws_url = 'ws://' + (window.document.domain || 'localhost')+ ':8004';
+            var ws = new_websocket(ws_url,'jet');
             ws.onopen = function() {
 	        var pending = {};
 	        var id = 0;
-                var makeRadarState = function(n) {                    
-                    var parts = n.method.split(':');
-                    var path = parts[0];
-                    var event = parts[1];
-                    var data = n.params[0];
-                    var desc = {
-                        path: path
-                    };
-
-                    Radar.logEntriesController.add(Radar.LogEntry.create({
-                        event: event,
-                        path: path,
-                        data: data
-                    }));
-                    
-                    if(event=='create') {               
-                        desc.value = data.value;
-                        desc.schema = data.schema;
-                        Radar[data.type+'sController'].create(desc);
+                var makeRadarState = function(n) {
+                    var info = n.params;
+//                    Radar.logEntriesController.add(Radar.LogEntry.create(info));
+//                    info.data.schema = {};
+                    if(info.event=='add') {               
+                        Radar[info.data.type+'sController'].create(info);
                     }
-                    else if(event=='delete') {
-                        Radar[data.type+'sController'].destroy(desc);
+                    else if(info.event=='remove') {
+                        Radar[info.data.type+'sController'].destroy(info);
                     }
-                    else if(event=='value') {
-                        desc.value = data;
-                        Radar.statesController.updateChild(desc);
+                    else if(info.event=='change') {
+                        Radar.statesController.updateChild(info);
                     }
-                    else if(event=='schema') {
-                        desc.schema = data;
-                        Radar.statesController.updateChild(desc);
-                    }            
                 };
 
 	        ws.onmessage = function(msg) {
@@ -315,21 +298,28 @@ define(['js/ember.js','models','jquery'],function(Ember,Radar,$){
                     var resp;
                     var notification;
                     var rpc;              
-                    $('body').css('cursor','progress');
-
-                    try {
-		        resp = JSON.parse(msg.data);
-                        if($.isArray(resp)) {
-                            notifications = resp;
-			    for(i = 0; i < notifications.length; ++i) {
-                                makeRadarState(notifications[i]);
-			    }
+                    var dispatch_message = function(message) {
+                        if (message.id && (message.result || message.result)) {
+                            pending[message.id](message);
                         }
-                        else if(resp.id) {
-		            pending[resp.id](resp);
+                        else if(message.method && message.params) {
+                            makeRadarState(message);
                         }
                         else {
-                            console.log('message is no batch notifications nor response',msg.data);
+                            console.log('invalid message',message);
+                        }
+                    };
+                    $('body').css('cursor','progress');
+                    
+                    try {
+		        resp = JSON.parse(msg.data);
+                        if($.isArray(resp)) {                            
+                            for(i = 0; i < resp.length; ++i) {
+                                dispatch_message(resp[i]);
+                            }                        
+                        }
+                        else {
+                            dispatch_message(resp);                        
                         }
                     }
                     catch(e) {
@@ -393,7 +383,7 @@ define(['js/ember.js','models','jquery'],function(Ember,Radar,$){
 
 	        var fetch = function(path,callbacks) {
                     callbacks = callbacks || {};                    
-                    rpc('fetch',[path],function(response){
+                    rpc('fetch',['radar','.*'],function(response){
                         if(response.result) {
                             if(callbacks.success) {
                                 callbacks.success(response.result);
