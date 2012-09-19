@@ -279,7 +279,7 @@ define(['js/ember.js','models','jquery'],function(Ember,Radar,$){
 	        var id = 0;
                 var makeRadarState = function(n) {
                     var info = n.params;
-//                    Radar.logEntriesController.add(Radar.LogEntry.create(info));
+                    Radar.logEntriesController.add(Radar.LogEntry.create(info));
 //                    info.data.schema = {};
                     if(info.event=='add') {               
                         Radar[info.data.type+'sController'].create(info);
