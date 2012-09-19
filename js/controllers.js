@@ -69,7 +69,7 @@ define(['js/ember.js','models','jquery'],function(Ember,Radar,$){
                 childStates: this.get('states').filterProperty('parent','')
             }));
             if(this.directory.length>0) { 
-                var dirs = this.directory.split('.');
+                var dirs = this.directory.split('/');
                 var fullPath = '';
                 for(i = 0; i < dirs.length; ++i) {
                     fullPath += dirs[i];
@@ -80,7 +80,7 @@ define(['js/ember.js','models','jquery'],function(Ember,Radar,$){
                         childMethods: this.get('methods').filterProperty('parent',fullPath),
                         childStates: this.get('states').filterProperty('parent',fullPath)
                     }));
-                    fullPath += '.';
+                    fullPath += '/';
                 }
             }                        
             return bcs;
