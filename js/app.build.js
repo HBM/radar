@@ -4,15 +4,32 @@
     dir: "../../radar-build",
     //Comment out the optimize line if you want
     //the code minified by UglifyJS
-//    optimize: "none",
+    //    optimize: "none",
 
-    paths: {
-        "jquery": "empty:"
+    /*    paths: {
+          "jquery": "jquery",
+          "handlebars": "handlebars",
+          "ember": "ember",
+          "bootstrap-dropdown": "bootstrap-dropdown"
+          },*/
+    preserveLicenseComments: false,
+    shim: {
+        jquery: {
+            exports: '$'
+        },
+        handlebars: {
+            deps: ['jquery'],
+            exports: 'Handlebars'
+        },
+        ember: {
+            deps: ['handlebars', 'jquery'],
+            exports: 'Ember'
+        }
     },
 
+
+
     modules: [
-        //Optimize the application files. jQuery is not 
-        //included since it is already in require-jquery.js
         {
             name: "main"
         }

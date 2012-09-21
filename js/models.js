@@ -1,10 +1,9 @@
-define(['js/ember.js','app'],function(Ember,Radar){
-    Ember = window.Ember;
+define(['ember','app'],function(Ember,Radar){
     Radar.Base = Ember.Object.extend({
         path: null,
         name:null,
         parent: null,                    
-        selected: false,
+        selected: false,       
         init: function(){
             var parentNodes;
             var parent = this.get('path').substring(0,this.path.lastIndexOf('/'))
@@ -13,11 +12,14 @@ define(['js/ember.js','app'],function(Ember,Radar){
             if(parent !== '' ) {                
                 parentNodes = Radar.nodesController.content.filterProperty('path',this.parent);
                 if(parentNodes && parentNodes[0]) {
-                    if( parentNodes[0].get('selected') ) {
+                    var parent = parentNodes[0];
+                    if( parent.get('selected') ) {
                         this.set('selected',true);
                     }
-                    parentNodes[0].addObserver('selected',this,function(sender,key,value,rev){
-                        this.set('selected',value);
+                    parent.addObserver('selected',this,function(sender,key,value,rev){
+                        var selected = parent.get('selected');
+                        this.set('selected',selected);
+//                        this.set('selected',value);
                     });
                 }
             }          

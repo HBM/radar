@@ -1,5 +1,4 @@
-define(['js/ember.js','models','jquery'],function(Ember,Radar,$){
-    Ember = window.Ember;
+define(['ember','app','jquery','models'],function(Ember,Radar,$){
     Radar.Container = Ember.ArrayProxy.extend({                    
         factory: null,
         create: function(n){
@@ -190,7 +189,8 @@ define(['js/ember.js','models','jquery'],function(Ember,Radar,$){
         }.property('allMatches')
     });
 
-    $(document).ready(function(){
+//    $(document).ready(function(){
+    Radar.initJet = function() {
         var debug = false;
         if (debug) {
             Radar.State.reopen({
@@ -396,7 +396,8 @@ define(['js/ember.js','models','jquery'],function(Ember,Radar,$){
                 //            that.fetch();
             };
         }
-    });// document ready
+    }
+//    });// document ready
     
     return Radar;
 });

@@ -1,7 +1,6 @@
-{{#with this as logView}}
 <div class="dropdown pull-right">
-  <div data-toggle="dropdown" id="status-label" {{bindAttr class=":label labelType"}}>
-    <h3 id="status-text">{{status}}</h3>
+  <div data-toggle="dropdown" id="status-label" {{bindAttr class=":label view.labelType"}}>
+    <h3 id="status-text">{{view.status}}</h3>
   </div>
   <ul class="dropdown-menu">
     <li>
@@ -9,12 +8,11 @@
         <thead>
         </thead>
         <tbody>         
-          {{#each logView.last10Entries}}
-          {{#view logView.ItemView tagName="tr" itemBinding="this"}}
-            <td><i class="{{unbound icon}}" title="{{unbound event}}"></i></td>
+          {{#each view.last10Entries}}
+          {{#view view.ItemView tagName="tr"}}
+            <td><i class="{{unbound view.icon}}" title="{{unbound event}}"></i></td>
             <td>{{unbound path}}</td>
-            <td title="{{unbound dateLong}}">{{unbound dateShort}}</td>
-            <td title="{{unbound dataLong}}">{{unbound dataShort}}</td>
+            <td title="{{unbound view.dateLong}}">{{unbound view.dateShort}}</td>
           {{/view}}
           {{/each}}
         </tbody>
@@ -22,5 +20,4 @@
     </li>
   </ul>
 </div>
-{{/with}}
 

@@ -1,89 +1,89 @@
 <ul class="thumbnails">
-  {{#each selectedStates}}
-  {{#view Radar.StateRowView itemBinding="this" classNames="jet-item" tagName="li"}}
-  <div class="thumbnail">
-    <div class="input-anchor">
-      <div {{action unselect}} class="badge 
-                                      badge-inverse
-                                      close-badge"
-           style="display:none;">
-        &times;
-      </div>
-      <label>
-        <div class="parent-node">{{unbound item.parent}}</div>
-        <div><strong>{{unbound item.name}}</strong></div>
-      </label>
-      {{#if item.history.updateCount}}
-      <div {{action toggleShowHistory}} class="badge badge-important
-                                               history-badge">
-        {{item.history.updateCount}}
-      </div>
-      {{/if}}    
-      {{#unless item.schema.read_only}}
-      {{#if refreshAvailable}}        
-      <div {{action refreshInputView}} class="badge badge-inverse refresh-badge">
-        <i class="icon-refresh icon-white"></i>
-      </div>
-      {{/if}}
-      {{/unless}}    
-      <div class="control-group">
-        {{view JSONInputView viewName="inputView" isReadonlyBinding="item.schema.read_only"}}
-        <button {{action changeState}} {{bindAttr class=":btn
-                                                         :btn-primary
-                                                         isDisabled:disabled"}}>
-          <i class="icon-download icon-white"></i>
-        </button>
-      </div>
-      {{#unless item.schema.read_only}}
-      {{/unless}}
-    </div>
-    {{#if errorString}}
-    <div class="control-group error closable">
-      {{view Radar.AutoHeightTextArea valueBinding="errorString"}}
-      <a {{action hideErrorString}} class="close">&times;</a>
-    </div>    
-    {{/if}}
-    {{#if showHistory}}    
-    {{#each item.history.content}}    
-    <label><i>{{date.day}}, {{date.time}}</i></label>
-    {{view Radar.AutoHeightTextArea valueBinding="value"}}
-    {{/each}}
-    {{/if}}
-    {{/view}}
-  </div>
-  {{/each}}
-  {{#each selectedMethods}}
-  {{#view Radar.MethodRowView itemBinding="this" classNames="jet-item" tagName="li"}}
-  <div class="thumbnail">
-    <div class="input-anchor">
-      <div {{action unselect}} class="badge 
-                                      badge-inverse
-                                      close-badge"
-           style="display:none;">
-        &times;
-      </div>
-      <label>
-        <div class="parent-node">{{unbound item.parent}}</div>
-        <div><strong>{{unbound item.name}}</strong></div>
-      </label>
-      <div class="control-group">
-        {{view JSONArrayInputView viewName="inputView" placeholder="[]"}}
-        <button {{action callMethod}} {{bindAttr class=":btn 
-                                                        :btn-primary
-                                                        isDisabled:disabled"}}>
-          <i class="icon-cog icon-white"></i>
-        </button>
-        {{#if result}}
-        <div {{bindAttr class=":control-group :closable
-                               result.isSuccess:success 
-                               result.isError:error"}}>
-          {{view Radar.AutoHeightTextArea valueBinding="result.jsonString"}}
-          <a {{action hideResult}} class="close">&times;</a>
+  {{#each view.selectedStates}}
+    {{#view Radar.StateRowView classNames="jet-item" tagName="li"}}
+    <div class="thumbnail">
+      <div class="input-anchor">
+        <div {{action unselect}} class="badge 
+          badge-inverse
+          close-badge"
+          style="display:none;">
+          &times;
         </div>
-        {{/if}}
+        <label>
+          <div class="parent-node">{{unbound parent}}</div>
+          <div><strong>{{unbound name}}</strong></div>
+        </label>
+        {{#if history.updateCount}}
+          <div {{action view.toggleShowHistory}} class="badge badge-important
+            history-badge">
+            {{history.updateCount}}
+          </div>
+        {{/if}}    
+        {{#unless schema.read_only}}
+          {{#if refreshAvailable}}        
+            <div {{action view.refreshInputView}} class="badge badge-inverse refresh-badge">
+              <i class="icon-refresh icon-white"></i>
+            </div>
+          {{/if}}
+        {{/unless}}    
+        <div class="control-group">
+          {{view view.JSONInputView viewName="inputView" isReadonlyBinding="schema.read_only"}}
+          <button {{action view.changeState}} {{bindAttr class=":btn
+            :btn-primary
+            view.isDisabled:disabled"}}>
+            <i class="icon-download icon-white"></i>
+          </button>
+        </div>
+        {{#unless schema.read_only}}
+        {{/unless}}
+      </div>
+      {{#if view.errorString}}
+        <div class="control-group error closable">
+          {{view Radar.AutoHeightTextArea valueBinding="errorString"}}
+          <a {{action view.hideErrorString}} class="close">&times;</a>
+        </div>    
+      {{/if}}
+      {{#if view.showHistory}}    
+        {{#each history.content}}    
+          <label><i>{{date.day}}, {{date.time}}</i></label>
+          {{view Radar.AutoHeightTextArea valueBinding="value"}}
+        {{/each}}
+      {{/if}}
+    {{/view}}
+    </div>
+  {{/each}}
+  {{#each view.selectedMethods}}
+    {{#view Radar.MethodRowView classNames="jet-item" tagName="li"}}    
+    <div class="thumbnail">
+      <div class="input-anchor">
+        <div {{action unselect}} class="badge 
+          badge-inverse
+          close-badge"
+          style="display:none;">
+          &times;
+        </div>
+        <label>
+          <div class="parent-node">{{unbound parent}}</div>
+          <div><strong>{{unbound name}}</strong></div>
+        </label>
+        <div class="control-group">
+          {{view view.JSONArrayInputView viewName="inputView" placeholder="[]"}}
+          <button {{action view.callMethod}} {{bindAttr class=":btn 
+            :btn-primary
+            view.isDisabled:disabled"}}>
+            <i class="icon-cog icon-white"></i>
+          </button>
+          {{#if view.result}}
+            <div {{bindAttr class=":control-group :closable
+              view.result.isSuccess:success 
+              view.result.isError:error"}}>
+              {{view Radar.AutoHeightTextArea valueBinding="view.result.jsonString"}}
+              <a {{action view.hideResult}} class="close">&times;</a>
+            </div>
+          {{/if}}
+        </div>
       </div>
     </div>
-  </div>
-  {{/view}}
+    {{/view}}
   {{/each}}
 </ul>

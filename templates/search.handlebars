@@ -1,3 +1,4 @@
+{{#with view}}
 <form class="navbar-search pull-left dropdown">
   <div data-toggle="dropdown">
   {{view Ember.TextField valueBinding="searchExpression"
@@ -14,8 +15,8 @@
       </a>
     </li>
     <li class="divider"></li>
-    {{#each first20Matches}}    
-    {{view Radar.LeafView itemBinding="this" tagName="li" displayNameBinding="path"}}
+    {{#each first20Matches}}
+    {{view Radar.LeafView tagName="li" displayNameBinding="path"}}
     {{/each}}    
     {{#if moreMatchesNumber}}
     <li class="divider"></li>
@@ -26,4 +27,4 @@
     {{/if}}
   </ul>
 </form>
-
+{{/with}}
