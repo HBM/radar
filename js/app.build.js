@@ -5,17 +5,13 @@
     //Comment out the optimize line if you want
     //the code minified by UglifyJS
     //    optimize: "none",
-
-    /*    paths: {
-          "jquery": "jquery",
-          "handlebars": "handlebars",
-          "ember": "ember",
-          "bootstrap-dropdown": "bootstrap-dropdown"
-          },*/
     preserveLicenseComments: false,
     shim: {
         jquery: {
             exports: '$'
+        },
+        bootstrap: {
+            deps: ['jquery']
         },
         handlebars: {
             deps: ['jquery'],

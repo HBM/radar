@@ -1,8 +1,10 @@
 <div class="dropdown pull-right">
   <div data-toggle="dropdown" id="status-label" {{bindAttr class=":label view.labelType"}}>
-    <h3 id="status-text">{{view.status}}</h3>
+    <h3 id="status-box">
+      {{view.status}}
+    </h3>
   </div>
-  <ul class="dropdown-menu">
+  <ul class="dropdown-menu span12">
     <li>
       <table class="table table-condensed">
         <thead>
@@ -12,10 +14,13 @@
           {{#view view.ItemView tagName="tr"}}
             <td><i class="{{unbound view.icon}}" title="{{unbound event}}"></i></td>
             <td>{{unbound path}}</td>
+            <td {{action toggleIsExpanded}}>
+              {{view Radar.AutoHeightTextArea valueBinding="view.data" class="inline-textarea" disabled=true uneditable=true}}            
+            </td>
             <td title="{{unbound view.dateLong}}">{{unbound view.dateShort}}</td>
           {{/view}}
           {{/each}}
-        </tbody>
+        </tbody>        
       </table>
     </li>
   </ul>

@@ -1,5 +1,5 @@
 define(['jquery',
-        'bootstrap-dropdown',
+        'bootstrap',
         'ember',
         'app',
         'text!../templates/dash.handlebars',
@@ -7,11 +7,12 @@ define(['jquery',
         'text!../templates/nodes.handlebars',
         'text!../templates/search.handlebars',
         'text!../templates/tree-element.handlebars',
-        'text!../templates/log.handlebars'
+        'text!../templates/log.handlebars',
+        'text!../templates/dashToolbar.handlebars'
        ],
        function($,bs,Ember,Radar,
                 dashTemplate,mainTemplate,nodesTemplate,
-                searchTemplate,treeElementTemplate,logTemplate) {
+                searchTemplate,treeElementTemplate,logTemplate,dashToolbarTemplate) {
            
            Radar = window.Radar;
                       
@@ -20,10 +21,12 @@ define(['jquery',
                breadcrumbsBinding: Ember.Binding.oneWay('Radar.treeController.breadcrumbs'),              
            });
 
+           Radar.DashToolbarView = Ember.View.extend({
+               template: Ember.Handlebars.compile(dashToolbarTemplate),
+           });
+
            Radar.DashView = Ember.View.extend({
                template: Ember.Handlebars.compile(dashTemplate),
-               selectedStatesBinding: Ember.Binding.oneWay('Radar.selectedController.selectedStates'),
-               selectedMethodsBinding: Ember.Binding.oneWay('Radar.selectedController.selectedMethods'),
            });
 
            Radar.AutoHeightTextArea = Ember.TextArea.extend({
@@ -33,7 +36,7 @@ define(['jquery',
                },
                heightAdjuster: function() {
                    if( this.get('value')) {
-                       var value = this.get('value').toString();
+                       var value = this.get('value');
                        var lines = value.split('\n').length;                                
                        this.$().attr('rows',lines);
                    }
@@ -43,7 +46,22 @@ define(['jquery',
                }.observes('value')
            });
 
-           Radar.StateRowView = Ember.View.extend({
+           Radar.DashItemView = Ember.View.extend({
+               unselect: function(event) {
+                   event.context = this.get('context');
+                   Radar.get('router').send('unselect',event);
+               },
+               didInsertElement: function() {
+                   var that = this;
+                   this.$().hover(function(){
+                       that.$('.close-badge').show();
+                   },function(){
+                       that.$('.close-badge').hide();
+                   });
+               },
+           });
+
+           Radar.StateRowView = Radar.DashItemView.extend({
                badgeStyle: Ember.computed(function() {
                    if(this.get('context').get('history').get('updateCount') < 1) { 
                        return 'display: none;';
@@ -52,11 +70,7 @@ define(['jquery',
                }).property('context.history.@each'),
                isDisabled: true,
                refreshAvailable: false,
-               unselect: function() {
-                   this.set('context.selected',false);
-               },
                refreshInputView: function(event){
-                   event.preventDefault();
                    this.inputView.set('uncomittedChanges',false);
                    this.set('refreshAvailable',false);
                    this.inputView.controlGroup().removeClass('warning');
@@ -76,35 +90,30 @@ define(['jquery',
                        }
                    }
                }.observes('context.value'),
-               didInsertElement: function() {
-                   var that = this;
-                   this.$().hover(function(){
-                       that.$('.close-badge').show();
-                   },function(){
-                       that.$('.close-badge').hide();
-                   });
-               },
                JSONInputView: Ember.TextArea.extend({
+                   beautifulValue: function() {
+                       var value = this.get('context.value');                       
+                       return JSON.stringify(value,undefined,2)
+                   },
                    didInsertElement: function() {
+                       this.$().val(this.beautifulValue());
                        this.heightAdjuster();
-                       this.$().val(this.get('value'));
                        if(this.get('isReadonly')) {
                            this.$().attr('readonly',true);
 	                   this.$().css('resize','none');
                        }
                    },
-                   value: Ember.computed(function(){               
-                       var value = this.get('parentView').get('context.value');
+                   valueWatcher: function(){  
                        if (this.get('uncomittedChanges')) {
-                           return this.$().val(); 
+                           return;
                        }
-                       return JSON.stringify(value,undefined,2);
-                   }).property('parentView.context.value'),
+                       this.set('value',this.beautifulValue());
+                   }.observes('context.value'),
                    controlGroup: function() {
                        return this.$().parents('.control-group');
                    },
                    heightAdjuster: function() {
-                       var value = this.get('value');
+                       var value = this.$().val();
                        if(value) {
                            var lines = value.split('\n').length;
                            this.$().attr('rows',lines);
@@ -114,8 +123,8 @@ define(['jquery',
                        }
                    }.observes('value'),
                    focusOut: function() {
-                       try {
-                           var oldValueJSON =  JSON.stringify(parent.get('context.value'));
+                       try {                           
+                           var oldValueJSON =  JSON.stringify(this.get('context.value'));
                            var newValueJSON =  JSON.stringify(JSON.parse(this.$().val()));
                            if (newValueJSON == oldValueJSON) {
                                this.set('uncomittedChanges',false);
@@ -123,6 +132,7 @@ define(['jquery',
                            }
                        }
                        catch(e) {
+                           console.log(e);
                        }
                    },
                    keyUp: function(event) {
@@ -130,6 +140,7 @@ define(['jquery',
                        var controlGroup = this.controlGroup();
                        var parent = this.get('parentView');
                        this.set('uncomittedChanges',true);
+                       Ember.run.sync();
                        try {
                            var oldValueJSON =  JSON.stringify(parent.get('context.value'));
                            var newValueJSON =  JSON.stringify(JSON.parse(this.$().val()));
@@ -170,8 +181,9 @@ define(['jquery',
                        }
                        try {
                            var newValue =  JSON.parse(this.inputView.$().val());
-                           console.log('setting',this.get('item').get('path'),'to',newValue);
-                           this.get('item').change(newValue,{
+                           var state = this.get('context');
+                           console.log('setting',state.get('path'),'to',newValue);
+                           state.change(newValue,{
                                error: function(err){                            
                                    console.log('error:',err);
                                    revert();        
@@ -179,7 +191,6 @@ define(['jquery',
                                },
                                success: function(){
                                    console.log('changeState succeeded');
-                                   that.set('isDisabled',false);
                                }
                            });
                        }
@@ -197,26 +208,25 @@ define(['jquery',
            });
 
 
-           Radar.MethodRowView = Ember.View.extend({
+           Radar.MethodRowView = Radar.DashItemView.extend({
                isDisabled: true,
-               didInsertElement: function() {
-                   var that = this;
-                   this.$().hover(function(){
-                       that.$('.close-badge').show();
-                   },function(){
-                       that.$('.close-badge').hide();
-                   });
-               },
-               unselect: function() {
-                   this.set('context.selected',false);
-               },
                JSONArrayInputView: Ember.TextArea.extend({
                    didInsertElement: function() {
-                       this.$().height('18px');
+                       this.$().attr('rows',1);
                    },
                    controlGroup: function() {
                        return this.$().parent('.control-group');
                    },
+                   heightAdjuster: function() {
+                       var value = this.$().val();
+                       if(value) {
+                           var lines = value.split('\n').length;
+                           this.$().attr('rows',lines);
+                       } 
+                       else {
+                           this.$().attr('rows',1);
+                       }
+                   }.observes('value'),
                    keyUp: function() {
                        var controlGroup = this.controlGroup();
                        var parent = this.get('parentView');
@@ -284,37 +294,39 @@ define(['jquery',
 
            Radar.TreeElementView = Ember.View.extend({
                template: Ember.Handlebars.compile(treeElementTemplate),
-               toggleSelected:function(event) {
-                   event.stopPropagation();                       
-                   this.toggleProperty('context.selected');
-               },
            });
 
            Radar.LeafView = Radar.TreeElementView.extend({
                isLeaf: true,
                onIconClick: function(event) {
                    event.stopPropagation();
+                   return true;
                },
                onNameClick: function(event) {
-                   event.stopPropagation();
-                   this.toggleSelected(event);
+                   event.context = this.get('context');
+                   Radar.get('router').send('toggle',event);
+                   return true;
+               },
+               toggle: function(event) {
+                   event.context = this.get('context');
+                   Radar.get('router').send('toggle',event);
+                   return true;
                }
            });
 
            Radar.NodeView = Radar.TreeElementView.extend({
                isNode: true,
-               changeDirectory: function(event) {
-                   // dont let default <a> click handler apply (reloads page with href)
-                   event.stopPropagation();
+               changeDirectory: function() {
                    Radar.treeController.set('directory',this.get('context.path'));
+                   return true;
                },
                onIconClick: function(event) {
-                   event.stopPropagation();
-                   this.changeDirectory(event);
+                   this.changeDirectory();
+                   return true;
                },
                onNameClick: function(event) {
-                   event.stopPropagation();
-                   this.changeDirectory(event);            
+                   this.changeDirectory();            
+                   return true;
                }
            });
 
@@ -346,13 +358,17 @@ define(['jquery',
                selectAll: function(event) {
                    event.stopPropagation();
                    this.get('allMatches').forEach(function(item) {
-                       item.set('selected',true);
+                       event.context = item;
+                       Radar.get('router').send('select',event);
+//                       item.set('selected',true);
                    });
                },
                unselectAll: function(event) {
                    event.stopPropagation();
                    this.get('allMatches').forEach(function(item) {
-                       item.set('selected',false);
+                       event.context = item;
+                       Radar.get('router').send('unselect',event);
+//                       item.set('selected',false);
                    });
                }
            });
@@ -361,6 +377,9 @@ define(['jquery',
            Radar.LogView = Ember.View.extend({
                template: Ember.Handlebars.compile(logTemplate),
                statusBinding: 'Radar.status',
+               changeText: function(e) {
+                   this.set('status',e.type);
+               },
                logEntriesBinding: Ember.Binding.oneWay('Radar.logEntriesController.content'),
                last10Entries: Ember.computed(function(){
                    try {
@@ -389,25 +408,32 @@ define(['jquery',
                    return 'label-important';
                }).property('Radar.status'),
                ItemView: Ember.View.extend({
-                   dataShort: function() {
-                       var d = JSON.stringify(this.get('context.data'));                       
-                       if (d) {
-                           return d.substr(0,30);
-                       }
-                       return '';
-                   }.property('context.data'),
-                   dataLong: function() {
-                       return JSON.stringify(this.get('context.data'),null,2) || ''                  
-                   }.property('context.data'),
+                   isExpanded: false,
+                   toggleIsExpanded: function(event) {
+                       this.toggleProperty('isExpanded');
+                   },
+                   data: function() {
+                       var event = this.get('context.event');
+                       var data;
+                       if (event === 'add' || event == 'change') {
+                           data = this.get('context.data.value');
+                           if (this.get('isExpanded')) {
+                               return JSON.stringify(data,null,2);
+                           }
+                           else {
+                               return JSON.stringify(data);
+                           }
+                       }                       
+                   }.property('context.data','isExpanded'),
                    icon: function() {
                        var event = this.get('context.event');
-                       if( event === 'create' ) {
+                       if (event === 'add') {
                            return 'icon-plus-sign';
                        }
-                       else if( event === 'delete' ) {
+                       else if (event === 'remove') {
                            return 'icon-minus-sign';
                        }
-                       else if( event === 'value' ) {
+                       else if (event === 'change') {
                            return 'icon-exclamation-sign';
                        }
                        return 'icon-info-sign';                       

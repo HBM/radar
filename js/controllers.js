@@ -2,25 +2,33 @@ define(['ember','app','jquery','models'],function(Ember,Radar,$){
     Radar.Container = Ember.ArrayProxy.extend({                    
         factory: null,
         create: function(n){
+            var content = this.get('content');
             var obj = this.factory.create({path:n.path});
             for(var key in n.data) {
                 obj.set(key,n.data[key]);
-            }
-            this.pushObject(obj);
+            }            
+            content.pushObject(obj);
+            this.set('content',content.sort(this.sortByPath));
         },
         destroy: function(n){
-            this.filterProperty('path',n.path).forEach(this.removeObject,this);
+            var content = this.get('content');
+            content.filterProperty('path',n.path).forEach(content.removeObject,content);
+            this.set('content',content.sort(this.sortByPath));
+        },
+        sortByPath: function(a,b) {
+            return a.get('path').localeCompare(b.get('path'));
         }
     });
 
     Radar.nodesController = Radar.Container.create({
-        content: [],
-        factory: Radar.Node
+        content: Ember.A(), 
+        factory: Radar.Node,
+        
     });
 
     Radar.statesController = Radar.Container.create({
-        content: [],
         factory: Radar.State,
+        content: Ember.A(), 
         updateChild: function(n){
             var state = this.findProperty('path',n.path);
             state.set('value',n.data.value);
@@ -28,7 +36,7 @@ define(['ember','app','jquery','models'],function(Ember,Radar,$){
     });
 
     Radar.methodsController = Radar.Container.create({
-        content: [],
+        content: Ember.A(), 
         factory: Radar.Method
     });
 
@@ -86,86 +94,38 @@ define(['ember','app','jquery','models'],function(Ember,Radar,$){
         }.property('directory','nodes.@each','methods.@each','states.@each')
     });
 
-    Radar.selectedController = Ember.Object.create({
+    
+    Radar.selector = Ember.Object.create({
+        statesBinding: 'Radar.statesController.content',
+        methodsBinding: 'Radar.methodsController.content',
+        paths: Ember.A(),
+        itemWatcher: function() {
+            var states = this.get('states');
+            var methods = this.get('methods');
+            var paths = this.get('paths');
+            methods.forEach(function(method){
+                var path = method.get('path');
+                method.set('selected',paths.indexOf(path) !== -1);
+            });
+            states.forEach(function(method){
+                var path = method.get('path');
+                method.set('selected',paths.indexOf(path) !== -1);
+            });
+        }.observes('states.@each','methods.@each','paths.@each'),
+    });
+    
+    Radar.DashController = Ember.Controller.extend({
         statesBinding: Ember.Binding.oneWay('Radar.statesController.content'),
         methodsBinding: Ember.Binding.oneWay('Radar.methodsController.content'),
         selectedStates: function() {
-            var s = this.get('states').filterProperty('selected',true);
-            return s;
+            return this.get('states').filterProperty('selected',true);                        
         }.property('states.@each.selected'),
         selectedMethods: function() {
-            var s = this.get('methods').filterProperty('selected',true);
-            return s;
-        }.property('methods.@each.selected')
-    });
-    
-    var getSelectedFromURL = function() {
-        var urlParts = document.URL.split('?');
-        var selectedExpr = /selected=(.*)/g;
-        try {
-            var selectedString = selectedExpr.exec(decodeURIComponent(urlParts[1]))[1];
-            return JSON.parse(selectedString);
-        }
-        catch(e) {
-            window.history.replaceState('','',urlParts[0]);
-            return [];
-        }
-    };
-
-    var compareArrays = function(a,b) {
-        if (a.length != b.length) return false;
-        for (var i = 0; i < b.length; i++) {
-            if (a[i] !== b[i]) return false;
-        }
-        return true;
-    };
-
-    Radar.urlController = Ember.Object.create({
-        selectedStatesBinding: Ember.Binding.oneWay('Radar.selectedController.selectedStates'),
-        selectedMethodsBinding: Ember.Binding.oneWay('Radar.selectedController.selectedMethods'),
-        selectedFromURL: getSelectedFromURL(),
-        toBeRestored: null,
-        urlUpdated: function() {
-            var selectedStates = this.get('selectedStates').getEach('path');
-            var selectedMethods = this.get('selectedMethods').getEach('path');
-            var selected = selectedStates.concat(selectedMethods);
-            var toBeRestored = this.get('toBeRestored');
-            if( window.history.state && window.history.state.selected ) {
-                if( compareArrays(selected,window.history.state.selected)) {
-                    if(toBeRestored && compareArrays(selected,toBeRestored)){
-                        this.set('toBeRestored',null);
-                    }
-                    return;
-                }
-            }
-            var url = document.URL.split('?')[0] + '?selected=' + encodeURIComponent(JSON.stringify(selected));
-
-            if (!toBeRestored) {
-                var state = {
-                    isRadar: true,
-                    selected: selected
-                };
-                window.history.pushState(state,'',url);
-                this.set('restoring',false);
-            }
-            else if(compareArrays(selected,toBeRestored)){
-                this.set('toBeRestored',null);
-            }
-        }.observes('selectedStates.@each','selectedMethods.@each','toBeRestored')
+            return this.get('methods').filterProperty('selected',true);
+        }.property('methods.@each.selected'),
     });
 
-    window.onpopstate = function(event) {
-        try {
-            if(event.state && event.state.isRadar) {
-                Radar.urlController.set('toBeRestored',event.state.selected);
-                Radar.urlController.set('selectedFromURL',event.state.selected);
-            }
-        }
-        catch(e){
-            console.log(e);
-        }
-    };
-
+    Radar.DashToolbarController = Ember.Object.extend({});
 
     Radar.searchController = Ember.Object.create({
         statesBinding: Ember.Binding.oneWay('Radar.statesController.content'),
@@ -188,8 +148,7 @@ define(['ember','app','jquery','models'],function(Ember,Radar,$){
             return this.get('allMatches').slice(0,20);
         }.property('allMatches')
     });
-
-//    $(document).ready(function(){
+   
     Radar.initJet = function() {
         var debug = false;
         if (debug) {
@@ -243,7 +202,7 @@ define(['ember','app','jquery','models'],function(Ember,Radar,$){
             });
         }
         else {
-            var new_websocket = function(url,protocol) {
+            var newWebsocket = function(url,protocol) {
 	        if( navigator.userAgent.search("Firefox") != -1 ) {
                     try {
 		        return new WebSocket(url,protocol);
@@ -272,14 +231,15 @@ define(['ember','app','jquery','models'],function(Ember,Radar,$){
             };
             ping();
         };*/
-            var ws_url = 'ws://' + (window.document.domain || 'localhost')+ ':8004';
-            var ws = new_websocket(ws_url,'jet');
+            var wsURL = 'ws://' + (window.document.domain || 'localhost')+ ':8004';
+            var ws = newWebsocket(wsURL,'jet');
             ws.onopen = function() {
 	        var pending = {};
 	        var id = 0;
-                var makeRadarState = function(n) {
+                var dispatchNotification = function(n) {
                     var info = n.params;
-                    Radar.logEntriesController.add(Radar.LogEntry.create(info));
+                    var logEntry = Radar.LogEntry.create(info);                    
+                    Radar.logEntriesController.add(logEntry);
 //                    info.data.schema = {};
                     if(info.event=='add') {               
                         Radar[info.data.type+'sController'].create(info);
@@ -290,57 +250,78 @@ define(['ember','app','jquery','models'],function(Ember,Radar,$){
                     else if(info.event=='change') {
                         Radar.statesController.updateChild(info);
                     }
+                    else {
+                        console.log('unhandled Notification',n);
+                    }
                 };
 
-	        ws.onmessage = function(msg) {
+	        ws.onmessage = function(wsMessage) {
                     var i;
-		    var notifications;
-                    var resp;
-                    var notification;
-                    var rpc;              
-                    var dispatch_message = function(message) {
-                        if (message.id && (message.result || message.error)) {
+                    var messageObject;
+                    var isDefined = function(x) {
+                        return !Ember.none(x);
+                    };
+                    var isResponse = function(message) {
+                        return isDefined(message.id) && (isDefined(message.result) || isDefined(message.error));
+                    };
+                    var isNotification = function(message) {
+                        return isDefined(message.method) && isDefined(message.params);
+                    }
+                    var isBatch = $.isArray;
+
+                    var dispatchSingleMessage = function(message) {                        
+                        if (isResponse(message)) {
                             pending[message.id](message);
                         }
-                        else if(message.method && message.params) {
-                            makeRadarState(message);
+                        else if(isNotification(message)) {
+                            dispatchNotification(message);
                         }
                         else {
-                            console.log('invalid message',message);
+                            console.log('message is neither Response nor Notification',message);
                         }
                     };
+                    Ember.set('Radar.network.receiving',true);
                     $('body').css('cursor','progress');
                     
                     try {
-		        resp = JSON.parse(msg.data);
-                        if($.isArray(resp)) {                            
-                            for(i = 0; i < resp.length; ++i) {
-                                dispatch_message(resp[i]);
+		        messageObject = JSON.parse(wsMessage.data);
+                    }
+                    catch(e) {
+                        console.log('Message is no valid JSON',wsMessage.data,e);
+                        Ember.set('Radar.network.receiving',false);
+                        $('body').css('cursor','');
+                        return;
+                    }                
+                    try {
+                        if(isBatch(messageObject)) {                            
+                            for(i = 0; i < messageObject.length; ++i) {
+                                dispatchSingleMessage(messageObject[i]);
                             }                        
                         }
                         else {
-                            dispatch_message(resp);                        
+                            dispatchSingleMessage(messageObject);  
                         }
                     }
                     catch(e) {
-                        console.log('Error handling message',msg.data,e);
+                        console.log('Error processing',wsMessage.data);
                     }
+                    Ember.set('Radar.network.receiving',false);
                     $('body').css('cursor','');
 	        };
                 
-	        rpc = function(method,params,on_response) {
+	        rpc = function(method,params,onResponse) {
                     var request = {
 		        method: method,
 		        params: params                            
                     };
                     id += 1;
                     request.id = id;
-                    pending[id] = on_response;
+                    pending[id] = onResponse;
                     ws.send(JSON.stringify(request));                    
                 };
 	        
 	        /*.close = function(){
-                ping_ws.close();
+                  ping_ws.close();
                 ws.close();
 	    }*/
 

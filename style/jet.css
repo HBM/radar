@@ -1,7 +1,7 @@
 @-webkit-keyframes 'blink' {
-    0% { background-color: #468847; }   
-    50% { background-color: #333 }
-    100% { background-color: #468847; }   
+    0% { opacity: 1; }   
+    50% { opacity: 0; }
+    100% { opacity: 1; }   
 }
 
 body {
@@ -10,8 +10,8 @@ body {
    background-repeat: repeat-x;
 }
 
-#status-label {
-   margin-top:4px;
+#status-box {
+   margin:0px;
 }
 
 .jet-item a.close {
@@ -121,6 +121,18 @@ ul li a {
    left: -11px;
    padding:0px 4px;
    cursor:pointer;
+}
+
+.inline-textarea {
+    border:none;
+    resize:none;
+    box-shadow:none;
+    -moz-box-shadow:none;
+    -webkit-box-shadow:none;
+    padding: 0px;
+    margin: 0px;
+    width:inherit;
+    overflow: hidden;
 }
 
 

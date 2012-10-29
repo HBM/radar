@@ -3,42 +3,18 @@ define(['ember','app'],function(Ember,Radar){
         path: null,
         name:null,
         parent: null,                    
-        selected: false,       
+        selected: false,        
         init: function(){
             var parentNodes;
             var parent = this.get('path').substring(0,this.path.lastIndexOf('/'))
             this.set('name',this.get('path').split('/').pop());
             this.set('parent',parent);  
-            if(parent !== '' ) {                
-                parentNodes = Radar.nodesController.content.filterProperty('path',this.parent);
-                if(parentNodes && parentNodes[0]) {
-                    var parent = parentNodes[0];
-                    if( parent.get('selected') ) {
-                        this.set('selected',true);
-                    }
-                    parent.addObserver('selected',this,function(sender,key,value,rev){
-                        var selected = parent.get('selected');
-                        this.set('selected',selected);
-//                        this.set('selected',value);
-                    });
-                }
-            }          
-            if(Radar.urlController.get('selectedFromURL').indexOf(this.path) != -1) {
-                this.set('selected',true);
-            }
-        },
-        urlObserver: function() {
-            if(Radar.urlController.get('selectedFromURL').indexOf(this.path) != -1) {
-                this.set('selected',true);
-            }
-            else {
-                this.set('selected',false);
-            }
-        }.observes('Radar.urlController.selectedFromURL')
+        }
     });
 
     Radar.Method = Radar.Base.extend({
         schema: null,
+        isMethod: true,
         init: function(){
             this._super();
         },
@@ -49,12 +25,15 @@ define(['ember','app'],function(Ember,Radar){
 
     Radar.State = Radar.Base.extend({
         schema: null,
-        prev: null,                    
+        prev: null,
+        isState: true,
         value: Ember.computed(function(key,value) {
             var date;
             var prev = this.get('prev');
             if(arguments.length===1) {
-                return prev.value;
+                if (prev) {
+                    return prev.value;
+                }
             }
             else {
                 if(prev) {
@@ -90,8 +69,8 @@ define(['ember','app'],function(Ember,Radar){
             });
             this._super();
         },
-        change: function(new_val,callbacks) {    
-            Radar.changeState(this.get('path'),new_val,{
+        change: function(newVal,callbacks) {    
+            Radar.changeState(this.get('path'),newVal,{
                 success: function() {                            
                     console.log('SET SUCCEEDED');
                     if(callbacks.success) {
@@ -112,9 +91,15 @@ define(['ember','app'],function(Ember,Radar){
         states: [],
         methods: [],
         nodes: [],
+        isNode: true,
         init: function(){
             this._super();
-        },
+        },        
+    });
+
+
+    Radar.network = Ember.Object.create({
+        receiving: false
     });
     return Radar;
 });
