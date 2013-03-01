@@ -8,15 +8,10 @@ define(['ember','app','jquery','models'],function(Ember,Radar,$){
                 obj.set(key,n.data[key]);
             }            
             content.pushObject(obj);
-            this.set('content',content.sort(this.sortByPath));
         },
         destroy: function(n){
             var content = this.get('content');
             content.filterProperty('path',n.path).forEach(content.removeObject,content);
-            this.set('content',content.sort(this.sortByPath));
-        },
-        sortByPath: function(a,b) {
-            return a.get('path').localeCompare(b.get('path'));
         }
     });
 
