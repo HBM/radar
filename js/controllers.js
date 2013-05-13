@@ -210,31 +210,15 @@ define(['ember','app','jquery','models'],function(Ember,Radar,$){
 		    return new WebSocket(url,protocol);
 	        }
 	    }
-            /*        ping_ws = new_websocket('ws://' + window.document.domain + ':8004','ping');
-        ping_ws.onopen = function(){
-            var ping = function(){                    
-                var t;
-                t = setTimeout(function(){
-                    t = null;                    
-                    event.trigger({event:'close'});
-                },3000);
-                ping_ws.onmessage = function(){
-                    clearTimeout(t);
-                    setTimeout(ping,3000);
-                }
-                ping_ws.send('ping');
-            };
-            ping();
-        };*/
-            var wsURL = 'ws://' + (window.document.domain || 'localhost')+ ':8004';
+            var wsURL = 'ws://' + (window.document.domain || 'localhost')+ ':11123';
             var ws = newWebsocket(wsURL,'jet');
             ws.onopen = function() {
 	        var pending = {};
 	        var id = 0;
                 var dispatchNotification = function(n) {
                     var info = n.params;
-                    var logEntry = Radar.LogEntry.create(info);                    
-                    Radar.logEntriesController.add(logEntry);
+//                    var logEntry = Radar.LogEntry.create(info);                    
+//                    Radar.logEntriesController.add(logEntry);
 //                    info.data.schema = {};
                     if(info.event=='add') {               
                         Radar[info.data.type+'sController'].create(info);
@@ -263,10 +247,14 @@ define(['ember','app','jquery','models'],function(Ember,Radar,$){
                         return isDefined(message.method) && isDefined(message.params);
                     }
                     var isBatch = $.isArray;
-
                     var dispatchSingleMessage = function(message) {                        
                         if (isResponse(message)) {
-                            pending[message.id](message);
+                            if (pending[message.id]) {
+                                pending[message.id](message);
+                            }
+                            else {
+                                console.log('Unknwon response',message.id);
+                            }
                         }
                         else if(isNotification(message)) {
                             dispatchNotification(message);
@@ -298,34 +286,21 @@ define(['ember','app','jquery','models'],function(Ember,Radar,$){
                         }
                     }
                     catch(e) {
-                        console.log('Error processing',wsMessage.data);
+                        console.log('Error processing',wsMessage.data,e);
                     }
                     Ember.set('Radar.network.receiving',false);
                     $('body').css('cursor','');
 	        };
                 
-	        rpc = function(method,params,onResponse) {
+	        rpc = function(method,params,callbacks) {
                     var request = {
 		        method: method,
 		        params: params                            
                     };
-                    id += 1;
-                    request.id = id;
-                    pending[id] = onResponse;
-                    ws.send(JSON.stringify(request));                    
-                };
-	        
-	        /*.close = function(){
-                  ping_ws.close();
-                ws.close();
-	    }*/
-
-                Radar.changeState = function(prop,val,callbacks) {
-                    callbacks = callbacks || {};
-                    rpc('set',{path:prop,value:val},function(response){
+                    var onResponse = function(response) {
                         if(response.result) {
                             if(callbacks.success) {
-                                callbacks.success();
+                                callbacks.success(response.result);
                             }
                         }
                         else if(response.error) {
@@ -333,41 +308,31 @@ define(['ember','app','jquery','models'],function(Ember,Radar,$){
                                 callbacks.error(response.error);
                             }
                         }
-                    });
+                    };
+                    id += 1;
+                    request.id = id;                    
+                    pending[id] = onResponse;
+                    ws.send(JSON.stringify(request));                    
+                };
+	        
+
+                Radar.changeState = function(prop,val,callbacks) {
+                    callbacks = callbacks || {};
+                    rpc('set',{path:prop,value:val},callbacks);
                     
                 };
 
                 Radar.callMethod = function(method,args,callbacks) {
                     callbacks = callbacks || {};
-                    rpc('call',{path:method,args:args},function(response){
-                        if(response.result) {
-                            if(callbacks.success) {
-                                callbacks.success(response.result);
-                            }
-                        }
-                        else if(response.error) {
-                            if(callbacks.error) {
-                                callbacks.error(response.error);
-                            }
-                        }
-                    });                                    
+                    rpc('call',{path:method,args:args},callbacks);
                 };                
 
 	        var fetch = function(path,callbacks) {
-                    callbacks = callbacks || {};                    
-                    rpc('fetch',{id:'radar',match:['.*']},function(response){
-                        if(response.result) {
-                            if(callbacks.success) {
-                                callbacks.success(response.result);
-                            }
-                        }
-                        else if(response.error) {
-                            if(callbacks.error) {
-                                callbacks.error(response.error);
-                            }
-                        }
-                    });                                    
-                }();
+                    callbacks = callbacks || {};    
+                    rpc('fetch',{id:'radar',match:['.*']},callbacks);
+                };
+
+                fetch();
                 Radar.set('status','on');
                 //            that.fetch();
             };
