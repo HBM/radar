@@ -298,12 +298,12 @@ define(['ember','app','jquery','models'],function(Ember,Radar,$){
 		        params: params                            
                     };
                     var onResponse = function(response) {
-                        if(response.result) {
+                        if(typeof(response.result) !== 'undefined' && response.result !== null ) {
                             if(callbacks.success) {
                                 callbacks.success(response.result);
                             }
                         }
-                        else if(response.error) {
+                        else {
                             if(callbacks.error) {
                                 callbacks.error(response.error);
                             }
