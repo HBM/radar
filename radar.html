@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Radar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Webinterface to Jet">
+    <meta name="author" content="Gerhard Preuss">
+
+    <link href="radar.css" rel="stylesheet"></link>
+  </head>
+  <body>   
+    <div id="main">
+      <form id="jet-config">
+        Jet Websocket URL: 
+        <input type="url" name="websocket-url" required pattern="ws://.+"></input>
+        <button type="submit" >Connect</button>
+      </form>
+      <form id="fetch-config">
+        Path: 
+        <input type="text" name="fetch-path"></input>
+        <button type="submit" >Fetch</button>
+      </form>
+      <div id="s1"></div>
+      <div id="s2"></div>      
+      <div id="s3"></div>
+    </div>
+  </body>
+  
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+  <script src="jet.js"></script>
+  <script src="radar.js"></script>
+
+</html>
