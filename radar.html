@@ -11,19 +11,24 @@
   </head>
   <body>   
     <div id="main">
+      <div id="status">Disconnected</div>
       <form id="jet-config">
         Jet Websocket URL: 
         <input type="url" name="websocket-url" required pattern="ws://.+"></input>
-        <button type="submit" >Connect</button>
+        <button type="submit" >Connect</button>        
       </form>
       <form id="fetch-config">
-        Path: 
-        <input type="text" name="fetch-path"></input>
+        Path:
+        <input type="text" name="fetch-path" id="fetch-path"></input>
+        Aa:
+        <input type="checkbox" name="fetch-case-insensitive" id="fetch-case-insensitive"
+        checked></input>
+        Custom:
+        <input type="checkbox" name="fetch-custom-mode" id="fetch-custom-mode"></input>
+        <input type="text" name="fetch-custom" id="fetch-custom" disabled></input>
         <button type="submit" >Fetch</button>
       </form>
-      <div id="s1"></div>
-      <div id="s2"></div>      
-      <div id="s3"></div>
+      <div id="content"></div>
     </div>
   </body>
   
