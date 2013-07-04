@@ -11,6 +11,20 @@ $(function() {
     var from = 1;
     var to = 10;
 
+    $('#fetch-prev').click(function() {
+        from = from - 10;
+        to = to - 10;
+        if (from < 0) {
+            from = 1;
+            to = 10;
+        }
+    });
+
+    $('#fetch-next').click(function() {
+        from = from + 10;
+        to = to + 10;
+    });
+
     var changeFetch = function() {
         var customMode = $('#fetch-custom-mode').prop('checked');
         var fetchParams;
@@ -31,8 +45,53 @@ $(function() {
             };
         }
         unfetch = jetInstance.fetch(fetchParams, function(n) {
-            $('#s' + n.index + ' .path').text(n.path);
-            $('#s' + n.index + ' .value').val(n.value);
+            if (n.event !== 'remove') {
+                $('#s' + n.index + ' .path').text(n.path);
+                $('#s' + n.index + ' .value').val(JSON.stringify(n.value));
+                if (typeof n.value !== 'undefined' && n.value !== null) {
+                    $('#s' + n.index + ' button').text('set');
+                    $('#s' + n.index + ' button').click(function() {
+                        var val = $('#s' + n.index + ' .value').val();
+                        try {
+                            val = JSON.parse(val);
+                            jetInstance.set(n.path, val, function(err, result) {
+                                if (err) {
+                                    alert('Set returned error: ' + JSON.stringify(err, null, 2));
+                                }
+                            });
+                        } catch (e) {
+                            alert('Set failed: ' + e);
+                        }
+                    });
+                } else {
+                    $('#s' + n.index + ' .value').val('[]');
+                    $('#s' + n.index + ' button').text('call');
+                    $('#s' + n.index + ' button').off('click');
+                    $('#s' + n.index + ' button').click(function() {
+                        var val = $('#s' + n.index + ' .value').val();
+                        var args;
+                        try {
+                            args = JSON.parse(val);
+                            if (!$.isArray(args)) {
+                                throw (val + "is no JSON Array");
+                            }
+                            jetInstance.call(n.path, args, function(err, result) {
+                                if (err) {
+                                    alert('Call failed: ' + JSON.stringify(err, null, 2));
+                                } else {
+                                    alert('Call returned: ' + JSON.stringify(result, null, 2));
+                                }
+                            });
+                        } catch (e) {
+                            alert('Invalid input: ' + e);
+                        }
+                    });
+
+                }
+            } else {
+                $('#s' + n.index + ' .path').text('');
+                $('#s' + n.index + ' .value').val('');
+            }
         }, function(err) {
             if (err) {
                 alert('fetching failed' + err);
@@ -41,7 +100,7 @@ $(function() {
                 var i;
                 for (i = from - 1; i < to; ++i) {
                     index = i + 1;
-                    $('#content').append('<div id="s' + index + '">' + index + '<span class="path"></span><input type="text" class="value" editable></input></div>');
+                    $('#content').append('<div id="s' + index + '">' + index + '<span class="path"></span><input type="text" class="value" editable></input><button></button></div>');
                 }
             }
         });
