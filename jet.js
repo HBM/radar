@@ -14,12 +14,17 @@ var Jet = (function() {
         };
         var ws = newWebsocket(wsURL, 'jet');
         callbacks.onopen = callbacks.onopen || function() {
-            console.log('jet', wsURL, 'connected');
+            console.log('jet open', wsURL);
         };
-        callbacks.onerror = callbacks.onerror || function(a, b, c) {
-            console.log('jet error', a, b, c);
+        callbacks.onerror = callbacks.onerror || function(e) {
+            console.log('jet error', e);
+        };
+        callbacks.onclose = callbacks.onclose || function(code, reason) {
+            console.log('jet close', code, reason);
         };
         ws.onopen = callbacks.onopen;
+        ws.onclose = callbacks.onclose;
+        ws.onerror = callbacks.onerror;
         var dispatchers = {};
         var id = 0;
         var isDefined = function(x) {
@@ -86,9 +91,27 @@ var Jet = (function() {
                 }, callback);
             },
             fetch: function(params, fetchcb, callback) {
-                params.id = 'f' + fetchId++;
-                dispatchers[params.id] = fetchcb;
+                var unfetch;
+                var id = 'f' + fetchId++;
+                console.log('fetch', id);
+                params.id = id;
+                dispatchers[id] = fetchcb;
                 request('fetch', params, callback);
+                unfetch = function(callback) {
+                    console.log('unfetch', id);
+                    request('unfetch', {
+                        id: id
+                    }, function(err, res) {
+                        delete dispatchers[id];
+                        callback(err, res);
+                    });
+                };
+                return unfetch;
+            },
+            close: function() {
+                ws.onclose = null;
+                ws.close();
+                callbacks.onclose();
             }
         };
 
