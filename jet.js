@@ -36,6 +36,7 @@ var Jet = (function() {
                 if (isDefined(message.id)) {
                     dispatch = dispatchers[message.id];
                     dispatch(message.error, message.result);
+                    delete dispatchers[message.id];
                 } else {
                     dispatch = dispatchers[message.method];
                     dispatch(message.params);
@@ -85,7 +86,7 @@ var Jet = (function() {
                 }, callback);
             },
             call: function(path, args, callback) {
-                request('set', {
+                request('call', {
                     path: path,
                     args: args
                 }, callback);
