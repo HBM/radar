@@ -8,21 +8,26 @@ $(function() {
         $('#fetch-custom').prop('disabled', !checked);
         $(this).prop('disabled', false);
     });
+    var range = 10;
     var from = 1;
-    var to = 10;
+    var to = range;
 
-    $('#fetch-prev').click(function() {
-        from = from - 10;
-        to = to - 10;
+    $('#fetch-prev').click(function() {        
+        from = from - range;
+        to = to - range;
         if (from < 0) {
             from = 1;
-            to = 10;
+            to = range;
         }
     });
 
     $('#fetch-next').click(function() {
-        from = from + 10;
-        to = to + 10;
+        from = from + range;
+        to = to + range;
+    });
+
+    $('#fetch-range').change(function() {
+        range = parseInt($(this).val());
     });
 
     var changeFetch = function() {
