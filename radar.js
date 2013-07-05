@@ -30,6 +30,59 @@ $(function() {
         range = parseInt($(this).val());
     });
 
+    var dispatchFetch = function(n) {
+        var label = $('#s' + n.index + ' .path');
+        var value = $('#s' + n.index + ' .value');
+        var button = $('#s' + n.index + ' button');
+        if (n.event !== 'remove') {
+            label.text(n.path);
+            value.val(JSON.stringify(n.value));
+            if (typeof n.value !== 'undefined' && n.value !== null) {
+                button.text('set');
+                button.off('click');
+                button.on('click', function() {
+                    var val = $('#s' + n.index + ' .value').val();
+                    try {
+                        val = JSON.parse(val);
+                        jetInstance.set(n.path, val, function(err, result) {
+                            if (err) {
+                                alert('Set returned error: ' + JSON.stringify(err, null, 2));
+                            }
+                        });
+                    } catch (e) {
+                        alert('Set failed: ' + e);
+                    }
+                });
+            } else {
+                value.val('[]');
+                button.text('call');
+                button.off('click');
+                button.on('click', function() {
+                    var args;
+                    try {
+                        args = JSON.parse(value.val());
+                        if (!$.isArray(args)) {
+                            throw (value.val() + "is no JSON Array");
+                        }
+                        jetInstance.call(n.path, args, function(err, result) {
+                            if (err) {
+                                alert('Call failed: ' + JSON.stringify(err, null, 2));
+                            } else {
+                                alert('Call returned: ' + JSON.stringify(result, null, 2));
+                            }
+                        });
+                    } catch (e) {
+                        alert('Invalid input: ' + e);
+                    }
+                });
+            }
+        } else {
+            label.text('');
+            value.val('');
+        }
+
+    };
+
     var changeFetch = function() {
         var customMode = $('#fetch-custom-mode').prop('checked');
         var fetchParams;
@@ -49,55 +102,7 @@ $(function() {
                 to: to
             };
         }
-        unfetch = jetInstance.fetch(fetchParams, function(n) {
-            if (n.event !== 'remove') {
-                $('#s' + n.index + ' .path').text(n.path);
-                $('#s' + n.index + ' .value').val(JSON.stringify(n.value));
-                if (typeof n.value !== 'undefined' && n.value !== null) {
-                    $('#s' + n.index + ' button').text('set');
-                    $('#s' + n.index + ' button').click(function() {
-                        var val = $('#s' + n.index + ' .value').val();
-                        try {
-                            val = JSON.parse(val);
-                            jetInstance.set(n.path, val, function(err, result) {
-                                if (err) {
-                                    alert('Set returned error: ' + JSON.stringify(err, null, 2));
-                                }
-                            });
-                        } catch (e) {
-                            alert('Set failed: ' + e);
-                        }
-                    });
-                } else {
-                    $('#s' + n.index + ' .value').val('[]');
-                    $('#s' + n.index + ' button').text('call');
-                    $('#s' + n.index + ' button').off('click');
-                    $('#s' + n.index + ' button').click(function() {
-                        var val = $('#s' + n.index + ' .value').val();
-                        var args;
-                        try {
-                            args = JSON.parse(val);
-                            if (!$.isArray(args)) {
-                                throw (val + "is no JSON Array");
-                            }
-                            jetInstance.call(n.path, args, function(err, result) {
-                                if (err) {
-                                    alert('Call failed: ' + JSON.stringify(err, null, 2));
-                                } else {
-                                    alert('Call returned: ' + JSON.stringify(result, null, 2));
-                                }
-                            });
-                        } catch (e) {
-                            alert('Invalid input: ' + e);
-                        }
-                    });
-
-                }
-            } else {
-                $('#s' + n.index + ' .path').text('');
-                $('#s' + n.index + ' .value').val('');
-            }
-        }, function(err) {
+        unfetch = jetInstance.fetch(fetchParams, dispatchFetch, function(err) {
             if (err) {
                 alert('fetching failed' + err);
             } else {
