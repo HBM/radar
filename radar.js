@@ -129,7 +129,9 @@ $(function() {
     });
 
     $('form#jet-config').submit(function(event) {
-        var jetWsUrl = $('form#jet-config input').val();
+        var address = $('#jet-address').val();
+        var port = $('#jet-port').val();
+        var jetWsUrl = 'ws://' + address + ':' + port;
         if (jetInstance) {
             $('#status').text('Disconnecting');
             unfetch = null;

@@ -12,9 +12,12 @@
   <body>   
     <div id="main">
       <div id="status">Disconnected</div>
+      <div id="config">
       <form id="jet-config">
-        Jet Websocket URL: 
-        <input type="url" name="websocket-url" required pattern="ws://.+"></input>
+	ws://
+        <input type="text" name="jet-address" id="jet-address" required pattern=".+" value="localhost"></input>
+	:
+        <input type="number" name="jet-port" id="jet-port" required pattern=".+" value="11123"></input>
         <button type="submit" >Connect</button>        
       </form>
       <form id="fetch-config">
@@ -33,6 +36,7 @@
         <button id="fetch-next">Next</button>
         <button type="submit" >Fetch</button>
       </form>
+      </div/>
       <div id="content"></div>
     </div>
   </body>
