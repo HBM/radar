@@ -12,7 +12,7 @@ $(function() {
     var from = 1;
     var to = range;
 
-    $('#fetch-prev').click(function() {        
+    $('#fetch-prev').click(function() {
         from = from - range;
         to = to - range;
         if (from < 0) {
