@@ -8,33 +8,20 @@ $(function() {
         $('#fetch-custom').prop('disabled', !checked);
         $(this).prop('disabled', false);
     });
+
     var range = 10;
     var from = 1;
     var to = range;
-
-    $('#fetch-prev').click(function() {
-        from = from - range;
-        to = to - range;
-        if (from < 0) {
-            from = 1;
-            to = range;
-        }
-    });
-
-    $('#fetch-next').click(function() {
-        from = from + range;
-        to = to + range;
-    });
-
-    $('#fetch-range').change(function() {
-        range = parseInt($(this).val());
-    });
 
     var dispatchFetch = function(n) {
         var label = $('#s' + n.index + ' .path');
         var value = $('#s' + n.index + ' .value');
         var button = $('#s' + n.index + ' button');
         if (n.event !== 'remove') {
+            if (n.index > to) {
+                $('#fetch-next').prop('disabled', false);
+                return; // this fetch result is not displayed            
+            }
             label.text(n.path);
             value.val(JSON.stringify(n.value));
             if (typeof n.value !== 'undefined' && n.value !== null) {
@@ -77,15 +64,31 @@ $(function() {
                 });
             }
         } else {
+            if (n.index > to) {
+                $('#fetch-next').prop('disabled', true);
+                return; // this fetch result is not displayed            
+            }
             label.text('');
             value.val('');
         }
-
     };
 
-    var changeFetch = function() {
+    var setupFetch = function(resetFromAndTo) {
+        var index;
+        var i;
         var customMode = $('#fetch-custom-mode').prop('checked');
         var fetchParams;
+        $('#content').empty();
+        if (from == 1) {
+            $('#fetch-prev').prop('disabled', true);
+        } else {
+            $('#fetch-prev').prop('disabled', false);
+        }
+        $('#fetch-next').prop('disabled', true);
+        for (i = from - 1; i < to; ++i) {
+            index = i + 1;
+            $('#content').append('<div id="s' + index + '">' + index + '<span class="path"></span><input type="text" class="value" editable></input><button></button></div>');
+        }
         if (customMode) {
             var fetchParamsString = $('#fetch-custom').val();
             try {
@@ -99,32 +102,52 @@ $(function() {
             fetchParams.caseInsensitive = $('#fetch-path').prop('checked');
             fetchParams.sort = {
                 from: from,
-                to: to
+                to: (to + 1) // increase to by 1 to enable "next"
+                // button when notification with index == to + 1 arrives
             };
         }
         unfetch = jetInstance.fetch(fetchParams, dispatchFetch, function(err) {
             if (err) {
                 alert('fetching failed' + err);
-            } else {
-                var index;
-                var i;
-                for (i = from - 1; i < to; ++i) {
-                    index = i + 1;
-                    $('#content').append('<div id="s' + index + '">' + index + '<span class="path"></span><input type="text" class="value" editable></input><button></button></div>');
-                }
             }
         });
     };
 
+    var changeFetch = function() {
+        if (unfetch) {
+            unfetch(setupFetch);
+            return;
+        } else {
+            setupFetch();
+        }
+    };
+
+    $('#fetch-prev').click(function() {
+        from = from - range;
+        to = to - range;
+        if (from < 0) {
+            $('#fetch-prev').prop('disabled', true);
+            from = 1;
+            to = range;
+        }
+        changeFetch();
+    });
+
+    $('#fetch-next').click(function() {
+        from = from + range;
+        to = to + range;
+        $('#fetch-prev').prop('disabled', false);
+        changeFetch();
+    });
+
+    $('#fetch-range').change(function() {
+        range = parseInt($(this).val());
+        to = from + range - 1;
+    });
+
+
     $('#fetch-config').submit(function(event) {
         event.preventDefault();
-        if (unfetch) {
-            var i;
-            var index;
-            $('#content').empty();
-            unfetch(changeFetch);
-            return;
-        }
         changeFetch();
     });
 
