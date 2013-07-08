@@ -81,6 +81,7 @@ $(function() {
         var i;
         var customMode = $('#fetch-custom-mode').prop('checked');
         var fetchParams;
+        var row;
         $('#content').empty();
         if (from == 1) {
             $('#fetch-prev').prop('disabled', true);
@@ -90,7 +91,14 @@ $(function() {
         $('#fetch-next').prop('disabled', true);
         for (i = from - 1; i < to; ++i) {
             index = i + 1;
-            $('#content').append('<div id="s' + index + '" style="display:none;">' + index + '<span class="path"></span><input type="text" class="value" editable></input><button></button></div>');
+            row = $('<div></div>');
+            row.hide();
+            row.attr('id', 's' + index);
+            row.append('<span class="index">' + index + '</span>');
+            row.append('<span class="path"></span>');
+            row.append('<input type="text" class="value" editable>');
+            row.append('</input><button></button>');
+            $('#content').append(row);
         }
         if (customMode) {
             var fetchParamsString = $('#fetch-custom').val();
