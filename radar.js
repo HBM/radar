@@ -1,14 +1,6 @@
 $(function() {
     var jetInstance;
     var unfetch;
-
-    $('#fetch-custom-mode').change(function() {
-        var checked = $(this).prop('checked');
-        $('#fetch-config input').prop('disabled', checked);
-        $('#fetch-custom').prop('disabled', !checked);
-        $(this).prop('disabled', false);
-    });
-
     var range = 10;
     var from = 1;
     var to = range;
@@ -132,6 +124,13 @@ $(function() {
             setupFetch();
         }
     };
+
+    $('#fetch-custom-mode').change(function() {
+        var checked = $(this).prop('checked');
+        $('#fetch-config input').prop('disabled', checked);
+        $('#fetch-custom').prop('disabled', !checked);
+        $(this).prop('disabled', false);
+    });
 
     $('#fetch-prev').click(function() {
         from = from - range;
