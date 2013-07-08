@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Webinterface to Jet">
     <meta name="author" content="Gerhard Preuss">
-
     <link href="radar.css" rel="stylesheet"></link>
 </head>
 
@@ -17,10 +16,10 @@
             <form id="jet-config">
                 <fieldset>
                     <legend>Jet</legend>
-                    ws://
-                    <input type="text" name="jet-address" id="jet-address" required pattern=".+" value="localhost"></input>
-                    :
-                    <input type="number" name="jet-port" id="jet-port" required pattern=".+" value="11123"></input>
+                    <label name="jet-address">Address</label>
+                    <input type="text" name="jet-address" id="jet-address" required value="localhost"></input>
+                    <label name="jet-port">Port</label>
+                    <input type="number" name="jet-port" id="jet-port" required value="11123"></input>
                     <button type="submit">Connect</button>
                     <button id="status" disabled>Disconnected</button>
                 </fieldset>
@@ -28,16 +27,19 @@
             <form id="fetch-config">
                 <fieldset>
                     <legend>Fetch Config</legend>
-                    Path:
+                    <label name="fetch-path">Path</label>
                     <input type="text" name="fetch-path" id="fetch-path" value=".*"></input>
-                    Aa:
+                    <label name="fetch-case-insensitive">Aa</label>
                     <input type="checkbox" name="fetch-case-insensitive" id="fetch-case-insensitive" checked></input>
-                    Range:
+                    <button type="submit">Fetch</button>
+                </fieldset>
+                <fieldset id="fetch-advanced-config">
+                    <legend>Fetch Advanced-Config</legend>
+                    <label name="fetch-range">Range</label>
                     <input type="number" name="fetch-range" id="fetch-range" value="10"></input>
-                    Custom:
+                    <label>Enable Custom:</label>
                     <input type="checkbox" name="fetch-custom-mode" id="fetch-custom-mode"></input>
                     <input type="text" name="fetch-custom" id="fetch-custom" disabled></input>
-                    <button type="submit">Fetch</button>
                 </fieldset>
             </form>
             </div/>
@@ -52,5 +54,9 @@
 <script src="radar.js"></script>
 
 </html>
+
+
+
+
 
 
