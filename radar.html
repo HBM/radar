@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <title>Radar</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,44 +9,42 @@
     <meta name="author" content="Gerhard Preuss">
 
     <link href="radar.css" rel="stylesheet"></link>
-  </head>
-  <body>   
+</head>
+
+<body>
     <div id="main">
-      <div id="config">
-        <form id="jet-config">
-          <fieldset>
-            <legend>Jet</legend>
-	    ws://
-            <input type="text" name="jet-address" id="jet-address" required pattern=".+" value="localhost"></input>
-	    :
-            <input type="number" name="jet-port" id="jet-port" required
-                   pattern=".+" value="11123"></input>
-            <button type="submit" >Connect</button>        
-            <button id="status" disabled>Disconnected</button>
-          </fieldset>
-        </form>
-        <form id="fetch-config">
-          <fieldset>
-            <legend>Fetch Config</legend>
-            Path:
-            <input type="text" name="fetch-path" id="fetch-path" value=".*"></input>
-            Aa:
-            <input type="checkbox" name="fetch-case-insensitive" id="fetch-case-insensitive"
-                   checked></input>
-            Range:
-            <input type="number" name="fetch-range" id="fetch-range" value="10"></input>
-            Custom:
-            <input type="checkbox" name="fetch-custom-mode" id="fetch-custom-mode"></input>
-            <input type="text" name="fetch-custom" id="fetch-custom"
-                   disabled></input>
-            <button type="submit" >Fetch</button>
-          </fieldset>
-        </form>     
-</div/>
-<div id="content"></div>
-<button id="fetch-prev" disabled>Prev</button>
-<button id="fetch-next" disabled>Next</button>
-</div>
+        <div id="config">
+            <form id="jet-config">
+                <fieldset>
+                    <legend>Jet</legend>
+                    ws://
+                    <input type="text" name="jet-address" id="jet-address" required pattern=".+" value="localhost"></input>
+                    :
+                    <input type="number" name="jet-port" id="jet-port" required pattern=".+" value="11123"></input>
+                    <button type="submit">Connect</button>
+                    <button id="status" disabled>Disconnected</button>
+                </fieldset>
+            </form>
+            <form id="fetch-config">
+                <fieldset>
+                    <legend>Fetch Config</legend>
+                    Path:
+                    <input type="text" name="fetch-path" id="fetch-path" value=".*"></input>
+                    Aa:
+                    <input type="checkbox" name="fetch-case-insensitive" id="fetch-case-insensitive" checked></input>
+                    Range:
+                    <input type="number" name="fetch-range" id="fetch-range" value="10"></input>
+                    Custom:
+                    <input type="checkbox" name="fetch-custom-mode" id="fetch-custom-mode"></input>
+                    <input type="text" name="fetch-custom" id="fetch-custom" disabled></input>
+                    <button type="submit">Fetch</button>
+                </fieldset>
+            </form>
+            </div/>
+            <div id="content"></div>
+            <button id="fetch-prev" disabled>Prev</button>
+            <button id="fetch-next" disabled>Next</button>
+        </div>
 </body>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
@@ -53,3 +52,5 @@
 <script src="radar.js"></script>
 
 </html>
+
+
