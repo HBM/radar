@@ -5,6 +5,10 @@ $(function() {
     var from = 1;
     var to = range;
 
+    var isDefined = function(x) {
+        return typeof x !== 'undefined' && x !== null;
+    };
+
     var dispatchFetch = function(n) {
         var id = '#s' + n.index;
         var label = $(id + ' .path');
@@ -102,13 +106,20 @@ $(function() {
         } else {
             fetchParams = {};
             fetchParams.match = [$('#fetch-path').val()];
-            fetchParams.caseInsensitive = $('#fetch-path').prop('checked');
-            fetchParams.sort = {
-                from: from,
-                to: (to + 1) // increase to by 1 to enable "next"
-                // button when notification with index == to + 1 arrives
-            };
+            fetchParams.caseInsensitive = $('#fetch-case-insensitive').prop('checked');
         }
+        if (!isDefined(fetchParams.sort)) {
+            fetchParams.sort = {};
+        }
+        if (!isDefined(fetchParams.sort.from)) {
+            fetchParams.sort.from = from;
+        }
+        if (!isDefined(fetchParams.sort.to)) {
+            fetchParams.sort.to = to + 1;
+            // increase to by 1 to enable "next"
+            // button when notification with index == to + 1 arrives
+        }
+        $('#fetch-custom').val(JSON.stringify(fetchParams, null, 2));
         unfetch = jetInstance.fetch(fetchParams, dispatchFetch, function(err) {
             if (err) {
                 alert('fetching failed' + err);
