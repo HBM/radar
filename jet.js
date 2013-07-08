@@ -94,12 +94,10 @@ var Jet = (function() {
             fetch: function(params, fetchcb, callback) {
                 var unfetch;
                 var id = 'f' + fetchId++;
-                console.log('fetch', id);
                 params.id = id;
                 dispatchers[id] = fetchcb;
                 request('fetch', params, callback);
                 unfetch = function(callback) {
-                    console.log('unfetch', id);
                     request('unfetch', {
                         id: id
                     }, function(err, res) {
