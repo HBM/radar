@@ -14,9 +14,10 @@ $(function() {
     var to = range;
 
     var dispatchFetch = function(n) {
-        var label = $('#s' + n.index + ' .path');
-        var value = $('#s' + n.index + ' .value');
-        var button = $('#s' + n.index + ' button');
+        var id = '#s' + n.index;
+        var label = $(id + ' .path');
+        var value = $(id + ' .value');
+        var button = $(id + ' button');
         if (n.event !== 'remove') {
             if (n.index > to) {
                 $('#fetch-next').prop('disabled', false);
@@ -63,7 +64,9 @@ $(function() {
                     }
                 });
             }
+            $(id).show();
         } else {
+            $(id).hide();
             if (n.index > to) {
                 $('#fetch-next').prop('disabled', true);
                 return; // this fetch result is not displayed            
@@ -87,7 +90,7 @@ $(function() {
         $('#fetch-next').prop('disabled', true);
         for (i = from - 1; i < to; ++i) {
             index = i + 1;
-            $('#content').append('<div id="s' + index + '">' + index + '<span class="path"></span><input type="text" class="value" editable></input><button></button></div>');
+            $('#content').append('<div id="s' + index + '" style="display:none;">' + index + '<span class="path"></span><input type="text" class="value" editable></input><button></button></div>');
         }
         if (customMode) {
             var fetchParamsString = $('#fetch-custom').val();
