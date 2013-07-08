@@ -86,9 +86,9 @@ $(function() {
             row = $('<div></div>');
             row.hide();
             row.attr('id', 's' + index);
-            row.append('<span class="index">' + index + '</span>');
-            row.append('<span class="path"></span>');
-            row.append('<input class="value" type="text"></input>');
+            row.append('<div class="index">' + index + '</div>');
+            row.append('<div class="path"></div>');
+            row.append('<input class="value"></input>');
             row.append('<button></button>');
             $('#content').append(row);
         }
