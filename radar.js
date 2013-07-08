@@ -96,8 +96,8 @@ $(function() {
             row.attr('id', 's' + index);
             row.append('<span class="index">' + index + '</span>');
             row.append('<span class="path"></span>');
-            row.append('<input type="text" class="value" editable>');
-            row.append('</input><button></button>');
+            row.append('<input class="value" type="text"></input>');
+            row.append('<button></button>');
             $('#content').append(row);
         }
         if (customMode) {
