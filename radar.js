@@ -101,7 +101,7 @@ $(function() {
             try {
                 fetchParams = JSON.parse(fetchParamsString);
             } catch (e) {
-                alert('Sorry, invalid JSON:' + e);
+                alert('Sorry, invalid JSON:' + JSON.stringify(e));
             }
         } else {
             fetchParams = {};
@@ -115,14 +115,17 @@ $(function() {
             fetchParams.sort.from = from;
         }
         if (!isDefined(fetchParams.sort.to)) {
-            fetchParams.sort.to = to + 1;
-            // increase to by 1 to enable "next"
-            // button when notification with index == to + 1 arrives
+            fetchParams.sort.to = to;
         }
+        from = fetchParams.sort.from;
+        to = fetchParams.sort.to;
         $('#fetch-custom').val(JSON.stringify(fetchParams, null, 2));
+        fetchParams.sort.to = fetchParams.sort.to + 1;
+        // increase to by 1 to enable "next"
+        // button when notification with index == to + 1 arrives
         unfetch = jetInstance.fetch(fetchParams, dispatchFetch, function(err) {
             if (err) {
-                alert('fetching failed' + err);
+                alert('fetching failed:' + JSON.stringify(err));
             }
         });
     };
@@ -140,6 +143,8 @@ $(function() {
         var checked = $(this).prop('checked');
         $('#fetch-config input').prop('disabled', checked);
         $('#fetch-custom').prop('disabled', !checked);
+        $('#fetch-prev').prop('disabled', checked);
+        $('#fetch-next').prop('disabled', checked);
         $(this).prop('disabled', false);
     });
 
