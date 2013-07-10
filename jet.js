@@ -25,6 +25,9 @@ var Jet = (function() {
         ws.onopen = callbacks.onopen;
         ws.onclose = callbacks.onclose;
         ws.onerror = callbacks.onerror;
+        var encode = JSON.stringify;
+        var decode = JSON.parse;
+
         var dispatchers = {};
         var id = 0;
         var isDefined = function(x) {
@@ -49,7 +52,7 @@ var Jet = (function() {
             var i;
             var messageObject;
             try {
-                messageObject = JSON.parse(wsMessage.data);
+                messageObject = decode(wsMessage.data);
             } catch (e) {
                 console.log('Message is no valid JSON', wsMessage.data, e);
                 return;
@@ -73,7 +76,7 @@ var Jet = (function() {
                 request.id = id;
                 dispatchers[id] = callback;
             }
-            ws.send(JSON.stringify(request));
+            ws.send(encode(request));
         };
 
         var fetchId = 0;
@@ -90,6 +93,23 @@ var Jet = (function() {
                     path: path,
                     args: args
                 }, callback);
+            },
+            setEncoding: function(enc, callback) {
+                if (enc !== 'msgpack' || !isDefined(msgpack)) {
+                    throw 'encoding unsupported';
+                }
+                request('config', {
+                    encoding: 'msgpack'
+                }, function(err, result) {
+                    if (!isDefined(err)) {
+                        encode = msgpack.encode;
+                        decode = msgpack.decode;
+                        ws.binaryType = 'arraybuffer';
+                    }
+                    if (isDefined(callback)) {
+                        callback(err, result);
+                    }
+                });
             },
             fetch: function(params, fetchcb, callback) {
                 var unfetch;

@@ -139,6 +139,8 @@ $(function() {
         }
     };
 
+    $('#jet-address').val(window.document.domain);
+
     $('#fetch-custom-mode').change(function() {
         var checked = $(this).prop('checked');
         $('#fetch-config input').prop('disabled', checked);
@@ -193,6 +195,7 @@ $(function() {
             },
             onopen: function() {
                 $('#status').text('Connected');
+                jetInstance.setEncoding('msgpack');
             }
         });
         event.preventDefault();
