@@ -1,9 +1,0 @@
-<a>
-  <i {{action onIconClick }} {{bindAttr class="view.isLeaf:icon-leaf view.isNode:icon-folder-open"}}></i>
-  <span {{action onNameClick}}>{{unbound view.displayName}}</span>
- {{#unless isNode}}
-  <span class="buttons">
-    <i {{action toggle href=true}} {{bindAttr class="selected:icon-star selected::icon-star-empty :toggle-button"}}></i>
-  </span>
-{{/unless}}
-</a>
