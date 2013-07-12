@@ -9,68 +9,85 @@ $(function() {
         return typeof x !== 'undefined' && x !== null;
     };
 
-    var dispatchFetch = function(n) {
+    var createDisplay = function(jetElement) {
+        var n = jetElement;
         var id = '#s' + n.index;
         var label = $(id + ' .path');
         var value = $(id + ' .value');
         var button = $(id + ' button');
-        if (n.event !== 'remove') {
-            if (n.index > to) {
-                $('#fetch-next').prop('disabled', false);
-                return; // this fetch result is not displayed            
-            }
-            label.text(n.path);
-            value.val(JSON.stringify(n.value));
-            if (typeof n.value !== 'undefined' && n.value !== null) {
-                button.text('set');
-                button.off('click');
-                button.on('click', function() {
-                    var val = $('#s' + n.index + ' .value').val();
-                    try {
-                        val = JSON.parse(val);
-                        jetInstance.set(n.path, val, function(err, result) {
-                            if (err) {
-                                alert('Set returned error: ' + JSON.stringify(err, null, 2));
-                            }
-                        });
-                    } catch (e) {
-                        alert('Set failed: ' + e);
-                    }
-                });
-            } else {
-                value.val('[]');
-                button.text('call');
-                button.off('click');
-                button.on('click', function() {
-                    var args;
-                    try {
-                        args = JSON.parse(value.val());
-                        if (!$.isArray(args)) {
-                            throw (value.val() + "is no JSON Array");
+        if (n.index > to) {
+            $('#fetch-next').prop('disabled', false);
+            return; // this fetch result is not displayed            
+        }
+        label.text(n.path);
+        value.val(JSON.stringify(n.value));
+        if (isDefined(n.value)) {
+            button.text('set');
+            button.off('click');
+            button.on('click', function() {
+                var val = value.val();
+                try {
+                    val = JSON.parse(val);
+                    button.prop('disabled', true);
+                    value.prop('disabled', true);
+                    jetInstance.set(n.path, val, function(err, result) {
+                        button.prop('disabled', false);
+                        value.prop('disabled', false);
+                        if (err) {
+                            value.val(JSON.stringify(n.value));
+                            alert('Set returned error: ' + JSON.stringify(err, null, 2));
                         }
-                        jetInstance.call(n.path, args, function(err, result) {
-                            if (err) {
-                                alert('Call failed: ' + JSON.stringify(err, null, 2));
-                            } else {
-                                alert('Call returned: ' + JSON.stringify(result, null, 2));
-                            }
-                        });
-                    } catch (e) {
-                        alert('Invalid input: ' + e);
-                    }
-                });
-            }
-            $(id).show();
+                    });
+                } catch (e) {
+                    alert('Set failed: ' + e);
+                }
+            });
         } else {
+            value.val('[]');
+            button.text('call');
+            button.off('click');
+            button.on('click', function() {
+                var args;
+                try {
+                    args = JSON.parse(value.val());
+                    if (!$.isArray(args)) {
+                        throw (value.val() + "is no JSON Array");
+                    }
+                    jetInstance.call(n.path, args, function(err, result) {
+                        if (err) {
+                            alert('Call failed: ' + JSON.stringify(err, null, 2));
+                        } else {
+                            alert('Call returned: ' + JSON.stringify(result, null, 2));
+                        }
+                    });
+                } catch (e) {
+                    alert('Invalid input: ' + e);
+                }
+            });
+        }
+        $(id).show();
+    };
+
+    var dispatchFetch = function(sorted) {
+        var n;
+        var i;
+        for (i = sorted.max; i < to; ++i) {
+            var id = '#s' + i;
+            var label = $(id + ' .path');
+            var value = $(id + ' .value');
             $(id).hide();
-            if (n.index > to) {
+            if (i > to) {
                 $('#fetch-next').prop('disabled', true);
                 return; // this fetch result is not displayed            
             }
             label.text('');
             value.val('');
         }
+        for (var i in sorted.value) {
+            createDisplay(sorted.value[i]);
+        }
     };
+
 
     var setupFetch = function(resetFromAndTo) {
         var index;
@@ -123,7 +140,9 @@ $(function() {
         fetchParams.sort.to = fetchParams.sort.to + 1;
         // increase to by 1 to enable "next"
         // button when notification with index == to + 1 arrives
+        $('#fetch-config button').prop('disabled', true);
         unfetch = jetInstance.fetch(fetchParams, dispatchFetch, function(err) {
+            $('#fetch-config button').prop('disabled', false);
             if (err) {
                 alert('fetching failed:' + JSON.stringify(err));
             }
