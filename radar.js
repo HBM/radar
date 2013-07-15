@@ -69,19 +69,19 @@ $(function() {
     };
 
     var dispatchFetch = function(sorted) {
-        var n;
         var i;
-        for (i = sorted.max+1; i < to; ++i) {
+        for (i = from + sorted.n; i <= to; ++i) {
             var id = '#s' + i;
             var label = $(id + ' .path');
             var value = $(id + ' .value');
             $(id).hide();
-            if (i > to) {
-                $('#fetch-next').prop('disabled', true);
-                return; // this fetch result is not displayed            
-            }
             label.text('');
             value.val('');
+        }
+        if (sorted.n + from > to) {
+            $('#fetch-next').prop('disabled', false);
+        } else {
+            $('#fetch-next').prop('disabled', true);
         }
         for (var i in sorted.value) {
             createDisplay(sorted.value[i]);
