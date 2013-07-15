@@ -214,7 +214,9 @@ $(function() {
             },
             onopen: function() {
                 $('#status').text('Connected');
-                jetInstance.setEncoding('msgpack');
+                try {
+                    jetInstance.setEncoding('msgpack');
+                } catch (e) {}
             }
         });
         event.preventDefault();
