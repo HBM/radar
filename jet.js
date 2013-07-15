@@ -95,7 +95,7 @@ var Jet = (function() {
                 }, callback);
             },
             setEncoding: function(enc, callback) {
-                if (enc !== 'msgpack' || !isDefined(msgpack)) {
+                if (enc !== 'msgpack' || !isDefined(window.msgpack)) {
                     throw 'encoding unsupported';
                 }
                 request('config', {
