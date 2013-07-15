@@ -71,7 +71,7 @@ $(function() {
     var dispatchFetch = function(sorted) {
         var n;
         var i;
-        for (i = sorted.max; i < to; ++i) {
+        for (i = sorted.max+1; i < to; ++i) {
             var id = '#s' + i;
             var label = $(id + ' .path');
             var value = $(id + ' .value');
