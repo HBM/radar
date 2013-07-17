@@ -28,19 +28,21 @@ $(function () {
                 var val = value.val();
                 try {
                     val = JSON.parse(val);
-                    button.prop('disabled', true);
-                    value.prop('disabled', true);
-                    jetInstance.set(n.path, val, function (err, result) {
-                        button.prop('disabled', false);
-                        value.prop('disabled', false);
-                        if (err) {
-                            value.val(JSON.stringify(n.value));
-                            alert('Set returned error: ' + JSON.stringify(err, null, 2));
-                        }
-                    });
                 } catch (e) {
-                    alert('Set failed: ' + e);
+                    value.val(JSON.stringify(n.value));
+                    alert('Input is no JSON (' + e + ') in:\n' + val);
+                    return;
                 }
+                button.prop('disabled', true);
+                value.prop('disabled', true);
+                jetInstance.set(n.path, val, function (err, result) {
+                    value.val(JSON.stringify(n.value));
+                    button.prop('disabled', false);
+                    value.prop('disabled', false);
+                    if (err) {
+                        alert('Set returned error: ' + JSON.stringify(err, null, 2));
+                    }
+                });
             });
         } else {
             value.val('[]');
