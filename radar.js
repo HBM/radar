@@ -14,7 +14,6 @@ $(function () {
         var id = '#s' + n.index;
         var label = $(id + ' .path');
         var value = $(id + ' .value');
-        var button = $(id + ' button');
         if (n.index > to) {
             $('#fetch-next').prop('disabled', false);
             return; // this fetch result is not displayed            
@@ -22,9 +21,7 @@ $(function () {
         label.text(n.path);
         value.val(JSON.stringify(n.value));
         if (isDefined(n.value)) {
-            button.text('set');
-            button.off('click');
-            button.on('click', function () {
+            value.on('change', function () {
                 var val = value.val();
                 try {
                     val = JSON.parse(val);
@@ -33,11 +30,9 @@ $(function () {
                     alert('Input is no JSON (' + e + ') in:\n' + val);
                     return;
                 }
-                button.prop('disabled', true);
                 value.prop('disabled', true);
                 jetInstance.set(n.path, val, function (err, result) {
                     value.val(JSON.stringify(n.value));
-                    button.prop('disabled', false);
                     value.prop('disabled', false);
                     if (err) {
                         alert('Set returned error: ' + JSON.stringify(err, null, 2));
@@ -46,9 +41,7 @@ $(function () {
             });
         } else {
             value.val('[]');
-            button.text('call');
-            button.off('click');
-            button.on('click', function () {
+            value.on('change', function () {
                 var args;
                 try {
                     args = JSON.parse(value.val());
@@ -109,10 +102,10 @@ $(function () {
             row = $('<div></div>');
             row.hide();
             row.attr('id', 's' + index);
+            row.addClass('row');
             row.append('<div class="index">' + index + '</div>');
             row.append('<div class="path"></div>');
             row.append('<input class="value"></input>');
-            row.append('<button></button>');
             $('#content').append(row);
         }
         if (customMode) {
