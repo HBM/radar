@@ -1,15 +1,15 @@
-$(function() {
+$(function () {
     var jetInstance;
     var unfetch;
     var range = 10;
     var from = 1;
     var to = range;
 
-    var isDefined = function(x) {
+    var isDefined = function (x) {
         return typeof x !== 'undefined' && x !== null;
     };
 
-    var createDisplay = function(jetElement) {
+    var createDisplay = function (jetElement) {
         var n = jetElement;
         var id = '#s' + n.index;
         var label = $(id + ' .path');
@@ -24,13 +24,13 @@ $(function() {
         if (isDefined(n.value)) {
             button.text('set');
             button.off('click');
-            button.on('click', function() {
+            button.on('click', function () {
                 var val = value.val();
                 try {
                     val = JSON.parse(val);
                     button.prop('disabled', true);
                     value.prop('disabled', true);
-                    jetInstance.set(n.path, val, function(err, result) {
+                    jetInstance.set(n.path, val, function (err, result) {
                         button.prop('disabled', false);
                         value.prop('disabled', false);
                         if (err) {
@@ -46,14 +46,14 @@ $(function() {
             value.val('[]');
             button.text('call');
             button.off('click');
-            button.on('click', function() {
+            button.on('click', function () {
                 var args;
                 try {
                     args = JSON.parse(value.val());
                     if (!$.isArray(args)) {
                         throw (value.val() + "is no JSON Array");
                     }
-                    jetInstance.call(n.path, args, function(err, result) {
+                    jetInstance.call(n.path, args, function (err, result) {
                         if (err) {
                             alert('Call failed: ' + JSON.stringify(err, null, 2));
                         } else {
@@ -68,7 +68,7 @@ $(function() {
         $(id).show();
     };
 
-    var dispatchFetch = function(sorted) {
+    var dispatchFetch = function (sorted) {
         var i;
         for (i = from + sorted.n; i <= to; ++i) {
             var id = '#s' + i;
@@ -89,7 +89,7 @@ $(function() {
     };
 
 
-    var setupFetch = function(resetFromAndTo) {
+    var setupFetch = function (resetFromAndTo) {
         var index;
         var i;
         var customMode = $('#fetch-custom-mode').prop('checked');
@@ -141,7 +141,7 @@ $(function() {
         // increase to by 1 to enable "next"
         // button when notification with index == to + 1 arrives
         $('#fetch-config button').prop('disabled', true);
-        unfetch = jetInstance.fetch(fetchParams, dispatchFetch, function(err) {
+        unfetch = jetInstance.fetch(fetchParams, dispatchFetch, function (err) {
             $('#fetch-config button').prop('disabled', false);
             if (err) {
                 alert('fetching failed:' + JSON.stringify(err));
@@ -149,7 +149,7 @@ $(function() {
         });
     };
 
-    var changeFetch = function() {
+    var changeFetch = function () {
         if (unfetch) {
             unfetch(setupFetch);
             return;
@@ -160,7 +160,7 @@ $(function() {
 
     $('#jet-address').val(window.document.domain);
 
-    $('#fetch-custom-mode').change(function() {
+    $('#fetch-custom-mode').change(function () {
         var checked = $(this).prop('checked');
         $('#fetch-config input').prop('disabled', checked);
         $('#fetch-custom').prop('disabled', !checked);
@@ -169,7 +169,7 @@ $(function() {
         $(this).prop('disabled', false);
     });
 
-    $('#fetch-prev').click(function() {
+    $('#fetch-prev').click(function () {
         from = from - range;
         to = to - range;
         if (from < 0) {
@@ -180,25 +180,25 @@ $(function() {
         changeFetch();
     });
 
-    $('#fetch-next').click(function() {
+    $('#fetch-next').click(function () {
         from = from + range;
         to = to + range;
         $('#fetch-prev').prop('disabled', false);
         changeFetch();
     });
 
-    $('#fetch-range').change(function() {
+    $('#fetch-range').change(function () {
         range = parseInt($(this).val());
         to = from + range - 1;
     });
 
 
-    $('#fetch-config').submit(function(event) {
+    $('#fetch-config').submit(function (event) {
         event.preventDefault();
         changeFetch();
     });
 
-    $('form#jet-config').submit(function(event) {
+    $('form#jet-config').submit(function (event) {
         var address = $('#jet-address').val();
         var port = $('#jet-port').val();
         var jetWsUrl = 'ws://' + address + ':' + port;
@@ -209,10 +209,10 @@ $(function() {
         }
         $('#status').text('Connecting');
         jetInstance = Jet.create(jetWsUrl, {
-            onclose: function() {
+            onclose: function () {
                 $('#status').text('Disconnected');
             },
-            onopen: function() {
+            onopen: function () {
                 $('#status').text('Connected');
                 try {
                     jetInstance.setEncoding('msgpack');

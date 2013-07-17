@@ -1,7 +1,7 @@
-var Jet = (function() {
-    var create = function(wsURL, callbacks) {
+var Jet = (function () {
+    var create = function (wsURL, callbacks) {
         wsURL = wsURL || ('ws://' + (window.document.domain || 'localhost') + ':11123');
-        var newWebsocket = function(url, protocol) {
+        var newWebsocket = function (url, protocol) {
             if (navigator.userAgent.search("Firefox") != -1) {
                 try {
                     return new WebSocket(url, protocol);
@@ -13,13 +13,13 @@ var Jet = (function() {
             }
         };
         var ws = newWebsocket(wsURL, 'jet');
-        callbacks.onopen = callbacks.onopen || function() {
+        callbacks.onopen = callbacks.onopen || function () {
             console.log('jet open', wsURL);
         };
-        callbacks.onerror = callbacks.onerror || function(e) {
+        callbacks.onerror = callbacks.onerror || function (e) {
             console.log('jet error', e);
         };
-        callbacks.onclose = callbacks.onclose || function(code, reason) {
+        callbacks.onclose = callbacks.onclose || function (code, reason) {
             console.log('jet close', code, reason);
         };
         ws.onopen = callbacks.onopen;
@@ -30,10 +30,10 @@ var Jet = (function() {
 
         var dispatchers = {};
         var id = 0;
-        var isDefined = function(x) {
+        var isDefined = function (x) {
             return typeof x !== 'undefined' && x !== null;
         };
-        var dispatchSingleMessage = function(message) {
+        var dispatchSingleMessage = function (message) {
             var dispatch;
             try {
                 if (isDefined(message.id)) {
@@ -48,7 +48,7 @@ var Jet = (function() {
                 callbacks.onerror('Dispatching message failed', message, e);
             }
         };
-        ws.onmessage = function(wsMessage) {
+        ws.onmessage = function (wsMessage) {
             var i;
             var messageObject;
             try {
@@ -66,7 +66,7 @@ var Jet = (function() {
             }
         };
 
-        var request = function(method, params, callback) {
+        var request = function (method, params, callback) {
             var request = {
                 method: method,
                 params: params
@@ -82,25 +82,25 @@ var Jet = (function() {
         var fetchId = 0;
 
         var instance = {
-            set: function(path, val, callback) {
+            set: function (path, val, callback) {
                 request('set', {
                     path: path,
                     value: val
                 }, callback);
             },
-            call: function(path, args, callback) {
+            call: function (path, args, callback) {
                 request('call', {
                     path: path,
                     args: args
                 }, callback);
             },
-            setEncoding: function(enc, callback) {
+            setEncoding: function (enc, callback) {
                 if (enc !== 'msgpack' || !isDefined(window.msgpack)) {
                     throw 'encoding unsupported';
                 }
                 request('config', {
                     encoding: 'msgpack'
-                }, function(err, result) {
+                }, function (err, result) {
                     if (!isDefined(err)) {
                         encode = msgpack.encode;
                         decode = msgpack.decode;
@@ -111,23 +111,23 @@ var Jet = (function() {
                     }
                 });
             },
-            fetch: function(params, fetchcb, callback) {
+            fetch: function (params, fetchcb, callback) {
                 var unfetch;
                 var id = 'f' + fetchId++;
                 params.id = id;
                 dispatchers[id] = fetchcb;
                 request('fetch', params, callback);
-                unfetch = function(callback) {
+                unfetch = function (callback) {
                     request('unfetch', {
                         id: id
-                    }, function(err, res) {
+                    }, function (err, res) {
                         delete dispatchers[id];
                         callback(err, res);
                     });
                 };
                 return unfetch;
             },
-            close: function() {
+            close: function () {
                 ws.onclose = null;
                 ws.close();
                 callbacks.onclose();
