@@ -2,8 +2,14 @@ $(function () {
     var jetInstance;
     var unfetch;
     var range = 10;
-    var from = 1;
-    var to = range;
+    var fetchParams = {
+        match: [],
+        caseInsensitive: true,
+        sort: {
+            from: 1,
+            to: 10
+        }
+    };
 
     var isDefined = function (x) {
         return typeof x !== 'undefined' && x !== null;
@@ -14,6 +20,8 @@ $(function () {
         var id = '#s' + n.index;
         var label = $(id + ' .path');
         var value = $(id + ' .value');
+        var from = fetchParams.sort.from;
+        var to = fetchParams.sort.to;
         if (n.index > to) {
             $('#fetch-next').prop('disabled', false);
             return; // this fetch result is not displayed            
@@ -65,6 +73,8 @@ $(function () {
 
     var dispatchFetch = function (sorted) {
         var i;
+        var from = fetchParams.sort.from;
+        var to = fetchParams.sort.to;
         for (i = from + sorted.n; i <= to; ++i) {
             var id = '#s' + i;
             var label = $(id + ' .path');
@@ -83,19 +93,14 @@ $(function () {
         }
     };
 
-
-    var setupFetch = function (resetFromAndTo) {
+    var setupFetch = function () {
         var index;
         var i;
-        var customMode = $('#fetch-custom-mode').prop('checked');
-        var fetchParams;
         var row;
+        var from = fetchParams.sort.from;
+        var to = fetchParams.sort.to;
         $('#content').empty();
-        if (from == 1) {
-            $('#fetch-prev').prop('disabled', true);
-        } else {
-            $('#fetch-prev').prop('disabled', false);
-        }
+        $('#fetch-prev').prop('disabled', from === 1);
         $('#fetch-next').prop('disabled', true);
         for (i = from - 1; i < to; ++i) {
             index = i + 1;
@@ -108,36 +113,7 @@ $(function () {
             row.append('<input class="value"></input>');
             $('#content').append(row);
         }
-        if (customMode) {
-            var fetchParamsString = $('#fetch-custom').val();
-            try {
-                fetchParams = JSON.parse(fetchParamsString);
-            } catch (e) {
-                alert('Sorry, invalid JSON:' + JSON.stringify(e));
-            }
-        } else {
-            fetchParams = {};
-            fetchParams.match = [$('#fetch-path').val()];
-            fetchParams.caseInsensitive = $('#fetch-case-insensitive').prop('checked');
-        }
-        if (!isDefined(fetchParams.sort)) {
-            fetchParams.sort = {};
-        }
-        if (!isDefined(fetchParams.sort.from)) {
-            fetchParams.sort.from = from;
-        }
-        if (!isDefined(fetchParams.sort.to)) {
-            fetchParams.sort.to = to;
-        }
-        from = fetchParams.sort.from;
-        to = fetchParams.sort.to;
-        $('#fetch-custom').val(JSON.stringify(fetchParams, null, 2));
-        fetchParams.sort.to = fetchParams.sort.to + 1;
-        // increase to by 1 to enable "next"
-        // button when notification with index == to + 1 arrives
-        $('#fetch-config button').prop('disabled', true);
         unfetch = jetInstance.fetch(fetchParams, dispatchFetch, function (err) {
-            $('#fetch-config button').prop('disabled', false);
             if (err) {
                 alert('fetching failed:' + JSON.stringify(err));
             }
@@ -145,6 +121,19 @@ $(function () {
     };
 
     var changeFetch = function () {
+        if (!isDefined(fetchParams.sort)) {
+            fetchParams.sort = {};
+        }
+        if (!isDefined(fetchParams.sort.from)) {
+            fetchParams.sort.from = 1;
+        }
+        if (!isDefined(fetchParams.sort.to)) {
+            fetchParams.sort.to = 10;
+        }
+        var fetchParamsString = JSON.stringify(fetchParams, null, 2);
+        var height = fetchParamsString.split('\n').length * 1.6 + 'em';
+        $('#fetch-custom').val(fetchParamsString);
+        $('#fetch-custom').height(height);
         if (unfetch) {
             unfetch(setupFetch);
             return;
@@ -153,68 +142,131 @@ $(function () {
         }
     };
 
+    $('#fetch-case-insensitive').change(function () {
+        fetchParams.caseInsensitive = $(this).prop('checked');
+        changeFetch();
+    });
+
     $('#jet-address').val(window.document.domain);
 
     $('#fetch-custom-mode').change(function () {
-        var checked = $(this).prop('checked');
-        $('#fetch-config input').prop('disabled', checked);
-        $('#fetch-custom').prop('disabled', !checked);
-        $('#fetch-prev').prop('disabled', checked);
-        $('#fetch-next').prop('disabled', checked);
-        $(this).prop('disabled', false);
+        $('#fetch-custom').toggle();
+    });
+
+    $('#fetch-custom').change(function () {
+        try {
+            fetchParams = JSON.parse($(this).val());
+            changeFetch();
+        } catch (e) {
+            alert('Invalid JSON:' + e);
+        }
     });
 
     $('#fetch-prev').click(function () {
-        from = from - range;
-        to = to - range;
-        if (from < 0) {
+        fetchParams.sort.from -= range;
+        fetchParams.sort.to -= range;
+        if (fetchParams.sort.from < 0) {
             $('#fetch-prev').prop('disabled', true);
-            from = 1;
-            to = range;
+            fetchParams.sort.from = 1;
+            fetchParams.sort.to = range;
         }
         changeFetch();
     });
 
     $('#fetch-next').click(function () {
+        fetchParams.sort.from += range;
+        fetchParams.sort.to += range;
         from = from + range;
         to = to + range;
-        $('#fetch-prev').prop('disabled', false);
         changeFetch();
     });
 
-    $('#fetch-range').change(function () {
-        range = parseInt($(this).val());
-        to = from + range - 1;
-    });
-
-
-    $('#fetch-config').submit(function (event) {
+    $('#fetch-path').change(function (event) {
+        var search = $('#fetch-path').val();
+        var path;
+        var fetchOp = {
+            '>': 'greaterThan',
+            '<': 'lessThan',
+            '==': 'equals',
+            '!=': 'equalsNot'
+        };
+        var where = search.match(/(.+)\s*where:(.*)/);
+        if (where) {
+            var whereDetails = where[2].match(/(.*)\s*([>|<|=|!])\s*(.+)/);
+            if (whereDetails === null) {
+                alert('Invalid where expression.');
+                return;
+            }
+            var op = fetchOp[whereDetails[2]];
+            if (op === undefined) {
+                alert('Invalid where operation: ' + whereDetails[2] + '(Allowed: ">","<","=","!")');
+            }
+            var value;
+            try {
+                value = JSON.parse(whereDetails[3]);
+            } catch (e) {
+                alert('Invalid where expression value:' + e);
+                return;
+            }
+            path = where[1];
+            fetchParams.where = {
+                op: op,
+                prop: whereDetails[4] || null,
+                value: value
+            };
+        } else {
+            delete fetchParams.where;
+            path = search;
+        }
+        fetchParams.match = fetchParams.match || [];
+        fetchParams.match[0] = path.replace(/ /g, '.*');
         event.preventDefault();
         changeFetch();
     });
 
-    $('form#jet-config').submit(function (event) {
+    var connectJet = function () {
+        var once = true;
         var address = $('#jet-address').val();
         var port = $('#jet-port').val();
         var jetWsUrl = 'ws://' + address + ':' + port;
         if (jetInstance) {
-            $('#status').text('Disconnecting');
+            $('#status').removeClass().addClass('disconnecting');
             unfetch = null;
             jetInstance.close();
         }
-        $('#status').text('Connecting');
+        $('#status').removeClass().addClass('connecting');
         jetInstance = Jet.create(jetWsUrl, {
             onclose: function () {
-                $('#status').text('Disconnected');
+                $('#status').removeClass().addClass('disconnected');
+                if ($('#jet-reconnect').prop('checked') && once) {
+                    once = false;
+                    setTimeout(function () {
+                        connectJet();
+                    }, 1000);
+                }
             },
             onopen: function () {
-                $('#status').text('Connected');
-                try {
-                    jetInstance.setEncoding('msgpack');
-                } catch (e) {}
+                $('#status').removeClass().addClass('connected');
+                if (window.msgpack) {
+                    jetInstance.setEncoding('msgpack', function (err, result) {
+                        changeFetch();
+                    });
+                } else {
+                    changeFetch();
+                }
             }
         });
+    };
+
+    $('#jet-config').submit(function (event) {
+        connectJet();
         event.preventDefault();
+    });
+
+    $('#jet-config').trigger('submit');
+    $('#jet-config').hide();
+    $('#status').click(function () {
+        $('#jet-config').toggle();
     });
 
 })

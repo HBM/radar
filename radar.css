@@ -1,4 +1,12 @@
 
+#status {
+    float: right;
+}
+
+fieldset {
+    border: none;
+}
+
 
 @media screen and (max-width: 768px){
     #fetch-advanced-config{ 
@@ -7,10 +15,6 @@
 
     #jet-config input{
 	display: none;
-    }
-
-    #status {
-	display: inline;
     }
 
     #connect {
@@ -24,6 +28,22 @@
     legend {
 	display: none;
     }
+}
+
+#fetch-custom {
+    display: block;
+}
+
+.connecting .disconnecting {
+    color: yellow;
+}
+
+.disconnected {
+    color: red;
+}
+
+.connected{
+    color: green;
 }
 
 html {

@@ -13,35 +13,27 @@
 <body>
     <div id="main">
         <div id="config">
-            <form id="jet-config">
+            <button id="status" class="disconnected">Jet</button>
+            <div id="jet-config">
                 <fieldset>
-                    <legend>Jet</legend>
                     <label name="jet-address">Address</label>
                     <input type="text" name="jet-address" id="jet-address" required></input>
                     <label name="jet-port">Port</label>
                     <input type="number" name="jet-port" id="jet-port" required value="11123"></input>
+                    <input type="checkbox" name="jet-reconnect" id="jet-reconnect" checked>Reconnect</input>
                     <button id="connect" type="submit">Connect</button>
-                    <button id="status" disabled>Disconnected</button>
                 </fieldset>
-            </form>
-            <form id="fetch-config">
+            </div>
+            <div id="fetch-config">
                 <fieldset>
-                    <legend>Fetch Config</legend>
-                    <label name="fetch-path">Path</label>
                     <input type="text" name="fetch-path" id="fetch-path" placeholder="foo"></input>
                     <label name="fetch-case-insensitive">Aa</label>
                     <input type="checkbox" name="fetch-case-insensitive" id="fetch-case-insensitive" checked></input>
-                    <button type="submit">Fetch</button>
-                </fieldset>
-                <fieldset id="fetch-advanced-config">
-                    <legend>Fetch Advanced-Config</legend>
-                    <label name="fetch-range">Range</label>
-                    <input type="number" name="fetch-range" id="fetch-range" value="10"></input>
-                    <label>Enable Custom:</label>
+                    <label name="fetch-custom-mode">JSON</label>
                     <input type="checkbox" name="fetch-custom-mode" id="fetch-custom-mode"></input>
-                    <textarea name="fetch-custom" id="fetch-custom" disabled></textarea>
+                    <textarea name="fetch-custom" id="fetch-custom" style="display:none;"></textarea>
                 </fieldset>
-            </form>
+            </div>
             </div/>
             <div id="content"></div>
             <button id="fetch-prev" disabled>Prev</button>
@@ -55,6 +47,7 @@
 <script src="radar.js"></script>
 
 </html>
+
 
 
 
