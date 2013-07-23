@@ -26,7 +26,8 @@
             </div>
             <div id="fetch-config">
                 <fieldset>
-                    <input type="text" name="fetch-path" id="fetch-path" placeholder="foo"></input>
+                    <input type="search" name="fetch-path"
+                    id="fetch-path" placeholder="foo" pattern=".."></input>
                     <label name="fetch-case-insensitive">Aa</label>
                     <input type="checkbox" name="fetch-case-insensitive" id="fetch-case-insensitive" checked></input>
                     <label name="fetch-custom-mode">JSON</label>
@@ -36,8 +37,10 @@
             </div>
             </div/>
             <div id="content"></div>
-            <button id="fetch-prev" disabled>Prev</button>
-            <button id="fetch-next" disabled>Next</button>
+            <div id="pagination">
+              <button id="fetch-prev" disabled>Prev</button>
+              <button id="fetch-next" disabled>Next</button>
+            </div>
         </div>
 </body>
 

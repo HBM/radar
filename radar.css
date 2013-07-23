@@ -7,6 +7,25 @@ fieldset {
     border: none;
 }
 
+#fetch-path {
+    max-width: 30%;
+}
+
+#fetch-config {
+    background-color: #35ACEC;
+}
+
+#fetch-config label{
+    color: white;
+}
+
+#fetch-path{
+    border-radius: 4px;
+    box-shadow: none;
+    border: none;
+    min-width: 40%;
+}
+
 
 @media screen and (max-width: 768px){
     #fetch-advanced-config{ 
@@ -54,6 +73,7 @@ body {
     margin-left: auto;
     margin-right: auto;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0 0;
     /* font-size: 16px; */
 }
 
@@ -82,17 +102,36 @@ body textarea {
     float: left;
 }
 
-.value {
-    width: 95%;
+input.value {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    width: 45%;
     border: none;
     padding: 0px 0px;
-    margin: 0px 20px;
+/*    margin: 0px 20px;*/
+    float: right;
+    box-shadow: none;
+    background-color: transparent;
+}
+
+.path {
+    width: 45%;
+    border: none;
+    padding: 0px 0px;
+/*    margin: 0px 20px;*/
+    float: left;
 }
 
 #content div.row {
-    padding: 10px 0;
+    float: left;
+    clear: both;
+    width: 100%;
+/*    padding: 10px 0;*/
 }
 
-#content div.row:nth-child(odd) {
+#pagination {
+    clear: left;
+}
+
+#content div.row:nth-child(even) {
     background-color: lightGray;
 }
