@@ -99,6 +99,7 @@ $(function () {
         var row;
         var from = fetchParams.sort.from;
         var to = fetchParams.sort.to;
+        var enabledInputs = $('input:enabled');
         $('#content').empty();
         $('#fetch-prev').prop('disabled', from === 1);
         $('#fetch-next').prop('disabled', true);
@@ -113,7 +114,9 @@ $(function () {
             row.append('<input class="value"></input>');
             $('#content').append(row);
         }
+        enabledInputs.prop('disabled',true);
         unfetch = jetInstance.fetch(fetchParams, dispatchFetch, function (err) {
+            enabledInputs.prop('disabled',false);
             if (err) {
                 alert('fetching failed:' + JSON.stringify(err));
             }
@@ -131,7 +134,7 @@ $(function () {
             fetchParams.sort.to = 10;
         }
         var fetchParamsString = JSON.stringify(fetchParams, null, 2);
-        var height = fetchParamsString.split('\n').length * 1.6 + 'em';
+        var height = fetchParamsString.split('\n').length * 1.2 + 'em';
         $('#fetch-custom').val(fetchParamsString);
         $('#fetch-custom').height(height);
         if (unfetch) {
@@ -176,8 +179,6 @@ $(function () {
     $('#fetch-next').click(function () {
         fetchParams.sort.from += range;
         fetchParams.sort.to += range;
-        from = from + range;
-        to = to + range;
         changeFetch();
     });
 
@@ -187,10 +188,10 @@ $(function () {
         var fetchOp = {
             '>': 'greaterThan',
             '<': 'lessThan',
-            '==': 'equals',
-            '!=': 'equalsNot'
+            '=': 'equals',
+            '!': 'equalsNot'
         };
-        var where = search.match(/(.+)\s*where:(.*)/);
+        var where = search.match(/(.*)\s*where:(.*)/);
         if (where) {
             var whereDetails = where[2].match(/(.*)\s*([>|<|=|!])\s*(.+)/);
             if (whereDetails === null) {
@@ -208,10 +209,11 @@ $(function () {
                 alert('Invalid where expression value:' + e);
                 return;
             }
+            var prop = whereDetails[1] && whereDetails[1].trim() || null;
             path = where[1];
             fetchParams.where = {
                 op: op,
-                prop: whereDetails[4] || null,
+                prop: prop,
                 value: value
             };
         } else {
