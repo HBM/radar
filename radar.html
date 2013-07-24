@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Radar</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
     <meta name="description" content="Webinterface to Jet">
     <meta name="author" content="Gerhard Preuss">
     <link href="radar.css" rel="stylesheet"></link>
@@ -31,17 +31,16 @@
             </div>
             <div id="fetch-config">
                 <fieldset>
-		    <label name="fetch-path">Query</label>
-                    <input type="search" name="fetch-path"
-                    id="fetch-path" placeholder="foo" pattern=".."></input>
+                    <label name="fetch-path">Query</label>
+                    <input type="search" name="fetch-path" id="fetch-path" placeholder="foo" pattern=".."></input>
                 </fieldset>
             </div>
             </div/>
             <table id="content">
-	    </table>
+            </table>
             <div id="pagination" class="row">
-              <button id="fetch-prev" disabled>Prev</button>
-              <button id="fetch-next" disabled>Next</button>
+                <button id="fetch-prev" disabled>Prev</button>
+                <button id="fetch-next" disabled>Next</button>
             </div>
         </div>
 </body>
@@ -52,6 +51,7 @@
 <script src="radar.js"></script>
 
 </html>
+
 
 
 
