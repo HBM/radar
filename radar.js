@@ -1,13 +1,13 @@
 $(function () {
     var jetInstance;
     var unfetch;
-    var range = 10;
+    var range = 20;
     var fetchParams = {
         match: [],
         caseInsensitive: true,
         sort: {
             from: 1,
-            to: 10
+            to: range
         }
     };
 
@@ -27,20 +27,20 @@ $(function () {
             return; // this fetch result is not displayed            
         }
         label.text(n.path);
-        value.val(JSON.stringify(n.value));
+        value.val(JSON.stringify(n.value,null,' '));
         if (isDefined(n.value)) {
             value.on('change', function () {
                 var val = value.val();
                 try {
                     val = JSON.parse(val);
                 } catch (e) {
-                    value.val(JSON.stringify(n.value));
+                    value.val(JSON.stringify(n.value,null,' '));
                     alert('Input is no JSON (' + e + ') in:\n' + val);
                     return;
                 }
                 value.prop('disabled', true);
                 jetInstance.set(n.path, val, function (err, result) {
-                    value.val(JSON.stringify(n.value));
+                    value.val(JSON.stringify(n.value,null,' '));
                     value.prop('disabled', false);
                     if (err) {
                         alert('Set returned error: ' + JSON.stringify(err, null, 2));
@@ -79,7 +79,7 @@ $(function () {
             var id = '#s' + i;
             var label = $(id + ' .path');
             var value = $(id + ' .value');
-            $(id).hide();
+            //$(id).hide();
             label.text('');
             value.val('');
         }
@@ -106,7 +106,7 @@ $(function () {
         for (i = from - 1; i < to; ++i) {
             index = i + 1;
             row = $('<div></div>');
-            row.hide();
+//            row.hide();
             row.attr('id', 's' + index);
             row.addClass('row');
             row.append('<div class="index">' + index + '</div>');
