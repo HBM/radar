@@ -7,48 +7,47 @@ fieldset {
     border: none;
 }
 
-#fetch-path {
-    max-width: 30%;
-}
-
-#fetch-config {
-
-}
-
 #fetch-config label{
-    color: white;
+    font-size: 24px;
+    color: #555;
 }
 
 #fetch-path{
-    border-radius: 4px;
-    box-shadow: none;
+    border-radius: 0px;
+    text-indent: 0px;
+    font-family: courier,monospace;
+    font-size: 20px;
+    background-color: transparent;
     border: none;
-    min-width: 40%;
+    box-shadow: none;
+    min-width: 80%;
+    border-bottom: solid;
+    outline: none;
+    padding: 0 0;
 }
 
-@media screen and (max-width: 768px){
-    #fetch-advanced-config{ 
-	display: none; 
-    }
-
-    #jet-config input{
-	display: none;
-    }
-
-    #connect {
-	display: inline;
-    }
-
-    label {
-	display: none;
-    } 
-    
-    legend {
-	display: none;
-    }
-}
 
 @media screen and (max-width: 567px){
+
+    #fetch-config label {
+	display:none;
+    }
+
+    #fetch-path {
+	border-radius: 0px;
+	text-indent: 0px;
+	font-family: courier,monospace;
+	font-size: 20px;
+	background-color: transparent;
+	border: none;
+	box-shadow: none;
+	min-width: 80%;
+	border-bottom: solid;
+	outline: none;
+	padding: 0 0;
+
+	margin-left: 15px;
+    }
 
     #fetch-custom {
 	display: block;
@@ -74,7 +73,6 @@ fieldset {
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 0px;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     /* font-size: 16px; */
     }
 
@@ -144,7 +142,7 @@ fieldset {
 	display: block;
     }
 
-    tr.row {
+    .row {
 	border-left: 4px double #ffaa9f;
 	min-height: 35px;
 	box-shadow: 0 2px 6px 6px rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.15);
@@ -191,7 +189,6 @@ fieldset {
 	background-color: #e0e0e0;
     }
     body {
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	margin: 0px 20px;
     /* font-size: 16px; */
     }

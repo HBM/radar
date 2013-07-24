@@ -22,12 +22,6 @@
                     <input type="number" name="jet-port" id="jet-port" required value="11123"></input>
                     <input type="checkbox" name="jet-reconnect" id="jet-reconnect" checked>Reconnect</input>
                     <button id="connect" type="submit">Connect</button>
-                </fieldset>
-            </div>
-            <div id="fetch-config">
-                <fieldset>
-                    <input type="search" name="fetch-path"
-                    id="fetch-path" placeholder="foo" pattern=".."></input>
                     <label name="fetch-case-insensitive">Aa</label>
                     <input type="checkbox" name="fetch-case-insensitive" id="fetch-case-insensitive" checked></input>
                     <label name="fetch-custom-mode">JSON</label>
@@ -35,8 +29,16 @@
                     <textarea name="fetch-custom" id="fetch-custom" style="display:none;"></textarea>
                 </fieldset>
             </div>
+            <div id="fetch-config">
+                <fieldset>
+		    <label name="fetch-path">Query</label>
+                    <input type="search" name="fetch-path"
+                    id="fetch-path" placeholder="foo" pattern=".."></input>
+                </fieldset>
+            </div>
             </div/>
-            <table id="content"></table>
+            <table id="content">
+	    </table>
             <div id="pagination" class="row">
               <button id="fetch-prev" disabled>Prev</button>
               <button id="fetch-next" disabled>Next</button>
