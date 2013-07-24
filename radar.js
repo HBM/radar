@@ -22,25 +22,46 @@ $(function () {
         var value = $(id + ' .value');
         var from = fetchParams.sort.from;
         var to = fetchParams.sort.to;
+        var isPretty = false;
         if (n.index > to) {
             $('#fetch-next').prop('disabled', false);
             return; // this fetch result is not displayed            
         }
+        value.off('change');
+        value.off('dblclick');
         label.text(n.path);
-        value.val(JSON.stringify(n.value,null,' '));
+        value.val(JSON.stringify(n.value));
+        value.prop('rows', 1);
+        value.height('auto');
+
         if (isDefined(n.value)) {
+            value.on('dblclick', function () {
+                if (!isPretty) {
+                    var pretty = JSON.stringify(n.value, null, 2);
+                    var lines = pretty.split('\n').length
+                    value.val(pretty);
+                    value.prop('rows', lines);
+                    value.height('auto');
+                } else {
+                    var notpretty = JSON.stringify(n.value);
+                    value.val(notpretty);
+                    value.prop('rows', 1);
+                    value.height('auto');
+                }
+                isPretty = !isPretty;
+            });
             value.on('change', function () {
                 var val = value.val();
                 try {
                     val = JSON.parse(val);
                 } catch (e) {
-                    value.val(JSON.stringify(n.value,null,' '));
+                    value.val(JSON.stringify(n.value));
                     alert('Input is no JSON (' + e + ') in:\n' + val);
                     return;
                 }
                 value.prop('disabled', true);
                 jetInstance.set(n.path, val, function (err, result) {
-                    value.val(JSON.stringify(n.value,null,' '));
+                    value.val(JSON.stringify(n.value));
                     value.prop('disabled', false);
                     if (err) {
                         alert('Set returned error: ' + JSON.stringify(err, null, 2));
@@ -82,6 +103,7 @@ $(function () {
             //$(id).hide();
             label.text('');
             value.val('');
+            value.off('change');
         }
         if (sorted.n + from > to) {
             $('#fetch-next').prop('disabled', false);
@@ -105,18 +127,17 @@ $(function () {
         $('#fetch-next').prop('disabled', true);
         for (i = from - 1; i < to; ++i) {
             index = i + 1;
-            row = $('<div></div>');
-//            row.hide();
+            row = $('<tr></tr>');
             row.attr('id', 's' + index);
             row.addClass('row');
-            row.append('<div class="index">' + index + '</div>');
-            row.append('<div class="path"></div>');
-            row.append('<input class="value"></input>');
+            row.append('<td class="index">' + index + '</td>');
+            row.append('<td class="path"></td>');
+            row.append('<td><textarea class="value"></textarea></td>');
             $('#content').append(row);
         }
-        enabledInputs.prop('disabled',true);
+        enabledInputs.prop('disabled', true);
         unfetch = jetInstance.fetch(fetchParams, dispatchFetch, function (err) {
-            enabledInputs.prop('disabled',false);
+            enabledInputs.prop('disabled', false);
             if (err) {
                 alert('fetching failed:' + JSON.stringify(err));
             }
@@ -133,7 +154,7 @@ $(function () {
         if (!isDefined(fetchParams.sort.to)) {
             fetchParams.sort.to = 10;
         }
-        var fetchParamsString = JSON.stringify(fetchParams, null, 2);
+        var fetchParamsString = JSON.stringify(fetchParams);
         var height = fetchParamsString.split('\n').length * 1.2 + 'em';
         $('#fetch-custom').val(fetchParamsString);
         $('#fetch-custom').height(height);

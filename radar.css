@@ -26,7 +26,6 @@ fieldset {
     min-width: 40%;
 }
 
-
 @media screen and (max-width: 768px){
     #fetch-advanced-config{ 
 	display: none; 
@@ -66,8 +65,8 @@ fieldset {
 }
 
 html {
-background-image: url('textured_paper.png');
-    /* font-size: 100%; */
+    background-image: url('textured_paper.png');
+/* font-size: 100%; */
 }
 body {
     max-width: 1200px;
@@ -75,7 +74,7 @@ body {
     margin-right: auto;
     margin-top: 0px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    /* font-size: 16px; */
+/* font-size: 16px; */
 }
 
 body input,textarea {
@@ -100,25 +99,24 @@ body textarea {
 .index {
     font-family: courier,monospace;
     font-size: 22px;
-    width: 30px;
-    float: left;
+    width: 2em;
     color: #555;
-    height: 100%;
+    min-height: 35px;
     line-height: 30px;
 }
 
-input.value {
+textarea.value {
+    resize: vertical;
     outline: none;
     line-height: 30px;
     font-family: courier,monospace;
     font-size: 22px;
     color: #555;
-    width: 48%;
-    min-height: 35px;
+    width: 100%;
+    height: 35px;
     border: none;
     padding: 0px 0px;
-/*    margin: 0px 20px;*/
-    float: right;
+    /*    margin: 0px 20px;*/
     box-shadow: none;
     background-color: transparent;
     margin-bottom: 0px;
@@ -129,7 +127,6 @@ input.value {
 .path {
     word-wrap: break-word;
     line-height: 30px;
-    padding-left: 10px;
     border-left: 4px double #ffaa9f;
     border-right: 1px solid #ffaa9f;
     font-family: courier,monospace;
@@ -138,46 +135,42 @@ input.value {
     width: 45%;
     /* border: none; */
 
-/*    margin: 0px 20px;*/
-    float: left;
+    /*    margin: 0px 20px;*/
     color: #555;
     margin-left: 3px;
 }
 
+
 #content {
-    border-bottom: 1px solid #979797;
-    border-top: 1px solid #979797;
     box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.15);
-  float: left;
-  width: 100%;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
 }
 
-div.row {
+#content td {
+    padding-left: 1%;
+}
+
+tr.row {
     min-height: 35px;
     box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.15);
-background-color :#f5f5f5;  
-border-bottom: 1px dotted #ccc;
+    background-color :#f5f5f5;  
+    border-bottom: 1px dotted #ccc;
     border-right: 1px solid #979797;
     border-left: 1px solid #979797;    
-    float: left;
-    clear: both;
     width: 100%;
 /*    padding: 10px 0;*/
 }
 
-#content div.row:hover {
-  background-color: #f0f0f0;
-  -webkit-transition: all 0.2s;
-  -moz-transition:    all 0.2s;
-  -ms-transition:     all 0.2s;
-  -o-transition:      all 0.2s;
+#content .row:hover {
+    background-color: #f0f0f0;
+    -webkit-transition: all 0.2s;
+    -moz-transition:    all 0.2s;
+    -ms-transition:     all 0.2s;
+    -o-transition:      all 0.2s;
 }
 
-
-#pagination {
-    clear: left;
+table {
+    border: none;
 }
-
-/* #content div.row:nth-child(even) { */
-/*     background-color: lightGray; */
-/* } */
