@@ -67,7 +67,7 @@ fieldset {
     }
 
     html {
-        background-color: #e0e0e0;
+        background-color: #BEBEBE;
     }
 
     body {
@@ -75,7 +75,6 @@ fieldset {
         margin-left: auto;
         margin-right: auto;
         margin-top: 0px;
-    /* font-size: 16px; */
     }
 
     body input,textarea {
@@ -84,7 +83,6 @@ fieldset {
         color: #555;
         border: 1px solid #CCC;
         box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-	/* line-height: 22px; */
         vertical-align: middle;
         -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
         -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
@@ -101,7 +99,9 @@ fieldset {
         position: absolute;
         left: -16px;
         text-align: right;
-        color: #555;
+        color: #797979;
+        vertical-align: top;
+        text-shadow: -1px 1px 1px white;
     }
 
     textarea.value {
@@ -111,10 +111,9 @@ fieldset {
         font-family: courier,monospace;
         font-size: 16px;
         color: #555;
-        width: 93%;
+        width: 100%;
         border: none;
         padding: 0px 0px;
-	/*    margin: 0px 20px;*/
         box-shadow: none;
         background-color: transparent;
         margin-bottom: 0px;
@@ -123,17 +122,18 @@ fieldset {
     }
 
     .path {
+        vertical-align: top;
         word-wrap: break-word;
         font-family: courier,monospace;
         font-size: 18px;
-        width: 90%;
+        width: 100%;
         color: #555;
         font-weight: bold;
     }
 
     #content {
-        box-shadow: 0 2px 6px 6px rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.15);
-        width: 100%;
+        box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.15);
+        width: 93%;
         table-layout: fixed;
         border-collapse: collapse;
     }
@@ -146,11 +146,9 @@ fieldset {
     .row {
         border-left: 7px double #ffaa9f;
         min-height: 35px;
-        box-shadow: 0 2px 6px 6px rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.15);
         background-color: #f5f5f5;
         border-bottom: 1px dotted #ccc;
         width: 100%;
-    /*    padding: 10px 0;*/
     }
 
     #content .row:hover {
@@ -186,12 +184,11 @@ fieldset {
     }
 
     html {
-        background-color: #e0e0e0;
+        background-color: #BEBEBE;
     }
 
     body {
         margin: 0px 20px;
-    /* font-size: 16px; */
     }
 
     body input,textarea {
@@ -200,7 +197,6 @@ fieldset {
         color: #555;
         border: 1px solid #CCC;
         box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-	/* line-height: 20px; */
         vertical-align: middle;
         -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
         -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
@@ -220,6 +216,8 @@ fieldset {
         color: #555;
         min-height: 35px;
         line-height: 30px;
+        vertical-align: top;
+text-shadow: -1px 1px 1px #9E9E9E;
     }
 
     textarea.value {
@@ -243,6 +241,7 @@ fieldset {
     .path {
         word-wrap: break-word;
         line-height: 30px;
+        vertical-align: top;
         border-left: 7px double #ffaa9f;
         border-right: 2px solid #ffaa9f;
         font-family: courier,monospace;
@@ -254,7 +253,7 @@ fieldset {
     }
 
     #content {
-        box-shadow: 0 2px 6px 6px rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.15);
+        box-shadow: 0 5px 6px 4px rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.15);
         width: 100%;
         table-layout: fixed;
         border-collapse: collapse;
@@ -266,11 +265,9 @@ fieldset {
 
     tr.row {
         min-height: 35px;
-        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.15);
         background-color: #f5f5f5;
         border-bottom: 1px dotted #ccc;
         width: 100%;
-    /*    padding: 10px 0;*/
     }
 
     #content .row:hover {
