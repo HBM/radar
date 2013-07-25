@@ -32,7 +32,7 @@ $(function () {
         label.text(n.path);
         value.val(JSON.stringify(n.value));
         value.prop('rows', 1);
-        value.height('auto');
+        value.height('');
 
         if (isDefined(n.value)) {
             value.on('dblclick', function () {
@@ -46,7 +46,7 @@ $(function () {
                     var notpretty = JSON.stringify(n.value);
                     value.val(notpretty);
                     value.prop('rows', 1);
-                    value.height('auto');
+                    value.height('');
                 }
                 isPretty = !isPretty;
             });
