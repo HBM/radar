@@ -38,6 +38,23 @@ table.active {
     opacity: 1.0;    
 }
 
+.connecting {
+    color: yellow;
+}
+
+.disconnecting {
+    color: yellow;
+}
+
+.disconnected {
+    color: red;
+}
+
+.connected {
+    color: black;
+}
+
+
 @media screen and (max-width: 567px) {
 
     #fetch-config label {
@@ -62,18 +79,6 @@ table.active {
 
     #fetch-custom {
         display: block;
-    }
-
-    .connecting .disconnecting {
-        color: yellow;
-    }
-
-    .disconnected {
-        color: red;
-    }
-
-    .connected {
-        color: black;
     }
 
     html {
@@ -181,18 +186,6 @@ table.active {
         display: block;
     }
 
-    .connecting .disconnecting {
-        color: yellow;
-    }
-
-    .disconnected {
-        color: red;
-    }
-
-    .connected {
-        color: black;
-    }
-
     html {
         background-color: #BEBEBE;
     }
@@ -294,11 +287,17 @@ text-shadow: -1px 1px 1px #9E9E9E;
 }
 
 .loading {
-   -webkit-animation-name:             rotate; 
+    -webkit-animation-name:             rotate; 
     -webkit-animation-duration:         0.5s; 
     -webkit-animation-iteration-count:  infinite;
     -webkit-transition-timing-function: linear;
     -webkit-transform-origin: 0px 20px;
+
+    -moz-animation-name:             rotate; 
+    -moz-animation-duration:         0.5s; 
+    -moz-animation-iteration-count:  infinite;
+    -moz-transition-timing-function: linear;
+    -moz-transform-origin: 0px 20px;
 }
 
 @-webkit-keyframes rotate {
@@ -307,5 +306,14 @@ text-shadow: -1px 1px 1px #9E9E9E;
   }
   to { 
     -webkit-transform: rotate(360deg);
+  }
+}
+
+@-moz-keyframes rotate {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to { 
+    -moz-transform: rotate(360deg);
   }
 }
