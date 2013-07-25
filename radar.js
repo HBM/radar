@@ -261,6 +261,8 @@ $(function () {
         jetInstance = Jet.create(jetWsUrl, {
             onclose: function () {
                 $('#status').removeClass().addClass('disconnected');
+                $('#content').removeClass().addClass('inactive');
+                $('#content .value').prop('disabled', true);
                 if ($('#jet-reconnect').prop('checked') && once) {
                     once = false;
                     setTimeout(function () {
@@ -270,6 +272,8 @@ $(function () {
             },
             onopen: function () {
                 $('#status').removeClass().addClass('connected');
+                $('#content').removeClass().addClass('active');
+                $('#content .value').prop('disabled', false);
                 if (window.msgpack) {
                     jetInstance.setEncoding('msgpack', function (err, result) {
                         changeFetch();

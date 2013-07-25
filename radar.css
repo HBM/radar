@@ -28,6 +28,14 @@ fieldset {
     padding: 0 0;
 }
 
+table.inactive {
+    opacity: 0.6;    
+}
+
+table.active {
+    opacity: 1.0;    
+}
+
 @media screen and (max-width: 567px) {
 
     #fetch-config label {
