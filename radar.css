@@ -2,6 +2,8 @@
     float: right;
     padding-right: 20px;
     padding-top: 10px;
+    font-family: courier,monospace;
+    font-size: 20px;
 }
 
 fieldset {
@@ -289,4 +291,21 @@ text-shadow: -1px 1px 1px #9E9E9E;
     table {
         border: none;
     }
+}
+
+.loading {
+   -webkit-animation-name:             rotate; 
+    -webkit-animation-duration:         0.5s; 
+    -webkit-animation-iteration-count:  infinite;
+    -webkit-transition-timing-function: linear;
+    -webkit-transform-origin: 0px 20px;
+}
+
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to { 
+    -webkit-transform: rotate(360deg);
+  }
 }

@@ -60,10 +60,12 @@ $(function () {
                     return;
                 }
                 value.prop('disabled', true);
+                $('#status').addClass('loading');
                 jetInstance.set(n.path, val, function (err, result) {
-                    value.val(JSON.stringify(n.value));
+                    $('#status').removeClass('loading');
                     value.prop('disabled', false);
                     if (err) {
+                        value.val(JSON.stringify(n.value));
                         alert('Set returned error: ' + JSON.stringify(err, null, 2));
                     }
                 });
@@ -77,7 +79,9 @@ $(function () {
                     if (!$.isArray(args)) {
                         throw (value.val() + "is no JSON Array");
                     }
+                    $('#status').addClass('loading');
                     jetInstance.call(n.path, args, function (err, result) {
+                        $('#status').removeClass('loading');
                         if (err) {
                             alert('Call failed: ' + JSON.stringify(err, null, 2));
                         } else {
@@ -100,7 +104,6 @@ $(function () {
             var id = '#s' + i;
             var label = $(id + ' .path');
             var value = $(id + ' .value');
-            //$(id).hide();
             label.text('');
             value.val('');
             value.off('change');
@@ -136,7 +139,9 @@ $(function () {
             $('#content').append(row);
         }
         enabledInputs.prop('disabled', true);
+        $('#status').addClass('loading');
         unfetch = jetInstance.fetch(fetchParams, dispatchFetch, function (err) {
+            $('#status').removeClass('loading');
             enabledInputs.prop('disabled', false);
             if (err) {
                 alert('fetching failed:' + JSON.stringify(err));
