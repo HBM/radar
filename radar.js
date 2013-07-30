@@ -96,10 +96,23 @@ $(function () {
         $(id).show();
     };
 
+    var last;
+
     var dispatchFetch = function (sorted) {
         var i;
         var from = fetchParams.sort.from;
         var to = fetchParams.sort.to;
+        /* debugging changes start */
+        last = sorted;
+        for (i = 0; i < sorted.value.length; ++i) {
+            var id = '#s' + sorted.value[i].index;
+            var label = $(id + ' .path');
+            var value = $(id + ' .value');
+            if (label.text() === sorted.value[i].path && JSON.parse(value.val()) === sorted.value[i].val) {
+                console.log('ERROR: NO CHANGES FOR', sorted.value[i]);
+            }
+        }
+        /* debugging changes end */
         for (i = from + sorted.n; i <= to; ++i) {
             var id = '#s' + i;
             var label = $(id + ' .path');
@@ -205,6 +218,30 @@ $(function () {
     $('#fetch-next').click(function () {
         fetchParams.sort.from += range;
         fetchParams.sort.to += range;
+        changeFetch();
+    });
+
+    $('#fetch-sort-by').change(function () {
+        var sortBy = $(this).val();
+        if (sortBy === 'path') {
+            fetchParams.sort.byPath = true;
+            delete fetchParams.sort.byValue;
+        } else {
+            fetchParams.sort.byValue = true;
+            delete fetchParams.sort.byPath;
+        }
+        changeFetch();
+    });
+
+    $('#fetch-sort-order').change(function () {
+        var sortOrder = $(this).val();
+        if (sortOrder === 'ascending') {
+            fetchParams.sort.ascending = true;
+            delete fetchParams.sort.descending;
+        } else {
+            fetchParams.sort.descending = true;
+            delete fetchParams.sort.ascending;
+        }
         changeFetch();
     });
 

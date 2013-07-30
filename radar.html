@@ -16,14 +16,25 @@
             <div id="status" class="disconnected">&gt;</div>
             <div id="jet-config">
                 <fieldset>
-                    <label name="jet-address">Address</label>
+                    <label for="jet-address">Address</label>
                     <input type="text" name="jet-address" id="jet-address" required></input>
-                    <label name="jet-port">Port</label>
+                    <label for="jet-port">Port</label>
                     <input type="number" name="jet-port" id="jet-port" required value="11123"></input>
-                    <input type="checkbox" name="jet-reconnect" id="jet-reconnect" checked>Reconnect</input>
+                    <label for="jet-reconnect">Reconnect</label>
+                    <input type="checkbox" name="jet-reconnect" id="jet-reconnect" checked></input>
                     <button id="connect" type="submit">Connect</button>
-                    <label name="fetch-case-insensitive">Aa</label>
+                    <label for="fetch-case-insensitive">Aa</label>
                     <input type="checkbox" name="fetch-case-insensitive" id="fetch-case-insensitive" checked></input>
+                    <label for="fetch-sort-by-value">Sort by</label>
+                    <select name="fetch-sort-by" id="fetch-sort-by" value="path">
+                        <option value="path">Path</option>
+                        <option value="value">Value</option>
+                    </select>
+                    <label for="fetch-sort-by-value">Order</label>
+                    <select name="fetch-sort-order" id="fetch-sort-order" value="ascending">
+                        <option value="ascending">Ascending</option>
+                        <option value="descending">Descending</option>
+                    </select>
                     <label name="fetch-custom-mode">JSON</label>
                     <input type="checkbox" name="fetch-custom-mode" id="fetch-custom-mode"></input>
                     <textarea name="fetch-custom" id="fetch-custom" style="display:none;"></textarea>
@@ -51,6 +62,7 @@
 <script src="radar.js"></script>
 
 </html>
+
 
 
 
