@@ -104,12 +104,12 @@ $(function () {
         var to = fetchParams.sort.to;
         /* debugging changes start */
         last = sorted;
-        for (i = 0; i < sorted.value.length; ++i) {
-            var id = '#s' + sorted.value[i].index;
+        for (i = 0; i < sorted.changes.length; ++i) {
+            var id = '#s' + sorted.changes[i].index;
             var label = $(id + ' .path');
             var value = $(id + ' .value');
-            if (label.text() === sorted.value[i].path && JSON.parse(value.val()) === sorted.value[i].val) {
-                console.log('ERROR: NO CHANGES FOR', sorted.value[i]);
+            if (label.text() === sorted.changes[i].path && JSON.parse(value.val()) === sorted.changes[i].val) {
+                console.log('ERROR: NO CHANGES FOR', sorted.changes[i]);
             }
         }
         /* debugging changes end */
@@ -126,8 +126,8 @@ $(function () {
         } else {
             $('#fetch-next').prop('disabled', true);
         }
-        for (var i in sorted.value) {
-            createDisplay(sorted.value[i]);
+        for (var i in sorted.changes) {
+            createDisplay(sorted.changes[i]);
         }
     };
 
