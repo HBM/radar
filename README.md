@@ -1,15 +1,16 @@
-# radar
+# What is Radar?
 
-A Webinterface for Jet.
+A Webinterface for [Jet](http://jetbus.io).
 
 With radar you can:
-    * Query Jet Bus States and Methods by path or (value) filter
-    * Get realtime updates when States and Methods are added or removed
-    * Get realtime updates when States change
-    * Set states to a new value
-    * Call methods
 
-# install
+ *    Query Jet Bus States and Methods by path or (value) filter
+ *    Get realtime updates when States and Methods are added or removed
+ *    Get realtime updates when States change
+ *    Set states to a new value
+ *    Call methods
+
+# Install
 
 In general, the radar.html, radar.js, jet.js and radar.css must SOMEHOW be served by your http server.
 A jet daemon must also run (what else?).
