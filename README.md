@@ -28,3 +28,9 @@ requires orbit to be installed:
     $ ./simple_webserver
     
 Both (http) servers listen on port 8080, so this [link](htttp://localhost:8080) should point you to your radar.
+
+# Screenshots
+
+![Screen 1](screen1.png)
+
+![Screen 2](screen2.png)
