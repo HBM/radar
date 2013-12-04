@@ -3,8 +3,9 @@ $(function () {
     var unfetch;
     var range = 20;
     var fetchParams = {
-        match: [],
-        caseInsensitive: true,
+        path: {
+            caseInsensitive: true,
+        },
         sort: {
             from: 1,
             to: range
@@ -185,7 +186,7 @@ $(function () {
     };
 
     $('#fetch-case-insensitive').change(function () {
-        fetchParams.caseInsensitive = $(this).prop('checked');
+        fetchParams.path.caseInsensitive = $(this).prop('checked');
         changeFetch();
     });
 
@@ -223,15 +224,35 @@ $(function () {
 
     $('#fetch-sort-by').change(function () {
         var sortBy = $(this).val();
+        var fieldName;
         if (sortBy === 'path') {
             fetchParams.sort.byPath = true;
             delete fetchParams.sort.byValue;
-        } else {
-            fetchParams.sort.byValue = true;
+            delete fetchParams.sort.byValueField;
+            $('#fetch-sort-fieldname').prop('disabled', true);
+        } else if (sortBy === 'value') {
+            fetchParams.sort.byValue = 'number';
             delete fetchParams.sort.byPath;
+            delete fetchParams.sort.byValueField;
+            $('#fetch-sort-fieldname').prop('disabled', true);
+        } else if (sortBy === 'valuefield') {
+            fetchParams.sort.byValueField = {};
+            fieldName = $('#fetch-sort-fieldname').val();
+            fetchParams.sort.byValueField[fieldName] = 'number';
+            $('#fetch-sort-fieldname').prop('disabled', false);
+            delete fetchParams.sort.byPath;
+            delete fetchParams.sort.byValue;
         }
         changeFetch();
     });
+
+    $('#fetch-sort-fieldname').change(function () {
+        var fieldName = $('#fetch-sort-fieldname').val();
+        fetchParams.sort.byValueField = {};
+        fetchParams.sort.byValueField[fieldName] = 'number';
+        changeFetch();
+    });
+
 
     $('#fetch-sort-order').change(function () {
         var sortOrder = $(this).val();
@@ -274,17 +295,19 @@ $(function () {
             }
             var prop = whereDetails[1] && whereDetails[1].trim() || null;
             path = where[1];
-            fetchParams.where = {
-                op: op,
-                prop: prop,
-                value: value
-            };
+            if (prop) {
+                fetchParams.valueField = {};
+                fetchParams.valueField[op] = value;
+            } else {
+                fetchParams.value = {};
+                fetchParams.value[op] = value;
+            }
         } else {
-            delete fetchParams.where;
+            delete fetchParams.value;
+            delete fetchParams.valueField;
             path = search;
         }
-        fetchParams.match = fetchParams.match || [];
-        fetchParams.match[0] = path.replace(/ /g, '.*');
+        fetchParams.path.containsAllOf = path.split(/ +/g);
         event.preventDefault();
         changeFetch();
     });
