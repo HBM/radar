@@ -297,7 +297,8 @@ $(function () {
             path = where[1];
             if (prop) {
                 fetchParams.valueField = {};
-                fetchParams.valueField[op] = value;
+                fetchParams.valueField[prop] = {};
+                fetchParams.valueField[prop][op] = value;
             } else {
                 fetchParams.value = {};
                 fetchParams.value[op] = value;
