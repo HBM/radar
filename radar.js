@@ -324,7 +324,7 @@ $(function () {
             jetInstance.close();
         }
         $('#status').removeClass().addClass('connecting');
-        jetInstance = Jet.create(jetWsUrl, {
+        jetInstance = new jet.Peer(jetWsUrl, {
             onclose: function () {
                 $('#status').removeClass().addClass('disconnected');
                 $('#content').removeClass().addClass('inactive');
