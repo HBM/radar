@@ -1,4 +1,4 @@
-var Jet = (function () {
+! function () {
     var create = function (wsURL, callbacks) {
         wsURL = wsURL || ('ws://' + (window.document.domain || 'localhost') + ':11123');
         var newWebsocket = function (url, protocol) {
@@ -136,7 +136,15 @@ var Jet = (function () {
 
         return instance;
     };
-    return {
-        create: create
+
+    var jet = {
+        Peer: create
     };
-})();
+    if (typeof define === "function" && define.amd) {
+        define(jet);
+    } else if (typeof module === "object" && module.exports) {
+        module.exports = jetModule;
+    } else {
+        this.jet = jet;
+    }
+}();
