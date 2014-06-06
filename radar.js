@@ -77,10 +77,10 @@ $(function () {
                 var args;
                 try {
                     args = JSON.parse(value.val());
-                    if (!$.isArray(args)) {
-                        throw (value.val() + "is no JSON Array");
-                    }
-                    $('#status').addClass('loading');
+					if (!$.isArray(args) && !typeof(args) === 'object') {
+						throw (value.val() + "is no JSON array/object");
+					}
+					$('#status').addClass('loading');
                     jetInstance.call(n.path, args, function (err, result) {
                         $('#status').removeClass('loading');
                         if (err) {
