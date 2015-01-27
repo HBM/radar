@@ -1,8 +1,8 @@
 <form ng-submit="connect()">
   <input ng-model="url" type="text" placeholder="jet.nodejitsu.com" required>
   <input ng-model="port" type="number" placeholder="80"/>
-  <input type="submit" value="connect">
-  <h2>{{status}}</h2>
+  <input type="submit" value="connect" autofocus>
+  <span class="connection-status {{status}}">{{status}}</span>
 </form>
 
 <form ng-submit="fetch()">

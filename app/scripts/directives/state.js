@@ -11,26 +11,27 @@ angular.module('radarApp')
           state: '='
         },
         controller: function ($scope) {
-          var flattenObject = function(dst, root, parentPath) {
-            parentPath = parentPath || '';
-            Object.keys(root).forEach(function(key) {
-              if (angular.isObject(root[key])) {
-                flattenObject(dst,root[key],parentPath + '.' + key);
+          var flattenObject = function(dst, parent, parentPath) {
+            if (!angular.isDefined(parentPath)) {
+              parentPath = '';
+            }
+            dst[parentPath] = [];
+            Object.keys(parent).forEach(function(key) {
+              if (angular.isObject(parent[key])) {
+                flattenObject(dst, parent[key], parentPath + '.' + key);
               } else {
-                dst.push({
-                  parent: root,
-                  parentPath: parentPath,
+                dst[parentPath].push({
+                  parent: parent,
                   name: key
                 });
               }
             });
           };
           $scope.$watch('state', function(state) {
-            $scope.flatTree = [];
+            $scope.flatTree = {};
             flattenObject($scope.flatTree, state.$value);
           });
-        },
-        link: function (scope, element, attrs) {}
+        }
       };
     }
   ]);

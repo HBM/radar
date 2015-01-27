@@ -9,9 +9,20 @@
  */
 
 angular.module('radarApp')
-  .controller('MainCtrl', ['$scope', '$jet', function ($scope, $jet) {
-    $scope.url = '';
-    $scope.port = 80;
+  .controller('MainCtrl', ['$scope', '$jet', '$window', function ($scope, $jet, $window) {
+    var storage = $window.localStorage;
+    storage['radar.connections'] = storage['radar.connections'] || '[{}]';
+    var storedConnections;
+    try {
+      storedConnections = JSON.parse(storage['radar.connections']);
+    } catch(e) {
+      storedConnections = [];
+    }
+    var lastCon = storedConnections[storedConnections.length - 1];
+
+
+    $scope.url = lastCon && lastCon.url || '';
+    $scope.port = lastCon && lastCon.port || 80;
     $scope.status = 'disconnected';
     $scope.connect = function() {
       $scope.status = 'connecting';
@@ -25,6 +36,19 @@ angular.module('radarApp')
       });
       $scope.peer.$connected.then(function() {
         $scope.status = 'connected';
+        var connection = {
+          port: $scope.port,
+          url: $scope.url
+        };
+        if (storedConnections.filter(function(stored) {
+          if (angular.equals(stored, connection)) {
+            return true;
+          }
+          return false;
+        }).length === 0) {
+          storedConnections.push(connection);
+          storage['radar.connections'] = JSON.stringify(storedConnections);
+        };
       }, function() {
         $scope.status = 'disconnected';
       });
