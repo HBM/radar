@@ -1,0 +1,7 @@
+<div>
+  <span>{{state.$path}}</span>
+  <div ng-repeat="sub in flatTree">
+    <span>{{sub.name}}</span>
+    <input ng-model="sub.parent[sub.name]">
+  </div>
+</div>

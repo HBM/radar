@@ -1,0 +1,52 @@
+<form ng-submit="connect()">
+  <input ng-model="url" type="text" placeholder="jet.nodejitsu.com" required>
+  <input ng-model="port" type="number" placeholder="80"/>
+  <input type="submit" value="connect">
+  <h2>{{status}}</h2>
+</form>
+
+<form ng-submit="fetch()">
+  <fieldset>
+    <legend>Path</legend>
+    <label>Case Sensitive</label><input ng-model="caseSensitive" type="checkbox">
+    <div ng-repeat="pathFilter in pathFilters | filter:{active:true}">
+      <h3>{{pathFilter.op}}</h3>
+      <input type="text" required>
+      <input type="button" ng-click="pathFilter.active=false" value="remove">
+    </div>
+    <label>Add Path filter:</label>
+    <select
+      ng-model="newPathFilter"
+      ng-options="pathFilter.op for pathFilter in pathFilters | filter:{active:false}"
+      ng-change="newPathFilter.active = true">
+    </select>
+  </fieldset>
+  <input type="submit" value="fetch">
+  <!-- <fieldset>
+    <legend>Value Field</legend>
+    <label>Field Name</label><input ng-model="caseSensitive" type="checkbox">
+    <div ng-repeat="pathFilter in pathFilters | filter:{active:true}">
+      <h3>{{pathFilter.op}}</h3>
+      <input type="text" required>
+      <input type="button" ng-click="pathFilter.active=false" value="remove">
+    </div>
+    <select
+      ng-model="newPathFilter"
+      ng-options="pathFilter.op for pathFilter in pathFilters | filter:{active:false}"
+      ng-change="newPathFilter.active = true">
+    </select>
+  </fieldset> -->
+
+</form>
+
+<div>
+  <ul>
+    <li ng-repeat="element in elements">
+      <span>{{element.$path}}</span>
+      <input ng-if="element.$call" type="button" value="call"/>
+      <input ng-if="element.$call" type="button" value="call"/>
+      <div ng-if="element.$save" state="element">
+      </div>
+    </li>
+  </ul>
+</div>
