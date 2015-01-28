@@ -40,9 +40,9 @@
 </form>
 
 <div>
-  <ul>
-    <li ng-repeat="element in elements">
-      <span>{{element.$path}}</span>
+  <ul class="elements">
+    <li class="element" ng-repeat="element in elements">
+      <span class="path">{{element.$path}}</span>
       <input ng-if="element.$call" type="button" value="call"/>
       <input ng-if="element.$call" type="button" value="call"/>
       <div ng-if="element.$save" state="element">

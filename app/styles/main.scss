@@ -1,0 +1,16 @@
+.elements {
+  display: flex;
+  width: 500px;
+  flex-direction: column;
+  list-style: none;
+}
+
+.element {
+  width: 100%;
+}
+
+.path {
+  width: 100%;
+  background-color: cyan;
+  display: block;
+}

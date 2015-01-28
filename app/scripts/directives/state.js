@@ -11,25 +11,56 @@ angular.module('radarApp')
           state: '='
         },
         controller: function ($scope) {
-          var flattenObject = function(dst, parent, parentPath) {
+          var flatTree = {};
+          $scope.flatTree = flatTree;
+
+          var inputTypes = {
+            object: 'text', // applies to arrays
+            number: 'number',
+            string: 'text',
+            boolean: 'checkbox'
+          };
+
+          var flattenObject = function(parent, parentPath) {
             if (!angular.isDefined(parentPath)) {
               parentPath = '';
             }
-            dst[parentPath] = [];
+            flatTree[parentPath] = {};//flatTree[parentPath] || {};
             Object.keys(parent).forEach(function(key) {
               if (angular.isObject(parent[key])) {
-                flattenObject(dst, parent[key], parentPath + '.' + key);
+                flattenObject(parent[key], parentPath + '.' + key);
               } else {
-                dst[parentPath].push({
+                flatTree[parentPath][key] = {
                   parent: parent,
-                  name: key
-                });
+                  name: key,
+                  inputType: inputTypes[typeof parent[key]]
+                };
+              }
+            });
+            angular.forEach(flatTree, function(childs, parentPath) {
+              if (Object.keys(childs).length === 0) {
+                delete flatTree[parentPath];
               }
             });
           };
-          $scope.$watch('state', function(state) {
-            $scope.flatTree = {};
-            flattenObject($scope.flatTree, state.$value);
+
+          $scope.$watch('state.$value', function(value) {
+            Object.keys(flatTree).forEach(function(key) {
+              delete flatTree[key];
+            });
+
+            if (angular.isObject(value)) {
+              flattenObject(value);
+            } else {
+              flatTree[''] = {
+                '': {
+                  parent: {
+                    '': value
+                  },
+                  name: ''
+                }
+              };
+            }
           });
         }
       };

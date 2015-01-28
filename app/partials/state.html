@@ -1,10 +1,10 @@
 <div>
-  <span>{{state.$path}}</span>
   <div ng-repeat="(parentPath, subs) in flatTree">
     <span>{{parentPath}}</span>
     <div ng-repeat="sub in subs">
       <span>{{sub.name}}</span>
-      <input ng-model="sub.parent[sub.name]">
+      <input type="{{sub.inputType}}" ng-model="sub.parent[sub.name]"
+        ng-model-options="{debounce: {'default': 100}}">
     </div>
   </div>
 </div>
