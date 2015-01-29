@@ -1,0 +1,13 @@
+<div>
+<div class="path">
+  <span >{{method.$path}}</span>
+</div>
+
+<form name="methodForm" ng-submit="method.$call(args); methodForm.$setPristine()">
+  {{argsJSON}}
+  
+  <textarea ng-model="argsJSON">
+  </textarea>
+  <input type="submit" value="call">
+</form>
+</div>

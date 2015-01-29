@@ -84,8 +84,9 @@ angular.module('radarApp')
           to: 10
         }
       });
+      $scope.elements.$autoSave(false);
     };
-  
+
 
     $scope.caseSensitive = false;
 

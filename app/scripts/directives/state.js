@@ -13,6 +13,7 @@ angular.module('radarApp')
         controller: function ($scope) {
           var flatTree = {};
           $scope.flatTree = flatTree;
+          $scope.asJSON = false;
 
           var inputTypes = {
             object: 'text', // applies to arrays
@@ -44,6 +45,7 @@ angular.module('radarApp')
             });
           };
 
+
           $scope.$watch('state.$value', function(value) {
             Object.keys(flatTree).forEach(function(key) {
               delete flatTree[key];
@@ -61,7 +63,17 @@ angular.module('radarApp')
                 }
               };
             }
+            $scope.valueAsJSON = angular.toJson(value);
           });
+
+          $scope.saveJSON = function() {
+            try {
+              $scope.state.$value = JSON.parse($scope.valueAsJSON);
+              $scope.state.$save();
+            } catch(e) {
+              
+            }
+          };
         }
       };
     }

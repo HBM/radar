@@ -1,10 +1,23 @@
 <div>
+<div class="path">
+  <span >{{state.$path}}</span>
+  <label>JSON</label><input type="checkbox" ng-model="asJSON" value="JSON">
+</div>
+
+<form ng-if="asJSON" name="jsonForm" ng-submit="saveJSON(); jsonForm.$setPristine()">
+  <textarea ng-model="$parent.valueAsJSON">
+  </textarea>
+  <input ng-disabled="!jsonForm.$dirty" type="submit" value="save">
+</form>
+
+<form ng-if="!asJSON" name="listForm" ng-submit="state.$save(); listForm.$setPristine()">
   <div ng-repeat="(parentPath, subs) in flatTree">
     <span>{{parentPath}}</span>
     <div ng-repeat="sub in subs">
       <span>{{sub.name}}</span>
-      <input type="{{sub.inputType}}" ng-model="sub.parent[sub.name]"
-        ng-model-options="{debounce: {'default': 100}}">
+      <input type="{{sub.inputType}}" ng-model="sub.parent[sub.name]">
     </div>
   </div>
+  <input ng-disabled="!listForm.$dirty" type="submit" value="save">
+</form>
 </div>
