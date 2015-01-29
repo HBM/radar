@@ -1,7 +1,12 @@
-<form ng-submit="connect()">
-  <input ng-model="url" type="text" placeholder="jet.nodejitsu.com" required>
-  <input ng-model="port" type="number" placeholder="80"/>
-  <input type="submit" value="connect" autofocus>
+<form ng-repeat="con in storedConnections" ng-hide="status === 'connected' && url !== con">
+  <span>{{con}}</span>
+  <button ng-disabled="status !== 'disconnected'"  ng-click="connect(con)">connect</button>
+  <button ng-disabled="url !== con" ng-click="disconnect()">disconnect</button>
+  <button ng-disabled="url === con && status !== 'disconnected'" ng-click="removeStoredConnection(con)">remove</button>
+</form>
+<form ng-hide="status === 'connected'" ng-submit="connect(newUrl); newUrl=''">
+  <input ng-model="newUrl" placeholder="ws://jet.nodejitsu.com:80" required>
+  <input ng-disabled="!isValidWsUrl && status !== 'disconnect'" type="submit" value="connect">
   <span class="connection-status {{status}}">{{status}}</span>
 </form>
 
@@ -11,7 +16,7 @@
     <label>Case Sensitive</label><input ng-model="caseSensitive" type="checkbox">
     <div ng-repeat="pathFilter in pathFilters | filter:{active:true}">
       <h3>{{pathFilter.op}}</h3>
-      <input type="text" required>
+      <input type="text">
       <input type="button" ng-click="pathFilter.active=false" value="remove">
     </div>
     <label>Add Path filter:</label>
@@ -43,8 +48,8 @@
   <ul class="elements">
     <li class="element" ng-repeat="element in elements">
       <span class="path">{{element.$path}}</span>
-      <input ng-if="element.$call" type="button" value="call"/>
-      <input ng-if="element.$call" type="button" value="call"/>
+      <input ng-if="element.$call" ng-init="element.args='[]'" ng-model="element.args">
+      <button ng-if="element.$call" ng-click="element.$call(JSON.parse(element.args))">call</button>
       <div ng-if="element.$save" state="element">
       </div>
     </li>
