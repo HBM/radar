@@ -1,14 +1,14 @@
 <div class="config">
-<form ng-repeat="con in storedConnections" ng-hide="status === 'connected' && url !== con">
+
+<form class="connection connection-status-{{status}}" ng-repeat="con in storedConnections" ng-hide="status === 'connected' && url !== con">
   <span>{{con}}</span>
   <button ng-disabled="status !== 'disconnected'"  ng-click="connect(con)">connect</button>
   <button ng-disabled="url !== con" ng-click="disconnect()">disconnect</button>
   <button ng-disabled="url === con && status !== 'disconnected'" ng-click="removeStoredConnection(con)">remove</button>
 </form>
-<form ng-hide="status === 'connected'" ng-submit="connect(newUrl); newUrl=''">
+<form class="connection"  ng-hide="status === 'connected'" ng-submit="connect(newUrl); newUrl=''">
   <input ng-model="newUrl" placeholder="ws://jet.nodejitsu.com:80" required>
   <input ng-disabled="!isValidWsUrl && status !== 'disconnect'" type="submit" value="connect">
-  <span class="connection-status {{status}}">{{status}}</span>
 </form>
 
 
@@ -22,9 +22,8 @@
       + {{pathFilter.op}}
     </button>
     <div ng-repeat="pathFilter in pathFilters | filter:{active:true}">
-      <span>{{pathFilter.op}}</span>
+      <button type="button" ng-click="pathFilter.active=false">- {{pathFilter.op}}</button>
       <input type="text" ng-model="pathFilter.value" required>
-      <input type="button" ng-click="pathFilter.active=false" value="remove">
     </div>
   </fieldset>
 
@@ -34,11 +33,10 @@
       + {{valueFilter.op}}
     </button>
     <div ng-repeat="valueFilter in valueFilters | filter:{active:true}">
-      <span>{{valueFilter.op}}</span>
+      <button type="button" ng-click="valueFilter.active=false">- {{valueFilter.op}}</button>
       <input type="text" placeholder="address.street (optional)" ng-model="valueFilter.fieldString">
       <input type="{{valueFilter.type}}" ng-model="valueFilter.value" required>
-      <select ng-model="valueFilter.type" ng-options="name as type for (name,type) in inputTypes"></select>
-      <input type="button" ng-click="valueFilter.active=false" value="remove">
+      <select ng-model="valueFilter.type" ng-options="name as type for (name,type) in inputTypes"></select>      
     </div>
   </fieldset>
 
