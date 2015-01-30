@@ -1,3 +1,4 @@
+<div class="config">
 <form ng-repeat="con in storedConnections" ng-hide="status === 'connected' && url !== con">
   <span>{{con}}</span>
   <button ng-disabled="status !== 'disconnected'"  ng-click="connect(con)">connect</button>
@@ -10,45 +11,54 @@
   <span class="connection-status {{status}}">{{status}}</span>
 </form>
 
-<form ng-submit="fetch()">
-  <fieldset>
-    <legend>Path</legend>
-    <label>Case Sensitive</label><input ng-model="caseSensitive" type="checkbox">
-    <div ng-repeat="pathFilter in pathFilters | filter:{active:true}">
-      <h3>{{pathFilter.op}}</h3>
-      <input type="text">
-      <input type="button" ng-click="pathFilter.active=false" value="remove">
-    </div>
-    <label>Add Path filter:</label>
-    <select
-      ng-model="newPathFilter"
-      ng-options="pathFilter.op for pathFilter in pathFilters | filter:{active:false}"
-      ng-change="newPathFilter.active = true">
-    </select>
-  </fieldset>
-  <input type="submit" value="fetch">
-  <!-- <fieldset>
-    <legend>Value Field</legend>
-    <label>Field Name</label><input ng-model="caseSensitive" type="checkbox">
-    <div ng-repeat="pathFilter in pathFilters | filter:{active:true}">
-      <h3>{{pathFilter.op}}</h3>
-      <input type="text" required>
-      <input type="button" ng-click="pathFilter.active=false" value="remove">
-    </div>
-    <select
-      ng-model="newPathFilter"
-      ng-options="pathFilter.op for pathFilter in pathFilters | filter:{active:false}"
-      ng-change="newPathFilter.active = true">
-    </select>
-  </fieldset> -->
 
+<h1>Fetch Rule</h1> <label>JSON</label><input ng-model="showFetchExpressionAsJSON" type="checkbox" value="JSON">
+<form  ng-submit="fetch()"  ng-show="!showFetchExpressionAsJSON">
+
+  <fieldset ng-disabled="status !== 'connected'">
+    <legend>Path</legend>
+    <label>Case Sensitive</label><input ng-model="fetchCaseSensitive" type="checkbox">
+    <button type="button" class="add" ng-repeat="pathFilter in pathFilters | filter:{active:false}" ng-click="pathFilter.active=true">
+      + {{pathFilter.op}}
+    </button>
+    <div ng-repeat="pathFilter in pathFilters | filter:{active:true}">
+      <span>{{pathFilter.op}}</span>
+      <input type="text" ng-model="pathFilter.value" required>
+      <input type="button" ng-click="pathFilter.active=false" value="remove">
+    </div>
+  </fieldset>
+
+  <fieldset ng-disabled="status !== 'connected'">
+    <legend>Value</legend>
+    <button type="button" class="add" ng-repeat="valueFilter in valueFilters | filter:{active:false}" ng-click="valueFilter.active=true">
+      + {{valueFilter.op}}
+    </button>
+    <div ng-repeat="valueFilter in valueFilters | filter:{active:true}">
+      <span>{{valueFilter.op}}</span>
+      <input type="text" placeholder="address.street (optional)" ng-model="valueFilter.fieldString">
+      <input type="{{valueFilter.type}}" ng-model="valueFilter.value" required>
+      <select ng-model="valueFilter.type" ng-options="name as type for (name,type) in inputTypes"></select>
+      <input type="button" ng-click="valueFilter.active=false" value="remove">
+    </div>
+  </fieldset>
+
+  <fieldset ng-disabled="status !== 'connected'">
+    <legend>Sort</legend>
+    <label>From</label><input type="number" ng-model="fetchFrom">
+    <label>To</label><input type="number" ng-model="fetchTo">
+  </fieldset>
+  <input ng-disabled="status !== 'connected'" type="submit" value="fetch">
 </form>
 
-<div>
+<form ng-show="showFetchExpressionAsJSON">
+  <textarea disabled ng-model="fetchExpressionJSON">
+  </textarea>
+</form>
+</div>
+
   <ul class="elements">
     <li class="element" ng-repeat="element in elements">
       <div ng-if="element.$call" method="element"></div>
       <div ng-if="element.$save" state="element"></div>
     </li>
   </ul>
-</div>

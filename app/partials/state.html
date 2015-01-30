@@ -12,7 +12,7 @@
 
 <form ng-if="!asJSON" name="listForm" ng-submit="state.$save(); listForm.$setPristine()">
   <div ng-repeat="(parentPath, subs) in flatTree">
-    <span>{{parentPath}}</span>
+    <span class="parent-path">{{parentPath.slice(1)}}</span>
     <div ng-repeat="sub in subs">
       <span>{{sub.name}}</span>
       <input type="{{sub.inputType}}" ng-model="sub.parent[sub.name]">

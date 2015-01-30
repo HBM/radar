@@ -63,7 +63,7 @@ angular.module('radarApp')
                 }
               };
             }
-            $scope.valueAsJSON = angular.toJson(value);
+            $scope.valueAsJSON = angular.toJson(value,2);
           });
 
           $scope.saveJSON = function() {
@@ -71,7 +71,7 @@ angular.module('radarApp')
               $scope.state.$value = JSON.parse($scope.valueAsJSON);
               $scope.state.$save();
             } catch(e) {
-              
+
             }
           };
         }
