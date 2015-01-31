@@ -63,3 +63,7 @@ button.add {
     width: 100%;
   }
 }
+
+button:focus, input:focus {
+  border: 1px solid blue;
+}

@@ -5,6 +5,7 @@
   <button ng-disabled="url !== con" ng-click="disconnect()">disconnect</button>
   <button ng-disabled="url === con && status !== 'disconnected'" ng-click="removeStoredConnection(con)">remove</button>
 </form>
+<button ng-if="storedConnections.length > 0" ng-click="clearStoredConnections()">Clear</button>
 <form ng-hide="status === 'connected'" ng-submit="connect(newUrl); newUrl=''">
   <input ng-model="newUrl" placeholder="ws://jet.nodejitsu.com:80" required>
   <input ng-disabled="!isValidWsUrl && status !== 'disconnect'" type="submit" value="connect">

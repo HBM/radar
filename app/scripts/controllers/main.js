@@ -27,6 +27,9 @@ angular.module('radarApp')
     $scope.removeStoredConnection = function(con) {
       storedConnections.splice(storedConnections.indexOf(con),1);
     };
+    $scope.clearStoredConnections = function() {
+      storedConnections.length = 0;
+    };
     $scope.$watch('newUrl', function(url) {
       $scope.isValidWsUrl = validateWsUrl(url);
       //$scope.$apply();
