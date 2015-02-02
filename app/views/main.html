@@ -1,4 +1,12 @@
 <div class="config">
+  <div ng-init="pulldownExpand = false; selected='Daemon'" class="pulldown">
+    <span ng-click="pullDownExpand">{{selected}}</span>
+    <ul ng-show="pulldownExpand">
+      <li ng-repeat="con in storedConnections" ng-click="selected=con">
+        {{con}}
+      </li>
+    </ul>
+  </div>
 <form ng-repeat="con in storedConnections" ng-hide="status === 'connected' && url !== con">
   <span>{{con}}</span>
   <button ng-disabled="status !== 'disconnected'"  ng-click="connect(con)">connect</button>
