@@ -8,6 +8,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+    <link rel="stylesheet" href="styles/reset.css">
+
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
@@ -16,6 +18,7 @@
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+
   </head>
   <body ng-app="radarApp">
     <!--[if lt IE 7]>
@@ -23,8 +26,53 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
+    <header>
+      <nav id="main-nav">
+        <ul>
+          <li><a href="http://jetbus.io/index.html">Jet</a></li>
+          <li><a href="http://jetbus.io/concepts.html">Concepts</a></li>
+          <li><a href="http://jetbus.io/quickstart.html">Get Started</a></li>
+          <li><a href="http://jetbus.io/examples.html">Examples</a></li>
+          <li><a href="http://jetbus.io/protocol.html">Protocol</a></li>
+          <li><a href="#" class="active">Radar</a></li>
+        </ul>
+        <div>
+          <a class="twitter-share-button" href="https://twitter.com/share"
+          data-size="large"
+          data-count="none"
+          data-text="Check out #Jet for #RealtimeApps"
+          data-related="gelipp2000:Jet News">
+          Tweet
+          </a>
+          <iframe id="github-star"  src="http://ghbtns.com/github-btn.html?user=lipp&repo=jet&type=watch&count=true&size=large"
+            allowtransparency="true" frameborder="0" scrolling="0" width="120" height="30">
+          </iframe>
+        </div>
+      </nav>
+    </header>
 
+    <section class="sec-title">
+      <h1>Radar</h1>
+    </section>
+    <section>
       <div class="container" ng-view=""></div>
+    </section>
+
+
+    <footer>
+  <nav>
+  <p class="copyright">
+    &copy;2015 <a href="https://github.com/lipp">Gerhard Preuss</a> under the terms
+    of the <a href="https://github.com/lipp/jet/blob/master/LICENSE">MIT License</a>
+  </p>
+  <div>
+    <a href="https://github.com/lipp/jet"><img src="http://jetbus.io/images/github2.svg"/></a>
+    <a href="https://twitter.com/gelipp2000"><img src="http://jetbus.io/images/twitter2.svg"/></a>
+    <a href="https://plus.google.com/u/0/+GerhardPreuss/"><img src="http://jetbus.io/images/google+.svg"/></a>
+  </div>
+</nav>
+</footer>
+
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -57,8 +105,11 @@
     <!-- endbower -->
     <!-- endbuild -->
 
+    <script id="twitter-wjs" src="https://platform.twitter.com/widgets.js"></script>
+
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+	<script src="scripts/directives/connection-setup.js"></script>
         <script src="scripts/directives/state.js"></script>
         <script src="scripts/directives/method.js"></script>
         <script src="scripts/controllers/main.js"></script>

@@ -10,36 +10,8 @@
 
 angular.module('radarApp')
   .controller('MainCtrl', ['$scope', '$jet', '$window', function ($scope, $jet, $window) {
-    var storage = $window.localStorage;
-    storage['radar.connections'] = storage['radar.connections'] || '[]';
-    var storedConnections;
-    try {
-      storedConnections = JSON.parse(storage['radar.connections']);
-    } catch(e) {
-      storedConnections = [];
-    }
-    $scope.storedConnections = storedConnections;
-    var validateWsUrl = function(url) {
-      var regexp = /(ws|wss):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-      return regexp.test(url);
-    };
-    $scope.isValidWsUrl = false;
-    $scope.removeStoredConnection = function(con) {
-      storedConnections.splice(storedConnections.indexOf(con),1);
-    };
-    $scope.$watch('newUrl', function(url) {
-      $scope.isValidWsUrl = validateWsUrl(url);
-      //$scope.$apply();
-    });
-    $scope.storedConnections = storedConnections;
-    $scope.$watch('storedConnections', function(connections) {
-      console.log(connections);
-      storage['radar.connections'] = JSON.stringify(connections);
-    }, true);
-    $scope.newUrl = '';
     $scope.status = 'disconnected';
     $scope.disconnect = function() {
-      $scope.url = '';
       $scope.peer.$close();
       delete $scope.elements;
       $scope.status = 'disconnected';
@@ -56,11 +28,6 @@ angular.module('radarApp')
       });
       $scope.peer.$connected.then(function() {
         $scope.status = 'connected';
-        $scope.url = url;
-        if (storedConnections.indexOf(url) === -1) {
-          storedConnections.push(url);
-
-        }
       }, function() {
         $scope.status = 'disconnected';
       });

@@ -1,16 +1,6 @@
 <div class="config">
-
-<form class="connection connection-status-{{status}}" ng-repeat="con in storedConnections" ng-hide="status === 'connected' && url !== con">
-  <span>{{con}}</span>
-  <button ng-disabled="status !== 'disconnected'"  ng-click="connect(con)">connect</button>
-  <button ng-disabled="url !== con" ng-click="disconnect()">disconnect</button>
-  <button ng-disabled="url === con && status !== 'disconnected'" ng-click="removeStoredConnection(con)">remove</button>
-</form>
-<form class="connection"  ng-hide="status === 'connected'" ng-submit="connect(newUrl); newUrl=''">
-  <input ng-model="newUrl" placeholder="ws://jet.nodejitsu.com:80" required>
-  <input ng-disabled="!isValidWsUrl && status !== 'disconnect'" type="submit" value="connect">
-</form>
-
+  <div connection-setup connect="connect(url)" disconnect="disconnect(url)" status="status">
+  </div>
 
 <h1>Fetch Rule</h1> <label>JSON</label><input ng-model="showFetchExpressionAsJSON" type="checkbox" value="JSON">
 <form  ng-submit="fetch()"  ng-show="!showFetchExpressionAsJSON">
@@ -36,7 +26,7 @@
       <button type="button" ng-click="valueFilter.active=false">- {{valueFilter.op}}</button>
       <input type="text" placeholder="address.street (optional)" ng-model="valueFilter.fieldString">
       <input type="{{valueFilter.type}}" ng-model="valueFilter.value" required>
-      <select ng-model="valueFilter.type" ng-options="name as type for (name,type) in inputTypes"></select>      
+      <select ng-model="valueFilter.type" ng-options="name as type for (name,type) in inputTypes"></select>
     </div>
   </fieldset>
 
