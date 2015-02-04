@@ -3,65 +3,65 @@
   <div connection-setup connect="connect(url)" disconnect="disconnect(url)" status="status">
   </div>
 
-<form  ng-submit="fetch()">
+  <form class="fetch-settings connection-status-{{status}}" ng-submit="fetch()">
 
-  <fieldset ng-disabled="status !== 'connected'">
-    <legend>Path</legend>
-    <!-- <input ng-model="fetchCaseSensitive" type="checkbox"><label>Case Sensitive</label> -->
-    <div class="path-filters" ng-repeat="pathFilter in pathFilters">
-      <input
-         floatlabel="pathFilter.op"
-	 placeholder="pathFilter.op + ' ' + pathFilter.info"
+    <fieldset ng-disabled="status !== 'connected'">
+      <legend>Path</legend>
+      <!-- <input ng-model="fetchCaseSensitive" type="checkbox"><label>Case Sensitive</label> -->
+      <div class="path-filters" ng-repeat="pathFilter in pathFilters">
+        <input
+        floatlabel="pathFilter.op"
+        placeholder="pathFilter.op + ' ' + pathFilter.info"
         type="text"
         ng-model="pathFilter.value"
         class="floatlabel path-filter"
         >
-    </div>
-  </fieldset>
+      </div>
+    </fieldset>
 
-  <fieldset ng-disabled="status !== 'connected'">
-    <legend>Value</legend>
-    <div class="value-filters">
-      <div class="value-filter" ng-repeat="valueFilter in valueFilters">
-	<input
-           floatlabel="valueFilter.op"
-	   placeholder="valueFilter.op + ' ' + valueFilter.info"
-        type="text"
-        ng-model="valueFilter.value"
-        class="floatlabel value-filter-op"
-         >
-
-	<div class="value-filter-detail">
-        <input
-          ng-if="valueFilter.value"
-          floatlabel="'sub.address (optional)'"
+    <fieldset ng-disabled="status !== 'connected'">
+      <legend>Value</legend>
+      <div class="value-filters">
+        <div class="value-filter" ng-repeat="valueFilter in valueFilters">
+          <input
+          floatlabel="valueFilter.op"
+          placeholder="valueFilter.op + ' ' + valueFilter.info"
           type="text"
-          ng-model="valueFilter.fieldString"
-          class="floatlabel value-filter-address">
-	</div>
-      
-    </div>
-  </fieldset>
+          ng-model="valueFilter.value"
+          class="floatlabel value-filter-op"
+          >
 
-  <fieldset ng-disabled="status !== 'connected'">
-    <legend>Sort</legend>
-    <input type="radio" name="sort-dir" ng-model="fetchSortDirection" value="descending" ><label>Descending</label>
-    <input type="radio" name="sort-dir" ng-model="fetchSortDirection" value="ascending"><label>Ascending</label><br/>
-    <input type="radio" name="sort-crit" ng-model="fetchSortCriteria" value="byPath" ><label>by Path</label>
-    <input type="radio" name="sort-crit" ng-model="fetchSortCriteria" value="byValue"><label>by Value{{fetchSortCriteria === 'byValue' && ':' || ''}}</label>
-    <select ng-show="fetchSortCriteria === 'byValue'" ng-model="fetchSortByValueType" ng-options="name as type for (name,type) in inputTypes"></select><br/>
-    <input ng-show="fetchSortCriteria === 'byValue'" type="text" placeholder="address.street (optional)" ng-model="fetchSortByValueFieldString">
-  </fieldset>
-  <input ng-disabled="status !== 'connected'" type="submit" value="fetch">
-</form>
-<label>JSON</label><input ng-model="showFetchExpressionAsJSON" type="checkbox" value="JSON">
-<form ng-show="showFetchExpressionAsJSON">
-  <textarea disabled ng-model="fetchExpressionJSON">
-  </textarea>
-</form>
+          <div class="value-filter-detail">
+            <input
+            ng-if="valueFilter.value"
+            floatlabel="'sub.address (optional)'"
+            type="text"
+            ng-model="valueFilter.fieldString"
+            class="floatlabel value-filter-address">
+          </div>
+
+        </div>
+      </fieldset>
+
+      <fieldset ng-disabled="status !== 'connected'">
+        <legend>Sort</legend>
+        <input type="radio" name="sort-dir" ng-model="fetchSortDirection" value="descending" ><label>Descending</label>
+        <input type="radio" name="sort-dir" ng-model="fetchSortDirection" value="ascending"><label>Ascending</label><br/>
+        <input type="radio" name="sort-crit" ng-model="fetchSortCriteria" value="byPath" ><label>by Path</label>
+        <input type="radio" name="sort-crit" ng-model="fetchSortCriteria" value="byValue"><label>by Value{{fetchSortCriteria === 'byValue' && ':' || ''}}</label>
+        <select ng-show="fetchSortCriteria === 'byValue'" ng-model="fetchSortByValueType" ng-options="name as type for (name,type) in inputTypes"></select><br/>
+        <input ng-show="fetchSortCriteria === 'byValue'" type="text" placeholder="address.street (optional)" ng-model="fetchSortByValueFieldString">
+      </fieldset>
+      <input ng-disabled="status !== 'connected'" type="submit" value="fetch">
+    </form>
+    <label>JSON</label><input ng-model="showFetchExpressionAsJSON" type="checkbox" value="JSON">
+    <form ng-show="showFetchExpressionAsJSON">
+      <textarea disabled ng-model="fetchExpressionJSON">
+      </textarea>
+    </form>
 
 
-</div>
+  </div>
 
   <ul class="elements">
     <li class="element" ng-repeat="element in elements">

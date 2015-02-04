@@ -163,5 +163,5 @@ angular.module('radarApp')
     $scope.fetchSortByValueFieldString = '';
     $scope.fetchSortByValueType = 'number';
     $scope.fetchSortDirection = 'descending';
-      
+
   }]);

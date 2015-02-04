@@ -62,7 +62,7 @@ angular.module('radarApp')
 						   if ($scope.nextAction) {
 						       console.log($scope[$scope.nextAction]);
 						       $scope[$scope.nextAction]({url: $scope.state.url});
-						       
+
 						   }
 					       };
 					   }

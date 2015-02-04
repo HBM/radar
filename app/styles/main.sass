@@ -52,13 +52,73 @@ input
 .config
   padding-top: 20px
   min-width: 320px
-  background-color: rgb(242, 242, 242)
+
+  .connection
+    .pulldown
+      position: relative
+      width: 100%
+      height: 30px
+
+      input
+        border-bottom: 1px solid black
+        height: 100%
+        //position: absolute
+        background-color: white
+        box-sizing: border-box
+        //z-index: 3
+
+    .pulldown-caret
+      position: absolute
+      right: 0
+      z-index: 4
+      top: 4px
+
+    .pulldown-options-wrap
+      overflow: hidden
+      position: absolute
+      top: 100%
+      width: 100%
+      pointer-events: none
+
+    .pulldown-options-wrap.expanded
+      pointer-events: initial
+
+    .pulldown-options
+      transition: all 0.3s ease
+      transform: translateY(-100%)
+
+      li
+        padding: 1
+        padding-top: 3px
+        font-weight: 100
+        span
+          font-size: 17px
+          padding: 2px
+        border-bottom: 1px solid black
+        width: 100%
+        height: 24px
+        background-color: lightgrey
+
+
+
+    .expanded .pulldown-options
+      transform: translateY(0%)
+
+    input
+      height: 100%
+      width: 100%
+
+  //background-color: rgb(242, 242, 242)
+
+  .fetch-settings:not(.connection-status-connected)
+    //opacity: 0.4
 
   fieldset
     margin: 20px 0
 
   legend
     margin-bottom: 10px
+    font-size: 20px
 
   label.label-floatlabel
     left: 0px !important
@@ -84,7 +144,7 @@ input
   input[type=text]
     border: none
     border-bottom: 1px solid
-    font-size: 14px
+    font-size: 17px
     //margin-bottom: 4px
     //height: 20px
     //box-sizing: border-box
@@ -133,6 +193,7 @@ input
 
   .config
     width: 100%
+    min-width: initial
 
 
 
