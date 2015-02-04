@@ -1,39 +1,58 @@
 <div class="config">
+
   <div connection-setup connect="connect(url)" disconnect="disconnect(url)" status="status">
   </div>
 
-<h1>Fetch Rule</h1> <label>JSON</label><input ng-model="showFetchExpressionAsJSON" type="checkbox" value="JSON">
 <form  ng-submit="fetch()"  ng-show="!showFetchExpressionAsJSON">
 
   <fieldset ng-disabled="status !== 'connected'">
     <legend>Path</legend>
-    <label>Case Sensitive</label><input ng-model="fetchCaseSensitive" type="checkbox">
-    <button type="button" class="add" ng-repeat="pathFilter in pathFilters | filter:{active:false}" ng-click="pathFilter.active=true">
-      + {{pathFilter.op}}
-    </button>
-    <div ng-repeat="pathFilter in pathFilters | filter:{active:true}">
-      <button type="button" ng-click="pathFilter.active=false">- {{pathFilter.op}}</button>
-      <input type="text" ng-model="pathFilter.value" required>
+    <!-- <input ng-model="fetchCaseSensitive" type="checkbox"><label>Case Sensitive</label> -->
+    <div class="path-filters">
+      <input
+        floatlabel="pathFilter.op"
+        type="text"
+        ng-model="pathFilter.value"
+        class="floatlabel"
+        ng-repeat="pathFilter in pathFilters">
     </div>
   </fieldset>
 
   <fieldset ng-disabled="status !== 'connected'">
     <legend>Value</legend>
-    <button type="button" class="add" ng-repeat="valueFilter in valueFilters | filter:{active:false}" ng-click="valueFilter.active=true">
-      + {{valueFilter.op}}
-    </button>
-    <div ng-repeat="valueFilter in valueFilters | filter:{active:true}">
-      <button type="button" ng-click="valueFilter.active=false">- {{valueFilter.op}}</button>
-      <input type="text" placeholder="address.street (optional)" ng-model="valueFilter.fieldString">
-      <input type="{{valueFilter.type}}" ng-model="valueFilter.value" required>
-      <select ng-model="valueFilter.type" ng-options="name as type for (name,type) in inputTypes"></select>
+    <div class="value-filters">
+      <div class="value-filter" ng-repeat="valueFilter in valueFilters">
+        <input
+          ng-if="valueFilter.value"
+          floatlabel="'sub.address (optional)'"
+          type="text"
+          ng-model="valueFilter.fieldString"
+          class="floatlabel">
+
+      <input
+        floatlabel="valueFilter.op"
+        type="text"
+        ng-model="valueFilter.value"
+        class="floatlabel"
+        >
+      </div>
     </div>
+
+    <!-- <div class="input-group" ng-repeat="valueFilter in valueFilters">
+      <input type="checkbox" ng-model="valueFilter.active">
+      <label>{{valueFilter.op}}</label>
+      <input ng-disabled="!valueFilter.active" type="text" placeholder="address.street (optional)" ng-model="valueFilter.fieldString"><br/>
+      <input ng-disabled="!valueFilter.active" type="{{valueFilter.type}}" ng-model="valueFilter.value" required>
+      <select ng-disabled="!valueFilter.active" ng-model="valueFilter.type" ng-options="name as type for (name,type) in inputTypes"></select>
+    </div> -->
   </fieldset>
 
   <fieldset ng-disabled="status !== 'connected'">
     <legend>Sort</legend>
-    <label>From</label><input type="number" ng-model="fetchFrom">
-    <label>To</label><input type="number" ng-model="fetchTo">
+    <input ng-model="fetchSortDescending" type="checkbox"><label>Descending</label><br/>
+    <input ng-model="fetchSortByValue" type="checkbox"><label>By Value</label><br/>
+    <input ng-disabled="!fetchSortByValue" type="text" placeholder="address.street (optional)" ng-model="fetchSortByValueFieldString"><br/>
+    <select ng-disabled="!fetchSortByValue" ng-model="fetchSortByValueType" ng-options="name as type for (name,type) in inputTypes"></select>
   </fieldset>
   <input ng-disabled="status !== 'connected'" type="submit" value="fetch">
 </form>
@@ -42,6 +61,7 @@
   <textarea disabled ng-model="fetchExpressionJSON">
   </textarea>
 </form>
+<label>JSON</label><input ng-model="showFetchExpressionAsJSON" type="checkbox" value="JSON">
 </div>
 
   <ul class="elements">

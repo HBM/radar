@@ -1,4 +1,6 @@
 <form class="connection connection-status-{{status}}" ng-submit="submit()">
+  <fieldset>
+    <legend>Jet Daemon</legend>
   <div class="pulldown">
     <input tabindex="1" ng-model="state.url" placeholder="ws://jet.nodejitsu.com:80" type="text" required autofocus>
     <button tabindex="2" type="button" ng-click="state.expanded = !state.expanded">V</button>
@@ -9,4 +11,5 @@
     </ul>
     <button ng-disabled="!nextAction || !isValidWsUrl" type="submit" tabindex="3">{{nextAction}}</button>
   </div>
+  </fieldset>
 </form>

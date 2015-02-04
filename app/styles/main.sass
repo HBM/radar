@@ -40,9 +40,85 @@ button.add
   display: flex
   height: 100vh
 
+input
+  height: 24px
+  font-size: 16px
+
+.input-group
+  margin: 5px 0
 
 .config
-  min-width: 300px
+  padding-top: 20px
+  min-width: 320px
+  background-color: rgb(242, 242, 242)
+
+  fieldset
+    margin: 20px 0
+
+  legend
+    margin-bottom: 10px
+
+  label.label-floatlabel
+    left: 0px !important
+
+  .path-filters input, .value-filter input
+    width: 100%
+
+  .value-filter, .path-filters input
+    margin-bottom: 10px
+  //   display: flex
+  //   margin: 0px -5px
+  //   > *
+  //     flex-grow: 1
+  //     margin: 5px 5px
+
+  // label
+  //   height: 20px
+  //   width: 100px
+  //   box-sizing: border-box
+  //   display: inline-block
+  //   text-align: center
+
+  input[type=text]
+    border: none
+    border-bottom: 1px solid
+    font-size: 14px
+    //margin-bottom: 4px
+    //height: 20px
+    //box-sizing: border-box
+
+  input[type=checkbox]
+    width: 20px
+    height: 20px
+    margin: 0 0
+    transition: all 1s ease
+
+    //display: none
+
+  input[type=checkbox]:disabled::before
+    border-color: gray
+    color: gray
+
+  input[type=checkbox]:disabled:not(:checked)::before
+    border-color: gray
+    color: white
+
+
+  input[type=checkbox]::before
+    content: 'X'
+    text-align: center
+    color: white
+    width: 20px
+    height: 20px
+    display: inline-block
+    border: 2px solid black
+    background-color: white
+    font-size: 16px
+
+  input[type=checkbox]:checked::before
+    color: black
+    line-height: 20px
+
 
 
 @media (max-width: 700px)

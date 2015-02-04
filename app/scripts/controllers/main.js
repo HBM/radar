@@ -9,7 +9,7 @@
  */
 
 angular.module('radarApp')
-  .controller('MainCtrl', ['$scope', '$jet', '$window', function ($scope, $jet, $window) {
+  .controller('MainCtrl', ['$scope', '$jet', function ($scope, $jet) {
     $scope.status = 'disconnected';
     $scope.disconnect = function() {
       $scope.peer.$close();
@@ -55,7 +55,7 @@ angular.module('radarApp')
       $scope.fetchExpression.sort.to = fetch[1];
 
       var activePathFilters = pathFilters.filter(function(pathFilter) {
-        return pathFilter.active;
+        return pathFilter.value !== '';
       });
       if (activePathFilters.length === 0) {
         delete $scope.fetchExpression.path;
@@ -68,7 +68,7 @@ angular.module('radarApp')
       });
 
       var activeValueFilters = valueFilters.filter(function(valueFilter) {
-        return valueFilter.active;
+        return valueFilter.value !== '';
       });
       delete $scope.fetchExpression.value;
       delete $scope.fetchExpression.valueField;
@@ -105,13 +105,11 @@ angular.module('radarApp')
     $scope.pathFilters = [
       {
         op: 'contains',
-        value: '',
-        active: true
+        value: ''
       },
       {
         op: 'startsWith',
-        value: '',
-        active: false
+        value: ''
       }
     ];
 
@@ -120,16 +118,19 @@ angular.module('radarApp')
         op: 'equals',
         value: '',
         fieldString: '',
-        active: false,
         type: 'string'
       },
       {
         op: 'lessThan',
         value: '',
         fieldString: '',
-        active: false,
         type: 'number'
       }
     ];
+
+    $scope.fetchSortByValue = false;
+    $scope.fetchSortByValueFieldString = '';
+    $scope.fetchSortByValueType = 'number';
+
 
   }]);
