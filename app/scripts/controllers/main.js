@@ -63,8 +63,20 @@ angular.module('radarApp')
         $scope.fetchExpression.path = {};
         $scope.fetchExpression.path.caseInsensitive = !!!fetch[3];
       }
-      activePathFilters.forEach(function(pathFilter) {
-        $scope.fetchExpression.path[pathFilter.op] = pathFilter.value;
+	activePathFilters.forEach(function(pathFilter) {
+	    var val;
+	    pathFilter.invalid = false;
+	    if (pathFilter.toJSON) {
+		try {
+		    val = pathFilter.toJSON(pathFilter.value);
+		} catch(e) {
+		    pathFilter.invalid = true;
+		    return;
+		}
+	    } else {
+		val = pathFilter.value;
+	    }
+        $scope.fetchExpression.path[pathFilter.op] = val;
       });
 
       var activeValueFilters = valueFilters.filter(function(valueFilter) {
@@ -105,12 +117,30 @@ angular.module('radarApp')
     $scope.pathFilters = [
       {
         op: 'contains',
-        value: ''
+          value: '',
+	  info: '(e.g.: id)'
       },
       {
         op: 'startsWith',
-        value: ''
-      }
+          value: '',
+	  info: '(e.g: players)'
+      },
+	{
+	    op: 'containsOneOf',
+	    value: '',
+	    info: '(e.g: status LEDS)',
+	    toJSON: function(value) {
+		return value.split(' ')
+	    }
+	},
+	{
+	    op: 'containsAllOf',
+	    value: '',
+	    info: '(e.g: status LEDS)',
+	    toJSON: function(value) {
+		return value.split(' ')
+	    }
+	}
     ];
 
     $scope.valueFilters = [
@@ -118,7 +148,8 @@ angular.module('radarApp')
         op: 'equals',
         value: '',
         fieldString: '',
-        type: 'string'
+          type: 'string',
+	  info: '(JSON, e.g: true / 3.2 / "foo")'
       },
       {
         op: 'lessThan',
@@ -128,9 +159,9 @@ angular.module('radarApp')
       }
     ];
 
-    $scope.fetchSortByValue = false;
+    $scope.fetchSortCriteria = 'byPath';
     $scope.fetchSortByValueFieldString = '';
     $scope.fetchSortByValueType = 'number';
-
-
+    $scope.fetchSortDirection = 'descending';
+      
   }]);
