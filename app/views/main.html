@@ -3,7 +3,7 @@
   <div connection-setup connect="connect(url)" disconnect="disconnect(url)" status="status">
   </div>
 
-  <form class="fetch-settings connection-status-{{status}}" ng-submit="fetch()">
+  <form name="fetchForm" class="fetch-settings connection-status-{{status}}" ng-submit="fetch()">
 
     <fieldset ng-disabled="status !== 'connected'">
       <legend>Path</legend>
@@ -15,6 +15,7 @@
         type="text"
         ng-model="pathFilter.value"
         class="floatlabel path-filter"
+        tabindex="4"
         >
       </div>
     </fieldset>
@@ -29,11 +30,12 @@
           type="text"
           ng-model="valueFilter.value"
           class="floatlabel value-filter-op"
+          json="number,boolean,string"
           >
 
           <div class="value-filter-detail">
             <input
-            ng-if="valueFilter.value"
+            ng-if="valueFilter.value !== undefined"
             floatlabel="'sub.address (optional)'"
             type="text"
             ng-model="valueFilter.fieldString"
@@ -52,20 +54,29 @@
         <select ng-show="fetchSortCriteria === 'byValue'" ng-model="fetchSortByValueType" ng-options="name as type for (name,type) in inputTypes"></select><br/>
         <input ng-show="fetchSortCriteria === 'byValue'" type="text" placeholder="address.street (optional)" ng-model="fetchSortByValueFieldString">
       </fieldset>
-      <input ng-disabled="status !== 'connected'" type="submit" value="fetch">
+      <button ng-disabled="fetchForm.$invalid || status !== 'connected'" type="submit" ng-class="{nofetch: !!!elements}">fetch</button
     </form>
-    <label>JSON</label><input ng-model="showFetchExpressionAsJSON" type="checkbox" value="JSON">
+    <!-- <label>JSON</label><input ng-model="showFetchExpressionAsJSON" type="checkbox" value="JSON">
     <form ng-show="showFetchExpressionAsJSON">
       <textarea disabled ng-model="fetchExpressionJSON">
       </textarea>
-    </form>
+    </form> -->
 
 
   </div>
 
+
+<div class="fetch-panel">
+  <h2 ng-if="status !== 'connected'">Not connected to Daemon</h2>
+<h2 ng-if="status === 'connected' && !!!elements">Press Fetch</h2>
+<h2 ng-if="elements.length === 0">No Matches for Fetch</h2>
   <ul class="elements">
+
     <li class="element" ng-repeat="element in elements">
       <div ng-if="element.$call" method="element"></div>
       <div ng-if="element.$save" state="element"></div>
     </li>
+
   </ul>
+  <button ng-disabled="elements.length !== numberOfFetchResults"
+</div>

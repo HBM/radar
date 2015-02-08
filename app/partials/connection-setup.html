@@ -6,12 +6,16 @@
     <button tabindex="2" type="button" ng-click="state.expanded = !state.expanded" class="pulldown-caret">V</button>
     <div ng-class="{expanded: state.expanded}" class="pulldown-options-wrap">
     <ul class="pulldown-options">
-      <li ng-repeat="con in storedConnections | filter:'!'+state.url" ng-click="state.url=con; state.expanded=false">
+      <li ng-repeat="con in storedConnections | filter:'!'+state.url" ng-click="state.url=con; state.expanded=false; disconnect()">
         <span>{{con}}</span><button tabindex="-1" type="button" ng-click="removeStoredConnection(con)">X</button>
       </li>
     </ul>
   </div>
   </div>
-    <button ng-disabled="!nextAction || !isValidWsUrl" type="submit" tabindex="3">{{nextAction}}</button>
+    <button ng-disabled="!nextAction || !isValidWsUrl"
+      type="submit"
+      tabindex="3"
+      class="{{status}}"
+      >{{nextAction}}</button>
   </fieldset>
 </form>

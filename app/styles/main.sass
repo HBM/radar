@@ -1,7 +1,9 @@
 @import "style"
 
+$break: 700px
 
 .elements
+  width: 100%
   display: flex
   //width: 500px
   padding: 0 0
@@ -9,23 +11,98 @@
   list-style: none
   //max-width: 600px
   flex-grow: 1
-  margin: 0 auto
-  height: 100%
-  overflow-y: scroll
 
+.fetch-panel
+  margin: 0px auto
+  height: 100%fo
+  width: 100%
+  overflow-y: scroll
+  @media (min-width: $break + 1px)
+    margin-left: 20px
+
+  > h2
+    font-size: 30px
+    color: gray
+    width: 100%
+    text-align: center
+    margin: 30px auto
+
+.elements
+  margin: 20px 0
 
 .element
   display: table
   width: 100%
 
+  form
+    //margin-left: 20px
+    float: right
+
+  .leave
+    margin-top: 12px
+
+  .sub-path
+    width: 150px
+    text-align: right
+    display: inline-block
+    height: 30px
+
+  .sub-input
+    height: 30px
+    margin: 2px 0
+
+  .sub-group
+    margin: 2px 0
+
+  .sub-input[type=checkbox]
+    height: 14px
+
+  .set, .call
+    float: right
+
+  .json
+    display: none
+
 
 .path
   width: 100%
-  background-color: cyan
+  //background-color: cyan
+  border-bottom: 1px solid black
   display: block
   font-size: 22px
+  font-weight: 100
+  color: gray
 
 
+
+button[type=submit]:focus, button[type=submit]:hover
+  outline: 1px solid black
+  outline-offset: 2px
+
+input[type=text]:focus, input[type=text]:hover
+  outline: none
+  //border-bottom: 1px solid blue !important
+  background-color: rgb(240,240,240) !important
+
+button[type=submit]
+  outline: 1px solid white
+  outline-offset: 2px
+  float: right
+  height: 30px
+  width: 120px
+  font-size: 16px
+  text-align: center
+  background-color: rgb(96, 192, 152)
+  transition: all 0.3s ease
+  border: none
+  margin: 15px 0
+  color: white
+
+button[type=submit].disconnected
+  background-color: rgb(210, 100, 100)
+
+// button[type=submit].connecting
+//   background-color: rgb(210, 100, 100)
 
 button.add
   display: block
@@ -48,6 +125,7 @@ input
 
 .input-group
   margin: 5px 0
+
 
 .config
   min-width: 320px
@@ -189,11 +267,11 @@ input
 
 
 
-@media (max-width: 700px)
+@media (max-width: $break)
   .container
     display: block
 
-  .elements
+  .fetch-panel
     height: auto
     width: 100%
 
@@ -201,7 +279,8 @@ input
     width: 100%
     min-width: initial
 
+button:disabled
+  opacity: 0.3
 
-
-button:focus, input:focus
-  border: 1px solid blue
+.config input[type=text].ng-invalid
+  border-bottom: 1px solid red

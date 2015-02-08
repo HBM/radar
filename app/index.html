@@ -54,7 +54,7 @@
     <section class="sec-title">
       <h1>Radar</h1>
     </section>
-    <section>
+    <section class="app">
       <div class="container" ng-view=""></div>
     </section>
 
@@ -112,7 +112,10 @@
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/directives/floatlabel.js"></script>
-	<script src="scripts/directives/connection-setup.js"></script>
+        <script src="scripts/directives/json.js"></script>
+        <script src="scripts/directives/value-rule.js"></script>
+        <script src="scripts/directives/require-json.js"></script>
+	      <script src="scripts/directives/connection-setup.js"></script>
         <script src="scripts/directives/state.js"></script>
         <script src="scripts/directives/method.js"></script>
         <script src="scripts/controllers/main.js"></script>
