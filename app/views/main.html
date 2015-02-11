@@ -25,34 +25,41 @@
       <div class="value-filters">
         <div class="value-filter" ng-repeat="valueFilter in valueFilters">
           <input
-          floatlabel="valueFilter.op"
-          placeholder="valueFilter.op + ' ' + valueFilter.info"
+          placeholder="[sub.address] == false"
           type="text"
-          ng-model="valueFilter.value"
-          class="floatlabel value-filter-op"
-          json="number,boolean,string"
+          ng-model="valueFilter"
+          value-rule
           >
-
-          <div class="value-filter-detail">
-            <input
-            ng-if="valueFilter.value !== undefined"
-            floatlabel="'sub.address (optional)'"
-            type="text"
-            ng-model="valueFilter.fieldString"
-            class="floatlabel value-filter-address">
-          </div>
-
         </div>
       </fieldset>
 
       <fieldset ng-disabled="status !== 'connected'">
         <legend>Sort</legend>
-        <input type="radio" name="sort-dir" ng-model="fetchSortDirection" value="descending" ><label>Descending</label>
-        <input type="radio" name="sort-dir" ng-model="fetchSortDirection" value="ascending"><label>Ascending</label><br/>
-        <input type="radio" name="sort-crit" ng-model="fetchSortCriteria" value="byPath" ><label>by Path</label>
-        <input type="radio" name="sort-crit" ng-model="fetchSortCriteria" value="byValue"><label>by Value{{fetchSortCriteria === 'byValue' && ':' || ''}}</label>
-        <select ng-show="fetchSortCriteria === 'byValue'" ng-model="fetchSortByValueType" ng-options="name as type for (name,type) in inputTypes"></select><br/>
-        <input ng-show="fetchSortCriteria === 'byValue'" type="text" placeholder="address.street (optional)" ng-model="fetchSortByValueFieldString">
+        <div class="radio-group">
+          <span class="radio-item">
+            <input type="radio" name="sort-dir" ng-model="fetchSortDirection" value="descending" ><label>descending</label>
+          </span>
+          <span class="radio-item">
+            <input type="radio" name="sort-dir" ng-model="fetchSortDirection" value="ascending"><label>ascending</label>
+          </span>
+        </div>
+      <div class="radio-group">
+        <span class="radio-item">
+          <input type="radio" name="sort-crit" ng-model="fetchSortCriteria" value="byPath" ><label>by Path</label>
+        </span>
+        <span class="radio-item">
+          <input type="radio" name="sort-crit" ng-model="fetchSortCriteria" value="byValue"><label>by Value</label>
+        </span>
+      </div>
+      <div ng-show="fetchSortCriteria === 'byValue'" class="radio-group">
+        <span class="radio-item">
+          <input type="radio" name="sort-type" ng-model="fetchSortByValueType" value="string" ><label>is String</label>
+        </span>
+        <span class="radio-item">
+          <input type="radio" name="sort-type" ng-model="fetchSortByValueType" value="number"><label>is Number</label>
+        </span>
+      </div>
+      <input ng-show="fetchSortCriteria === 'byValue'" type="text" placeholder="address.street (optional)" ng-model="fetchSortByValueFieldString">
       </fieldset>
       <button ng-disabled="fetchForm.$invalid || status !== 'connected'" type="submit" ng-class="{nofetch: !!!elements}">fetch</button
     </form>

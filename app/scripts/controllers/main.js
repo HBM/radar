@@ -45,18 +45,17 @@ angular.module('radarApp')
   $scope.showfetchExpressionAsJSON = false;
   $scope.maxFetchEntries = 20;
   $scope.fetchCaseSensitive = true;
-  $scope.fetchExpression = {
-    sort: {}
-  };
+  $scope.fetchExpression = {};
 
-  $scope.$watch('[fetchFrom, fetchTo, pathFilters, fetchCaseSensitive, valueFilters, maxFetchEntries]', function(fetch) {
+  $scope.makeFetchExpression = function() {
     if ($scope.fetchForm.$invalid) {
       return;
     }
-    var pathFilters = fetch[2];
-    var valueFilters = fetch[4];
+    var pathFilters = $scope.pathFilters;
+    var valueFilters = $scope.valueFilters;
+    $scope.fetchExpression.sort = {};
     $scope.fetchExpression.sort.from = 1;
-    $scope.fetchExpression.sort.to = fetch[5];
+    $scope.fetchExpression.sort.to = 20;
 
     var activePathFilters = pathFilters.filter(function(pathFilter) {
       return pathFilter.value !== '';
@@ -65,7 +64,7 @@ angular.module('radarApp')
       delete $scope.fetchExpression.path;
     } else {
       $scope.fetchExpression.path = {};
-      $scope.fetchExpression.path.caseInsensitive = !!!fetch[3];
+      $scope.fetchExpression.path.caseInsensitive = !!!$scope.fetchCaseSensitive;
     }
     activePathFilters.forEach(function(pathFilter) {
       var val;
@@ -84,7 +83,7 @@ angular.module('radarApp')
     });
 
     var activeValueFilters = valueFilters.filter(function(valueFilter) {
-      return valueFilter.value !== '';
+      return valueFilter.value !== undefined;
     });
     delete $scope.fetchExpression.value;
     delete $scope.fetchExpression.valueField;
@@ -99,14 +98,24 @@ angular.module('radarApp')
         $scope.fetchExpression.value[valueFilter.op] = valueFilter.value;
       }
     });
+    if ($scope.fetchSortCriteria === 'byValue') {
+      if ($scope.fetchSortByValueFieldString !== '') {
+        $scope.fetchExpression.sort.byValueField = {};
+        $scope.fetchExpression.sort.byValueField[$scope.fetchSortByValueFieldString] = $scope.fetchSortByValueType
+      } else {
+        $scope.fetchExpression.sort.byValue = $scope.fetchSortByValueType;
+      }
+    }
+    $scope.fetchExpression.sort.descending = $scope.fetchSortDirection === 'descending';
     $scope.fetchExpressionJSON = angular.toJson($scope.fetchExpression,2);
-  }, true);
+  };
 
   $scope.fetch = function() {
     if ($scope.status !== 'connected') {
       return;
     }
     $scope.reset();
+    $scope.makeFetchExpression();
     $scope.elements = $scope.peer.$fetch($scope.fetchExpression);
     $scope.elements.$autoSave(false);
   };
@@ -150,18 +159,10 @@ angular.module('radarApp')
   $scope.valueFilters = [
   {
     op: 'equals',
-    value: '',
-    fieldString: '',
-    type: 'string',
-    info: '(JSON, e.g: true / 3.2 / "foo")'
-  },
-  {
-    op: 'lessThan',
-    value: '',
-    fieldString: '',
-    type: 'number'
-  }
-  ];
+    //value: '',
+    fieldString: ''
+  }];
+
 
   $scope.fetchSortCriteria = 'byPath';
   $scope.fetchSortByValueFieldString = '';

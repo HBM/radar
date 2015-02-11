@@ -2,6 +2,9 @@
 
 $break: 700px
 
+.app *
+  color: rgb(71,71,71)
+
 .elements
   width: 100%
   display: flex
@@ -27,16 +30,33 @@ $break: 700px
     text-align: center
     margin: 30px auto
 
-.elements
-  margin: 20px 0
+
+.element:nth-of-type(odd)
+  background-color: #dadada
+
+.element:nth-of-type(even)
+  background-color: #ececec
+
 
 .element
   display: table
   width: 100%
+  box-sizing: border-box
+  padding: 10px
+
+
 
   form
     //margin-left: 20px
-    float: right
+    //float: right
+    width: 100%
+    display: flex
+    margin-top: 10px
+    align-items: flex-end
+    flex-direction: column
+
+  // .leave, button
+  //   float: right
 
   .leave
     margin-top: 12px
@@ -71,7 +91,7 @@ $break: 700px
   display: block
   font-size: 22px
   font-weight: 100
-  color: gray
+  color: black
 
 
 
@@ -85,7 +105,7 @@ input[type=text]:focus, input[type=text]:hover
   background-color: rgb(240,240,240) !important
 
 button[type=submit]
-  outline: 1px solid white
+  outline: 1px solid transparent
   outline-offset: 2px
   float: right
   height: 30px
@@ -109,8 +129,8 @@ button.add
 
 
 .parent-path
-  background-color: gray
-  color: white
+  width: 100%
+  border-bottom: 1px solid
   display: block
 
 
@@ -118,7 +138,7 @@ button.add
   display: flex
   height: 100vh
 
-input
+input:not([type=radio]):not([type=checkbox])
   height: 24px
   font-size: 16px
   font-weight: 100
@@ -207,7 +227,7 @@ input
   label.label-floatlabel
     left: 0px !important
 
-  .path-filters input, .value-filter input
+  input[type="text"]
     width: 100%
 
   .value-filter, .path-filters input
@@ -284,3 +304,21 @@ button:disabled
 
 .config input[type=text].ng-invalid
   border-bottom: 1px solid red
+
+.method
+  textarea
+    display: block
+    font-size: 16px
+    font-weight: 300
+    margin: 20px 0
+    width: 250px
+    height: 1.5em
+
+.config
+  .radio-group
+    margin: 10px 0px
+    .radio-item
+      label
+        margin-left: 5px
+      width: 49%
+      display: inline-block
