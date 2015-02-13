@@ -27,22 +27,38 @@ angular.module('radarApp')
               parentPath = '';
             }
             flatTree[parentPath] = {};//flatTree[parentPath] || {};
-            Object.keys(parent).forEach(function(key) {
-              if (angular.isObject(parent[key])) {
-                flattenObject(parent[key], parentPath + '.' + key);
-              } else {
-                flatTree[parentPath][key] = {
-                  parent: parent,
-                  name: key,
-                  inputType: inputTypes[typeof parent[key]]
-                };
-              }
-            });
+            if (angular.isArray(parent)) {
+              parent.forEach(function(child, index) {
+                var key = '[' + index + ']';
+                if (angular.isObject(child)) {
+                  flattenObject(child, parentPath + '.' + key);
+                } else {
+                  flatTree[parentPath][key] = {
+                    parent: parent,
+                    name: key,
+                    inputType: inputTypes[typeof child]
+                  };
+                }
+              });
+            } else {
+              Object.keys(parent).forEach(function(key) {
+                console.log('key',key, typeof key)
+                if (angular.isObject(parent[key])) {
+                  flattenObject(parent[key], parentPath + '.' + key);
+                } else {
+                  flatTree[parentPath][key] = {
+                    parent: parent,
+                    name: key,
+                    inputType: inputTypes[typeof parent[key]]
+                  };
+                }
+              });
+            }
             angular.forEach(flatTree, function(childs, parentPath) {
-              if (Object.keys(childs).length === 0) {
-                delete flatTree[parentPath];
-              }
-            });
+            if (Object.keys(childs).length === 0) {
+              delete flatTree[parentPath];
+            }
+          });
           };
 
 
@@ -56,10 +72,9 @@ angular.module('radarApp')
             } else {
               flatTree[''] = {
                 '': {
-                  parent: {
-                    '': value
-                  },
-                  name: ''
+                  parent: $scope.state,
+                  name: '$value',
+                  inputType: inputTypes[typeof value]
                 }
               };
             }
