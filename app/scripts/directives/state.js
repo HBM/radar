@@ -35,6 +35,7 @@ angular.module('radarApp')
                 } else {
                   flatTree[parentPath][key] = {
                     parent: parent,
+                    key: index,
                     name: key,
                     inputType: inputTypes[typeof child]
                   };
@@ -48,6 +49,7 @@ angular.module('radarApp')
                 } else {
                   flatTree[parentPath][key] = {
                     parent: parent,
+                    key: key,
                     name: key,
                     inputType: inputTypes[typeof parent[key]]
                   };
@@ -73,7 +75,8 @@ angular.module('radarApp')
               flatTree[''] = {
                 '': {
                   parent: $scope.state,
-                  name: '$value',
+                  name: '',
+                  key: '$value',
                   inputType: inputTypes[typeof value]
                 }
               };
