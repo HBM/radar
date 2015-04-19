@@ -15,7 +15,7 @@
       <div class="sub-group" ng-repeat="sub in subs">
         <span ng-if="parentPath.length > 1" class="sub-path">{{parentPath.slice(1)}}.{{sub.name}}</span>
         <span ng-if="parentPath.length <= 1" class="sub-path">{{sub.name}}</span>
-        <input class="sub-input" type="{{sub.inputType}}" ng-model="sub.parent[sub.key]">
+        <input class="sub-input" step="any" type="{{sub.inputType}}" ng-model="sub.parent[sub.key]">
       </div>
     </div>
     <button class="set" ng-disabled="!listForm.$dirty" type="submit">set</button>
