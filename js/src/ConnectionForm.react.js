@@ -1,6 +1,5 @@
 var React = require('react');
-var jet = require('node-jet');
-var Peer = require('./peer');
+var utils = require('./utils');
 
 class ConnectionForm extends React.Component {
 	constructor(props) {
@@ -10,13 +9,7 @@ class ConnectionForm extends React.Component {
 	connect(event) {
 		event.preventDefault();
 		var url = React.findDOMNode(this.refs.url).value;
-		if (Peer.instance) {
-			Peer.instance.close();
-		}
-		Peer.instance = new jet.Peer({url: url});
-		Peer.instance.connect().then(function() {
-																 console.log('connected');
-		});
+		utils.connect(url);
 	}
 
 	render() {

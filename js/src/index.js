@@ -1,6 +1,6 @@
 var React = require('react');
-var ConnectionForm = require('./connection-form');
+var App = require('./App.react');
 
 React.render(
-	<ConnectionForm></ConnectionForm>
+	<App></App>
 	, document.body);

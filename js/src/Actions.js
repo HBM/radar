@@ -1,18 +1,29 @@
 var Dispatcher = require('./Dispatcher');
 
 var Actions = {
-	connect: function(url) {
+	peerIsConnecting: function() {
 		Dispatcher.dispatch({
-			actionType: 'connect',
-			url: url
+			type: 'peerIsConnecting'
 		});
 	},
 
-	fetch: function(rules) {
+	peerIsConnected: function() {
 		Dispatcher.dispatch({
-			actionType: 'fetch',
-			rules: rules || []
+			type: 'peerIsConnected'
 		});
+	},
+
+	peerIsDisconnected: function() {
+		Dispatcher.dispatch({
+			type: 'peerIsDisconnected'
+		});
+	},
+
+	listChanged: function(list) {
+			Dispatcher.dispatch({
+					type: 'listChanged',
+					list: list
+			});
 	}
 };
 

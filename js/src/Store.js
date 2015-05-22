@@ -3,44 +3,52 @@ var Dispatcher = require('./Dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
-var peer;
 var connected;
-var elements = [];
-var fetcher;
+var list = [];
+
 
 var Store = assign({}, EventEmitter.prototype, {
-
-	connect: function(url) {
-		if (peer) {
-			peer.close();
-			fetcher = undefined;
-		}
-		peer = new jet.Peer({url: url});
-		connected = false;
-		elements = [];
-		peer.connect().then( () => connected = true; this.emit('change'); );
-	},
 
 	isConnected: function() {
 		return connected;
 	},
 
-	fetch: function(rules) {
-		if (fetcher) {
-			fetcher.unfetch();
-		}
+	getList: function() {
+			return list;
+	},
 
-		if (peer) {
-			fetcher = new jet.Fetcher()
-			.all();
-			.on('data', function(data) {
-				elements = data;
-			});
+	addChangeListener: function(callback) {
+			this.on('change', callback);
+	},
 
-			peer.fetch(fetcher);
-		}
+	removeChangeListener: function(callback) {
+		this.removeListener('change', callback);
+	},
+
+	emitChange: function() {
+			this.emit('change');
 	}
 
+});
+
+Dispatcher.register(function(action) {
+		switch(action.type) {
+				case 'peerIsConnecting':
+					connected = false;
+					break;
+				case 'peerIsDisconnected':
+					connected = false;
+					break;
+				case 'peerIsConnected':
+					connected = true;
+					break
+				case 'listChanged':
+					list = action.list;
+					break;
+
+				default:
+		}
+Store.emitChange();
 });
 
 module.exports = Store;
