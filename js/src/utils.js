@@ -5,29 +5,31 @@ var peer;
 var fetcher;
 
 module.exports = {
-
-		connect: function(url) {
-				if (peer) {
-						peer.close();
-				}
-				Actions.peerIsConnecting();
-				peer = new jet.Peer({url: url});
-				peer.connect().then(function() {
-					Actions.peerIsConnected();
-				}).catch(function() {
-						Action.peerIsDisconnected();
-				});
-		},
-
-		fetch: function() {
-				if (fetcher) {
-						fetcher.unfetch();
-				}
-				fetcher = new jet.Fetcher().all().range(1,10).sortByPath();
-				fetcher.on('data', function(data) {
-					Actions.listChanged(data);
-			    });
-
-				peer.fetch(fetcher);
+	fetch: function (config, contains) {
+		if (peer) {
+			peer.close();
 		}
+		peer = new jet.Peer(config);
+		fetcher = new jet.Fetcher();
+		if (contains) {
+			fetcher.path('containsAllOf', contains);
+		}
+		fetcher.range(1, 100).sortByPath().pathCaseInsensitive();
+		fetcher.on('data', function (data) {
+			Actions.listChanged(data);
+		});
+
+		jet.Promise.all([
+					peer.connect(),
+					peer.fetch(fetcher)
+				]).then(function () {
+			Actions.peerIsConnected();
+		}).catch(function () {
+			Actions.peerIsDisconnected();
+		});
+	},
+
+	setState: function (path, value) {
+		peer.set(path, value);
+	}
 };

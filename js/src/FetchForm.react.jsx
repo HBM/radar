@@ -53,7 +53,7 @@ class FetchForm extends React.Component {
 					value={this.state.url}
 					onChange={this.setURL.bind(this)}
 				 	placeholder="ws://jetbus.io:8080"	
-					required autofocus
+					required 
 				/>
 
 				<label htmlFor="user">User</label>
@@ -75,7 +75,7 @@ class FetchForm extends React.Component {
 					onChange={this.setContains.bind(this)}
 				 	placeholder="foo"	
 				/>
-				<button type="submit">Fetch</button>
+				<button type="submit" autofocus>Fetch</button>
 			</form>
 		);
 	}

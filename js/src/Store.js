@@ -9,46 +9,46 @@ var list = [];
 
 var Store = assign({}, EventEmitter.prototype, {
 
-	isConnected: function() {
+	isConnected: function () {
 		return connected;
 	},
 
-	getList: function() {
-			return list;
+	getList: function () {
+		return list;
 	},
 
-	addChangeListener: function(callback) {
-			this.on('change', callback);
+	addChangeListener: function (callback) {
+		this.on('change', callback);
 	},
 
-	removeChangeListener: function(callback) {
+	removeChangeListener: function (callback) {
 		this.removeListener('change', callback);
 	},
 
-	emitChange: function() {
-			this.emit('change');
+	emitChange: function () {
+		this.emit('change');
 	}
 
 });
 
-Dispatcher.register(function(action) {
-		switch(action.type) {
-				case 'peerIsConnecting':
-					connected = false;
-					break;
-				case 'peerIsDisconnected':
-					connected = false;
-					break;
-				case 'peerIsConnected':
-					connected = true;
-					break
-				case 'listChanged':
-					list = action.list;
-					break;
+Dispatcher.register(function (action) {
+	switch (action.type) {
+	case 'peerIsConnecting':
+		connected = false;
+		break;
+	case 'peerIsDisconnected':
+		connected = false;
+		break;
+	case 'peerIsConnected':
+		connected = true;
+		break
+	case 'listChanged':
+		list = action.list;
+		break;
 
-				default:
-		}
-Store.emitChange();
+	default:
+	}
+	Store.emitChange();
 });
 
 module.exports = Store;
