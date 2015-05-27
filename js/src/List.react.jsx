@@ -2,6 +2,7 @@ var React = require('react');
 var Store = require('./Store');
 var Method = require('./Method.react.jsx');
 var State = require('./State.react.jsx');
+var utils = require('./utils');
 
 class List extends React.Component {
 	constructor(props) {
@@ -28,9 +29,13 @@ class List extends React.Component {
 		Store.removeChangeListener(this._onChange);
 	}
 
+	set(path, newValue) {
+		utils.setState(path, newValue);
+	}
+
 	renderItemContent(item) {
 		if (item.value !== undefined) {
-			return <State item={item} />;
+			return <State item={item} set={this.set.bind(this, item.path)}/>;
 		} else {
 			return <Method item={item} />
 		}

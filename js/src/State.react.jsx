@@ -1,25 +1,23 @@
 var React = require('react');
-var util = require('util');
 var flatten = require('flat');
-var utils = require('./utils');
-
-var inputTypes = {
-	object: 'text', // applies to arrays
-	number: 'number',
-	string: 'text',
-	boolean: 'checkbox'
-};
-
 
 class State extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
+		this.state = this.createState(this.props.item.value);
+	}
+
+	createState(value) {
+		return {
 			changes: {},
-			bak: this.flatValue(this.props.item.value),
-			value: this.flatValue(this.props.item.value),
-			displayValue: this.flatValue(this.props.item.value)
+			bak: this.flatValue(value),
+			value: this.flatValue(value),
+			displayValue: this.flatValue(value)
 		};
+	}
+
+	componentWillReceiveProps(nextProps) {
+		this.setState(this.createState(nextProps.item.value));
 	}
 
 	flatValue(value) {
@@ -32,86 +30,63 @@ class State extends React.Component {
 		}
 	}
 
-	onChangeCheckbox(key, event) {
-		this.state.value[key] = event.target.checked;
-		this.state.displayValue[key] = event.target.checked;
-		if (this.state.bak[key] !== this.state.value[key]) {
-			this.state.changes[key] = true;
+	onChange(key, event) {
+		var value;
+		var displayValue;
+		if (event.target.type === 'checkbox') {
+			value = displayValue = event.target.checked;
+		} else if (event.target.type === 'number') {
+			displayValue = event.target.value;
+			value = parseFloat(displayValue);
 		} else {
-			delete this.state.changes[key];
+			value = displayValue = event.target.value;
 		}
-		this.forceUpdate();
-	}
 
-	onChangeNumber(key, event) {
-		this.state.value[key] = parseFloat(event.target.value);
-		this.state.displayValue[key] = event.target.value;
+		this.state.value[key] = value;
+		this.state.displayValue[key] = displayValue;
 		if (this.state.bak[key] !== this.state.value[key]) {
 			this.state.changes[key] = true;
 		} else {
 			delete this.state.changes[key];
 		}
-		this.forceUpdate();
-	}
-
-	onChangeString(key, event) {
-		this.state.value[key] = event.target.value;
-		this.state.displayValue[key] = event.target.value;
-		if (this.state.bak[key] !== this.state.value[key]) {
-			this.state.changes[key] = true;
-		} else {
-			delete this.state.changes[key];
-		}
-		this.forceUpdate();
+		this.setState(this.state);
 	}
 
 	renderInput(key) {
 		var type = typeof this.state.value[key];
 		var value = this.state.displayValue[key];
+		var props = {};
+		props.onChange = this.onChange.bind(this, key);
 		if (type === 'number') {
-			return <input type = "number"
-			value = {
-				value
-			}
-			step = "any"
-			onChange = {
-				this.onChangeNumber.bind(this, key)
-			}
-			required
-				/ > ;
+			props.type = 'number';
+			props.value = value;
+			props.step = 'any';
+			props.required = true;
+
 		} else if (type === 'boolean') {
-			return <input type="checkbox" 
-				checked={value} 
-				onChange={this.onChangeCheckbox.bind(this, key)}
-				/>;
+			props.type = 'checkbox';
+			props.checked = value;
 		} else {
-			return <input type = "text"
-			value = {
-				value
-			}
-			onChange = {
-				this.onChangeString.bind(this, key)
-			}
-			required
-				/ > ;
+			props.type = 'text';
+			props.value = value;
 		}
+		return React.DOM.input(props);
 	}
 
 	renderButton() {
-		if (Object.keys(this.state.changes).length !== 0) {
-			return <button type="submit">Set</button>
-		} else {
-			return <button type = "submit"
-			disabled > Set < /button>
+		var props = {};
+		var changes = Object.keys(this.state.changes);
+		props.disabled = changes.length === 0;
+		return <button {...props
 		}
+		type = 'submit' > Set < /button>;
 	}
 
 	renderJson() {
 		var items = Object.keys(this.state.displayValue).map((key) => {
 			var value = this.state.displayValue[key];
-			var type = inputTypes[typeof value];
 			return (
-				<div class="State-field" key={key}>
+				<div className="State-field" key={key}>
 					<label>{key}</label>
 					{this.renderInput(key)}
 				</div>
@@ -120,16 +95,15 @@ class State extends React.Component {
 		return items;
 	}
 
-	setState(event) {
+	set(event) {
 		event.preventDefault();
 		var newValue = flatten.unflatten(this.state.value);
-		utils.setState(this.props.item.path, newValue);
-		console.log(newValue);
+		this.props.set(newValue);
 	}
 
 	render() {
 		return (
-			<form onSubmit={this.setState.bind(this)}>
+			<form onSubmit={this.set.bind(this)}>
 				{this.renderJson()}
 				{this.renderButton()}
 			</form>
