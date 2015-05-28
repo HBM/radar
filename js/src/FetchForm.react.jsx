@@ -1,4 +1,5 @@
 var React = require('react');
+var Input = require('./Input.react.jsx');
 var utils = require('./utils');
 
 class FetchForm extends React.Component {
@@ -10,6 +11,7 @@ class FetchForm extends React.Component {
 			password: window.localStorage.password || '',
 			contains: window.localStorage.contains || ''
 		};
+		this.state.isValidUrl = this.isValidUrl(this.state.url);
 	}
 
 	fetch(event) {
@@ -17,9 +19,16 @@ class FetchForm extends React.Component {
 		utils.fetch(this.state, this.state.contains.split(' '));
 	}
 
+	isValidUrl(url) {
+    	var wsRegExp = /(ws|wss):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+		return wsRegExp.test(url);
+	}
+
 	setURL(event) {
 		window.localStorage.url = event.target.value;
+			
 		this.setState({
+			isValidUrl: this.isValidUrl(event.target.value),
 			url: event.target.value
 		});
 	}
@@ -45,37 +54,53 @@ class FetchForm extends React.Component {
 		});
 	}
 
+	renderInput(config) {
+	}
+
 	render() {
 		return (
 			<form onSubmit={this.fetch.bind(this)}>
-				<label htmlFor="url">Daemon URL</label>
-				<input type="url" id="url" 
-					value={this.state.url}
+			<div className='row'>
+				<Input type='url' id='url' 
+					label='Daemon Websocket URL' 
+					value={this.state.url} 
 					onChange={this.setURL.bind(this)}
 				 	placeholder="ws://jetbus.io:8080"	
+					icon='mdi-file-cloud'
+					valid={this.state.isValidUrl}
 					required 
 				/>
 
-				<label htmlFor="user">User</label>
-				<input type="text" id="url" 
+				<Input type='text' id='user'	
+					label='User'
 					value={this.state.user}
 					onChange={this.setUser.bind(this)}
 				 	placeholder="anonymous"	
-				/>
-				
-				<label htmlFor="url">Password</label>
-				<input type="password" id="url" 
+					icon='mdi-action-account-box'
+					/>
+
+				<Input type='password' id='password'
+					label='Password'
 					value={this.state.password}
 					onChange={this.setPassword.bind(this)}
-				/>
-
-				<label htmlFor="contains">Path contains</label>
-				<input type="text" id="contains" 
+					icon='mdi-communication-vpn-key'
+					/>
+				
+				<Input type='text' id='containsAllOf'
+					label='Path contains all of:'	
 					value={this.state.contains}
 					onChange={this.setContains.bind(this)}
 				 	placeholder="foo"	
 				/>
-				<button type="submit" autofocus>Fetch</button>
+				</div>
+				<div className='row'>
+				<div className='right-align'>
+				<button className='waves-effect btn' type="submit" autofocus >
+					<i className='mdi-action-search right'></i>
+					Fetch
+				</button>
+				</div>
+				</div>
 			</form>
 		);
 	}

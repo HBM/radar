@@ -44,8 +44,7 @@ class List extends React.Component {
 	renderItems() {
 		var items = this.state.items.map((item) => {
 			return (
-				<li key={item.path}>
-					<h3>{item.path}</h3>
+				<li className='col s12 m6 l4' key={item.path}>
 					{this.renderItemContent(item)}
 				</li>
 			);
@@ -62,7 +61,7 @@ class List extends React.Component {
 			);
 		} else {
 			return (
-				<div>
+				<div className='row'>
 					<ul>{this.renderItems()}
 					</ul> 
 				</div>
