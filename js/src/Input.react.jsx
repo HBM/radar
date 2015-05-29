@@ -18,13 +18,15 @@ class Input extends React.Component {
 					}
 				}
 			return (
-				<div className={'input-field col s12 m6' + className}>
+				<div className={'input-field col ' + className}>
 					<i className={'prefix ' + props.icon}></i>
 					<input id={props.id} type={props.type} 
 						onChange={props.onChange} 
 						required={props.required}
 						className={inputClassName}
 						value={props.value}
+						autofocus={props.autofocus}
+						disabled={props.disabled}
 					/>
 					<label htmlFor={props.id}>{props.label}</label>
 				</div>	

@@ -3,14 +3,14 @@ var Dispatcher = require('./Dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
-var connected;
+var connectionStatus = 'disconnected';
 var list = [];
 
 
 var Store = assign({}, EventEmitter.prototype, {
 
-	isConnected: function () {
-		return connected;
+	getConnectionStatus() {
+			return connectionStatus;
 	},
 
 	getList: function () {
@@ -33,15 +33,9 @@ var Store = assign({}, EventEmitter.prototype, {
 
 Dispatcher.register(function (action) {
 	switch (action.type) {
-	case 'peerIsConnecting':
-		connected = false;
+	case 'connectionStatus':
+		connectionStatus = action.status;
 		break;
-	case 'peerIsDisconnected':
-		connected = false;
-		break;
-	case 'peerIsConnected':
-		connected = true;
-		break
 	case 'listChanged':
 		list = action.list;
 		break;

@@ -1,21 +1,10 @@
 var Dispatcher = require('./Dispatcher');
 
 var Actions = {
-	peerIsConnecting: function () {
+	connectionStatus: function (status) {
 		Dispatcher.dispatch({
-			type: 'peerIsConnecting'
-		});
-	},
-
-	peerIsConnected: function () {
-		Dispatcher.dispatch({
-			type: 'peerIsConnected'
-		});
-	},
-
-	peerIsDisconnected: function () {
-		Dispatcher.dispatch({
-			type: 'peerIsDisconnected'
+			type: 'connectionStatus',
+			status: status
 		});
 	},
 

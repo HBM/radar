@@ -1,22 +1,46 @@
 var React = require('react');
 var Input = require('./Input.react.jsx');
+var Spinner = require('./Spinner.react.jsx');
 var utils = require('./utils');
+var Store = require('./Store');
 
-class FetchForm extends React.Component {
+class Login extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			connectionStatus: Store.getConnectionStatus(),
 			url: window.localStorage.url || '',
 			user: window.localStorage.user || '',
-			password: window.localStorage.password || '',
-			contains: window.localStorage.contains || ''
+			password: window.localStorage.password || ''
 		};
 		this.state.isValidUrl = this.isValidUrl(this.state.url);
 	}
 
-	fetch(event) {
+	componentWillMount() {
+		Store.addChangeListener(this._onChange.bind(this));
+	}
+
+	componentDidMount() {
+			utils.login(this.state);
+			setTimeout( () => {
+			if (this.state.connectionStatus !== 'connected') {
+					$('#login').openModal();
+			}
+			}, 500);
+	}
+
+	_onChange() {
+			this.setState({
+					connectionStatus: Store.getConnectionStatus()
+			});
+			if (this.state.connectionStatus === 'connected') {
+					$('#login').closeModal();
+			}
+	}
+
+	login(event) {
 		event.preventDefault();
-		utils.fetch(this.state, this.state.contains.split(' '));
+		utils.login(this.state);
 	}
 
 	isValidUrl(url) {
@@ -47,63 +71,61 @@ class FetchForm extends React.Component {
 		});
 	}
 
-	setContains(event) {
-		window.localStorage.contains = event.target.value;
-		this.setState({
-			contains: event.target.value
-		});
+	renderSpinner() {
+			if (this.state.connectionStatus === 'connecting') {
+					return <Spinner />;
+			}
 	}
 
-	renderInput(config) {
-	}
-
-	render() {
-		return (
-			<form onSubmit={this.fetch.bind(this)}>
+		render() {
+				return (
+						
+  <form id="login" className="modal" onSubmit={this.login.bind(this)}>
+    <div className="modal-content">
+      <h4>Peer Configuration</h4>
 			<div className='row'>
-				<Input type='url' id='url' 
+				<Input type='url' id='url'
+			   		className='s12'	
 					label='Daemon Websocket URL' 
 					value={this.state.url} 
 					onChange={this.setURL.bind(this)}
 				 	placeholder="ws://jetbus.io:8080"	
 					icon='mdi-file-cloud'
 					valid={this.state.isValidUrl}
-					required 
+					required={true}
+				    autofocus={true}	
 				/>
 
 				<Input type='text' id='user'	
+			   		className='s12'	
 					label='User'
 					value={this.state.user}
 					onChange={this.setUser.bind(this)}
 				 	placeholder="anonymous"	
 					icon='mdi-action-account-box'
+					valid={this.state.connectionStatus !== 'invalid user'}
 					/>
 
 				<Input type='password' id='password'
+			   		className='s12'	
 					label='Password'
 					value={this.state.password}
 					onChange={this.setPassword.bind(this)}
 					icon='mdi-communication-vpn-key'
+					valid={this.state.connnectionStatus !== 'invalid password'}
+					disabled={this.state.user === ''}
 					/>
-				
-				<Input type='text' id='containsAllOf'
-					label='Path contains all of:'	
-					value={this.state.contains}
-					onChange={this.setContains.bind(this)}
-				 	placeholder="foo"	
-				/>
 				</div>
-				<div className='row'>
-				<div className='right-align'>
-				<button className='waves-effect btn' type="submit" autofocus >
-					<i className='mdi-action-search right'></i>
-					Fetch
-				</button>
-				</div>
-				</div>
-			</form>
-		);
-	}
+    </div>
+    <div className="modal-footer">
+	<div className="row">
+	  {this.renderSpinner()}
+	  <button className="btn waves-effect modal-action waves-green" type="submit">Login</button>
+	  </div>
+    </div>
+  </form>
+				);
+		}
 }
 
-module.exports = FetchForm;
+module.exports = Login;

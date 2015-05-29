@@ -5,11 +5,35 @@ var peer;
 var fetcher;
 
 module.exports = {
-	fetch: function (config, contains) {
+
+	login: function(config) {
 		if (peer) {
 			peer.close();
 		}
+		Actions.connectionStatus('connecting');
 		peer = new jet.Peer(config);
+		peer.connect().then(function() {
+			Actions.connectionStatus('connected');
+		}).catch(function(err) {
+			console.log(err);
+			if (err.data === 'invalid user') {
+				Actions.connectionStatus('invalid user');
+			} else {
+				Actions.connectionStatus('invalid password');
+			}
+		});
+		peer.closed().then(function(err) {
+				console.log(err);
+			Actions.connectionStatus('disconnected');
+		});
+	},
+
+	fetch: function (contains) {
+		jet.Promise.resolve(function() {
+			if (fetcher) {
+				return fetcher.unfetch();
+			}
+		}).then(function() {
 		fetcher = new jet.Fetcher();
 		if (contains) {
 			fetcher.path('containsAllOf', contains);
@@ -19,14 +43,9 @@ module.exports = {
 			Actions.listChanged(data);
 		});
 
-		jet.Promise.all([
-					peer.connect(),
-					peer.fetch(fetcher)
-				]).then(function () {
-			Actions.peerIsConnected();
-		}).catch(function () {
-			Actions.peerIsDisconnected();
-		});
+		peer.fetch(fetcher);
+			});
+
 	},
 
 	setState: function (path, value) {
