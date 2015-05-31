@@ -7,7 +7,7 @@ class Method extends React.Component {
 
 	render() {
 		return (
-				<div className='card'>
+			<div className='card'>
 					<div className='card-content'>
 						<span className='card-title'>{this.props.item.path}</span>
 						<form>

@@ -4,3 +4,5 @@ node_modules
 *.swp
 
 js/script.js
+
+*.swo

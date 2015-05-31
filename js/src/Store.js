@@ -11,23 +11,23 @@ var Store = assign({}, EventEmitter.prototype, {
 
 	getConnectionStatus() {
 			return connectionStatus;
-	},
+		},
 
-	getList: function () {
-		return list;
-	},
+		getList: function () {
+			return list;
+		},
 
-	addChangeListener: function (callback) {
-		this.on('change', callback);
-	},
+		addChangeListener: function (callback) {
+			this.on('change', callback);
+		},
 
-	removeChangeListener: function (callback) {
-		this.removeListener('change', callback);
-	},
+		removeChangeListener: function (callback) {
+			this.removeListener('change', callback);
+		},
 
-	emitChange: function () {
-		this.emit('change');
-	}
+		emitChange: function () {
+			this.emit('change');
+		}
 
 });
 

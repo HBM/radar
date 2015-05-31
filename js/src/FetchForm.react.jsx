@@ -23,60 +23,60 @@ class FetchForm extends React.Component {
 	}
 
 	componentDidMount() {
-			$('.modal-trigger').leanModal();
+		$('.modal-trigger').leanModal();
 	}
 
 	render() {
-			var height = '50px';
-			var backgroundColor = 'white';
-			var color = 'rgb(33,33,33)';
+		var height = '50px';
+		var backgroundColor = 'white';
+		var color = 'rgb(33,33,33)';
 
-			var iconStyle = {
-					backgroundColor: backgroundColor,
-					height: height,
-					lineHeight: height,
-					color: color,
-					marginLeft: '1rem'
-			};
+		var iconStyle = {
+			backgroundColor: backgroundColor,
+			height: height,
+			lineHeight: height,
+			color: color,
+			marginLeft: '1rem'
+		};
 
-			var inputStyle = {
-					backgroundColor: backgroundColor,
-					height: height,
-					lineHeight: height,
-					color: color,
-					marginLeft: '2rem',
-					width: '100%'
-			};
-			
-var formStyle = {
-		backgroundColor: backgroundColor,
-		height: height,
-		lineHeight: height,
-		borderRadius: '3px',
-		position: 'absolute',
-		top: '50%',
-		transform: 'translateY(-50%)',
-		width: '80%'
-};
+		var inputStyle = {
+			backgroundColor: backgroundColor,
+			height: height,
+			lineHeight: height,
+			color: color,
+			marginLeft: '2rem',
+			width: '100%'
+		};
 
-var containerStyle = {
-		position: 'relative',
-		height: '64px'
-};
+		var formStyle = {
+			backgroundColor: backgroundColor,
+			height: height,
+			lineHeight: height,
+			borderRadius: '3px',
+			position: 'absolute',
+			top: '50%',
+			transform: 'translateY(-50%)',
+			width: '80%'
+		};
 
-var buttonStyle = {
-		position: 'absolute',
-		top: '50%',
-		transform: 'translateY(-50%)',
-		right: '1rem'
-};
+		var containerStyle = {
+			position: 'relative',
+			height: '64px'
+		};
 
-var inputFieldStyle = {
-		width: '80%'
-};
+		var buttonStyle = {
+			position: 'absolute',
+			top: '50%',
+			transform: 'translateY(-50%)',
+			right: '1rem'
+		};
 
-			return (
-					<div className='navbar-fixed'>
+		var inputFieldStyle = {
+			width: '80%'
+		};
+
+		return (
+			<div className='navbar-fixed'>
 					  <nav className='teal darken-2'>
     <div className="nav-wrapper">
 	<div className="container" style={containerStyle}>
@@ -101,7 +101,7 @@ var inputFieldStyle = {
     </div>
   </nav>
   </div>
-			);
+		);
 	}
 }
 

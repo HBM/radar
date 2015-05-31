@@ -52,7 +52,7 @@ class State extends React.Component {
 		this.setState(this.state);
 	}
 
-	renderInput(key,id) {
+	renderInput(key, id) {
 		var type = typeof this.state.value[key];
 		var value = this.state.displayValue[key];
 		var props = {};
@@ -62,7 +62,7 @@ class State extends React.Component {
 			props.type = 'number';
 			props.value = value;
 			if (props.value.length === 0) {
-					props.className = 'valid invalid';
+				props.className = 'valid invalid';
 			}
 			props.step = 'any';
 			props.required = true;
@@ -78,35 +78,38 @@ class State extends React.Component {
 	}
 
 	hasChanges() {
-		return Object.keys(this.state.changes).length !== 0;	
+		return Object.keys(this.state.changes).length !== 0;
 	}
 
 	renderButton() {
 		var props = {};
 		props.disabled = !this.hasChanges();
 		return <button {...props
-		} className='waves-effect btn'
-		> Set < /button>;
+		}
+		className = 'waves-effect btn' > Set < /button>;
 	}
 
 	renderJson() {
 		var items = Object.keys(this.state.displayValue).map((key) => {
 			var value = this.state.displayValue[key];
-		var id = this.props.item.path + key;
+			var id = this.props.item.path + key;
 			if (typeof value === 'boolean') {
-					var style = {display: 'block', marginTop: '1rem'};
+				var style = {
+					display: 'block',
+					marginTop: '1rem'
+				};
 				return (<div className="col s12" key={key}>
 					<label style={style} >{key}</label>
 					{this.renderInput(key, id)}
 					<label htmlFor={id}></label>
 				</div>);
 			} else {
-			return (
-				<div className="input-field col s12" key={key}>
+				return (
+					<div className="input-field col s12" key={key}>
 					<label htmlFor={id} className="active">{key}</label>
 					{this.renderInput(key)}
 				</div>
-			);
+				);
 			}
 		});
 		return items;
@@ -119,9 +122,9 @@ class State extends React.Component {
 	}
 
 	render() {
-		
+
 		return (
-				<div className='card'>
+			<div className='card'>
 					<div className='card-content'>
 						<span className='card-title teal-text text-lighten-2'>{this.props.item.path}</span>
 						<form className='row' onSubmit={this.set.bind(this)}>

@@ -21,21 +21,21 @@ class Login extends React.Component {
 	}
 
 	componentDidMount() {
-			utils.login(this.state);
-			setTimeout( () => {
+		utils.login(this.state);
+		setTimeout(() => {
 			if (this.state.connectionStatus !== 'connected') {
-					$('#login').openModal();
+				$('#login').openModal();
 			}
-			}, 500);
+		}, 500);
 	}
 
 	_onChange() {
-			this.setState({
-					connectionStatus: Store.getConnectionStatus()
-			});
-			if (this.state.connectionStatus === 'connected') {
-					$('#login').closeModal();
-			}
+		this.setState({
+			connectionStatus: Store.getConnectionStatus()
+		});
+		if (this.state.connectionStatus === 'connected') {
+			$('#login').closeModal();
+		}
 	}
 
 	login(event) {
@@ -44,13 +44,13 @@ class Login extends React.Component {
 	}
 
 	isValidUrl(url) {
-    	var wsRegExp = /(ws|wss):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+		var wsRegExp = /(ws|wss):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
 		return wsRegExp.test(url);
 	}
 
 	setURL(event) {
 		window.localStorage.url = event.target.value;
-			
+
 		this.setState({
 			isValidUrl: this.isValidUrl(event.target.value),
 			url: event.target.value
@@ -72,15 +72,15 @@ class Login extends React.Component {
 	}
 
 	renderSpinner() {
-			if (this.state.connectionStatus === 'connecting') {
-					return <Spinner />;
-			}
+		if (this.state.connectionStatus === 'connecting') {
+			return <Spinner />;
+		}
 	}
 
-		render() {
-				return (
-						
-  <form id="login" className="modal" onSubmit={this.login.bind(this)}>
+	render() {
+		return (
+
+			<form id="login" className="modal" onSubmit={this.login.bind(this)}>
     <div className="modal-content">
       <h4>Peer Configuration</h4>
 			<div className='row'>
@@ -124,8 +124,8 @@ class Login extends React.Component {
 	  </div>
     </div>
   </form>
-				);
-		}
+		);
+	}
 }
 
 module.exports = Login;
