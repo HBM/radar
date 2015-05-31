@@ -42,7 +42,6 @@ class FetchForm extends React.Component {
 		var inputStyle = {
 			backgroundColor: backgroundColor,
 			height: height,
-			lineHeight: height,
 			color: color,
 			marginLeft: '2rem',
 			width: '100%'
@@ -56,6 +55,7 @@ class FetchForm extends React.Component {
 			position: 'absolute',
 			top: '50%',
 			transform: 'translateY(-50%)',
+			WebkitTransform: 'translateY(-50%)',
 			width: '80%'
 		};
 
@@ -68,6 +68,7 @@ class FetchForm extends React.Component {
 			position: 'absolute',
 			top: '50%',
 			transform: 'translateY(-50%)',
+			WebkitTransform: 'translateY(-50%)',
 			right: '1rem'
 		};
 
