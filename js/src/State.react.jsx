@@ -126,7 +126,7 @@ class State extends React.Component {
 		return (
 			<div className='card'>
 					<div className='card-content'>
-						<span className='card-title teal-text text-lighten-2'>{this.props.item.path}</span>
+						<span className='card-title grey-text text-darken-2'>{this.props.item.path}</span>
 						<form className='row' onSubmit={this.set.bind(this)}>
 							{this.renderJson()}
 						</form>

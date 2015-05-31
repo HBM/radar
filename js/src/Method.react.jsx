@@ -9,7 +9,7 @@ class Method extends React.Component {
 		return (
 			<div className='card'>
 					<div className='card-content'>
-						<span className='card-title'>{this.props.item.path}</span>
+						<span className='card-title grey-text text-darken-2'>{this.props.item.path}</span>
 						<form>
 							<div className='row'>
 							<div className='input-field col s12'>

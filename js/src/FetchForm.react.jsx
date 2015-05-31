@@ -77,30 +77,41 @@ class FetchForm extends React.Component {
 
 		return (
 			<div className='navbar-fixed'>
-					  <nav className='teal darken-2'>
-    <div className="nav-wrapper">
-	<div className="container" style={containerStyle}>
-	<form id="search-form" style={formStyle} className="z-depth-1 " onSubmit={this.fetch.bind(this)}>
-		<div className="row">
-			<div className="input-field col active" style={inputFieldStyle}>
-			<i className="prefix mdi-action-search" style={iconStyle}></i>
-				<input type='text' id='containsAllOf' className="active "
-					value={this.state.contains}
-					onChange={this.setContains.bind(this)}
-					style={inputStyle}
-					autofocus
-					/>
-				</div>
-					<button className="btn waves-effect" type="submit" style={buttonStyle}>Fetch</button>
-					</div>
-				</form>
-	    <ul id="nav-mobile" className="right">
-        <li><a href="#login" className="modal-trigger"><i className="mdi-action-account-child"></i></a></li>
-      </ul>
-	  </div>
-    </div>
-  </nav>
-  </div>
+				<nav className='cyan darken-3'>
+    			<div className="nav-wrapper">
+						<div className="container" style={containerStyle}>
+							<form id="search-form" 
+								style={formStyle} 
+								className="z-depth-1 " 
+								onSubmit={this.fetch.bind(this)}
+								>
+								<div className="row">
+									<div className="input-field col active" style={inputFieldStyle}>
+										<i className="prefix mdi-action-search" style={iconStyle}></i>
+											<input type='text' id='containsAllOf' className="active "
+												value={this.state.contains}
+												onChange={this.setContains.bind(this)}
+												style={inputStyle}
+												autofocus
+											/>
+									</div>
+									<button className="btn waves-effect" 
+										type="submit" 
+										style={buttonStyle}>Fetch
+									</button>
+								</div>
+							</form>
+	    				<ul id="nav-mobile" className="right">
+        				<li>
+									<a href="#login" className="modal-trigger">
+										<i className="mdi-action-account-child"></i>
+									</a>
+								</li>
+      				</ul>
+	  				</div>
+    			</div>
+  			</nav>
+  		</div>
 		);
 	}
 }
