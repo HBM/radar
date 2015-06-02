@@ -1,5 +1,6 @@
 var React = require('react');
 var utils = require('./utils');
+var Store = require('./Store');
 var Input = require('./Input.react.jsx');
 
 class FetchForm extends React.Component {
@@ -8,10 +9,13 @@ class FetchForm extends React.Component {
 		this.state = {
 			contains: window.localStorage.contains || ''
 		};
+		this._onChange = this._onChange.bind(this);
 	}
 
 	fetch(event) {
-		event.preventDefault();
+		if (event) {
+			event.preventDefault();
+		}
 		utils.fetch(this.state.contains.split(' '));
 	}
 
@@ -22,12 +26,28 @@ class FetchForm extends React.Component {
 		});
 	}
 
+	_onChange() {
+		var connectionStatus = Store.getConnectionStatus();
+		if (connectionStatus === 'connected' && connectionStatus !== this.connectionStatus) {
+			this.fetch();
+		}
+		this.connectionStatus = connectionStatus;
+	}
+
 	componentDidMount() {
 		$('.modal-trigger').leanModal();
 	}
 
+	componentWillMount() {
+		Store.addChangeListener(this._onChange);
+	}
+
+	componentWillUnmount() {
+		Store.removeChangeListener(this._onChange);
+	}
+
 	render() {
-		var height = '50px';
+		var height = '46px';
 		var backgroundColor = 'white';
 		var color = 'rgb(33,33,33)';
 
@@ -61,7 +81,7 @@ class FetchForm extends React.Component {
 
 		var containerStyle = {
 			position: 'relative',
-			height: '64px'
+			height: '100%'
 		};
 
 		var buttonStyle = {

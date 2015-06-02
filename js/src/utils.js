@@ -1,4 +1,5 @@
 var jet = require('node-jet');
+var util = require('util');
 var Actions = require('./Actions');
 
 var peer;
@@ -9,6 +10,7 @@ module.exports = {
 	login: function (config) {
 		if (peer) {
 			peer.close();
+			fetcher = null;
 		}
 		Actions.connectionStatus('connecting');
 		peer = new jet.Peer(config);
@@ -29,7 +31,7 @@ module.exports = {
 	},
 
 	fetch: function (contains) {
-		jet.Promise.resolve(function () {
+		jet.Promise.resolve().then(function () {
 			if (fetcher) {
 				return fetcher.unfetch();
 			}
@@ -49,6 +51,24 @@ module.exports = {
 	},
 
 	setState: function (path, value) {
-		peer.set(path, value);
+		peer.set(path, value).then(function () {
+			Actions.gotSetResponse(path);
+		}).catch(function (err) {
+			Actions.gotSetResponse(path, err);
+		});
+	},
+
+	callMethod: function (path, args) {
+		peer.call(path, args).then(function (result) {
+			if (typeof result === 'object' && !util.isArray(result)) {
+				if (Object.keys(result).length === 0) {
+					result = '<empty object {}>';
+				}
+			}
+			Actions.gotCallResponse(path, undefined, result);
+		}).catch(function (err) {
+			Actions.gotCallResponse(path, err);
+		});
+
 	}
 };

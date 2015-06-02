@@ -1,5 +1,6 @@
 var React = require('react');
 var flatten = require('flat');
+var Response = require('./Response.react.jsx');
 
 class State extends React.Component {
 	constructor(props) {
@@ -17,7 +18,15 @@ class State extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		this.setState(this.createState(nextProps.item.value));
+		if (this.props.item.value !== nextProps.item.value) {
+			Materialize.toast(this.props.item.path + ' changed', 4000);
+			this.setState(this.createState(nextProps.item.value));
+		}
+		if (nextProps.item.setResponse) {
+			this.setState({
+				response: nextProps.item.setResponse
+			});
+		}
 	}
 
 	flatValue(value) {
@@ -33,6 +42,7 @@ class State extends React.Component {
 	onChange(key, event) {
 		var value;
 		var displayValue;
+		this.state.response = null;
 		if (event.target.type === 'checkbox') {
 			value = displayValue = event.target.checked;
 		} else if (event.target.type === 'number') {
@@ -50,6 +60,22 @@ class State extends React.Component {
 			delete this.state.changes[key];
 		}
 		this.setState(this.state);
+	}
+
+
+	renderResponse() {
+		if (!this.state.response) {
+			return;
+		} else if (this.state.response.error) {
+
+			return <Response value={this.state.response} />
+		}
+	}
+
+	renderFetchOnly() {
+		if (this.props.item.fetchOnly) {
+			//			return <button className='btn' disabled>fetch-only</button>;
+		}
 	}
 
 	renderInput(key, id) {
@@ -82,6 +108,9 @@ class State extends React.Component {
 	}
 
 	renderButton() {
+		if (this.props.item.fetchOnly) {
+			return;
+		}
 		var props = {};
 		props.disabled = !this.hasChanges();
 		return <button {...props
@@ -98,17 +127,19 @@ class State extends React.Component {
 					display: 'block',
 					marginTop: '1rem'
 				};
-				return (<div className="col s12" key={key}>
-					<label style={style} >{key}</label>
-					{this.renderInput(key, id)}
-					<label htmlFor={id}></label>
-				</div>);
+				return (
+					<div className="col s12" key={key}>
+						<label style={style} >{key}</label>
+						{this.renderInput(key, id)}
+						<label htmlFor={id}></label>
+					</div>
+				);
 			} else {
 				return (
 					<div className="input-field col s12" key={key}>
-					<label htmlFor={id} className="active">{key}</label>
-					{this.renderInput(key)}
-				</div>
+						<label htmlFor={id} className="active">{key}</label>
+						{this.renderInput(key)}
+					</div>
 				);
 			}
 		});
@@ -117,24 +148,35 @@ class State extends React.Component {
 
 	set(event) {
 		event.preventDefault();
-		var newValue = flatten.unflatten(this.state.value);
+		var newValue;
+		if (Object.keys(this.state.value).length === 1 && this.state.value[''] !== undefined) {
+			newValue = this.state.value[''];
+		} else {
+			newValue = flatten.unflatten(this.state.value);
+		}
 		this.props.set(newValue);
 	}
 
 	render() {
-
+		var away = {
+			position: 'absolute',
+			left: '-9999px'
+		};
 		return (
 			<div className='card'>
-					<div className='card-content'>
-						<span className='card-title grey-text text-darken-2'>{this.props.item.path}</span>
-						<form className='row' onSubmit={this.set.bind(this)}>
-							{this.renderJson()}
-						</form>
-					</div>
-					<div className='card-action' onClick={this.set.bind(this)}>	
-						{this.renderButton()}
-					</div>
+				<div className='card-content'>
+					<span className='card-title grey-text text-darken-2'>{this.props.item.path}</span>
+					<form className='row' onSubmit={this.set.bind(this)}>
+						{this.renderJson()}
+						<input type="submit" style={away}/>	
+					</form>
 				</div>
+				<div className='card-action' onClick={this.set.bind(this)}>	
+					{this.renderResponse()}
+					{this.renderButton()}
+					{this.renderFetchOnly()}
+				</div>
+			</div>
 		);
 	}
 }

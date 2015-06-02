@@ -30,12 +30,13 @@ class Login extends React.Component {
 	}
 
 	_onChange() {
-		this.setState({
-			connectionStatus: Store.getConnectionStatus()
-		});
-		if (this.state.connectionStatus === 'connected') {
+		var connectionStatus = Store.getConnectionStatus();
+		if (connectionStatus === 'connected' && connectionStatus !== this.state.connectionStatus) {
 			$('#login').closeModal();
 		}
+		this.setState({
+			connectionStatus: connectionStatus
+		});
 	}
 
 	login(event) {

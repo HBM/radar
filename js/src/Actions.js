@@ -13,7 +13,25 @@ var Actions = {
 			type: 'listChanged',
 			list: list
 		});
+	},
+
+	gotCallResponse: function (path, err, result) {
+		Dispatcher.dispatch({
+			type: 'gotCallResponse',
+			path: path,
+			error: err,
+			result: result
+		});
+	},
+
+	gotSetResponse: function (path, err) {
+		Dispatcher.dispatch({
+			type: 'gotSetResponse',
+			path: path,
+			error: err
+		});
 	}
+
 };
 
 module.exports = Actions;

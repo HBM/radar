@@ -15,7 +15,6 @@ class List extends React.Component {
 	}
 
 	_onChange() {
-		console.log(Store.getList());
 		this.setState({
 			items: Store.getList()
 		});

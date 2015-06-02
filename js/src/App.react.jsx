@@ -11,11 +11,11 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
-			<Login />
+				<Login />
 				<FetchForm />
-			<div className='container'>
-				<List />
-			</div>
+				<div className='container'>
+					<List />
+				</div>
 			</div>
 		);
 	}
