@@ -9,6 +9,7 @@ class State extends React.Component {
 	}
 
 	createState(value) {
+		this.shouldUpdate = true;
 		return {
 			changes: {},
 			bak: this.flatValue(value),
@@ -18,8 +19,7 @@ class State extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.item.value !== nextProps.item.value) {
-			Materialize.toast(this.props.item.path + ' changed', 4000);
+		if (this.props.item !== nextProps.item) {
 			this.setState(this.createState(nextProps.item.value));
 		}
 		if (nextProps.item.setResponse) {
@@ -27,6 +27,10 @@ class State extends React.Component {
 				response: nextProps.item.setResponse
 			});
 		}
+	}
+
+	shouldComponentUpdate() {
+		return this.shouldUpdate || this.hasChanges();
 	}
 
 	flatValue(value) {
@@ -59,6 +63,7 @@ class State extends React.Component {
 		} else {
 			delete this.state.changes[key];
 		}
+		this.shouldUpdate = true;
 		this.setState(this.state);
 	}
 
@@ -84,6 +89,7 @@ class State extends React.Component {
 		var props = {};
 		props.onChange = this.onChange.bind(this, key);
 		props.id = id;
+		props.disabled = this.props.item.fetchOnly;
 		if (type === 'number') {
 			props.type = 'number';
 			props.value = value;
@@ -108,14 +114,15 @@ class State extends React.Component {
 	}
 
 	renderButton() {
-		if (this.props.item.fetchOnly) {
-			return;
-		}
+		//		if (this.props.item.fetchOnly) {
+		//			return <button disabled className='btn'>Fetch-Only</button>;
+		//		} else {
 		var props = {};
 		props.disabled = !this.hasChanges();
 		return <button {...props
 		}
 		className = 'waves-effect btn' > Set < /button>;
+			//		}
 	}
 
 	renderJson() {
@@ -158,15 +165,24 @@ class State extends React.Component {
 	}
 
 	render() {
+		console.log('render', this.props.item.path)
+		this.shouldUpdate = false;
 		var away = {
 			position: 'absolute',
 			left: '-9999px'
+		};
+		var item = this.props.item;
+		var lastChange = item.lastChange.toLocaleTimeString();
+		var changes = item.count - 1;
+		var statusLine = '' + changes + ' Changes / ' + lastChange;
+		var statusLineStyle = {
+			fontWeight: '200'
 		};
 		return (
 			<div className='card'>
 				<div className='card-content'>
 					<span className='card-title grey-text text-darken-2'>{this.props.item.path}</span>
-					<form className='row' onSubmit={this.set.bind(this)}>
+					<form className='row' onSubmit={this.set.bind(this)} disabled={item.fetchOnly}>
 						{this.renderJson()}
 						<input type="submit" style={away}/>	
 					</form>
@@ -175,6 +191,7 @@ class State extends React.Component {
 					{this.renderResponse()}
 					{this.renderButton()}
 					{this.renderFetchOnly()}
+					<span className='right amber-text text-lighten-1' style={statusLineStyle}>{statusLine}</span>
 				</div>
 			</div>
 		);

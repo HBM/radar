@@ -8,10 +8,11 @@ var Actions = {
 		});
 	},
 
-	listChanged: function (list) {
+	listChanged: function (changes, n) {
 		Dispatcher.dispatch({
 			type: 'listChanged',
-			list: list
+			changes: changes,
+			n: n
 		});
 	},
 

@@ -36,16 +36,33 @@ var findItem = function (path) {
 	return match[0];
 };
 
+var counts = {};
+
+var updateList = function (changes, n) {
+	var from = 1;
+	list.length = n;
+	var now = new Date();
+	changes.forEach(function (change) {
+		var listIndex = change.index - from;
+		var prevCount = counts[change.path] || 0;
+		change.count = ++prevCount;
+		change.lastChange = now;
+		counts[change.path] = change.count;
+		list[listIndex] = change;
+	});
+};
+
 Dispatcher.register(function (action) {
 	switch (action.type) {
 	case 'connectionStatus':
 		connectionStatus = action.status;
 		if (connectionStatus !== 'connected') {
 			list = [];
+			counts = {};
 		}
 		break;
 	case 'listChanged':
-		list = action.list;
+		updateList(action.changes, action.n);
 		break;
 	case 'gotCallResponse':
 		var item = findItem(action.path);

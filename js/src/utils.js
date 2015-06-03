@@ -41,8 +41,9 @@ module.exports = {
 				fetcher.path('containsAllOf', contains);
 			}
 			fetcher.range(1, 100).sortByPath().pathCaseInsensitive();
-			fetcher.on('data', function (data) {
-				Actions.listChanged(data);
+			fetcher.differential();
+			fetcher.on('data', function (changes, n) {
+				Actions.listChanged(changes, n);
 			});
 
 			peer.fetch(fetcher);
