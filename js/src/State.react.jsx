@@ -165,7 +165,6 @@ class State extends React.Component {
 	}
 
 	render() {
-		console.log('render', this.props.item.path)
 		this.shouldUpdate = false;
 		var away = {
 			position: 'absolute',
