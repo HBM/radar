@@ -6,3 +6,5 @@ node_modules
 js/script.js
 
 *.swo
+
+js/script.min.js
