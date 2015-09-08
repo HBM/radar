@@ -1,5 +1,6 @@
 var React = require('react');
 var flatten = require('flat');
+var AutoTypeInput = require('./AutoTypeInput.react.jsx');
 
 class Response extends React.Component {
 	constructor(props) {
@@ -17,25 +18,6 @@ class Response extends React.Component {
 		}
 	}
 
-	renderField(name, value) {
-		var type = typeof value;
-		var props = {};
-		props.disabled = true;
-		props.key = name;
-		if (type === 'number') {
-			props.type = 'number';
-			props.value = value;
-
-		} else if (type === 'boolean') {
-			props.type = 'checkbox';
-			props.checked = value;
-		} else {
-			props.type = 'text';
-			props.value = value;
-		}
-		return React.DOM.input(props);
-	}
-
 	renderValue() {
 		var flatValue = this.flatValue(this.props.value);
 		var items = Object.keys(flatValue).map((key) => {
@@ -43,26 +25,7 @@ class Response extends React.Component {
 			if (value === undefined || value === null) {
 				return;
 			}
-			if (typeof value === 'boolean') {
-				var style = {
-					display: 'block',
-					marginTop: '1rem'
-				};
-				return (
-					<div className="col s12" key={key}>
-						<label style={style} >{key}</label>
-						{this.renderField(key, value)}
-						<label htmlFor={key}></label>
-					</div>
-				);
-			} else {
-				return (
-					<div className='input-field col s12' key={key}>
-						<label htmlFor={key} className='active'>{key}</label>
-						{this.renderField(key, value)}
-					</div>
-				);
-			}
+			return <AutoTypeInput value={value} label={key} readOnly={true} key={key} />
 		});
 		return items;
 	}
