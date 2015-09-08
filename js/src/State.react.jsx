@@ -145,12 +145,14 @@ class State extends React.Component {
 		}
 		var rows = this.state.displayJsonValue.split('\n').length + 1;
 		var style = {
-			height: (rows + 2) + 'em'
+			height: (rows * 1.5) + 'em'
 		};
 		var onChange = this.onJsonChange.bind(this);
 		return (
-			<textarea onChange={onChange} className="col s12 materialize-textarea grey-text text-darken-2" style={style}  rows={rows} value={this.state.displayJsonValue}>
+			<div className="col s12">
+			<textarea onChange={onChange} className="materialize-textarea" style={style}  rows={rows} value={this.state.displayJsonValue}>
 			</textarea>
+			</div>
 		);
 	}
 
@@ -198,10 +200,13 @@ class State extends React.Component {
 		var path_ = item.path.replace(/#/g, '_');
 		var jsonTabId = path_ + 'JSON';
 		var flatTabId = path_ + 'Flat';
+		var headlineStyle = {
+			fontSize: '1.2em'
+		};
 		return (
 			<div className='card'>
 				<div className='card-content'>
-					<span className='card-title grey-text text-darken-2'>{this.props.item.path}</span>
+					<span className='card-title grey-text text-darken-4' style={headlineStyle}>{this.props.item.path}</span>
 					<form className='row' onSubmit={this.set.bind(this)} disabled={item.fetchOnly}>
 						{this.renderJsonText()}
 						{this.renderJson()}
