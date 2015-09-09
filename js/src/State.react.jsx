@@ -1,6 +1,7 @@
 var React = require('react');
 var Response = require('./Response.react.jsx');
 var AutoTypeInput = require('./AutoTypeInput.react.jsx');
+var JsonTextArea = require('./JsonTextArea.react.jsx');
 var flatObject = require('./flatObject');
 var flatten = require('flat');
 
@@ -18,11 +19,9 @@ class State extends React.Component {
 			value: flatObject(value),
 			displayValue: flatObject(value),
 			displayJsonValue: JSON.stringify(value, null, ' '),
-			dirty: false
+			dirty: false,
+			newValue: value
 		};
-	}
-	componentDidMount() {
-		$(React.findDOMNode(this.refs.tabs)).tabs();
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -30,6 +29,9 @@ class State extends React.Component {
 			this.setState(this.createState(nextProps.item.value));
 		}
 		if (nextProps.item.setResponse) {
+			if (nextProps.item.setResponse.error) {
+				this.setState(this.createState(nextProps.item.value));
+			}
 			this.setState({
 				response: nextProps.item.setResponse
 			});
@@ -41,26 +43,22 @@ class State extends React.Component {
 	}
 
 	onChange(key, event) {
-		var value;
+		var value = event.target.typedValue;
 		var displayValue;
 		this.state.response = null;
-		if (event.target.type === 'checkbox') {
-			value = displayValue = event.target.checked;
-		} else if (event.target.type === 'number') {
-			displayValue = event.target.value;
-			value = parseFloat(displayValue);
-		} else {
-			value = displayValue = event.target.value;
-		}
-
 		this.state.value[key] = value;
-		this.state.displayValue[key] = displayValue;
+		this.state.displayValue[key] = value;
 		if (this.state.bak[key] !== this.state.value[key]) {
 			this.state.changes[key] = true;
 		} else {
 			delete this.state.changes[key];
 		}
 		this.shouldUpdate = true;
+		if (Object.keys(this.state.value).length === 1 && this.state.value[''] !== undefined) {
+			this.state.newValue = this.state.value[''];
+		} else {
+			this.state.newValue = flatten.unflatten(this.state.value);
+		}
 		this.setState(this.state);
 	}
 
@@ -69,7 +67,6 @@ class State extends React.Component {
 		if (!this.state.response) {
 			return;
 		} else if (this.state.response.error) {
-
 			return <Response value={this.state.response} />
 		}
 	}
@@ -89,7 +86,7 @@ class State extends React.Component {
 		//			return <button disabled className='btn'>Fetch-Only</button>;
 		//		} else {
 		var props = {};
-		props.disabled = !this.hasChanges();
+		props.disabled = JSON.stringify(this.props.item.value) === JSON.stringify(this.state.newValue); //!this.hasChanges();
 		props.onClick = this.set.bind(this);
 		return <button {...props
 		}
@@ -119,41 +116,16 @@ class State extends React.Component {
 		);
 	}
 
-	onJsonChange(event) {
-		var dirty;
-		this.shouldUpdate = true;
-		try {
-			var newJsonValue = JSON.stringify(JSON.parse(event.target.value));
-			var oldJsonValue = JSON.stringify(this.props.item.value);
-			if (newJsonValue !== oldJsonValue) {
-				dirty = true;
-			} else {
-				dirty = false;
-			}
-		} catch (e) {
-			dirty = false;
-		}
-		this.setState({
-			dirty: dirty,
-			displayJsonValue: event.target.value
-		});
+	onJsonChange(newValue) {
+		this.setState(this.createState(newValue));
 	}
 
 	renderJsonText() {
 		if (!this.state.showJson) {
 			return;
 		}
-		var rows = this.state.displayJsonValue.split('\n').length + 1;
-		var style = {
-			height: (rows * 1.5) + 'em'
-		};
 		var onChange = this.onJsonChange.bind(this);
-		return (
-			<div className="col s12">
-			<textarea onChange={onChange} className="materialize-textarea" style={style}  rows={rows} value={this.state.displayJsonValue}>
-			</textarea>
-			</div>
-		);
+		return <JsonTextArea onChange={onChange}  value={this.state.newValue} />;
 	}
 
 	renderJson() {
@@ -171,17 +143,7 @@ class State extends React.Component {
 
 	set(event) {
 		event.preventDefault();
-		var newValue;
-		if (this.state.dirty) {
-			newValue = JSON.parse(this.state.displayJsonValue);
-		} else {
-			if (Object.keys(this.state.value).length === 1 && this.state.value[''] !== undefined) {
-				newValue = this.state.value[''];
-			} else {
-				newValue = flatten.unflatten(this.state.value);
-			}
-		}
-		this.props.set(newValue);
+		this.props.set(this.state.newValue);
 	}
 
 	render() {
