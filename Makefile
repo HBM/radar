@@ -23,6 +23,7 @@ csslint:
 
 # JS
 react:
+	$(RM) js/script.min.js
 	$(watchify) --outfile ./js/script.js -t [ babelify --stage 0 ] --verbose --debug ./js/src/index.js
 
 build:
