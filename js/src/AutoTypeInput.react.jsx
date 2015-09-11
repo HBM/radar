@@ -52,6 +52,10 @@ class AutoTypeInput extends React.Component {
 					this.setState({
 						numString: event.target.value
 					});
+					if (event.target.typedValue === this.lastNum) {
+						return;
+					}
+					this.lastNum = event.target.typedValue;
 				} catch (e) {
 					this.setState({
 						invalid: true,
