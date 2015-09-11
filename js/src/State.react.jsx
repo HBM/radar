@@ -14,8 +14,6 @@ class State extends React.Component {
 	createState(value) {
 		this.shouldUpdate = true;
 		return {
-			changes: {},
-			bak: flatObject(value),
 			value: flatObject(value),
 			displayValue: flatObject(value),
 			displayJsonValue: JSON.stringify(value, null, ' '),
@@ -39,7 +37,7 @@ class State extends React.Component {
 	}
 
 	shouldComponentUpdate() {
-		return this.shouldUpdate || this.hasChanges();
+		return this.shouldUpdate;
 	}
 
 	onChange(key, event) {
@@ -48,11 +46,6 @@ class State extends React.Component {
 		this.state.response = null;
 		this.state.value[key] = value;
 		this.state.displayValue[key] = value;
-		if (this.state.bak[key] !== this.state.value[key]) {
-			this.state.changes[key] = true;
-		} else {
-			delete this.state.changes[key];
-		}
 		this.shouldUpdate = true;
 		if (Object.keys(this.state.value).length === 1 && this.state.value[''] !== undefined) {
 			this.state.newValue = this.state.value[''];
@@ -78,7 +71,7 @@ class State extends React.Component {
 	}
 
 	hasChanges() {
-		return Object.keys(this.state.changes).length !== 0 || this.state.dirty;
+		return JSON.stringify(this.props.item.value) !== JSON.stringify(this.state.newValue);
 	}
 
 	renderButton() {
@@ -86,7 +79,7 @@ class State extends React.Component {
 		//			return <button disabled className='btn'>Fetch-Only</button>;
 		//		} else {
 		var props = {};
-		props.disabled = JSON.stringify(this.props.item.value) === JSON.stringify(this.state.newValue); //!this.hasChanges();
+		props.disabled = !this.hasChanges();
 		props.onClick = this.set.bind(this);
 		return <button {...props
 		}
