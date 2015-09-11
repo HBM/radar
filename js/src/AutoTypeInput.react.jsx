@@ -7,10 +7,18 @@ class AutoTypeInput extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			invalid: false
+			invalid: false,
+			numString: parseFloat(this.props.value)
 		};
 	}
 
+	componentWillReceiveProps(nextProps) {
+		if (typeof nextProps.value === 'number') {
+			this.setState({
+				numString: parseFloat(nextProps.value)
+			});
+		}
+	}
 
 	render() {
 		var type = typeof this.props.value;
@@ -31,7 +39,8 @@ class AutoTypeInput extends React.Component {
 					this.setState({
 						invalid: true,
 						last: '',
-						errorMessage: 'number required'
+						errorMessage: 'number required',
+						numString: ''
 					});
 					return;
 				}
@@ -40,6 +49,9 @@ class AutoTypeInput extends React.Component {
 						invalid: false
 					});
 					event.target.typedValue = parseFloat(event.target.value);
+					this.setState({
+						numString: event.target.value
+					});
 				} catch (e) {
 					this.setState({
 						invalid: true,
@@ -60,7 +72,7 @@ class AutoTypeInput extends React.Component {
 		props.readOnly = this.props.readOnly;
 		if (type === 'number') {
 			props.type = 'number';
-			props.value = value;
+			props.value = this.state.numString;
 			props.step = 'any';
 			props.required = true;
 		} else if (type === 'boolean') {
