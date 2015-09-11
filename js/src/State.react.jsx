@@ -173,7 +173,9 @@ class State extends React.Component {
 					{this.renderButton()}
 					{this.renderFetchOnly()}
 					<span className='right amber-text text-lighten-1' style={statusLineStyle}>{statusLine}</span>
+					<div>
 					{this.renderSwitch()}
+					</div>
 				</div>
 			</div>
 		);
