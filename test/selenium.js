@@ -19,7 +19,7 @@ describe('Radar selenium', function () {
       .build()
     server = app.listen(8080, () => {
       driver.get('http://localhost:8080')
-      done()
+      setTimeout(done, 3000)
     })
   })
 
