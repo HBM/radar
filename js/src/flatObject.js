@@ -2,8 +2,7 @@ var flatten = require('flat')
 
 var flatObject = function (value) {
   if (typeof value === 'object') {
-    var fv = flatten(value)
-    return fv
+    return flatten(value)
   } else {
     var fv = {}
     fv[''] = value

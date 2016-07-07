@@ -4,9 +4,6 @@ var List = require('./List.react.jsx')
 var Login = require('./Login.react.jsx')
 
 class App extends React.Component {
-  constructor (props) {
-    super(props)
-  }
 
   render () {
     return (

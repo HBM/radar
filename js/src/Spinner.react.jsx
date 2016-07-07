@@ -1,9 +1,6 @@
 var React = require('react')
 
 class Spinner extends React.Component {
-  constructor (props) {
-    super(props)
-  }
 
   render () {
     return (

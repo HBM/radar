@@ -1,4 +1,3 @@
-var jet = require('node-jet')
 var Dispatcher = require('./Dispatcher')
 var EventEmitter = require('events').EventEmitter
 var assign = require('object-assign')
@@ -30,7 +29,7 @@ var Store = assign({}, EventEmitter.prototype, {
 })
 
 var findItem = function (path) {
-  var match = list.filter(x => x.path === path)
+  var match = list.filter((x) => x.path === path)
   return match[0]
 }
 
@@ -63,17 +62,18 @@ Dispatcher.register(function (action) {
       updateList(action.changes, action.n)
       break
     case 'gotCallResponse':
-      var item = findItem(action.path)
-      item.callResponse = {
+      findItem(action.path).callResponse = {
         error: action.error,
         result: action.result
       }
+      break
     case 'gotSetResponse':
-      var item = findItem(action.path)
-      item.setResponse = {
+      findItem(action.path).setResponse = {
         error: action.error
       }
+      break
     default:
+      console.error('unhandled action', action.typ)
   }
   Store.emitChange()
 })

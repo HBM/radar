@@ -1,5 +1,4 @@
 var React = require('react')
-var flatten = require('flat')
 var id = 0
 
 class AutoTypeInput extends React.Component {

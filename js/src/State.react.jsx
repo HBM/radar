@@ -42,7 +42,6 @@ class State extends React.Component {
 
   onChange (key, event) {
     var value = event.target.typedValue
-    var displayValue
     this.state.response = null
     this.state.value[key] = value
     this.state.displayValue[key] = value
@@ -80,9 +79,7 @@ class State extends React.Component {
     var props = {}
     props.disabled = !this.hasChanges()
     props.onClick = this.set.bind(this)
-    return <button {...props } className='waves-effect btn'>
-             Set
-             < /button>
+    return <button {...props} className='waves-effect btn'>Set</button>
   //		}
   }
 
@@ -128,11 +125,11 @@ class State extends React.Component {
       var onChange = this.onChange.bind(this, key)
       var readOnly = this.props.item.fetchOnly
       return <AutoTypeInput
-               value={value}
-               label={key}
-               onChange={onChange}
-               readOnly={readOnly}
-               key={key} />
+        value={value}
+        label={key}
+        onChange={onChange}
+        readOnly={readOnly}
+        key={key} />
     })
     return items
   }
@@ -155,9 +152,6 @@ class State extends React.Component {
     var statusLineStyle = {
       fontWeight: '200'
     }
-    var path_ = item.path.replace(/#/g, '_')
-    var jsonTabId = path_ + 'JSON'
-    var flatTabId = path_ + 'Flat'
     var headlineStyle = {
       fontSize: '1.2em'
     }

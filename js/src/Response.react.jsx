@@ -3,9 +3,6 @@ var flatten = require('flat')
 var AutoTypeInput = require('./AutoTypeInput.react.jsx')
 
 class Response extends React.Component {
-  constructor (props) {
-    super(props)
-  }
 
   flatValue (value) {
     if (typeof value === 'object') {
@@ -24,11 +21,11 @@ class Response extends React.Component {
       if (value === undefined || value === null) {
         return
       }
-      return <AutoTypeInput
-               value={value}
-               label={key}
-               readOnly={true}
-               key={key} />
+      return (<AutoTypeInput
+        value={value}
+        label={key}
+        readOnly
+        key={key} />)
     })
     return items
   }
