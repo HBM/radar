@@ -35,6 +35,7 @@
     "watchify": "^3.2.1"
   },
   "devDependencies": {
-    "js-beautify": "^1.5.5"
+    "js-beautify": "^1.5.5",
+    "standard-format": "^2.2.2"
   }
 }
