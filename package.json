@@ -4,7 +4,7 @@
   "description": "Webinterface for Jet",
   "main": "index.js",
   "scripts": {
-    "test": "standard"
+    "test": "standard && make build"
   },
   "repository": {
     "type": "git",
