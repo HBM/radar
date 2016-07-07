@@ -148,24 +148,27 @@ class State extends React.Component {
     var item = this.props.item
     var lastChange = item.lastChange.toLocaleTimeString()
     var changes = item.count - 1
-    var statusLine = '' + changes + ' Changes / ' + lastChange
-    var statusLineStyle = {
+    const statusLine = '' + changes + ' Changes / ' + lastChange
+    const statusLineStyle = {
       fontWeight: '200'
     }
-    var headlineStyle = {
+    const headlineStyle = {
       fontSize: '1.2em'
+    }
+    const cardActionStyle = {
+      height: '100px'
     }
     return (
       <div className='card'>
         <div className='card-content'>
-          <span className='card-title grey-text text-darken-4' style={headlineStyle}>{this.props.item.path}</span>
+          <span className='card-title grey-text text-darken-2' style={headlineStyle}>{this.props.item.path}</span>
           <form className='row' onSubmit={this.set.bind(this)} disabled={item.fetchOnly}>
             {this.renderJsonText()}
             {this.renderJson()}
             <input type='submit' style={away} />
           </form>
         </div>
-        <div className='card-action'>
+        <div className='card-action' style={cardActionStyle}>
           {this.renderResponse()}
           {this.renderButton()}
           {this.renderFetchOnly()}

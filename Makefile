@@ -4,7 +4,7 @@ export PATH := ./node_modules/.bin:$(PATH)
 # JS
 react:
 	$(RM) js/script.min.js
-	watchify --outfile ./js/script.js -t babelify --verbose --debug ./js/src/index.js
+	./node_modules/.bin/watchify --outfile ./js/script.js -t babelify --verbose --debug ./js/src/index.js
 
 build:
 	browserify ./js/src/index.js \
