@@ -24,11 +24,11 @@ csslint:
 # JS
 react:
 	$(RM) js/script.min.js
-	$(watchify) --outfile ./js/script.js -t [ babelify --stage 0 ] --verbose --debug ./js/src/index.js
+	$(watchify) --outfile ./js/script.js -t babelify --verbose --debug ./js/src/index.js
 
 build:
 	$(browserify) ./js/src/index.js \
-	-t [ babelify --stage 0 ] \
+	-t babelify \
 	-t [envify --NODE_ENV production] \
 	| $(uglifyjs) --compress --mangle > ./js/script.min.js
 
