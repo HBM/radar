@@ -1,9 +1,6 @@
 var React = require('react')
 
 class Input extends React.Component {
-  constructor (props) {
-    super(props)
-  }
 
   render () {
     var props = this.props
@@ -27,7 +24,7 @@ class Input extends React.Component {
           required={props.required}
           className={inputClassName}
           value={props.value}
-          autofocus={props.autofocus}
+          autoFocus={props.autoFocus}
           disabled={props.disabled} />
         <label htmlFor={props.id}>
           {props.label}

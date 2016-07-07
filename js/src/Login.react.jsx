@@ -1,3 +1,4 @@
+/* globals $ */
 var React = require('react')
 var Input = require('./Input.react.jsx')
 var Spinner = require('./Spinner.react.jsx')
@@ -95,8 +96,8 @@ class Login extends React.Component {
               placeholder='ws://jetbus.io:8080'
               icon='mdi-file-cloud'
               valid={this.state.isValidUrl}
-              required={true}
-              autofocus={true} />
+              required
+              autoFocus />
             <Input
               type='text'
               id='user'

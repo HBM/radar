@@ -1,7 +1,7 @@
+/* globals $ */
 var React = require('react')
 var utils = require('./utils')
 var Store = require('./Store')
-var Input = require('./Input.react.jsx')
 
 class FetchForm extends React.Component {
   constructor (props) {
@@ -116,7 +116,7 @@ class FetchForm extends React.Component {
                       value={this.state.contains}
                       onChange={this.setContains.bind(this)}
                       style={inputStyle}
-                      autofocus />
+                      autoFocus />
                   </div>
                   <button className='btn waves-effect' type='submit' style={buttonStyle}>
                     Fetch
