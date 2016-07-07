@@ -1,0 +1,12 @@
+node_modules
+.tmp
+
+*.swp
+
+js/script.js
+
+*.swo
+
+js/script.min.js
+
+*.swn
