@@ -13,7 +13,7 @@ describe('Radar selenium', function () {
 
   before((done) => {
     var app = express()
-    app.use('/', express.static(path.join(__dirname, '../')))
+    app.use('/', express.static(path.join(__dirname, '../prod')))
     driver = new webdriver.Builder()
       .forBrowser('firefox')
       .build()
