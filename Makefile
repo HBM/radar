@@ -14,7 +14,7 @@ build:
 	-t [envify] \
 	| uglifyjs --compress --mangle > ./prod/script.min.js 2>/dev/null
 	echo "Build Done!"
-	gzip -k ./prod/script.min.js
+	gzip < ./prod/script.min.js > ./prod/script.min.js.gz
 	du -h ./prod/script.min.*
 
 server-debug:
