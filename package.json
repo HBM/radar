@@ -4,8 +4,8 @@
   "description": "Webinterface for Jet",
   "main": "index.js",
   "scripts": {
-    "gh-pages-travis": "gh-pages-travis",
-    "test": "standard && make build"
+    "test": "standard && make build && mocha test/selenium.js",
+    "gh-pages-travis": "gh-pages-travis"
   },
   "repository": {
     "type": "git",
@@ -40,8 +40,11 @@
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
     "envify": "^3.4.0",
+    "express": "^4.14.0",
     "gh-pages-travis": "^1.0.0",
-    "js-beautify": "^1.5.5",
+    "mocha": "^2.5.3",
+    "selenium-download": "^2.0.1",
+    "selenium-webdriver": "^2.53.2",
     "standard": "^7.1.2",
     "standard-format": "^2.2.2",
     "uglify-js": "^2.4.23",
