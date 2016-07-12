@@ -4,6 +4,7 @@
   "description": "Webinterface for Jet",
   "main": "index.js",
   "scripts": {
+    "gh-pages-travis": "gh-pages-travis",
     "test": "standard && make build"
   },
   "repository": {
@@ -39,6 +40,7 @@
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
     "envify": "^3.4.0",
+    "gh-pages-travis": "^1.0.0",
     "js-beautify": "^1.5.5",
     "standard": "^7.1.2",
     "standard-format": "^2.2.2",
