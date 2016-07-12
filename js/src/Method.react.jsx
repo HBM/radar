@@ -55,10 +55,13 @@ class Method extends React.Component {
       textareaClassName += ' valid invalid'
     }
     var isButtonDisabled = this.state.isEmptyArgs || !this.state.areValidArgs
+    const headlineStyle = {
+      fontSize: '1.2em'
+    }
     return (
       <div className='card'>
         <div className='card-content'>
-          <span className='card-title grey-text text-darken-2'>{this.props.item.path}</span>
+          <span className='card-title grey-text text-darken-2' style={headlineStyle}>{this.props.item.path}</span>
           <form>
             <div className='row'>
               <div className='input-field col s12'>

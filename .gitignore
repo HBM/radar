@@ -7,5 +7,6 @@ js/script.js
 
 *.swo
 
+js/script.min.js
 
 *.swn
