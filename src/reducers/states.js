@@ -6,7 +6,9 @@ const states = (state = {} , action) => {
     case 'CONNECT_REQUEST':
       return []
     case 'STATE_CHANGE':
-      return action.states
+      return action.states.filter((state) => {
+        return typeof state.value !== 'undefined'
+      })
     case 'STATE_SET_REQUEST':
       changing[action.path] = true
       return state

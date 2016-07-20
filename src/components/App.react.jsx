@@ -1,5 +1,5 @@
 import React from 'react'
-// import FetchForm from './FetchForm.react.jsx'
+import FetchForm from './FetchForm.react.jsx'
 // import List from './List.react.jsx'
 import Login from './Login.react.jsx'
 
@@ -9,6 +9,7 @@ class App extends React.Component {
     return (
       <div>
         <Login />
+        <FetchForm />
       </div>
     )
   }
