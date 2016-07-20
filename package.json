@@ -25,10 +25,15 @@
   "dependencies": {
     "flat": "^2.0.1",
     "flux": "^2.0.3",
+    "lodash": "^4.13.1",
     "node-jet": "git://github.com/lipp/node-jet.git",
     "object-assign": "^4.1.0",
     "react": "^15.2.0",
-    "react-dom": "^15.2.0"
+    "react-dom": "^15.2.0",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
+    "redux-logger": "^2.6.1",
+    "redux-thunk": "^2.1.0"
   },
   "devDependencies": {
     "babel": "^6.5.2",

@@ -1,7 +1,7 @@
-var React = require('react')
-var FetchForm = require('./FetchForm.react.jsx')
-var List = require('./List.react.jsx')
-var Login = require('./Login.react.jsx')
+import React from 'react'
+import FetchForm from './FetchForm.react.jsx'
+import List from './List.react.jsx'
+import Login from './Login.react.jsx'
 
 class App extends React.Component {
 

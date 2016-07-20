@@ -4,12 +4,12 @@ export PATH := ./node_modules/.bin:$(PATH)
 # JS
 react:
 	$(RM) js/script.min.js
-	./node_modules/.bin/watchify --outfile ./debug/script.js -t babelify --verbose --debug ./js/src/index.js
+	./node_modules/.bin/watchify --outfile ./debug/script.js -t babelify --verbose --debug ./src/index.js
 
 build:
 	$(RM) ./prod/script.min.*
 	@NODE_ENV=production \
-	browserify ./js/src/index.js \
+	browserify ./src/index.js \
 	-t babelify \
 	-t [envify] \
 	| uglifyjs --compress --mangle > ./prod/script.min.js 2>/dev/null
