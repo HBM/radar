@@ -8,7 +8,7 @@ export const connect = (url, user, password) => {
     peer.close()
   }
   peer = new Peer({url, user, password})
-  peer.connect()
+  return peer.connect()
 }
 
 export const changeFetcher = (fetchExpression, onStatesDidChange) => {

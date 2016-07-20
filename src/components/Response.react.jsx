@@ -22,10 +22,10 @@ class Response extends React.Component {
         return
       }
       return (<AutoTypeInput
-        value={value}
-        label={key}
-        readOnly
-        key={key} />)
+                value={value}
+                label={key}
+                readOnly
+                key={key} />)
     })
     return items
   }

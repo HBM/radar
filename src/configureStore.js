@@ -18,9 +18,10 @@ const configureStore = () => {
   )
   store.subscribe(throttle(() => {
     saveState({
-      config: store.getState().config
+      connection: store.getState().connection
     })
   }, 1000))
+  return store
 }
 
 export default configureStore

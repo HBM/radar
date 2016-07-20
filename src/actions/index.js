@@ -1,7 +1,7 @@
 import { getIsChangingFetcher, getIsSettingState, getIsConnecting } from '../reducers'
 import * as api from '../api'
 
-export const connect = (url, user, password) => (dispatch) => {
+export const connect = ({url, user, password}) => (dispatch) => {
   if (getIsConnecting(url)) {
     return Promise.resolve()
   }
@@ -26,7 +26,7 @@ export const changeFetcher = (fetchExpression) => (dispatch) => {
   dispatch({type: 'FETCHER_REQUEST', fetchExpression})
 
   const onStatesDidChange = (states) => {
-    dispatch({type: 'STATES_DID_CHANGE', states})
+    dispatch({type: 'STATE_CHANGE', states})
   }
 
   return api.changeFetcher(fetchExpression, onStatesDidChange).then(
@@ -44,12 +44,14 @@ export const setState = (path, value) => (dispatch) => {
     return Promise.resolve()
   }
 
+  dispatch({type: 'STATE_SET_REQUEST', path, value})
+
   return api.setState(path, value).then(
     (response) => {
-      dispatch({type: 'SET_STATE_SUCCESS', path})
+      dispatch({type: 'STATE_SET_SUCCESS', path, value})
     },
     (error) => {
       const message = error.message || 'Something went wrong'
-      dispatch({type: 'SET_STATE_FAILURE', path, message})
+      dispatch({type: 'STATE_SET_FAILURE', path, message})
     })
 }

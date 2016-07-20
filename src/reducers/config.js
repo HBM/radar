@@ -1,29 +1,10 @@
+import { combineReducers } from 'redux'
+import connection, * as fromConnection from './connection'
+import fetcher, * as fromFetcher from './fetcher'
 
-let connecting = false
-
-const config = (state = {}, action) => {
-		switch(action.type) {
-				case 'CONNECT_REQUEST':
-						connecting = true
-						return state
-				case 'CONNECT_SUCCESS':
-						connecting = false
-						return {
-						...state,
-						url: action.url,
-						user: action.user,
-						password: password
-				}
-				case: 'CONNECT_FAILURE':
-						connecting: false
-						return {
-								...state,
-								url: action.url,
-								error: action.message
-						}
-		}
-}
-
-export const getIsConnecting = () => connecting
+const config = combineReducers({connection, fetcher})
 
 export default config
+
+export const getIsConnecting = fromConnection.getIsConnecting
+export const getIsFetcherChanging = fromFetcher.getIsChanging

@@ -6,7 +6,7 @@ import App from './App.react.jsx'
 const Root = ({ store }) => (
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route component={App} />
+      <Route path='/' component={App} />
     </Router>
   </Provider>
 )

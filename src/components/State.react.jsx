@@ -79,7 +79,9 @@ class State extends React.Component {
     var props = {}
     props.disabled = !this.hasChanges()
     props.onClick = this.set.bind(this)
-    return <button {...props} className='waves-effect btn'>Set</button>
+    return <button {...props} className='waves-effect btn'>
+             Set
+           </button>
   //		}
   }
 
@@ -125,11 +127,11 @@ class State extends React.Component {
       var onChange = this.onChange.bind(this, key)
       var readOnly = this.props.item.fetchOnly
       return <AutoTypeInput
-        value={value}
-        label={key}
-        onChange={onChange}
-        readOnly={readOnly}
-        key={key} />
+               value={value}
+               label={key}
+               onChange={onChange}
+               readOnly={readOnly}
+               key={key} />
     })
     return items
   }

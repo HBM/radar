@@ -1,136 +1,105 @@
 /* globals $ */
-var React = require('react')
-var Input = require('./Input.react.jsx')
-var Spinner = require('./Spinner.react.jsx')
-var utils = require('./utils')
-var Store = require('./Store')
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import * as actions from '../actions'
+import Input from './Input.react.jsx'
 
-class Login extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      connectionStatus: Store.getConnectionStatus(),
-      url: window.localStorage.url || '',
-      user: window.localStorage.user || '',
-      password: window.localStorage.password || ''
+const LoginForm = ({url, user, password, onSubmit}) => {
+  let inputs = {
+    url: url,
+    user: user,
+    password: password
+  }
+  const submitForm = (event) => {
+    event.preventDefault()
+    if (inputs.url) {
+      onSubmit(inputs)
     }
-    this.state.isValidUrl = this.isValidUrl(this.state.url)
   }
-
-  componentWillMount () {
-    Store.addChangeListener(this._onChange.bind(this))
+  const assignInput = (name) => {
+    return (event) => {
+      event.preventDefault()
+      inputs[name] = event.target.value
+    }
   }
+  return (
+    <form id='login' className='modal' onSubmit={submitForm}>
+      <div className='modal-content'>
+        <h4>Peer Configuration</h4>
+        <div className='row'>
+          <Input
+            onChange={assignInput('url')}
+            type='url'
+            className='s12'
+            label='Daemon Websocket URL'
+            defaultValue={url}
+            placeholder='ws://jetbus.io:8080'
+            icon='mdi-file-cloud'
+            required
+            autoFocus />
+          <Input
+            onChange={assignInput('user')}
+            type='text'
+            className='s12'
+            label='User'
+            value={user}
+            placeholder='anonymous'
+            icon='mdi-action-account-box' />
+          <Input
+            onChange={assignInput('password')}
+            type='password'
+            className='s12'
+            label='Password'
+            defaultValue={password}
+            icon='mdi-communication-vpn-key'
+            disabled={!inputs.user} />
+        </div>
+      </div>
+      <div className='modal-footer'>
+        <div className='row'>
+          <button className='btn waves-effect modal-action waves-green' type='submit'>
+            Login
+          </button>
+        </div>
+      </div>
+    </form>
+  )
+}
 
+LoginForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired
+}
+
+class Login extends Component {
   componentDidMount () {
-    utils.login(this.state)
+    const { connect, url, user, password } = this.props
+    if (url) {
+      connect({url, user, password})
+    }
     setTimeout(() => {
-      if (this.state.connectionStatus !== 'connected') {
+      if (!this.props.isConnected) {
         $('#login').openModal()
       }
     }, 500)
   }
 
-  _onChange () {
-    var connectionStatus = Store.getConnectionStatus()
-    if (connectionStatus === 'connected' && connectionStatus !== this.state.connectionStatus) {
-      $('#login').closeModal()
-    }
-    this.setState({
-      connectionStatus: connectionStatus
-    })
-  }
-
-  login (event) {
-    event.preventDefault()
-    utils.login(this.state)
-  }
-
-  isValidUrl (url) {
-    var wsRegExp = /(ws|wss):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
-    return wsRegExp.test(url)
-  }
-
-  setURL (event) {
-    window.localStorage.url = event.target.value
-
-    this.setState({
-      isValidUrl: this.isValidUrl(event.target.value),
-      url: event.target.value
-    })
-  }
-
-  setUser (event) {
-    window.localStorage.user = event.target.value
-    this.setState({
-      user: event.target.value
-    })
-  }
-
-  setPassword (event) {
-    window.localStorage.password = event.target.value
-    this.setState({
-      password: event.target.value
-    })
-  }
-
-  renderSpinner () {
-    if (this.state.connectionStatus === 'connecting') {
-      return <Spinner />
-    }
-  }
-
   render () {
-    return (
-
-      <form id='login' className='modal' onSubmit={this.login.bind(this)}>
-        <div className='modal-content'>
-          <h4>Peer Configuration</h4>
-          <div className='row'>
-            <Input
-              type='url'
-              id='url'
-              className='s12'
-              label='Daemon Websocket URL'
-              value={this.state.url}
-              onChange={this.setURL.bind(this)}
-              placeholder='ws://jetbus.io:8080'
-              icon='mdi-file-cloud'
-              valid={this.state.isValidUrl}
-              required
-              autoFocus />
-            <Input
-              type='text'
-              id='user'
-              className='s12'
-              label='User'
-              value={this.state.user}
-              onChange={this.setUser.bind(this)}
-              placeholder='anonymous'
-              icon='mdi-action-account-box'
-              valid={this.state.connectionStatus !== 'invalid user'} />
-            <Input
-              type='password'
-              id='password'
-              className='s12'
-              label='Password'
-              value={this.state.password}
-              onChange={this.setPassword.bind(this)}
-              icon='mdi-communication-vpn-key'
-              valid={this.state.connnectionStatus !== 'invalid password'}
-              disabled={this.state.user === ''} />
-          </div>
-        </div>
-        <div className='modal-footer'>
-          <div className='row'>
-            {this.renderSpinner()}
-            <button className='btn waves-effect modal-action waves-green' type='submit'>
-              Login
-            </button>
-          </div>
-        </div>
-      </form>
-    )
+    return <LoginForm {...this.props} onSubmit={this.props.connect} />
   }
 }
 
-module.exports = Login
+Login.propTypes = {
+  connect: PropTypes.func.isRequired
+}
+
+const mapStateToProps = (state) => {
+  const con = state.connection
+  return {
+    isConnected: con.isConnected,
+    url: con.url,
+    user: con.user,
+    password: con.password
+  }
+}
+
+export default connect(mapStateToProps, actions)(Login)
