@@ -25,6 +25,7 @@
   "dependencies": {
     "flat": "^2.0.1",
     "flux": "^2.0.3",
+    "hbm-react-components": "^1.1.0",
     "lodash": "^4.13.1",
     "node-jet": "git://github.com/lipp/node-jet.git",
     "object-assign": "^4.1.0",
@@ -48,7 +49,9 @@
     "envify": "^3.4.0",
     "express": "^4.14.0",
     "gh-pages-travis": "^1.0.0",
+    "handlebars": "^4.0.5",
     "mocha": "^2.5.3",
+    "node-sass": "^3.8.0",
     "selenium-download": "^2.0.1",
     "selenium-webdriver": "^2.53.2",
     "standard": "^7.1.2",

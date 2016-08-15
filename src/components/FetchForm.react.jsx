@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 
-const FetchForm = ({fetchExpression, changeFetcher}) => {
+const FetchForm = ({fetchExpression, changeFetcher, showConnection}) => {
   const height = '46px'
   const backgroundColor = 'white'
   const color = 'rgb(33,33,33)'
@@ -64,6 +64,11 @@ const FetchForm = ({fetchExpression, changeFetcher}) => {
     changeFetcher(input)
   }
 
+  const onLoginClick = (event) => {
+    event.preventDefault()
+    showConnection()
+  }
+
   return (
     <div className='navbar-fixed'>
       <nav className='cyan darken-3'>
@@ -93,7 +98,7 @@ const FetchForm = ({fetchExpression, changeFetcher}) => {
             </form>
             <ul id='nav-mobile' className='right'>
               <li>
-                <a href='#login' className='modal-trigger'><i className='mdi-action-account-child'></i></a>
+                <a href='#login' className='modal-trigger' onClick={onLoginClick}><i className='material-icons'>account_box</i></a>
               </li>
             </ul>
           </div>

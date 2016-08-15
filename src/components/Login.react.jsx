@@ -84,6 +84,9 @@ class Login extends Component {
   }
 
   render () {
+    if (this.props.showConnection) {
+      $('#login').openModal()
+    }
     return <LoginForm {...this.props} onSubmit={this.props.connect} />
   }
 }
@@ -98,7 +101,8 @@ const mapStateToProps = (state) => {
     isConnected: con.isConnected,
     url: con.url,
     user: con.user,
-    password: con.password
+    password: con.password,
+    showConnection: state.gui.showConnection
   }
 }
 

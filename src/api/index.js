@@ -18,7 +18,7 @@ export const changeFetcher = (fetchExpression, onStatesDidChange) => {
   fetcher = new Fetcher()
   if (fetchExpression && fetchExpression.trim() !== '') {
     fetcher
-      .path('contains', fetchExpression.trim())
+      .path('contains', fetchExpression.trim().split(' '))
       .pathCaseInsensitive()
   }
   fetcher

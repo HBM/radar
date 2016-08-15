@@ -5,7 +5,6 @@ export const connect = ({url, user, password}) => (dispatch) => {
   if (getIsConnecting(url)) {
     return Promise.resolve()
   }
-
   dispatch({type: 'CONNECT_REQUEST', url, user, password})
 
   return api.connect(url, user, password).then(
@@ -55,3 +54,7 @@ export const setState = (path, value) => (dispatch) => {
       dispatch({type: 'STATE_SET_FAILURE', path, message})
     })
 }
+
+export const showConnection = () => ({
+  type: 'SHOW_CONNECTION'
+})
