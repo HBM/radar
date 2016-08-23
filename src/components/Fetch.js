@@ -31,78 +31,74 @@ class Fetch extends React.Component {
   }
 
   onSubmit = (event) => {
-    
     event.preventDefault()
     this.props.changeFetcher(this.state.fetchExpression)
-	this.props.setSearch(this.state.fetchExpression.containsAllOf)
+    this.props.setSearch(this.state.fetchExpression.containsAllOf)
   }
 
   render () {
     const createStar = (path) => {
       return <Icon.Star
         onClick={() => toggleFavorite(path)}
-		className={classNames('Icon Fetch Star', {'Star--active': (favorites.indexOf(path) > -1)})}
-        />
-	}
+        className={classNames('Icon Fetch Star', {'Star--active': (favorites.indexOf(path) > -1)})}
+      />
+    }
 
-    const {fetchExpression, changeFetcher, states, methods, toggleFavorite, favorites} = this.props
-
-	console.log(states, methods)
+    const {states, methods, toggleFavorite, favorites} = this.props
 
     const stateAvatar = <span className='State-avatar'>S</span>
     const stateRows = states.map((state) => {
-	  console.log('state', state)
-      return <Row 
-        avatar={stateAvatar} 
-        primary={state.path} 
-        secondary={'State / ' + JSON.stringify(state.value)} 
-        icon={createStar(state.path)} 
-        key={state.path} 
+      return <Row
+        avatar={stateAvatar}
+        primary={state.path}
+        secondary={'State / ' + JSON.stringify(state.value)}
+        icon={createStar(state.path)}
+        key={state.path}
 		/>
     })
 
     const methodAvatar = <span className='Method-avatar'>M</span>
     const methodRows = methods.map((method) => {
-      return <Row 
-	  avatar={methodAvatar} 
-	  primary={method.path} 
-	  secondary='Method' 
-	  icon={createStar(method.path)} 
-	  key={method.path}
-	  />
+      return <Row
+        avatar={methodAvatar}
+        primary={method.path}
+        secondary='Method'
+        icon={createStar(method.path)}
+        key={method.path}
+      />
     })
 
-	const rows = methodRows.concat(stateRows).sort(function(rowA, rowB) {
-			return rowA.props.primary - rowB.props.primary
-	})
+    const rows = methodRows.concat(stateRows).sort(function (rowA, rowB) {
+      return rowA.props.primary - rowB.props.primary
+    })
 
-	const spaceCode = 32
-	const enterCode = 13
+    const spaceCode = 32
+    const enterCode = 13
 
-	let chips
+    let chips
 
     return (
       <div>
-        <form 
-          className={classNames('Searchbar', {'Searchbar--focused': this.state.focused})} 
-          onSubmit={this.onSubmit} 
+        <form
+          className={classNames('Searchbar', {'Searchbar--focused': this.state.focused})}
+          onSubmit={this.onSubmit}
           onClick={() => chips.input.focus()}
-		  >
-		  <button type='submit' style={{display: 'none'}} onSubmit={this.onSubmit}/>
+          >
+          <button type='submit' style={{display: 'none'}} onSubmit={this.onSubmit} />
           <div className='Searchbar-icon'>
-		    <Icon.Search width={36} height={36}/>
+            <Icon.Search width={36} height={36} />
           </div>
-          <Chip 
-            ref={(s) => chips = s} 
-		    onChange={this.onChange} 
-			initialValues={this.state.fetchExpression.containsAllOf} 
-			delimiters={[spaceCode, enterCode]}
-			onFocus={this.onFocus}
-			onBlur={this.onBlur}
-			/>
+          <Chip
+            ref={(s) => { chips = s }}
+            onChange={this.onChange}
+            initialValues={this.state.fetchExpression.containsAllOf}
+            delimiters={[spaceCode, enterCode]}
+            onFocus={this.onFocus}
+            onBlur={this.onBlur}
+            />
         </form>
         <List>
-		  {rows}
+          {rows}
         </List>
       </div>
     )
@@ -113,9 +109,9 @@ const mapStateToProps = (state) => {
   return {
     fetchExpression: state.fetcher.expression,
     states: state.states,
-	methods: state.methods,
+    methods: state.methods,
     favorites: state.favorites,
-	search: state.search
+    search: state.search
   }
 }
 

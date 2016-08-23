@@ -1,6 +1,6 @@
 let connecting = false
 
-const connection = (state = {isConnected: false} , action) => {
+const connection = (state = {isConnected: false}, action) => {
   switch (action.type) {
     case 'CONNECT_REQUEST':
       connecting = action.url
