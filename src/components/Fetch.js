@@ -1,14 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
-import { List, Row, Icon, Chip } from 'hbm-react-components'
+import { List, Row, Icon } from 'hbm-react-components'
+import SearchBar from './SearchBar'
 import classNames from 'classNames'
 
 class Fetch extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      focus: false,
       fetchExpression: {
         containsAllOf: this.props.search || []
       }
@@ -20,14 +20,6 @@ class Fetch extends React.Component {
 
   onChange = (values) => {
     this.setState({fetchExpression: {containsAllOf: values}})
-  }
-
-  onFocus = () => {
-    this.setState({focused: true})
-  }
-
-  onBlur = () => {
-    this.setState({focused: false})
   }
 
   onSubmit = (event) => {
@@ -72,31 +64,13 @@ class Fetch extends React.Component {
       return rowA.props.primary - rowB.props.primary
     })
 
-    const spaceCode = 32
-    const enterCode = 13
-
-    let chips
-
     return (
       <div>
-        <form
-          className={classNames('Searchbar', {'Searchbar--focused': this.state.focused})}
+        <SearchBar
+          onChange={this.onChange}
           onSubmit={this.onSubmit}
-          onClick={() => chips.input.focus()}
-          >
-          <button type='submit' style={{display: 'none'}} onSubmit={this.onSubmit} />
-          <div className='Searchbar-icon'>
-            <Icon.Search width={36} height={36} />
-          </div>
-          <Chip
-            ref={(s) => { chips = s }}
-            onChange={this.onChange}
-            initialValues={this.state.fetchExpression.containsAllOf}
-            delimiters={[spaceCode, enterCode]}
-            onFocus={this.onFocus}
-            onBlur={this.onBlur}
-            />
-        </form>
+          initialValues={this.state.fetchExpression.containsAllOf}
+        />
         <List>
           {rows}
         </List>
