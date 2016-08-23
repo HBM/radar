@@ -3,7 +3,7 @@ let connecting = false
 const connection = (state = {isConnected: false} , action) => {
   switch (action.type) {
     case 'CONNECT_REQUEST':
-      connecting = true
+      connecting = action.url
       return {
         isConnected: false,
         url: action.url,
@@ -28,6 +28,6 @@ const connection = (state = {isConnected: false} , action) => {
   }
 }
 
-export const getIsConnecting = () => connecting
+export const getIsConnecting = (url) => connecting === url
 
 export default connection

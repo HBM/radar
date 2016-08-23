@@ -7,3 +7,64 @@
 @import "../node_modules/hbm-react-components/components/button/Button";
 @import "../node_modules/hbm-react-components/components/list/List";
 @import "../node_modules/hbm-react-components/components/chip/Chip";
+
+.State-avatar, .Method-avatar {
+  text-align: center;
+  height: 40px;
+  vertical-align: middle;
+  line-height: 40px;
+  font-size: 22px;
+  color: white;
+}
+
+.Method-avatar {
+  background-color: #9f85ea;
+}
+
+.State-avatar {
+  background-color: #4bc6d4;
+}
+
+.Searchbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background-color: white;
+  border-bottom: 1px solid #e8e8e8;
+  transition: box-shadow 0.3s ease;
+  cursor: text;
+  margin-bottom: 8px;
+
+  &>* {
+    margin-bottom: -1px;
+  }
+}
+
+.Searchbar--focused {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
+}
+
+.Searchbar-icon {
+  width: 56px;
+}
+
+.Searchbar-icon svg {
+  fill: #d6d6d6;
+}
+
+.Searchbar .Chip-wrapper {
+  flex-grow: 1;
+  input, .Chip {
+    font-size: 16px;
+  }
+}
+
+.Icon {
+  fill: gray;
+  cursor: pointer;
+}
+
+.Star--active {
+  fill: orange;
+}

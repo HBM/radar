@@ -3,6 +3,10 @@ export PATH := ./node_modules/.bin:$(PATH)
 
 
 # JS
+#
+css:
+	./node_modules/.bin/node-sass ./css/index.scss ./debug/css/styles.css
+
 react:
 	mkdir -p debug/{js,css,fonts}
 	NODE_ENV=development node ./html/compile.js

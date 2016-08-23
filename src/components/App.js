@@ -1,14 +1,10 @@
 import React from 'react'
-import {
-  Header,
-  Navigation
-} from 'hbm-react-components'
-
+import {Header, Navigation} from 'hbm-react-components'
 
 export default class App extends React.Component {
 
   state = {
-    subtitle: 'Fetch'
+    subtitle: 'Search'
   }
 
   onChange = (link) => {
@@ -17,15 +13,13 @@ export default class App extends React.Component {
 
   render () {
     var links = [
-      {text: 'Fetch', link: '/'},
+      {text: 'Search', link: '/'},
+      {text: 'Favorites', link: '/favorites'},
       {text: 'Connection', link: '/connection'}
     ]
     return (
       <div>
-        <Header
-          title='Radar'
-          subtitle={this.state.subtitle}
-        />
+        <Header title='Radar' subtitle={this.state.subtitle} />
         <Navigation links={links} onChange={this.onChange} />
         <main>
           {this.props.children}

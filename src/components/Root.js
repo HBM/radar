@@ -3,6 +3,7 @@ import { Provider } from 'react-redux'
 import { Router, Route, hashHistory, IndexRoute } from 'react-router'
 import App from './App.js'
 import Fetch from './Fetch.js'
+import Favorites from './Favorites.js'
 import Connection from './Connection.js'
 
 const Root = ({ store }) => (
@@ -10,6 +11,7 @@ const Root = ({ store }) => (
     <Router history={hashHistory}>
       <Route path='/' component={App}>
         <IndexRoute component={Fetch} />
+        <Route path='/favorites' component={Favorites} />
         <Route path='/connection' component={Connection} />
       </Route>
     </Router>

@@ -16,14 +16,14 @@ export const changeFetcher = (fetchExpression, onStatesDidChange) => {
     fetcher.unfetch()
   }
   fetcher = new Fetcher()
-  if (fetchExpression && fetchExpression.trim() !== '') {
-    fetcher
-      .path('contains', fetchExpression.trim().split(' '))
-      .pathCaseInsensitive()
-  }
-  fetcher
+    .pathCaseInsensitive()
     .sortByPath()
     .range(1, 100)
-  fetcher.on('data', onStatesDidChange)
+    .on('data', onStatesDidChange)
+  if (fetchExpression.containsAllOf) {
+    fetcher.path('containsAllOf', fetchExpression.containsAllOf)
+  } else if (fetchExpression.equalsOneOf) {
+    fetcher.path('equalsOneOf', fetchExpression.equalsOneOf)
+  }
   return peer.fetch(fetcher)
 }

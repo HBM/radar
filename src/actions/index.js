@@ -24,11 +24,11 @@ export const changeFetcher = (fetchExpression) => (dispatch) => {
 
   dispatch({type: 'FETCHER_REQUEST', fetchExpression})
 
-  const onStatesDidChange = (states) => {
-    dispatch({type: 'STATE_CHANGE', states})
+  const onChange = (content) => {
+    dispatch({type: 'FETCHER_CONTENT_CHANGE', content})
   }
 
-  return api.changeFetcher(fetchExpression, onStatesDidChange).then(
+  return api.changeFetcher(fetchExpression, onChange).then(
     (response) => {
       dispatch({type: 'FETCHER_SUCCESS', fetchExpression})
     },
@@ -57,4 +57,24 @@ export const setState = (path, value) => (dispatch) => {
 
 export const showConnection = () => ({
   type: 'SHOW_CONNECTION'
+})
+
+export const addFavorite = (path) => ({
+  type: 'FAVORITE_ADD',
+  path
+})
+
+export const removeFavorite = (path) => ({
+  type: 'FAVORITE_REMOVE',
+  path
+})
+
+export const toggleFavorite = (path) => ({
+  type: 'FAVORITE_TOGGLE',
+  path
+})
+
+export const setSearch = (search) => ({
+  type: 'SEARCH_SET',
+  search
 })

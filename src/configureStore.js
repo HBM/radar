@@ -18,7 +18,9 @@ const configureStore = () => {
   )
   store.subscribe(throttle(() => {
     saveState({
-      connection: store.getState().connection
+      connection: store.getState().connection,
+	  favorites: store.getState().favorites,
+	  search: store.getState().search
     })
   }, 1000))
   return store

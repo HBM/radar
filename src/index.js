@@ -9,6 +9,7 @@ const connection = store.getState().connection
 if (connection && connection.url) {
   connect(connection)(store.dispatch)
 }
+
 render(
   <Root store={store} />,
   document.getElementById('app')

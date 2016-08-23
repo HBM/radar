@@ -1,13 +1,14 @@
 let changing = {}
 
-const states = (state = {} , action) => {
+const states = (state = [], action) => {
   switch (action.type) {
     case 'FETCHER_FAILURE':
+    case 'FETCHER_REQUEST':
     case 'CONNECT_REQUEST':
       return []
-    case 'STATE_CHANGE':
-      return action.states.filter((state) => {
-        return typeof state.value !== 'undefined'
+    case 'FETCHER_CONTENT_CHANGE':
+      return action.content.filter((stateOrMethod) => {
+        return typeof stateOrMethod.value !== 'undefined'
       })
     case 'STATE_SET_REQUEST':
       changing[action.path] = true
