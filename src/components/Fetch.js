@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
-import { List, Row, Icon } from 'hbm-react-components'
+import { Icon } from 'hbm-react-components'
 import SearchBar from './SearchBar'
 import classNames from 'classNames'
+import StateAndMethodList from './StateAndMethodList'
 
 class Fetch extends React.Component {
   constructor (props) {
@@ -38,32 +39,6 @@ class Fetch extends React.Component {
 
     const {states, methods, toggleFavorite, favorites} = this.props
 
-    const stateAvatar = <span className='State-avatar'>S</span>
-    const stateRows = states.map((state) => {
-      return <Row
-        avatar={stateAvatar}
-        primary={state.path}
-        secondary={'State / ' + JSON.stringify(state.value)}
-        icon={createStar(state.path)}
-        key={state.path}
-		/>
-    })
-
-    const methodAvatar = <span className='Method-avatar'>M</span>
-    const methodRows = methods.map((method) => {
-      return <Row
-        avatar={methodAvatar}
-        primary={method.path}
-        secondary='Method'
-        icon={createStar(method.path)}
-        key={method.path}
-      />
-    })
-
-    const rows = methodRows.concat(stateRows).sort(function (rowA, rowB) {
-      return rowA.props.primary - rowB.props.primary
-    })
-
     return (
       <div>
         <SearchBar
@@ -71,9 +46,7 @@ class Fetch extends React.Component {
           onSubmit={this.onSubmit}
           initialValues={this.state.fetchExpression.containsAllOf}
         />
-        <List>
-          {rows}
-        </List>
+        <StateAndMethodList states={states} methods={methods} iconCreator={createStar} />
       </div>
     )
   }
