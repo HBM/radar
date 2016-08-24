@@ -31,12 +31,14 @@ const createInput = (nvp) => {
         type={typeof nvp.value === 'string' ? 'text' : 'number'}
         defaultValue={nvp.value}
         label={nvp.name}
+        key={nvp.name}
       />
     case 'boolean':
       return <Checkbox
         name={nvp.name}
         checked={nvp.value}
         label={nvp.name}
+        key={nvp.name}
       />
     default: 
       return <Textfield
@@ -45,6 +47,7 @@ const createInput = (nvp) => {
         disabled={true}
         value={nvp.value}
         label={nvp.name}
+        key={nvp.name}
       />
   }
 }
