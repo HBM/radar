@@ -1,5 +1,9 @@
 @import "../node_modules/hbm-react-components/css/mixins";
 
+.State, .State .Textfield input {
+  background-color: #f9f9f9;
+}
+
 .State form > *:not(hr), .State-hero > * {
   margin: 0 16px;
   @include medium {
@@ -13,22 +17,18 @@
 }
 
 .State-hero {
-  background-color: #4bc6d4;
-  color: white;
-  padding-top: 200px;
-  padding-bottom: 34px;
+  height: 72px;
+  border-bottom: 1px solid #e8e8e8;
 }
 
 .State-hero h1 {
-  font-size: 16px;
-  color: white;
+  font-size: 24px;
+  font-weight: normal;
+  height: 100%;
+  vertical-align: middle;
+  line-height: 66px;
 }
 
-.State-hero h2 {
-  font-size: 30px;
-  color: white;
-  margin-top: 6px;
-}
 
 .State h3:before {
   display: block;

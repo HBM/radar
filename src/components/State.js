@@ -58,8 +58,7 @@ export default class State extends React.Component {
     return (
       <div className='State'>
        <div className='State-hero'>
-         <h1>State</h1>
-         <h2>{this.props.state.path}</h2>
+         <h1>{this.props.state.path}</h1>
        </div>
        <form onSubmit={this.onSubmit} >
          {nvps.map(createInput)}
