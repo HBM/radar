@@ -1,0 +1,48 @@
+@import "../node_modules/hbm-react-components/css/mixins";
+
+.State form > *:not(hr), .State-hero > * {
+  margin: 0 16px;
+  @include medium {
+    margin: 0 24px;
+  }
+}
+
+.State form {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.State-hero {
+  background-color: #4bc6d4;
+  color: white;
+  padding-top: 200px;
+  padding-bottom: 34px;
+}
+
+.State-hero h1 {
+  font-size: 16px;
+  color: white;
+}
+
+.State-hero h2 {
+  font-size: 30px;
+  color: white;
+  margin-top: 6px;
+}
+
+.State h3:before {
+  display: block;
+  content: 'State';
+  background-color: #4bc6d4;
+  color: white;
+  height: 60px;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #e8e8e8;
+  margin: 2.5em 0;
+  padding: 0; 
+}

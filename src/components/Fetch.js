@@ -5,6 +5,7 @@ import { Icon } from 'hbm-react-components'
 import SearchBar from './SearchBar'
 import classNames from 'classNames'
 import StateAndMethodList from './StateAndMethodList'
+import State from './State'
 
 class Fetch extends React.Component {
   constructor (props) {
@@ -29,6 +30,10 @@ class Fetch extends React.Component {
     this.props.setSearch(this.state.fetchExpression.containsAllOf)
   }
 
+  onSelect = (stateOrMethod) => {
+    this.setState({selected: this.props.states.filter( (state) => state.path === stateOrMethod.path)[0] })
+  }
+
   render () {
     const createStar = (path) => {
       return <Icon.Star
@@ -40,13 +45,18 @@ class Fetch extends React.Component {
     const {states, methods, toggleFavorite, favorites} = this.props
 
     return (
-      <div>
-        <SearchBar
-          onChange={this.onChange}
-          onSubmit={this.onSubmit}
-          initialValues={this.state.fetchExpression.containsAllOf}
-        />
-        <StateAndMethodList states={states} methods={methods} iconCreator={createStar} />
+      <div className='Split'>
+        <div className='Split-left'>
+          <SearchBar
+            onChange={this.onChange}
+            onSubmit={this.onSubmit}
+            initialValues={this.state.fetchExpression.containsAllOf}
+          />
+          <StateAndMethodList states={states} methods={methods} iconCreator={createStar} onSelect={this.onSelect} />
+        </div>
+        <div className='Split-right'>
+		  {this.state.selected && <State state={this.state.selected} />}
+        </div>
       </div>
     )
   }

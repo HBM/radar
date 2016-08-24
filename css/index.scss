@@ -4,9 +4,14 @@
 @import "../node_modules/hbm-react-components/components/icon/Icon";
 @import "../node_modules/hbm-react-components/components/card/Card";
 @import "../node_modules/hbm-react-components/components/textfield/Textfield";
+@import "../node_modules/hbm-react-components/components/checkbox/Checkbox";
 @import "../node_modules/hbm-react-components/components/button/Button";
 @import "../node_modules/hbm-react-components/components/list/List";
 @import "../node_modules/hbm-react-components/components/chip/Chip";
+@import "../node_modules/hbm-react-components/css/mixins";
+@import "./Split";
+@import "./State";
+@import "./Searchbar";
 
 .State-avatar, .Method-avatar {
   text-align: center;
@@ -25,40 +30,6 @@
   background-color: #4bc6d4;
 }
 
-.Searchbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 24px;
-  background-color: white;
-  border-bottom: 1px solid #e8e8e8;
-  transition: box-shadow 0.3s ease;
-  cursor: text;
-  margin-bottom: 8px;
-
-  &>* {
-    margin-bottom: -1px;
-  }
-}
-
-.Searchbar--focused {
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
-}
-
-.Searchbar-icon {
-  width: 56px;
-}
-
-.Searchbar-icon svg {
-  fill: #d6d6d6;
-}
-
-.Searchbar .Chip-wrapper {
-  flex-grow: 1;
-  input, .Chip {
-    font-size: 16px;
-  }
-}
 
 .Icon {
   fill: gray;
@@ -67,4 +38,51 @@
 
 .Star--active {
   fill: orange;
+}
+
+.Split-left {
+  z-index: 1;
+  box-shadow: 0 0px 4px 2px rgba(0, 0, 0, 0.24);
+}
+
+.Split-left .Searchbar {
+  flex-shrink: 0;
+}
+
+.Split-right .State {
+  background-color: white;
+  flex-grow: 1;
+}
+
+
+.Split-left .List {
+  margin: 0 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex-grow: 1;
+}
+
+/** overwrite hbm style */
+#app main {
+  @include medium {
+    /**
+     * Cards have a margin of 8px => left = 40px and top = 20px
+     */
+    padding-right: 0;
+    padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    width: 100%;
+    margin-left: initial;
+    margin-right: initial;
+  }
+
+  @include large {
+    width: 100%;
+  }
+
+  @include xlarge {
+    padding-left: $navigation-width;
+    width: 100%;
+  }
 }
