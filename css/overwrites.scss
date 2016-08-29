@@ -1,0 +1,25 @@
+@import "../node_modules/hbm-react-components/css/mixins";
+/** overwrite hbm style */
+#app main {
+  @include medium {
+    /**
+     * Cards have a margin of 8px => left = 40px and top = 20px
+     */
+    padding-right: 0;
+    padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    width: 100%;
+    margin-left: initial;
+    margin-right: initial;
+  }
+
+  @include large {
+    width: 100%;
+  }
+
+  @include xlarge {
+    padding-left: $navigation-width;
+    width: 100%;
+  }
+}

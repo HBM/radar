@@ -12,6 +12,7 @@
 @import "./Split";
 @import "./State";
 @import "./Searchbar";
+@import "./Overwrites";
 
 .State-avatar, .Method-avatar {
   text-align: center;
@@ -47,6 +48,7 @@
 
 .Split-left .Searchbar {
   flex-shrink: 0;
+  flex-grow: 0;
 }
 
 .Split-right .State {
@@ -61,27 +63,3 @@
   flex-grow: 1;
 }
 
-/** overwrite hbm style */
-#app main {
-  @include medium {
-    /**
-     * Cards have a margin of 8px => left = 40px and top = 20px
-     */
-    padding-right: 0;
-    padding-left: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    width: 100%;
-    margin-left: initial;
-    margin-right: initial;
-  }
-
-  @include large {
-    width: 100%;
-  }
-
-  @include xlarge {
-    padding-left: $navigation-width;
-    width: 100%;
-  }
-}

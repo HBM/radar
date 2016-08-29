@@ -17,11 +17,13 @@ const configureStore = () => {
     applyMiddleware(...middlewares)
   )
   store.subscribe(throttle(() => {
-    saveState({
+    const state = {
       connection: store.getState().connection,
       favorites: store.getState().favorites,
       search: store.getState().search
-    })
+    }
+    console.log('save', state)
+    saveState(state)
   }, 1000))
   return store
 }

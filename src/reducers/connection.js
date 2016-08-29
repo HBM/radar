@@ -14,7 +14,10 @@ const connection = (state = {isConnected: false}, action) => {
       connecting = false
       return {
         ...state,
-        isConnected: true
+        isConnected: true,
+        url: action.url,
+        user: action.user,
+        password: action.password
       }
     case 'CONNECT_FAILURE':
       connecting = false

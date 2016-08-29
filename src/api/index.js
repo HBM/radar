@@ -12,7 +12,7 @@ export const connect = (url, user, password) => {
 }
 
 export const changeFetcher = (fetchExpression, onStatesDidChange) => {
-  if (fetcher) {
+  if (peer && !peer.closed() && fetcher) {
     fetcher.unfetch()
   }
   fetcher = new Fetcher()
@@ -26,4 +26,8 @@ export const changeFetcher = (fetchExpression, onStatesDidChange) => {
     fetcher.path('equalsOneOf', fetchExpression.equalsOneOf)
   }
   return peer.fetch(fetcher)
+}
+
+export const setState = (path, value, done) => {
+  return peer.set(path, value)
 }

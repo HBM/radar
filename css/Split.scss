@@ -7,26 +7,22 @@
   overflow: hidden;
 }
 
-.Split-left {
+.Split-left, .Split-right {
   overflow: hidden;
-  flex-grow: 2;
   display: flex;
-  flex-direction: column;
   max-width: 600px;
+  flex-direction: column;
   height: calc(100vh - 48px);
   @include medium { 
     height: calc(100vh - 64px);
   }
 }
 
-.Split-right {
-  overflow: hidden;
-  flex-grow: 1;
-  max-width: 600px;
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 48px);
-  @include medium { 
-    height: calc(100vh - 64px);
-  }
+.Split-left {
+  flex-grow: 2;
 }
+
+.Split-right {
+  flex-grow: 1;
+}
+

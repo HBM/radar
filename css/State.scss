@@ -1,5 +1,11 @@
 @import "../node_modules/hbm-react-components/css/mixins";
 
+.State {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .State, .State .Textfield input {
   background-color: #f9f9f9;
 }
@@ -12,12 +18,11 @@
 }
 
 .State form {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  padding: 20px 0;
 }
 
 .State-hero {
-  height: 72px;
+  height: 71px;
   border-bottom: 1px solid #e8e8e8;
 }
 
@@ -42,7 +47,14 @@ hr {
   display: block;
   height: 1px;
   border: 0;
-  border-top: 1px solid #e8e8e8;
-  margin: 2.5em 0;
+  border-top: 1px solid #e0e0e0;
+  margin: 3em 0;
   padding: 0; 
+}
+
+form {
+  margin: 0 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex-grow: 1;
 }

@@ -6,6 +6,7 @@ export PATH := ./node_modules/.bin:$(PATH)
 #
 css:
 	./node_modules/.bin/node-sass ./css/index.scss ./debug/css/styles.css
+	./node_modules/.bin/node-sass --watch ./css/index.scss ./debug/css/styles.css
 
 react:
 	mkdir -p debug/{js,css,fonts}
@@ -39,4 +40,4 @@ server-release:
 
 
 # Phony commands
-.PHONY: react build server-debug server-release
+.PHONY: react build server-debug server-release css

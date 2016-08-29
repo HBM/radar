@@ -31,7 +31,7 @@ class Fetch extends React.Component {
   }
 
   onSelect = (stateOrMethod) => {
-    this.setState({selected: this.props.states.filter( (state) => state.path === stateOrMethod.path)[0] })
+    this.setState({selectedPath: stateOrMethod.path})
   }
 
   render () {
@@ -44,6 +44,10 @@ class Fetch extends React.Component {
 
     const {states, methods, toggleFavorite, favorites} = this.props
 
+    const selected = states.filter((state) => {
+      return state.path === this.state.selectedPath
+    })[0]
+
     return (
       <div className='Split'>
         <div className='Split-left'>
@@ -55,7 +59,7 @@ class Fetch extends React.Component {
           <StateAndMethodList states={states} methods={methods} iconCreator={createStar} onSelect={this.onSelect} />
         </div>
         <div className='Split-right'>
-		  {this.state.selected && <State state={this.state.selected} />}
+          {selected && <State state={selected} />}
         </div>
       </div>
     )

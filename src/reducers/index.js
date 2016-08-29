@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import states from './states'
+import set, * as fromSet from './set'
 import methods from './methods'
 import connection, * as fromConnection from './connection'
 import fetcher, * as fromFetcher from './fetcher'
@@ -51,10 +52,10 @@ const search = (state = [], action) => {
   }
 }
 
-const radar = combineReducers({states, methods, fetcher, connection, gui, favorites, search})
+const radar = combineReducers({states, methods, fetcher, connection, gui, favorites, search, set})
 
 export default radar
 
 export const getIsConnecting = (url) => fromConnection.getIsConnecting(url)
 export const getIsChangingFetcher = () => fromFetcher.getIsChanging()
-export const getIsSettingState = (path) => states.getIsSetting(path)
+export const getIsSettingState = (path) => fromSet.getIsSetting(path)

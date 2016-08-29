@@ -29,11 +29,11 @@ const createStateRow = (state, icon, onFocus) => (
 
 const StateAndMethodList = ({states, methods, iconCreator, onSelect}) => {
   const stateRows = states.map((state) => {
-    return createStateRow(state, iconCreator(state.path), () => {onSelect(state)})
+    return createStateRow(state, iconCreator(state.path), () => { onSelect(state) })
   })
 
   const methodRows = methods.map((method) => {
-    return createMethodRow(method, iconCreator(method.path), () => {onSelect(method)})
+    return createMethodRow(method, iconCreator(method.path), () => { onSelect(method) })
   })
 
   const rows = methodRows.concat(stateRows).sort(function (rowA, rowB) {

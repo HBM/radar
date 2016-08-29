@@ -41,6 +41,7 @@ export default class SearchBar extends React.Component {
           delimiters={[spaceCode, enterCode]}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
+          autoFocus
           />
       </form>
 	)
