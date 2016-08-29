@@ -3,7 +3,7 @@ import * as actions from '../actions'
 import { connect } from 'react-redux'
 import { Button, Textfield } from 'hbm-react-components'
 
-export default class Method extends React.Component {
+export class Method extends React.Component {
 
   state = {
     args: '[]'
