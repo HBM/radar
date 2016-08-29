@@ -28,7 +28,6 @@ const typedValue = (type, onChange) => (event) => {
   if (type === 'number') {
     event.target.typedValue = parseFloat(event.target.value)
   } else if (type === 'boolean') {
-    console.log('XX', event.target, event)
     event.target.typedValue = event.target.value === 'on'
   } else {
     event.target.typedValue = event.target.value
@@ -69,25 +68,33 @@ const createInput = (onChange) => (nvp) => {
   }
 }
 
+const getSelectedState = (states, path) => {
+  return states.filter((state) => {
+    return state.path === decodeURIComponent(path)
+  })[0]
+}
+
 export default class State extends React.Component {
   constructor (props) {
     super(props)
+    const state = getSelectedState(props.states, props.params.path) || {}
     this.state = {
-      formData: flatObject(props.state.value),
-      formDataBak: flatObject(props.state.value)
+      formData: flatObject(state.value),
+      formDataBak: flatObject(state.value)
     }
   }
 
   componentWillReceiveProps (newProps) {
+    const state = getSelectedState(newProps.states, newProps.params.path) || {}
     this.setState({
-      formData: flatObject(newProps.state.value),
-      formDataBak: flatObject(newProps.state.value)
+      formData: flatObject(state.value),
+      formDataBak: flatObject(state.value)
     })
   }
 
   onSubmit = (event) => {
     event.preventDefault()
-    this.props.setState(this.props.state.path, flatten.unflatten(this.state.formData))
+    this.props.setState(this.props.params.path, flatten.unflatten(this.state.formData))
   }
 
   assignToFormData = (event) => {
@@ -99,11 +106,10 @@ export default class State extends React.Component {
   render () {
     const nvps = toNameValue(this.state.formData)
     const hasChanges = JSON.stringify(this.state.formData) !== JSON.stringify(this.state.formDataBak)
-    console.log(nvps)
     return (
       <div className='State'>
         <div className='State-hero'>
-          <h1>{this.props.state.path}</h1>
+          <h1>{this.props.params.path}</h1>
         </div>
         <form onSubmit={this.onSubmit} >
           {nvps.map(createInput(this.assignToFormData))}
@@ -117,7 +123,8 @@ export default class State extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    favorites: state.favorites
+    favorites: state.favorites,
+    states: state.states
   }
 }
 

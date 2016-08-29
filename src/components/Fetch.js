@@ -5,7 +5,7 @@ import { Icon } from 'hbm-react-components'
 import SearchBar from './SearchBar'
 import classNames from 'classNames'
 import StateAndMethodList from './StateAndMethodList'
-import State from './State'
+import { withRouter } from 'react-router'
 
 class Fetch extends React.Component {
   constructor (props) {
@@ -31,7 +31,7 @@ class Fetch extends React.Component {
   }
 
   onSelect = (stateOrMethod) => {
-    this.setState({selectedPath: stateOrMethod.path})
+    this.props.router.push('/search/' + encodeURIComponent(stateOrMethod.path))
   }
 
   render () {
@@ -42,11 +42,7 @@ class Fetch extends React.Component {
       />
     }
 
-    const {states, methods, toggleFavorite, favorites} = this.props
-
-    const selected = states.filter((state) => {
-      return state.path === this.state.selectedPath
-    })[0]
+    const {states, methods, toggleFavorite, favorites, children} = this.props
 
     return (
       <div className='Split'>
@@ -59,11 +55,17 @@ class Fetch extends React.Component {
           <StateAndMethodList states={states} methods={methods} iconCreator={createStar} onSelect={this.onSelect} />
         </div>
         <div className='Split-right'>
-          {selected && <State state={selected} />}
+          {children}
         </div>
       </div>
     )
   }
+}
+
+Fetch.propTypes = {
+  router: React.PropTypes.shape({
+    push: React.PropTypes.func.isRequired
+  }).isRequired
 }
 
 const mapStateToProps = (state) => {
@@ -76,4 +78,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, actions)(Fetch)
+export default withRouter(connect(mapStateToProps, actions)(Fetch))
