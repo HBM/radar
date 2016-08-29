@@ -24,10 +24,10 @@ build:
 	./node_modules/.bin/node-sass --style compressed ./css/index.scss ./prod/css/styles.min.css
 	$(RM) ./prod/script.min.*
 	@NODE_ENV=production \
-	browserify ./src/index.js \
+	./node_modules/.bin/browserify ./src/index.js \
 	-t babelify \
 	-t [envify] \
-	| uglifyjs --compress --mangle > ./prod/script.min.js 2>/dev/null
+	| ./node_modules/.bin/uglifyjs --compress --mangle > ./prod/script.min.js 2>/dev/null
 	echo "Build Done!"
 	gzip < ./prod/script.min.js > ./prod/script.min.js.gz
 	du -h ./prod/script.min.*
