@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 import { Icon } from 'hbm-react-components'
 import SearchBar from './SearchBar'
-import classNames from 'classNames'
+import classNames from 'classnames'
 import StateAndMethodList from './StateAndMethodList'
 import { withRouter } from 'react-router'
 

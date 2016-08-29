@@ -19,16 +19,15 @@ react:
 build:
 	mkdir -p prod/{js,css}
 	# create index.html with paths to min js and css
-	npm i
-	ls ./node_modules
 	NODE_ENV=production node ./html/compile.js
 	# minify css
 	./node_modules/.bin/node-sass --style compressed ./css/index.scss ./prod/css/styles.min.css
 	$(RM) ./prod/script.min.*
 	@NODE_ENV=production \
-	./node_modules/.bin/browserify ./src/index.js \
+	browserify ./src/index.js \
 	-t babelify \
-	| ./node_modules/.bin/uglifyjs --compress --mangle > ./prod/script.min.js 2>/dev/null
+	-t [envify] \
+	| uglifyjs --compress --mangle > ./prod/script.min.js 2>/dev/null
 	echo "Build Done!"
 	gzip < ./prod/script.min.js > ./prod/script.min.js.gz
 	du -h ./prod/script.min.*
