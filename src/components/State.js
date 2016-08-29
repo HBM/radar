@@ -28,7 +28,7 @@ const typedValue = (type, onChange) => (event) => {
   if (type === 'number') {
     event.target.typedValue = parseFloat(event.target.value)
   } else if (type === 'boolean') {
-    event.target.typedValue = event.target.value === 'on'
+    event.target.typedValue = event.target.checked
   } else {
     event.target.typedValue = event.target.value
   }
