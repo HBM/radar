@@ -68,7 +68,7 @@ const createInput = (onChange) => (nvp) => {
   }
 }
 
-export default class State extends React.Component {
+export class State extends React.Component {
   constructor (props) {
     super(props)
     const state = props.state
