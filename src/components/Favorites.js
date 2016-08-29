@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
+import { withRouter } from 'react-router'
 import { Icon } from 'hbm-react-components'
 import StateAndMethodList from './StateAndMethodList'
 
@@ -12,8 +13,12 @@ class Favorites extends React.Component {
     })
   }
 
+  onSelect = (stateOrMethod) => {
+    this.props.router.push('/favorites/' + encodeURIComponent(stateOrMethod.path))
+  }
+
   render () {
-    const {states, methods, removeFavorite, favorites} = this.props
+    const {children, states, methods, removeFavorite, favorites} = this.props
 
     const createClear = (path) => {
       return <Icon.Clear
@@ -27,8 +32,13 @@ class Favorites extends React.Component {
     }
 
     return (
-      <div>
-        <StateAndMethodList states={states.filter(isFavorite)} methods={methods.filter(isFavorite)} iconCreator={createClear} />
+      <div className='Split'>
+        <div className='Split-left'>
+          <StateAndMethodList states={states.filter(isFavorite)} methods={methods.filter(isFavorite)} iconCreator={createClear} onSelect={this.onSelect} />
+        </div>
+        <div className='Split-right'>
+          {children}
+        </div>
       </div>
     )
   }
@@ -42,4 +52,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, actions)(Favorites)
+export default withRouter(connect(mapStateToProps, actions)(Favorites))

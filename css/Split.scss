@@ -10,7 +10,6 @@
 .Split-left, .Split-right {
   overflow: hidden;
   display: flex;
-  max-width: 600px;
   flex-direction: column;
   height: calc(100vh - 48px);
   @include medium { 
@@ -20,9 +19,11 @@
 
 .Split-left {
   flex-grow: 2;
+  max-width: 600px;
 }
 
 .Split-right {
   flex-grow: 1;
+  min-width: 320px;
 }
 

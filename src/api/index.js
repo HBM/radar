@@ -28,6 +28,10 @@ export const changeFetcher = (fetchExpression, onStatesDidChange) => {
   return peer.fetch(fetcher)
 }
 
-export const setState = (path, value, done) => {
+export const setState = (path, value) => {
   return peer.set(path, value)
+}
+
+export const callMethod = (path, args) => {
+  return peer.call(path, args)
 }

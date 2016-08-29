@@ -1,4 +1,4 @@
-import { getIsChangingFetcher, getIsSettingState, getIsConnecting } from '../reducers'
+import { getIsChangingFetcher, getIsSettingState, getIsConnecting, getIsCallingMethod } from '../reducers'
 import * as api from '../api'
 
 export const connect = ({url, user, password}) => (dispatch) => {
@@ -46,12 +46,29 @@ export const setState = (path, value) => (dispatch) => {
   dispatch({type: 'STATE_SET_REQUEST', path, value})
 
   return api.setState(path, value).then(
-    (response) => {
+    () => {
       dispatch({type: 'STATE_SET_SUCCESS', path, value})
     },
     (error) => {
       const message = error.message || 'Something went wrong'
       dispatch({type: 'STATE_SET_FAILURE', path, message})
+    })
+}
+
+export const callMethod = (path, args) => (dispatch) => {
+  if (getIsCallingMethod(path)) {
+    return Promise.resolve()
+  }
+
+  dispatch({type: 'METHOD_CALL_REQUEST', path, args})
+
+  return api.callMethod(path, args).then(
+    (result) => {
+      dispatch({type: 'METHOD_CALL_SUCCESS', path, args, result})
+    },
+    (error) => {
+      const message = error.message || 'Something went wrong'
+      dispatch({type: 'METHOD_CALL_FAILURE', path, args, message})
     })
 }
 
