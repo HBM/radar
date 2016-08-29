@@ -17,17 +17,18 @@ react:
 	./node_modules/.bin/watchify --outfile ./debug/js/script.js -t babelify --verbose --debug ./src/index.js
 
 build:
-	mkdir -p prod/{js,css}
+	mkdir -p prod/{js,css,fonts}
+	cp -r fonts/* debug/fonts/
 	# create index.html with paths to min js and css
 	NODE_ENV=production node ./html/compile.js
 	# minify css
 	./node_modules/.bin/node-sass --style compressed ./css/index.scss ./prod/css/styles.min.css
-	$(RM) ./prod/script.min.*
+	$(RM) ./prod/js/script.min.*
 	@NODE_ENV=production \
 	browserify ./src/index.js \
 	-t babelify \
 	-t [envify] \
-	| uglifyjs --compress --mangle > ./prod/script.min.js 2>/dev/null
+	| uglifyjs --compress --mangle > ./prod/js/script.min.js 2>/dev/null
 	echo "Build Done!"
 	gzip < ./prod/script.min.js > ./prod/script.min.js.gz
 	du -h ./prod/script.min.*
