@@ -1,0 +1,29 @@
+@import "../node_modules/hbm-react-components/css/mixins";
+
+.Split {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.Split-left, .Split-right {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 48px);
+  @include medium { 
+    height: calc(100vh - 64px);
+  }
+}
+
+.Split-left {
+  flex-grow: 2;
+  max-width: 600px;
+}
+
+.Split-right {
+  flex-grow: 1;
+  min-width: 320px;
+}
+

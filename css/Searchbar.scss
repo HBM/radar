@@ -1,0 +1,35 @@
+@import "../node_modules/hbm-react-components/css/mixins";
+
+.Searchbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background-color: white;
+  border-bottom: 1px solid #e8e8e8;
+  transition: box-shadow 0.3s ease;
+  cursor: text;
+
+  &>* {
+    margin-bottom: -1px;
+  }
+}
+
+.Searchbar--focused {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 2px 0 4px rgba(0, 0, 0, 0.24);
+}
+
+.Searchbar-icon {
+  width: 56px;
+}
+
+.Searchbar-icon svg {
+  fill: #d6d6d6;
+}
+
+.Searchbar .Chip-wrapper {
+  flex-grow: 1;
+  input, .Chip {
+    font-size: 16px;
+  }
+}

@@ -15,11 +15,19 @@
     <meta name="apple-mobile-web-app-title" content="Radar">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
+    {{#if development}}
     <link rel="stylesheet" href="css/styles.css">
+    {{else}}
+    <link rel="stylesheet" href="css/styles.min.css">
+    {{/if}}
 
   </head>
   <body>
     <div id="app"></div>
+    {{#if development}}
     <script src="js/script.js"></script>
+    {{else}}
+    <script src="js/script.min.js"></script>
+    {{/if}}
   </body>
 </html>
