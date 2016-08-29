@@ -20,6 +20,7 @@ build:
 	mkdir -p prod/{js,css}
 	# create index.html with paths to min js and css
 	npm i
+	ls ./node_modules
 	NODE_ENV=production node ./html/compile.js
 	# minify css
 	./node_modules/.bin/node-sass --style compressed ./css/index.scss ./prod/css/styles.min.css
