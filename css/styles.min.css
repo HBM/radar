@@ -1,0 +1,1170 @@
+/**
+ * Normalize
+ */
+/*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+/**
+ * 1. Set default font family to sans-serif.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+html {
+  font-family: sans-serif;
+  /* 1 */
+  -ms-text-size-adjust: 100%;
+  /* 2 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */ }
+
+/**
+ * Remove default margin.
+ */
+body {
+  margin: 0; }
+
+/* HTML5 display definitions
+   ========================================================================== */
+/**
+ * Correct `block` display not defined for any HTML5 element in IE 8/9.
+ * Correct `block` display not defined for `details` or `summary` in IE 10/11
+ * and Firefox.
+ * Correct `block` display not defined for `main` in IE 11.
+ */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block; }
+
+/**
+ * 1. Correct `inline-block` display not defined in IE 8/9.
+ * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
+ */
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  /* 1 */
+  vertical-align: baseline;
+  /* 2 */ }
+
+/**
+ * Prevent modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS 5 devices.
+ */
+audio:not([controls]) {
+  display: none;
+  height: 0; }
+
+/**
+ * Address `[hidden]` styling not present in IE 8/9/10.
+ * Hide the `template` element in IE 8/9/11, Safari, and Firefox < 22.
+ */
+[hidden],
+template {
+  display: none; }
+
+/* Links
+   ========================================================================== */
+/**
+ * Remove the gray background color from active links in IE 10.
+ */
+a {
+  background-color: transparent; }
+
+/**
+ * Improve readability when focused and also mouse hovered in all browsers.
+ */
+a:active,
+a:hover {
+  outline: 0; }
+
+/* Text-level semantics
+   ========================================================================== */
+/**
+ * Address styling not present in IE 8/9/10/11, Safari, and Chrome.
+ */
+abbr[title] {
+  border-bottom: 1px dotted; }
+
+/**
+ * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
+ */
+b,
+strong {
+  font-weight: bold; }
+
+/**
+ * Address styling not present in Safari and Chrome.
+ */
+dfn {
+  font-style: italic; }
+
+/**
+ * Address variable `h1` font-size and margin within `section` and `article`
+ * contexts in Firefox 4+, Safari, and Chrome.
+ */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0; }
+
+/**
+ * Address styling not present in IE 8/9.
+ */
+mark {
+  background: #ff0;
+  color: #000; }
+
+/**
+ * Address inconsistent and variable font size in all browsers.
+ */
+small {
+  font-size: 80%; }
+
+/**
+ * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+ */
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline; }
+
+sup {
+  top: -0.5em; }
+
+sub {
+  bottom: -0.25em; }
+
+/* Embedded content
+   ========================================================================== */
+/**
+ * Remove border when inside `a` element in IE 8/9/10.
+ */
+img {
+  border: 0; }
+
+/**
+ * Correct overflow not hidden in IE 9/10/11.
+ */
+svg:not(:root) {
+  overflow: hidden; }
+
+/* Grouping content
+   ========================================================================== */
+/**
+ * Address margin not present in IE 8/9 and Safari.
+ */
+figure {
+  margin: 1em 40px; }
+
+/**
+ * Address differences between Firefox and other browsers.
+ */
+hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0; }
+
+/**
+ * Contain overflow in all browsers.
+ */
+pre {
+  overflow: auto; }
+
+/**
+ * Address odd `em`-unit font size rendering in all browsers.
+ */
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em; }
+
+/* Forms
+   ========================================================================== */
+/**
+ * Known limitation: by default, Chrome and Safari on OS X allow very limited
+ * styling of `select`, unless a `border` property is set.
+ */
+/**
+ * 1. Correct color not being inherited.
+ *    Known issue: affects color of disabled elements.
+ * 2. Correct font properties not being inherited.
+ * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
+ */
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  /* 1 */
+  font: inherit;
+  /* 2 */
+  margin: 0;
+  /* 3 */ }
+
+/**
+ * Address `overflow` set to `hidden` in IE 8/9/10/11.
+ */
+button {
+  overflow: visible; }
+
+/**
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
+ * Correct `select` style inheritance in Firefox.
+ */
+button,
+select {
+  text-transform: none; }
+
+/**
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ */
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  /* 2 */
+  cursor: pointer;
+  /* 3 */ }
+
+/**
+ * Re-set default cursor for disabled elements.
+ */
+button[disabled],
+html input[disabled] {
+  cursor: default; }
+
+/**
+ * Remove inner padding and border in Firefox 4+.
+ */
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0; }
+
+/**
+ * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+input {
+  line-height: normal; }
+
+/**
+ * It's recommended that you don't attempt to style these elements.
+ * Firefox's implementation doesn't respect box-sizing, padding, or width.
+ *
+ * 1. Address box sizing set to `content-box` in IE 8/9/10.
+ * 2. Remove excess padding in IE 8/9/10.
+ */
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  /* 1 */
+  padding: 0;
+  /* 2 */ }
+
+/**
+ * Fix the cursor style for Chrome's increment/decrement buttons. For certain
+ * `font-size` values of the `input`, it causes the cursor style of the
+ * decrement button to change from `default` to `text`.
+ */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto; }
+
+/**
+ * 1. Address `appearance` set to `searchfield` in Safari and Chrome.
+ * 2. Address `box-sizing` set to `border-box` in Safari and Chrome
+ *    (include `-moz` to future-proof).
+ */
+input[type="search"] {
+  -webkit-appearance: textfield;
+  /* 1 */
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  /* 2 */
+  box-sizing: content-box; }
+
+/**
+ * Remove inner padding and search cancel button in Safari and Chrome on OS X.
+ * Safari (but not Chrome) clips the cancel button when the search input has
+ * padding (and `textfield` appearance).
+ */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none; }
+
+/**
+ * Define consistent border, margin, and padding.
+ */
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em; }
+
+/**
+ * 1. Correct `color` not being inherited in IE 8/9/10/11.
+ * 2. Remove padding so people aren't caught out if they zero out fieldsets.
+ */
+legend {
+  border: 0;
+  /* 1 */
+  padding: 0;
+  /* 2 */ }
+
+/**
+ * Remove default vertical scrollbar in IE 8/9/10/11.
+ */
+textarea {
+  overflow: auto; }
+
+/**
+ * Don't inherit the `font-weight` (applied by a rule above).
+ * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
+ */
+optgroup {
+  font-weight: bold; }
+
+/* Tables
+   ========================================================================== */
+/**
+ * Remove most spacing between table cells.
+ */
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+td,
+th {
+  padding: 0; }
+
+/**
+ * Fonts
+ */
+@font-face {
+  font-family: 'Roboto';
+  src: url("../fonts/Roboto-Thin-webfont.woff") format("woff");
+  font-style: normal;
+  font-weight: 100; }
+
+@font-face {
+  font-family: 'Roboto';
+  src: url("../fonts/Roboto-Light-webfont.woff") format("woff");
+  font-style: normal;
+  font-weight: 300; }
+
+@font-face {
+  font-family: 'Roboto';
+  src: url("../fonts/Roboto-Regular-webfont.woff") format("woff");
+  font-style: normal;
+  font-weight: 400; }
+
+@font-face {
+  font-family: 'Roboto';
+  src: url("../fonts/Roboto-Medium-webfont.woff") format("woff");
+  font-style: normal;
+  font-weight: 500; }
+
+@font-face {
+  font-family: 'Roboto';
+  src: url("../fonts/Roboto-Bold-webfont.woff") format("woff");
+  font-style: normal;
+  font-weight: 700; }
+
+/**
+ * Variables
+ */
+/**
+ * Scaffolding
+ */
+html {
+  box-sizing: border-box; }
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit; }
+
+html {
+  -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1em;
+  line-height: 1em;
+  background: #f9f9f9;
+  color: #333;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  padding-top: 56px; }
+  @media (min-width: 768px) {
+    body {
+      padding-top: 64px; } }
+
+main {
+  flex: 1;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  padding-bottom: 10px;
+  font-size: 13px; }
+  @media (min-width: 768px) {
+    main {
+      /**
+     * Cards have a margin of 8px => left = 40px and top = 20px
+     */
+      padding-right: 0;
+      padding-left: 0;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      width: 750px;
+      margin-left: auto;
+      margin-right: auto; } }
+  @media (min-width: 992px) {
+    main {
+      width: 970px; } }
+  @media (min-width: 1200px) {
+    main {
+      padding-left: 240px;
+      width: 1170px; } }
+
+/**
+ * http://www.google.com/design/spec/layout/metrics-keylines.html#metrics-keylines-keylines-spacing
+ */
+/**
+ * HTML5 header element
+ */
+header {
+  height: 48px;
+  background: #1b325f;
+  color: #fff;
+  display: flex;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 2;
+  transition: box-shadow 0.5s ease; }
+  @media (min-width: 768px) {
+    header {
+      height: 64px; } }
+
+/**
+ * Add shadow to header when scrolling down.
+ */
+header.Header--shadow {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26); }
+
+/**
+ * Header component CSS class
+ */
+.Header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 16px;
+  margin-right: 16px; }
+  @media (min-width: 1200px) {
+    .Header {
+      margin-left: 240px; } }
+
+.Header-block {
+  display: flex;
+  align-items: center; }
+
+.Header-title {
+  margin-left: 56px;
+  font-size: 20px;
+  display: none; }
+  @media (min-width: 768px) {
+    .Header-title {
+      font-size: 24px;
+      display: block; } }
+
+.Header-chevron {
+  fill: #fff;
+  margin: 0 10px;
+  width: 30px;
+  height: 30px;
+  display: none; }
+  @media (min-width: 768px) {
+    .Header-chevron {
+      display: block; } }
+
+.Header-subtitle {
+  margin-left: 56px;
+  font-size: 20px;
+  display: flex;
+  align-items: center; }
+  @media (min-width: 768px) {
+    .Header-subtitle {
+      font-size: 24px;
+      margin-left: 0; } }
+
+/**
+ * http://www.google.com/design/spec/layout/structure.html#structure-app-bar
+ */
+nav {
+  color: #333;
+  border-right: 1px solid rgba(0, 0, 0, 0.14);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 240px;
+  background: #fff;
+  font-size: 13px;
+  visibility: hidden;
+  transform: translateX(-240px);
+  transition-duration: 0.2s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 4;
+  overflow: auto; }
+  @media (min-width: 1200px) {
+    nav {
+      visibility: visible;
+      transform: translateX(0); } }
+
+nav.is-visible {
+  visibility: visible;
+  transform: translateX(0);
+  /**
+   * Show overlay first and then slide in navigation
+   */
+  transition-delay: 0.1s; }
+
+.Navigation-logo {
+  height: 48px;
+  padding: 12px 24px 10px 2px;
+  border-bottom: 1px solid #e0e0e0; }
+  @media (min-width: 768px) {
+    .Navigation-logo {
+      height: 64px;
+      padding-left: 11px; } }
+
+.Navigation {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding: 12px 0 10px 0; }
+
+.Navigation-link {
+  display: block;
+  text-decoration: none;
+  padding: 15px 0 15px 22px;
+  color: #333;
+  font-weight: 700; }
+
+.Navigation-link.active {
+  color: #1b325f; }
+
+.Navigation-link:focus {
+  background-color: #eee;
+  outline: 0; }
+
+.Navigation-hamburger {
+  fill: #fff;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 4px; }
+  @media (min-width: 768px) {
+    .Navigation-hamburger {
+      top: 8px; } }
+  @media (min-width: 1200px) {
+    .Navigation-hamburger {
+      display: none; } }
+
+.Navigation-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  visibility: hidden;
+  opacity: 0; }
+
+.Navigation-overlay.is-visible {
+  opacity: 1;
+  visibility: visible; }
+
+/**
+ * Nested navigation
+ */
+.Navigation .Navigation {
+  padding: 0; }
+
+.Navigation-item > .Navigation > .Navigation-item > .Navigation-link {
+  padding: 10px 24px 10px 46px;
+  font-weight: 400; }
+
+.Navigation-item > .Navigation > .Navigation-item > .Navigation-link.active {
+  font-weight: 500; }
+
+.IconButton {
+  padding: 12px;
+  line-height: 0;
+  border: 0;
+  background: none;
+  margin: 0;
+  user-select: none;
+  outline: 0; }
+
+/**
+ * http://www.google.com/design/spec/components/cards.html#cards-usage
+ */
+.Card {
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24); }
+
+.Card-title {
+  font-size: 24px;
+  padding: 24px 16px 16px 16px; }
+
+.Card-actions {
+  padding: 8px; }
+
+.Card-content {
+  padding: 24px 16px; }
+
+/**
+ * Align left most button text with title and card text
+ */
+.Card-actions > .Button {
+  margin: 0;
+  text-align: left;
+  min-width: 0; }
+
+.Card-actions .Button + .Button {
+  margin-left: 8px; }
+
+.Card-text {
+  font-size: 14px;
+  padding: 16px;
+  line-height: 1.5em; }
+
+/**
+ * Fix left alignment for Checkbox component 10px + 3px
+ */
+.Card-text > .Checkbox {
+  margin-left: -13px; }
+  @media (min-width: 768px) {
+    .Card-text > .Checkbox {
+      /**
+     * 5px + 3px
+     */
+      margin-left: -8px; } }
+
+/**
+ * http://www.google.com/design/spec/components/text-fields.html
+ */
+.Textfield {
+  display: block;
+  padding-top: 16px;
+  padding-bottom: 8px; }
+
+.Textfield-icon-wrapper {
+  display: flex; }
+
+.Textfield-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column; }
+
+.Textfield-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center; }
+
+.Textfield-label {
+  order: 1;
+  display: block;
+  font-size: 16px;
+  color: rgba(27, 50, 95, 0.6);
+  transform: translate3d(0, 20px, 0);
+  transform-origin: left top;
+  transition: cubic-bezier(0.25, 0.8, 0.25, 1) 0.25s;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
+.Textfield-input {
+  order: 2;
+  width: 100%;
+  display: block;
+  border-radius: 0;
+  font-size: 16px;
+  outline: 0;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  transition: 0.25s;
+  padding-bottom: 4px; }
+
+.Textfield-input:focus {
+  border-bottom-color: #1b325f;
+  box-shadow: 0 1px 0 0 #1b325f; }
+
+.Textfield-input--error {
+  border-bottom-color: #f44336; }
+
+.Textfield-input--error:focus {
+  border-bottom-color: #f44336;
+  box-shadow: 0 1px 0 0 #f44336; }
+
+.Textfield-input:focus ~ .Textfield-label,
+.Textfield-label.is-not-empty {
+  transform: translate3d(0, -4px, 0);
+  font-size: 12px; }
+
+.Textfield-label.is-not-empty {
+  color: rgba(27, 50, 95, 0.6); }
+
+.Textfield-input:focus ~ .Textfield-label {
+  color: #1b325f; }
+
+.Textfield-input:disabled {
+  background-color: transparent;
+  color: rgba(27, 50, 95, 0.6);
+  border-bottom: 1px dotted rgba(27, 50, 95, 0.3); }
+
+.Textfield-error {
+  order: 3;
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #f44336; }
+
+/**
+ * http://www.google.com/design/spec/components/switches.html#switches-checkbox
+ */
+.Checkbox {
+  /* for absolute positioned .Checkbox-focus div */
+  position: relative;
+  height: 48px;
+  display: flex;
+  align-items: center; }
+
+.Checkbox-input {
+  position: absolute;
+  opacity: 0;
+  z-index: -1; }
+
+.Checkbox-icon {
+  padding: 10px;
+  line-height: 0;
+  outline: 0;
+  fill: rgba(0, 0, 0, 0.54); }
+  @media (min-width: 768px) {
+    .Checkbox-icon {
+      padding: 5px; } }
+
+.Checkbox-label {
+  color: rgba(0, 0, 0, 0.54); }
+
+/**
+ * checked
+ */
+.Checkbox-input:checked ~ .Checkbox-icon,
+.Checkbox-input:checked ~ .Checkbox-label {
+  color: #1b325f;
+  fill: #1b325f; }
+
+/**
+ * disabled
+ */
+.Checkbox-input:disabled ~ .Checkbox-icon,
+.Checkbox-input:disabled ~ .Checkbox-label {
+  fill: rgba(0, 0, 0, 0.26);
+  color: rgba(0, 0, 0, 0.26); }
+
+/**
+ * focus
+ */
+.Checkbox-focus {
+  position: absolute;
+  /* 48px - 18px = 30px / 2 = 15px */
+  top: 15px;
+  left: 8px;
+  /* use the same width as svg path element for checkbox icon */
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: none; }
+
+.Checkbox-input:checked:focus ~ .Checkbox-focus {
+  box-shadow: 0 0 0 8px rgba(27, 50, 95, 0.12);
+  background-color: rgba(27, 50, 95, 0.12);
+  display: block; }
+
+.Checkbox-input:not(:checked):focus ~ .Checkbox-focus {
+  box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.12);
+  background-color: rgba(0, 0, 0, 0.12);
+  display: block; }
+
+/* http://www.google.com/design/spec/components/buttons.html#buttons-usage */
+.Button {
+  min-width: 88px;
+  height: 36px;
+  background: none;
+  border: none;
+  padding: 0 8px;
+  margin: 0 4px;
+  text-transform: uppercase;
+  border-radius: 2px;
+  outline: none;
+  color: #1b325f;
+  font-weight: 500; }
+
+.Button:hover,
+.Button:focus {
+  background: rgba(153, 153, 153, 0.2); }
+
+.Button:active {
+  background: rgba(153, 153, 153, 0.4); }
+
+.Button:disabled {
+  color: rgba(0, 0, 0, 0.4);
+  background: none; }
+
+/* http://www.google.com/design/spec/components/buttons.html#buttons-flat-raised-buttons */
+.Button--raised {
+  background: rgba(153, 153, 153, 0.2);
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.26);
+  transition: 0.25s; }
+
+.Button--raised:active {
+  background: rgba(153, 153, 153, 0.2);
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.3); }
+
+/**
+ * https://material.google.com/components/lists.html#lists-specs
+ */
+.List {
+  padding: 0 0;
+  margin: 0 0;
+  list-style: none;
+  background-color: white; }
+
+.List-row-text {
+  flex-shrink: 1;
+  min-width: 150px; }
+
+.List-row-text-primary {
+  font-size: 16px;
+  margin: 0 0;
+  margin-bottom: 6px;
+  font-weight: normal;
+  padding: 0 0; }
+
+.List-row--oneline .List-row-text-primary {
+  margin-bottom: 0px; }
+
+.List-row.List-row--selectable:focus {
+  background-color: #f1f1f1;
+  outline: none; }
+
+.List-row--selectable:hover {
+  background-color: #fdfdfd; }
+
+.List-row-text-secondary, .List-row-text-subheader {
+  font-size: 14px;
+  line-height: 19px;
+  font-weight: normal;
+  padding: 0 0;
+  margin: 0 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+  width: 100%;
+  overflow: hidden; }
+
+.List-row-text-secondary {
+  color: #808080; }
+
+.List-row--twoline {
+  height: 72px; }
+
+.List-row--threeline {
+  height: 88px; }
+
+.List-row {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  padding-right: 16px;
+  /** This article suggest to increase padding for table and above
+   * https://material.google.com/layout/metrics-keylines.html#metrics-keylines-keylines-spacing
+   */ }
+  @media (min-width: 768px) {
+    .List-row {
+      padding-left: 24px;
+      padding-right: 24px; } }
+  .List-row:first-child {
+    padding-top: 8px; }
+  .List-row:last-child {
+    padding-bottom: 8px; }
+
+.List-row-icon-left, .List-row-icon-right, .List-row-avatar {
+  flex-shrink: 0;
+  width: 56px; }
+
+/* Three line rows have top aligned icons */
+.List-row.List-row--threeline {
+  align-items: flex-start; }
+  .List-row.List-row--threeline > * {
+    margin-top: 20px; }
+  .List-row.List-row--threeline .List-row-avatar {
+    align-items: flex-start; }
+
+.List-row-icon-right {
+  margin-left: auto; }
+  .List-row-icon-right > * {
+    float: right; }
+
+.List-row-avatar {
+  height: 56px;
+  display: flex;
+  align-items: center; }
+  .List-row-avatar > * {
+    border-radius: 100%;
+    width: 40px; }
+
+.Chip-wrapper {
+  cursor: text; }
+
+.Chip-input {
+  outline: none;
+  background: none;
+  border: none; }
+
+.Chip {
+  display: inline-flex;
+  align-items: center;
+  background: #e0e0e0;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.87);
+  border-radius: 16px;
+  height: 32px;
+  margin-right: 5px;
+  margin-bottom: 5px; }
+
+.Chip:focus {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.54);
+  outline: none; }
+
+.Chip:focus .Chip-delete {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.54); }
+
+.Chip-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.54);
+  font-size: 20px;
+  color: #e0e0e0;
+  border: 0;
+  border-radius: 50%;
+  outline: none;
+  height: 20px;
+  width: 20px;
+  margin: 0 4px; }
+
+.Chip-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  background-color: #009587;
+  border-radius: 50%;
+  font-size: 16px; }
+
+.Split {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  overflow: hidden; }
+
+.Split-left, .Split-right {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 48px); }
+  @media (min-width: 768px) {
+    .Split-left, .Split-right {
+      height: calc(100vh - 64px); } }
+
+.Split-left {
+  flex-grow: 2;
+  max-width: 600px; }
+
+.Split-right {
+  flex-grow: 1;
+  min-width: 320px; }
+
+.State {
+  height: 100%;
+  display: flex;
+  flex-direction: column; }
+
+.State, .State .Textfield input {
+  background-color: #f9f9f9; }
+
+.State form > *:not(hr), .State-hero > * {
+  margin: 0 16px; }
+  @media (min-width: 768px) {
+    .State form > *:not(hr), .State-hero > * {
+      margin: 0 24px; } }
+
+.State form {
+  padding: 20px 0; }
+
+.State-hero {
+  height: 71px;
+  border-bottom: 1px solid #e8e8e8; }
+
+.State-hero h1 {
+  font-size: 24px;
+  font-weight: normal;
+  height: 100%;
+  vertical-align: middle;
+  line-height: 66px; }
+
+.State h3:before {
+  display: block;
+  content: 'State';
+  background-color: #4bc6d4;
+  color: white;
+  height: 60px; }
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #e0e0e0;
+  margin: 3em 0;
+  padding: 0; }
+
+form {
+  margin: 0 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex-grow: 1; }
+
+.Searchbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background-color: white;
+  border-bottom: 1px solid #e8e8e8;
+  transition: box-shadow 0.3s ease;
+  cursor: text; }
+  .Searchbar > * {
+    margin-bottom: -1px; }
+
+.Searchbar--focused {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 2px 0 4px rgba(0, 0, 0, 0.24); }
+
+.Searchbar-icon {
+  width: 56px; }
+
+.Searchbar-icon svg {
+  fill: #d6d6d6; }
+
+.Searchbar .Chip-wrapper {
+  flex-grow: 1; }
+  .Searchbar .Chip-wrapper input, .Searchbar .Chip-wrapper .Chip {
+    font-size: 16px; }
+
+/** overwrite hbm style */
+@media (min-width: 768px) {
+  #app main {
+    /**
+     * Cards have a margin of 8px => left = 40px and top = 20px
+     */
+    padding-right: 0;
+    padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    width: 100%;
+    margin-left: initial;
+    margin-right: initial; } }
+
+@media (min-width: 992px) {
+  #app main {
+    width: 100%; } }
+
+@media (min-width: 1200px) {
+  #app main {
+    padding-left: 240px;
+    width: 100%; } }
+
+.State-avatar, .Method-avatar {
+  text-align: center;
+  height: 40px;
+  vertical-align: middle;
+  line-height: 40px;
+  font-size: 22px;
+  color: white; }
+
+.Method-avatar {
+  background-color: #9f85ea; }
+
+.State-avatar {
+  background-color: #4bc6d4; }
+
+.Icon {
+  fill: gray;
+  cursor: pointer; }
+
+.Star--active {
+  fill: orange; }
+
+.Split-left {
+  z-index: 1;
+  box-shadow: 0 0px 4px 2px rgba(0, 0, 0, 0.24); }
+
+.Split-left .Searchbar {
+  flex-shrink: 0;
+  flex-grow: 0; }
+
+.Split-right .State {
+  flex-grow: 1; }
+
+.Split-left .List {
+  margin: 0 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex-grow: 1; }
