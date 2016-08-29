@@ -18,7 +18,7 @@ react:
 
 build:
 	mkdir -p prod/{js,css,fonts}
-	cp -r fonts/* debug/fonts/
+	cp -r fonts/* prod/fonts/
 	# create index.html with paths to min js and css
 	NODE_ENV=production node ./html/compile.js
 	# minify css
