@@ -7,8 +7,7 @@ export const sorted = (id) => (state = [], action) => {
     case 'JET_FETCHER_REQUEST':
       return []
     case 'JET_FETCHER_CONTENT_CHANGE':
-        console.log('YES', action)
-      return action.data
+      return [...action.data]
     default:
       return state
   }

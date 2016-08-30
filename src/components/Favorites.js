@@ -34,7 +34,7 @@ class Favorites extends React.Component {
           <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createClear} onSelect={this.onSelect} />
         </div>
         <div className='Split-right'>
-          {React.cloneElement(children, {statesAndMethods})}
+          {children && React.cloneElement(children, {statesAndMethods})}
         </div>
       </div>
     )

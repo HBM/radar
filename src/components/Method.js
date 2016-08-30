@@ -52,8 +52,8 @@ export class Method extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    favorites: state.favorites,
-    connection: state.connection
+    favorites: state.settings.favorites,
+    connection: state.settings.connection
   }
 }
 

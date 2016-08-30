@@ -2,7 +2,7 @@ import { Peer, Fetcher } from 'node-jet'
 
 let peers = {}
 let pendings = {}
-let fetcher
+let fetchers = {}
 
 const ensurePeer = ({url, user, password}) => {
   return new Promise((resolve, reject) => {
@@ -52,9 +52,22 @@ export const close = (connection) => {
   }
 }
 
-export const fetch = (connection, fetchExpression, onStatesDidChange) => {
+export const unfetch = (connection, id) => {
+  const {url, user, password} = connection
+  const fid = [url, user, password, id].join('--')
+  let fetcher = fetchers[fid]
+  if (fetcher) {
+    fetcher.unfetch()
+  }
+  delete fetchers[fid]
+}
+
+export const fetch = (connection, fetchExpression, id, onStatesDidChange) => {
   return ensurePeer(connection)
     .then((peer) => {
+      const {url, user, password} = connection
+      const fid = [url, user, password, id].join('--')
+      let fetcher = fetchers[fid]
       if (fetcher) {
         fetcher.unfetch()
       }
@@ -68,6 +81,7 @@ export const fetch = (connection, fetchExpression, onStatesDidChange) => {
       } else if (fetchExpression.equalsOneOf) {
         fetcher.path('equalsOneOf', fetchExpression.equalsOneOf)
       }
+      fetchers[fid] = fetcher
       return peer.fetch(fetcher)
     })
 }

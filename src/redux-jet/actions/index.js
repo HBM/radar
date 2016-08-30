@@ -18,6 +18,11 @@ export const close = ({url, user, password}) => {
   return {type: 'JET_CLOSE', url, user, password}
 }
 
+export const unfetch = ({url, user, password}, id) => {
+  api.unfetch({url, user, password}, id)
+  return {type: 'JET_UNFETCH', url, user, password, id}
+}
+
 export const fetch = (connection, fetchExpression, id) => (dispatch) => {
   dispatch({type: 'JET_FETCHER_REQUEST', fetchExpression, id})
 
@@ -29,7 +34,7 @@ export const fetch = (connection, fetchExpression, id) => (dispatch) => {
     }
   }
 
-  return api.fetch(connection, fetchExpression, onData).then(
+  return api.fetch(connection, fetchExpression, id, onData).then(
     (response) => {
       dispatch({type: 'JET_FETCHER_SUCCESS', fetchExpression, id})
     },

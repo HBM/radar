@@ -16,9 +16,16 @@ class Fetch extends React.Component {
         containsAllOf: this.props.search || []
       }
     }
+  }
+
+  componentDidMount () {
     if (this.state.fetchExpression.containsAllOf.length > 0) {
       this.props.fetch(this.props.connection, this.state.fetchExpression, 'search')
     }
+  }
+
+  componentWillUnmount () {
+    this.props.unfetch(this.props.connection, 'search')
   }
 
   onChange = (values) => {
@@ -56,7 +63,7 @@ class Fetch extends React.Component {
           <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
         </div>
         <div className='Split-right'>
-          {React.cloneElement(children, {statesAndMethods})}
+          {children && React.cloneElement(children, {statesAndMethods})}
         </div>
       </div>
     )
