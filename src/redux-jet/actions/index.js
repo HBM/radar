@@ -7,7 +7,7 @@ export const connect = ({url, user, password}) => (dispatch) => {
   }
   dispatch({type: 'CONNECT_REQUEST', url, user, password})
 
-  return api.connect(url, user, password).then(
+  return api.connect({url, user, password}).then(
     (response) => {
       dispatch({type: 'CONNECT_SUCCESS', url, user, password})
     },
@@ -17,7 +17,12 @@ export const connect = ({url, user, password}) => (dispatch) => {
     })
 }
 
-export const changeFetcher = (fetchExpression) => (dispatch) => {
+export const close = ({url, user, password}) => {
+  api.close({url, user, password})
+  return {type: 'CLOSE_REQUEST', url, user, password}
+}
+
+export const fetch = (connection, fetchExpression) => (dispatch) => {
   if (getIsChangingFetcher()) {
     return Promise.resolve()
   }
@@ -28,7 +33,7 @@ export const changeFetcher = (fetchExpression) => (dispatch) => {
     dispatch({type: 'FETCHER_CONTENT_CHANGE', content})
   }
 
-  return api.changeFetcher(fetchExpression, onChange).then(
+  return api.fetch(connection, fetchExpression, onChange).then(
     (response) => {
       dispatch({type: 'FETCHER_SUCCESS', fetchExpression})
     },
@@ -38,14 +43,14 @@ export const changeFetcher = (fetchExpression) => (dispatch) => {
     })
 }
 
-export const setState = (path, value) => (dispatch) => {
+export const set = (connection, path, value) => (dispatch) => {
   if (getIsSettingState(path)) {
     return Promise.resolve()
   }
 
   dispatch({type: 'STATE_SET_REQUEST', path, value})
 
-  return api.setState(path, value).then(
+  return api.set(connection, path, value).then(
     () => {
       dispatch({type: 'STATE_SET_SUCCESS', path, value})
     },
@@ -55,14 +60,14 @@ export const setState = (path, value) => (dispatch) => {
     })
 }
 
-export const callMethod = (path, args) => (dispatch) => {
+export const call = (connection, path, args) => (dispatch) => {
   if (getIsCallingMethod(path)) {
     return Promise.resolve()
   }
 
   dispatch({type: 'METHOD_CALL_REQUEST', path, args})
 
-  return api.callMethod(path, args).then(
+  return api.call(connection, path, args).then(
     (result) => {
       dispatch({type: 'METHOD_CALL_SUCCESS', path, args, result})
     },

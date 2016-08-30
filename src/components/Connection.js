@@ -86,18 +86,23 @@ ConnectionForm.propTypes = {
 
 class Connection extends Component {
   render () {
-    return <ConnectionForm {...this.props} onSubmit={this.props.connect} />
+    const onSubmit = (newCon) => {
+      this.props.close(this.props)
+      this.props.connect(newCon)
+    }
+    return <ConnectionForm {...this.props} onSubmit={onSubmit} />
   }
 }
 
 Connection.propTypes = {
-  connect: PropTypes.func.isRequired
+  connect: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {
-  const con = state.jet.connection
+  const con = state.connection
   return {
-    isConnected: con.isConnected,
+    isConnected: state.jet.connection.isConnected,
     url: con.url,
     user: con.user,
     password: con.password

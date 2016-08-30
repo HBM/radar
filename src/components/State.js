@@ -88,7 +88,7 @@ export class State extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault()
-    this.props.setState(this.props.state.path, flatten.unflatten(this.state.formData))
+    this.props.set(this.props.connection, this.props.state.path, flatten.unflatten(this.state.formData))
   }
 
   assignToFormData = (event) => {
@@ -117,7 +117,8 @@ export class State extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    favorites: state.favorites
+    favorites: state.favorites,
+    connection: state.connection
   }
 }
 

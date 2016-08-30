@@ -11,7 +11,7 @@ export class Method extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault()
-    this.props.callMethod(this.props.method.path, JSON.parse(this.state.args))
+    this.props.call(this.props.connection, this.props.method.path, JSON.parse(this.state.args))
   }
 
   onChange = (event) => {
@@ -52,7 +52,8 @@ export class Method extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    favorites: state.favorites
+    favorites: state.favorites,
+    connection: state.connection
   }
 }
 

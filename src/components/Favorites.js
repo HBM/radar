@@ -9,7 +9,7 @@ import StateAndMethodList from './StateAndMethodList'
 class Favorites extends React.Component {
   constructor (props) {
     super(props)
-    this.props.changeFetcher({
+    this.props.fetch(this.props.connection, {
       equalsOneOf: this.props.favorites
     })
   }
@@ -49,7 +49,8 @@ const mapStateToProps = (state) => {
   return {
     states: state.jet.states,
     methods: state.jet.methods,
-    favorites: state.favorites
+    favorites: state.favorites,
+    connection: state.connection
   }
 }
 

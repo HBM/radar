@@ -17,7 +17,7 @@ class Fetch extends React.Component {
       }
     }
     if (this.state.fetchExpression.containsAllOf.length > 0) {
-      this.props.changeFetcher(this.state.fetchExpression)
+      this.props.fetch(this.props.connection, this.state.fetchExpression)
     }
   }
 
@@ -27,7 +27,7 @@ class Fetch extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault()
-    this.props.changeFetcher(this.state.fetchExpression)
+    this.props.fetch(this.props.connection, this.state.fetchExpression)
     this.props.setSearch(this.state.fetchExpression.containsAllOf)
   }
 
@@ -75,7 +75,8 @@ const mapStateToProps = (state) => {
     states: state.jet.states,
     methods: state.jet.methods,
     favorites: state.favorites,
-    search: state.search
+    search: state.search,
+    connection: state.connection
   }
 }
 
