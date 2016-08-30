@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
+import * as jetActions from '../redux-jet/actions'
 import { withRouter } from 'react-router'
 import { Icon } from 'hbm-react-components'
 import StateAndMethodList from './StateAndMethodList'
@@ -46,10 +47,10 @@ class Favorites extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    states: state.states,
-    methods: state.methods,
+    states: state.jet.states,
+    methods: state.jet.methods,
     favorites: state.favorites
   }
 }
 
-export default withRouter(connect(mapStateToProps, actions)(Favorites))
+export default withRouter(connect(mapStateToProps, {...actions, ...jetActions})(Favorites))

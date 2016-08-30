@@ -24,8 +24,8 @@ const Details = ({params: {path}, methods, states}) => {
 
 const mapStateToProps = (state) => {
   return {
-    states: state.states,
-    methods: state.methods
+    states: state.jet.states,
+    methods: state.jet.methods
   }
 }
 

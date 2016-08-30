@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import * as actions from '../actions'
+import * as actions from '../redux-jet/actions'
 import { Card, Text, Title, Actions, Content, Textfield, Button } from 'hbm-react-components'
 import url from 'url'
 
@@ -95,7 +95,7 @@ Connection.propTypes = {
 }
 
 const mapStateToProps = (state) => {
-  const con = state.connection
+  const con = state.jet.connection
   return {
     isConnected: con.isConnected,
     url: con.url,

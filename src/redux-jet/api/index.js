@@ -12,7 +12,10 @@ export const connect = (url, user, password) => {
 }
 
 export const changeFetcher = (fetchExpression, onStatesDidChange) => {
-  if (peer && !peer.closed() && fetcher) {
+  if (!peer) {
+    return Promise.resolve()
+  }
+  if (!peer.closed() && fetcher) {
     fetcher.unfetch()
   }
   fetcher = new Fetcher()

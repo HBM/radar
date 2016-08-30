@@ -1,25 +1,5 @@
 import { combineReducers } from 'redux'
-import states from './states'
-import set, * as fromSet from './set'
-import call, * as fromCall from './call'
-import methods from './methods'
-import connection, * as fromConnection from './connection'
-import fetcher, * as fromFetcher from './fetcher'
-
-const gui = (state = {}, action) => {
-  switch (action.type) {
-    case 'CONNECT_SUCCESS':
-      return {
-        showConnection: false
-      }
-    case 'SHOW_CONNECTION':
-      return {
-        showConnection: true
-      }
-    default:
-      return state
-  }
-}
+import jet from '../redux-jet/reducers'
 
 const favorites = (state = [], action) => {
   const addFavorite = () => [...state, action.path]
@@ -53,11 +33,6 @@ const search = (state = [], action) => {
   }
 }
 
-const radar = combineReducers({states, methods, fetcher, connection, gui, favorites, search, set, call})
+const radar = combineReducers({jet, favorites, search})
 
 export default radar
-
-export const getIsConnecting = (url) => fromConnection.getIsConnecting(url)
-export const getIsChangingFetcher = () => fromFetcher.getIsChanging()
-export const getIsSettingState = (path) => fromSet.getIsSetting(path)
-export const getIsCallingMethod = (path) => fromCall.getIsCalling(path)
