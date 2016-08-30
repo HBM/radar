@@ -17,7 +17,7 @@ class Fetch extends React.Component {
       }
     }
     if (this.state.fetchExpression.containsAllOf.length > 0) {
-      this.props.fetch(this.props.connection, this.state.fetchExpression)
+      this.props.fetch(this.props.connection, this.state.fetchExpression, 'search')
     }
   }
 
@@ -27,7 +27,7 @@ class Fetch extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault()
-    this.props.fetch(this.props.connection, this.state.fetchExpression)
+    this.props.fetch(this.props.connection, this.state.fetchExpression, 'search')
     this.props.setSearch(this.state.fetchExpression.containsAllOf)
   }
 
@@ -43,7 +43,7 @@ class Fetch extends React.Component {
       />
     }
 
-    const {states, methods, toggleFavorite, favorites, children} = this.props
+    const {statesAndMethods, toggleFavorite, favorites, children} = this.props
 
     return (
       <div className='Split'>
@@ -53,10 +53,10 @@ class Fetch extends React.Component {
             onSubmit={this.onSubmit}
             initialValues={this.state.fetchExpression.containsAllOf}
           />
-          <StateAndMethodList states={states} methods={methods} iconCreator={createStar} onSelect={this.onSelect} />
+          <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
         </div>
         <div className='Split-right'>
-          {children}
+          {React.cloneElement(children, {statesAndMethods})}
         </div>
       </div>
     )
@@ -71,12 +71,11 @@ Fetch.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    fetchExpression: state.jet.fetcher.expression,
-    states: state.jet.states,
-    methods: state.jet.methods,
-    favorites: state.favorites,
-    search: state.search,
-    connection: state.connection
+    fetchExpression: state.settings.fetcher.expression,
+    statesAndMethods: state.data.search,
+    favorites: state.settings.favorites,
+    search: state.settings.search,
+    connection: state.settings.connection
   }
 }
 

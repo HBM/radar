@@ -1,16 +1,37 @@
-import { combineReducers } from 'redux'
-import states from './states'
-import set, * as fromSet from './set'
-import call, * as fromCall from './call'
-import methods from './methods'
-import connection, * as fromConnection from './connection'
-import fetcher, * as fromFetcher from './fetcher'
+export const sorted = (id) => (state = [], action) => {
+  if (action.id !== id) {
+    return state
+  }
+  switch (action.type) {
+    case 'JET_FETCHER_FAILURE':
+    case 'JET_FETCHER_REQUEST':
+      return []
+    case 'JET_FETCHER_CONTENT_CHANGE':
+        console.log('YES', action)
+      return action.data
+    default:
+      return state
+  }
+}
 
-const jet = combineReducers({states, methods, fetcher, connection, set, call})
+export const unsorted = (id) => (state = {}, action) => {
+  if (action.id !== id) {
+    return state
+  }
+  switch (action.type) {
+    case 'JET_FETCHER_FAILURE':
+    case 'JET_FETCHER_REQUEST':
+      return []
+    case 'JET_FETCHER_CONTENT_CHANGE':
+      let newState = {...state}
+      if (action.event === 'remove') {
+        delete newState[action.path]
+      } else {
+        newState[action.path] = action.value
+      }
+      return newState
+    default:
+      return state
+  }
+}
 
-export default jet
-
-export const getIsConnecting = (url) => fromConnection.getIsConnecting(url)
-export const getIsChangingFetcher = () => fromFetcher.getIsChanging()
-export const getIsSettingState = (path) => fromSet.getIsSetting(path)
-export const getIsCallingMethod = (path) => fromCall.getIsCalling(path)

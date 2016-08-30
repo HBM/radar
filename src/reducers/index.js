@@ -1,5 +1,23 @@
 import { combineReducers } from 'redux'
-import jet from '../redux-jet/reducers'
+import { sorted } from '../redux-jet/reducers'
+
+const fetcher = (state = {}, action) => {
+  switch (action.type) {
+    case 'JET_FETCHER_REQUEST':
+      return {
+        expression: action.fetchExpression
+      }
+    case 'JET_FETCHER_SUCCESS':
+      return state
+    case 'JET_FETCHER_FAILURE':
+      return {
+        ...state,
+        error: action.error
+      }
+    default:
+      return state
+  }
+}
 
 const favorites = (state = [], action) => {
   const addFavorite = () => [...state, action.path]
@@ -35,14 +53,14 @@ const search = (state = [], action) => {
 
 const connection = (state = {isConnected: false}, action) => {
   switch (action.type) {
-    case 'CONNECT_REQUEST':
+    case 'JET_CONNECT_REQUEST':
       return {
         isConnected: false,
         url: action.url,
         user: action.user,
         password: action.password
       }
-    case 'CONNECT_SUCCESS':
+    case 'JET_CONNECT_SUCCESS':
       return {
         ...state,
         isConnected: true,
@@ -50,7 +68,7 @@ const connection = (state = {isConnected: false}, action) => {
         user: action.user,
         password: action.password
       }
-    case 'CONNECT_FAILURE':
+    case 'JET_CONNECT_FAILURE':
       return {
         isConnected: false,
         url: action.url,
@@ -61,6 +79,13 @@ const connection = (state = {isConnected: false}, action) => {
   }
 }
 
-const radar = combineReducers({jet, favorites, search, connection})
+const data = combineReducers({
+  favorites: sorted('favorites'),
+  search: sorted('search')
+})
+
+const settings = combineReducers({search, favorites, connection, fetcher})
+
+const radar = combineReducers({settings, data})
 
 export default radar

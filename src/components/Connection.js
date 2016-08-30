@@ -100,9 +100,9 @@ Connection.propTypes = {
 }
 
 const mapStateToProps = (state) => {
-  const con = state.connection
+  const con = state.settings.connection
   return {
-    isConnected: state.jet.connection.isConnected,
+    isConnected: con.isConnected,
     url: con.url,
     user: con.user,
     password: con.password

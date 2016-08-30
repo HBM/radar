@@ -1,79 +1,67 @@
-import { getIsChangingFetcher, getIsSettingState, getIsConnecting, getIsCallingMethod } from '../reducers'
 import * as api from '../api'
 
 export const connect = ({url, user, password}) => (dispatch) => {
-  if (getIsConnecting(url)) {
-    return Promise.resolve()
-  }
-  dispatch({type: 'CONNECT_REQUEST', url, user, password})
+  dispatch({type: 'JET_CONNECT_REQUEST', url, user, password})
 
   return api.connect({url, user, password}).then(
     (response) => {
-      dispatch({type: 'CONNECT_SUCCESS', url, user, password})
+      dispatch({type: 'JET_CONNECT_SUCCESS', url, user, password})
     },
     (error) => {
       const message = error.message || 'Something went wrong'
-      dispatch({type: 'CONNECT_FAILURE', url, user, message})
+      dispatch({type: 'JET_CONNECT_FAILURE', url, user, message})
     })
 }
 
 export const close = ({url, user, password}) => {
   api.close({url, user, password})
-  return {type: 'CLOSE_REQUEST', url, user, password}
+  return {type: 'JET_CLOSE', url, user, password}
 }
 
-export const fetch = (connection, fetchExpression) => (dispatch) => {
-  if (getIsChangingFetcher()) {
-    return Promise.resolve()
+export const fetch = (connection, fetchExpression, id) => (dispatch) => {
+  dispatch({type: 'JET_FETCHER_REQUEST', fetchExpression, id})
+
+  const onData = (...data) => {
+    if (data.length === 2) {
+      dispatch({type: 'JET_FETCHER_CONTENT_CHANGE', data: data[0], fetcher: data[1], id})
+    } else {
+      dispatch({type: 'JET_FETCHER_CONTENT_CHANGE', path: data[0], event: data[1], value: data[2], fetcher: data[3], id})
+    }
   }
 
-  dispatch({type: 'FETCHER_REQUEST', fetchExpression})
-
-  const onChange = (content) => {
-    dispatch({type: 'FETCHER_CONTENT_CHANGE', content})
-  }
-
-  return api.fetch(connection, fetchExpression, onChange).then(
+  return api.fetch(connection, fetchExpression, onData).then(
     (response) => {
-      dispatch({type: 'FETCHER_SUCCESS', fetchExpression})
+      dispatch({type: 'JET_FETCHER_SUCCESS', fetchExpression, id})
     },
     (error) => {
       const message = error.message || 'Something went wrong'
-      dispatch({type: 'FETCHER_FAILURE', fetchExpression, message})
+      dispatch({type: 'JET_FETCHER_FAILURE', fetchExpression, message, id})
     })
 }
 
 export const set = (connection, path, value) => (dispatch) => {
-  if (getIsSettingState(path)) {
-    return Promise.resolve()
-  }
-
-  dispatch({type: 'STATE_SET_REQUEST', path, value})
+  dispatch({type: 'JET_SET_REQUEST', path, value})
 
   return api.set(connection, path, value).then(
     () => {
-      dispatch({type: 'STATE_SET_SUCCESS', path, value})
+      dispatch({type: 'JET_SET_SUCCESS', path, value})
     },
     (error) => {
       const message = error.message || 'Something went wrong'
-      dispatch({type: 'STATE_SET_FAILURE', path, message})
+      dispatch({type: 'JET_SET_FAILURE', path, message})
     })
 }
 
 export const call = (connection, path, args) => (dispatch) => {
-  if (getIsCallingMethod(path)) {
-    return Promise.resolve()
-  }
-
-  dispatch({type: 'METHOD_CALL_REQUEST', path, args})
+  dispatch({type: 'JET_CALL_REQUEST', path, args})
 
   return api.call(connection, path, args).then(
     (result) => {
-      dispatch({type: 'METHOD_CALL_SUCCESS', path, args, result})
+      dispatch({type: 'JET_CALL_SUCCESS', path, args, result})
     },
     (error) => {
       const message = error.message || 'Something went wrong'
-      dispatch({type: 'METHOD_CALL_FAILURE', path, args, message})
+      dispatch({type: 'JET_CALL_FAILURE', path, args, message})
     })
 }
 

@@ -1,7 +1,6 @@
 import React from 'react'
 import State from './State'
 import Method from './Method'
-import { connect } from 'react-redux'
 
 const getSelected = (statesOrMethods, path) => {
   return statesOrMethods.filter((stateOrMethod) => {
@@ -9,24 +8,16 @@ const getSelected = (statesOrMethods, path) => {
   })[0]
 }
 
-const Details = ({params: {path}, methods, states}) => {
+const Details = ({params: {path}, statesAndMethods}) => {
   // const method = getSelected(methods, path)
-  const state = getSelected(states, path)
-  const method = getSelected(methods, path)
-  if (state) {
-    return <State state={state} />
+  const stateOrMethod = getSelected(statesAndMethods, path)
+  if (!stateOrMethod) {
+    return <div></div>
   }
-  if (method) {
-    return <Method method={method} />
+  if (typeof stateOrMethod.value === 'undefined') {
+    return <Method method={stateOrMethod} />
   }
-  return <div></div>
+  return <State state={stateOrMethod} />
 }
 
-const mapStateToProps = (state) => {
-  return {
-    states: state.jet.states,
-    methods: state.jet.methods
-  }
-}
-
-export default connect(mapStateToProps)(Details)
+export default Details

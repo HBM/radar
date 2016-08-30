@@ -11,7 +11,7 @@ class Favorites extends React.Component {
     super(props)
     this.props.fetch(this.props.connection, {
       equalsOneOf: this.props.favorites
-    })
+    }, 'favorites')
   }
 
   onSelect = (stateOrMethod) => {
@@ -19,7 +19,7 @@ class Favorites extends React.Component {
   }
 
   render () {
-    const {children, states, methods, removeFavorite, favorites} = this.props
+    const {children, statesAndMethods, removeFavorite} = this.props
 
     const createClear = (path) => {
       return <Icon.Clear
@@ -28,17 +28,13 @@ class Favorites extends React.Component {
         />
     }
 
-    const isFavorite = function (stateOrMethod) {
-      return favorites.indexOf(stateOrMethod.path) > -1
-    }
-
     return (
       <div className='Split'>
         <div className='Split-left'>
-          <StateAndMethodList states={states.filter(isFavorite)} methods={methods.filter(isFavorite)} iconCreator={createClear} onSelect={this.onSelect} />
+          <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createClear} onSelect={this.onSelect} />
         </div>
         <div className='Split-right'>
-          {children}
+          {React.cloneElement(children, {statesAndMethods})}
         </div>
       </div>
     )
@@ -47,10 +43,9 @@ class Favorites extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    states: state.jet.states,
-    methods: state.jet.methods,
-    favorites: state.favorites,
-    connection: state.connection
+    statesAndMethods: state.data.favorites,
+    favorites: state.settings.favorites,
+    connection: state.settings.connection
   }
 }
 
