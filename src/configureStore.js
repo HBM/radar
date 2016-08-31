@@ -3,7 +3,7 @@ import createLogger from 'redux-logger'
 import thunk from 'redux-thunk'
 import radar from './reducers'
 import { loadState, saveState } from './localStorage'
-import throttle from 'lodash/throttle'
+import throttle from 'lodash.throttle'
 
 const configureStore = () => {
   const middlewares = [thunk]

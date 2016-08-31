@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
-import * as jetActions from '../redux-jet/actions'
+import * as jetActions from 'redux-jet'
 import { withRouter } from 'react-router'
 import { Icon } from 'hbm-react-components'
 import StateAndMethodList from './StateAndMethodList'

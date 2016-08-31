@@ -1,5 +1,5 @@
 import React from 'react'
-import * as actions from '../redux-jet/actions'
+import * as actions from 'redux-jet'
 import { connect } from 'react-redux'
 import { Button, Textfield } from 'hbm-react-components'
 

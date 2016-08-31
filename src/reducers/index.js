@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { sorted } from '../redux-jet/reducers'
+import { sorted } from 'redux-jet'
 
 const fetcher = (state = {}, action) => {
   switch (action.type) {

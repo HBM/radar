@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import * as actions from '../redux-jet/actions'
+import * as actions from 'redux-jet'
 import { Card, Text, Title, Actions, Content, Textfield, Button } from 'hbm-react-components'
 import url from 'url'
 
