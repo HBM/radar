@@ -27,18 +27,20 @@ const createStateRow = (state, icon, onFocus) => (
 	/>
 )
 
-const StateAndMethodList = ({states, methods, iconCreator, onSelect}) => {
-  const stateRows = states.map((state) => {
-    return createStateRow(state, iconCreator(state.path), () => { onSelect(state) })
-  })
-
-  const methodRows = methods.map((method) => {
-    return createMethodRow(method, iconCreator(method.path), () => { onSelect(method) })
-  })
-
-  const rows = methodRows.concat(stateRows).sort(function (rowA, rowB) {
-    return rowA.props.primary - rowB.props.primary
-  })
+const StateAndMethodList = ({statesAndMethods, iconCreator, onSelect}) => {
+  const rows = statesAndMethods
+    .sort((a, b) => {
+      return a.path - b.path
+    })
+    .map((stateOrMethod) => {
+      if (typeof stateOrMethod.value === 'undefined') {
+        const method = stateOrMethod
+        return createMethodRow(method, iconCreator(method.path), () => { onSelect(method) })
+      } else {
+        const state = stateOrMethod
+        return createStateRow(state, iconCreator(state.path), () => { onSelect(state) })
+      }
+    })
 
   return (
     <List>

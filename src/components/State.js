@@ -1,5 +1,5 @@
 import React from 'react'
-import * as actions from '../actions'
+import * as actions from 'redux-jet'
 import { connect } from 'react-redux'
 import flatten from 'flat'
 import { Textfield, Button, Checkbox } from 'hbm-react-components'
@@ -88,7 +88,7 @@ export class State extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault()
-    this.props.setState(this.props.state.path, flatten.unflatten(this.state.formData))
+    this.props.set(this.props.connection, this.props.state.path, flatten.unflatten(this.state.formData))
   }
 
   assignToFormData = (event) => {
@@ -117,7 +117,8 @@ export class State extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    favorites: state.favorites
+    favorites: state.settings.favorites,
+    connection: state.settings.connection
   }
 }
 

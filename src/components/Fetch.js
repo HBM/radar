@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
+import * as jetActions from 'redux-jet'
 import { Icon } from 'hbm-react-components'
 import SearchBar from './SearchBar'
 import classNames from 'classnames'
@@ -15,9 +16,16 @@ class Fetch extends React.Component {
         containsAllOf: this.props.search || []
       }
     }
+  }
+
+  componentDidMount () {
     if (this.state.fetchExpression.containsAllOf.length > 0) {
-      this.props.changeFetcher(this.state.fetchExpression)
+      this.props.fetch(this.props.connection, this.state.fetchExpression, 'search')
     }
+  }
+
+  componentWillUnmount () {
+    this.props.unfetch(this.props.connection, 'search')
   }
 
   onChange = (values) => {
@@ -26,7 +34,7 @@ class Fetch extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault()
-    this.props.changeFetcher(this.state.fetchExpression)
+    this.props.fetch(this.props.connection, this.state.fetchExpression, 'search')
     this.props.setSearch(this.state.fetchExpression.containsAllOf)
   }
 
@@ -42,7 +50,7 @@ class Fetch extends React.Component {
       />
     }
 
-    const {states, methods, toggleFavorite, favorites, children} = this.props
+    const {statesAndMethods, toggleFavorite, favorites, children} = this.props
 
     return (
       <div className='Split'>
@@ -52,10 +60,10 @@ class Fetch extends React.Component {
             onSubmit={this.onSubmit}
             initialValues={this.state.fetchExpression.containsAllOf}
           />
-          <StateAndMethodList states={states} methods={methods} iconCreator={createStar} onSelect={this.onSelect} />
+          <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
         </div>
         <div className='Split-right'>
-          {children}
+          {children && React.cloneElement(children, {statesAndMethods})}
         </div>
       </div>
     )
@@ -70,12 +78,12 @@ Fetch.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    fetchExpression: state.fetcher.expression,
-    states: state.states,
-    methods: state.methods,
-    favorites: state.favorites,
-    search: state.search
+    fetchExpression: state.settings.fetcher.expression,
+    statesAndMethods: state.data.search,
+    favorites: state.settings.favorites,
+    search: state.settings.search,
+    connection: state.settings.connection
   }
 }
 
-export default withRouter(connect(mapStateToProps, actions)(Fetch))
+export default withRouter(connect(mapStateToProps, {...actions, ...jetActions})(Fetch))

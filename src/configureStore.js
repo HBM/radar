@@ -3,7 +3,7 @@ import createLogger from 'redux-logger'
 import thunk from 'redux-thunk'
 import radar from './reducers'
 import { loadState, saveState } from './localStorage'
-import throttle from 'lodash/throttle'
+import throttle from 'lodash.throttle'
 
 const configureStore = () => {
   const middlewares = [thunk]
@@ -18,9 +18,7 @@ const configureStore = () => {
   )
   store.subscribe(throttle(() => {
     const state = {
-      connection: store.getState().connection,
-      favorites: store.getState().favorites,
-      search: store.getState().search
+      settings: store.getState().settings
     }
     console.log('save', state)
     saveState(state)

@@ -1,20 +1,18 @@
 import { combineReducers } from 'redux'
-import states from './states'
-import set, * as fromSet from './set'
-import call, * as fromCall from './call'
-import methods from './methods'
-import connection, * as fromConnection from './connection'
-import fetcher, * as fromFetcher from './fetcher'
+import { sorted } from 'redux-jet'
 
-const gui = (state = {}, action) => {
+const fetcher = (state = {}, action) => {
   switch (action.type) {
-    case 'CONNECT_SUCCESS':
+    case 'JET_FETCHER_REQUEST':
       return {
-        showConnection: false
+        expression: action.fetchExpression
       }
-    case 'SHOW_CONNECTION':
+    case 'JET_FETCHER_SUCCESS':
+      return state
+    case 'JET_FETCHER_FAILURE':
       return {
-        showConnection: true
+        ...state,
+        error: action.error
       }
     default:
       return state
@@ -53,11 +51,41 @@ const search = (state = [], action) => {
   }
 }
 
-const radar = combineReducers({states, methods, fetcher, connection, gui, favorites, search, set, call})
+const connection = (state = {isConnected: false}, action) => {
+  switch (action.type) {
+    case 'JET_CONNECT_REQUEST':
+      return {
+        isConnected: false,
+        url: action.url,
+        user: action.user,
+        password: action.password
+      }
+    case 'JET_CONNECT_SUCCESS':
+      return {
+        ...state,
+        isConnected: true,
+        url: action.url,
+        user: action.user,
+        password: action.password
+      }
+    case 'JET_CONNECT_FAILURE':
+      return {
+        isConnected: false,
+        url: action.url,
+        error: action.message
+      }
+    default:
+      return state
+  }
+}
+
+const data = combineReducers({
+  favorites: sorted('favorites'),
+  search: sorted('search')
+})
+
+const settings = combineReducers({search, favorites, connection, fetcher})
+
+const radar = combineReducers({settings, data})
 
 export default radar
-
-export const getIsConnecting = (url) => fromConnection.getIsConnecting(url)
-export const getIsChangingFetcher = () => fromFetcher.getIsChanging()
-export const getIsSettingState = (path) => fromSet.getIsSetting(path)
-export const getIsCallingMethod = (path) => fromCall.getIsCalling(path)

@@ -25,16 +25,14 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "flat": "^2.0.1",
-    "flux": "^2.0.3",
     "hbm-react-components": "hbm/react-components",
-    "lodash": "^4.13.1",
-    "node-jet": "git://github.com/lipp/node-jet.git",
-    "object-assign": "^4.1.0",
+    "lodash.throttle": "^4.1.1",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.6.0",
     "redux": "^3.5.2",
+    "redux-jet": "lipp/redux-jet",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0"
   },

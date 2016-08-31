@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import * as actions from '../actions'
+import * as actions from 'redux-jet'
 import { Card, Text, Title, Actions, Content, Textfield, Button } from 'hbm-react-components'
 import url from 'url'
 
@@ -86,16 +86,21 @@ ConnectionForm.propTypes = {
 
 class Connection extends Component {
   render () {
-    return <ConnectionForm {...this.props} onSubmit={this.props.connect} />
+    const onSubmit = (newCon) => {
+      this.props.close(this.props)
+      this.props.connect(newCon)
+    }
+    return <ConnectionForm {...this.props} onSubmit={onSubmit} />
   }
 }
 
 Connection.propTypes = {
-  connect: PropTypes.func.isRequired
+  connect: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {
-  const con = state.connection
+  const con = state.settings.connection
   return {
     isConnected: con.isConnected,
     url: con.url,
