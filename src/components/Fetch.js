@@ -18,9 +18,23 @@ class Fetch extends React.Component {
     }
   }
 
+  getFetchExpression () {
+    return {
+      path: {
+        caseInsensitive: true,
+        containsAllOf: this.state.fetchExpression.containsAllOf
+      },
+      sort: {
+        byPath: true,
+        from: 1,
+        to: 300
+      }
+    }
+  }
+
   componentDidMount () {
     if (this.state.fetchExpression.containsAllOf.length > 0) {
-      this.props.fetch(this.props.connection, this.state.fetchExpression, 'search')
+      this.props.fetch(this.props.connection, this.getFetchExpression(), 'search')
     }
   }
 
@@ -34,7 +48,7 @@ class Fetch extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault()
-    this.props.fetch(this.props.connection, this.state.fetchExpression, 'search')
+    this.props.fetch(this.props.connection, this.getFetchExpression(), 'search')
     this.props.setSearch(this.state.fetchExpression.containsAllOf)
   }
 

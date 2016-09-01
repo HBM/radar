@@ -10,7 +10,14 @@ class Favorites extends React.Component {
   constructor (props) {
     super(props)
     this.props.fetch(this.props.connection, {
-      equalsOneOf: this.props.favorites
+      path: {
+        equalsOneOf: this.props.favorites
+      },
+      sort: {
+        byPath: true,
+        from: 1,
+        to: 1000
+      }
     }, 'favorites')
   }
 
