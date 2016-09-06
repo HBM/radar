@@ -8,7 +8,7 @@ import classNames from 'classnames'
 import StateAndMethodList from './StateAndMethodList'
 import { withRouter } from 'react-router'
 
-class Fetch extends React.Component {
+class Search extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -82,7 +82,7 @@ class Fetch extends React.Component {
   }
 }
 
-Fetch.propTypes = {
+Search.propTypes = {
   router: React.PropTypes.shape({
     push: React.PropTypes.func.isRequired
   }).isRequired
@@ -97,4 +97,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, {...actions, ...jetActions})(Fetch))
+export default withRouter(connect(mapStateToProps, {...actions, ...jetActions})(Search))
