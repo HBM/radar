@@ -12,9 +12,7 @@ class Fetch extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      fetchExpression: {
-        containsAllOf: this.props.search || []
-      }
+      containsAllOf: this.props.search || []
     }
   }
 
@@ -22,7 +20,7 @@ class Fetch extends React.Component {
     return {
       path: {
         caseInsensitive: true,
-        containsAllOf: this.state.fetchExpression.containsAllOf
+        containsAllOf: this.state.containsAllOf
       },
       sort: {
         byPath: true,
@@ -33,7 +31,7 @@ class Fetch extends React.Component {
   }
 
   componentDidMount () {
-    if (this.state.fetchExpression.containsAllOf.length > 0) {
+    if (this.state.containsAllOf.length > 0) {
       this.props.fetch(this.props.connection, this.getFetchExpression(), 'search')
     }
   }
@@ -43,13 +41,13 @@ class Fetch extends React.Component {
   }
 
   onChange = (values) => {
-    this.setState({fetchExpression: {containsAllOf: values}})
+    this.setState({containsAllOf: values})
   }
 
   onSubmit = (event) => {
     event.preventDefault()
     this.props.fetch(this.props.connection, this.getFetchExpression(), 'search')
-    this.props.setSearch(this.state.fetchExpression.containsAllOf)
+    this.props.setSearch(this.state.containsAllOf)
   }
 
   onSelect = (stateOrMethod) => {
@@ -72,7 +70,7 @@ class Fetch extends React.Component {
           <SearchBar
             onChange={this.onChange}
             onSubmit={this.onSubmit}
-            initialValues={this.state.fetchExpression.containsAllOf}
+            initialValues={this.state.containsAllOf}
           />
           <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
         </div>
@@ -92,7 +90,6 @@ Fetch.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    fetchExpression: state.settings.fetcher.expression,
     statesAndMethods: state.data.search,
     favorites: state.settings.favorites,
     search: state.settings.search,
