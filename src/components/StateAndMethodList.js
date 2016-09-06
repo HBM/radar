@@ -27,7 +27,7 @@ const createStateRow = (state, icon, onFocus) => (
 	/>
 )
 
-const StateAndMethodList = ({statesAndMethods, iconCreator, onSelect}) => {
+const StateAndMethodList = ({statesAndMethods, iconCreator = () => {}, onSelect}) => {
   const rows = statesAndMethods
     .sort((a, b) => {
       return a.path - b.path
