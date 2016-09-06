@@ -1051,7 +1051,7 @@ nav.is-visible {
   padding: 20px 0; }
 
 .State-hero {
-  height: 71px;
+  min-height: 71px;
   border-bottom: 1px solid #e8e8e8; }
 
 .State-hero h1 {
