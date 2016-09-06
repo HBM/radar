@@ -1,24 +1,6 @@
 import { combineReducers } from 'redux'
 import { sorted } from 'redux-jet'
 
-const fetcher = (state = {}, action) => {
-  switch (action.type) {
-    case 'JET_FETCHER_REQUEST':
-      return {
-        expression: action.fetchExpression
-      }
-    case 'JET_FETCHER_SUCCESS':
-      return state
-    case 'JET_FETCHER_FAILURE':
-      return {
-        ...state,
-        error: action.error
-      }
-    default:
-      return state
-  }
-}
-
 const favorites = (state = [], action) => {
   const addFavorite = () => [...state, action.path]
   const removeFavorite = () => {
@@ -84,7 +66,7 @@ const data = combineReducers({
   search: sorted('search')
 })
 
-const settings = combineReducers({search, favorites, connection, fetcher})
+const settings = combineReducers({search, favorites, connection})
 
 const radar = combineReducers({settings, data})
 

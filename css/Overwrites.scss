@@ -23,3 +23,15 @@
     width: 100%;
   }
 }
+
+#app .Card {
+  margin: 10px;
+
+  @include medium {
+    margin: 20px;
+  }
+
+  @include xlarge {
+    margin: 56px;
+  }
+}
