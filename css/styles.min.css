@@ -1131,6 +1131,15 @@ form {
     padding-left: 240px;
     width: 100%; } }
 
+#app .Card {
+  margin: 10px; }
+  @media (min-width: 768px) {
+    #app .Card {
+      margin: 20px; } }
+  @media (min-width: 1200px) {
+    #app .Card {
+      margin: 56px; } }
+
 .State-avatar, .Method-avatar {
   text-align: center;
   height: 40px;
