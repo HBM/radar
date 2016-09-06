@@ -14,6 +14,12 @@ class Group extends React.Component {
     if (!this.fetching || this.lastGroup !== nextGroup) {
       this.lastGroup = nextGroup
       group.expression.sort = {...group.expression.sort, asArray: true}
+      let sort = group.expression.sort
+      if (!sort.byPath && !sort.byValue && !sort.byValueField) {
+        group.expression.sort.byPath = true
+      }
+      sort.from = sort.from || 1
+      sort.to = sort.to || 1000
       this.props.unfetch(this.props.connection, 'group')
       this.props.fetch(this.props.connection, group.expression, 'group')
       this.fetching = true
