@@ -30,14 +30,14 @@ class Group extends React.Component {
     if (!this.props.groups) {
       return
     }
-    this.updateFetch(this.props.groups, this.props.params.group)
+    this.updateFetch(this.props.groups, decodeURIComponent(this.props.params.group))
   }
 
   componentWillReceiveProps (nextProps) {
     if (!nextProps.groups) {
       return
     }
-    this.updateFetch(nextProps.groups, nextProps.params.group)
+    this.updateFetch(nextProps.groups, decodeURIComponent(nextProps.params.group))
   }
 
   componentWillUnmount () {
@@ -46,7 +46,7 @@ class Group extends React.Component {
   }
 
   onSelect = (stateOrMethod) => {
-    this.props.router.push('/groups/' + this.props.params.group + '/' + encodeURIComponent(stateOrMethod.path))
+    this.props.router.push('/groups/' + encodeURIComponent(this.props.params.group) + '/' + encodeURIComponent(stateOrMethod.path))
   }
 
   render () {

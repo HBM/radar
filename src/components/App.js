@@ -16,7 +16,7 @@ class App extends React.Component {
     const groupToLink = (group) => {
       return {
         text: group.title,
-        link: '/groups/' + group.title
+        link: '/groups/' + encodeURIComponent(group.title)
       }
     }
     var links = [
