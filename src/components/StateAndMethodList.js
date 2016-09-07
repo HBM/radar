@@ -27,10 +27,16 @@ const createStateRow = (state, icon, onFocus) => (
 	/>
 )
 
-const StateAndMethodList = ({statesAndMethods, iconCreator, onSelect}) => {
+const StateAndMethodList = ({statesAndMethods, iconCreator = () => {}, onSelect}) => {
   const rows = statesAndMethods
     .sort((a, b) => {
-      return a.path - b.path
+      if (a.path < b.path) {
+        return -1
+      }
+      if (a.path > b.path) {
+        return 1
+      }
+      return 0
     })
     .map((stateOrMethod) => {
       if (typeof stateOrMethod.value === 'undefined') {

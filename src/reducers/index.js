@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { sorted } from 'redux-jet'
+import { sorted, array, single } from 'redux-jet'
 
 const favorites = (state = [], action) => {
   const addFavorite = () => [...state, action.path]
@@ -63,7 +63,9 @@ const connection = (state = {isConnected: false}, action) => {
 
 const data = combineReducers({
   favorites: sorted('favorites'),
-  search: sorted('search')
+  search: sorted('search'),
+  groups: single('groups'),
+  group: array('group')
 })
 
 const settings = combineReducers({search, favorites, connection})
