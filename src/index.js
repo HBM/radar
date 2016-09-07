@@ -7,12 +7,17 @@ import { connect, fetch } from 'redux-jet'
 const store = configureStore()
 
 let wasConnected = false
+const radarGroupsExpression = {
+  path: {
+    equals: '_radarGroups'
+  }
+}
 
 store.subscribe(() => {
   const con = store.getState().settings.connection
   if (con.isConnected && !wasConnected) {
     wasConnected = true
-    fetch(con, {path: {equals: '_radarGroups'}}, 'groups')(store.dispatch)
+    fetch(con, radarGroupsExpression, 'groups')(store.dispatch)
   } else if (!con.isConnected && wasConnected) {
     wasConnected = false
   }
@@ -21,7 +26,7 @@ store.subscribe(() => {
 const settings = store.getState().settings
 if (settings && settings.connection && settings.connection.url) {
   connect(settings.connection)(store.dispatch)
-  fetch(settings.connection, {path: {equals: '_radarGroups'}}, 'groups')(store.dispatch)
+  fetch(settings.connection, radarGroupsExpression, 'groups')(store.dispatch)
 }
 
 render(

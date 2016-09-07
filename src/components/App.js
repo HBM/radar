@@ -42,7 +42,7 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    groups: state.data.groups._radarGroups
+    groups: state.data.groups
   }
 }
 

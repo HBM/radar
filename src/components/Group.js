@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 import * as jetActions from 'redux-jet'
 import { withRouter } from 'react-router'
+import { Icon } from 'hbm-react-components'
+import classNames from 'classnames'
 import StateAndMethodList from './StateAndMethodList'
 
 class Group extends React.Component {
@@ -13,13 +15,6 @@ class Group extends React.Component {
     }
     if (!this.fetching || this.lastGroup !== nextGroup) {
       this.lastGroup = nextGroup
-      group.expression.sort = {...group.expression.sort, asArray: true}
-      let sort = group.expression.sort
-      if (!sort.byPath && !sort.byValue && !sort.byValueField) {
-        group.expression.sort.byPath = true
-      }
-      sort.from = sort.from || 1
-      sort.to = sort.to || 1000
       this.props.unfetch(this.props.connection, 'group')
       this.props.fetch(this.props.connection, group.expression, 'group')
       this.fetching = true
@@ -50,12 +45,19 @@ class Group extends React.Component {
   }
 
   render () {
-    const {children, statesAndMethods} = this.props
+    const {statesAndMethods, toggleFavorite, favorites, children} = this.props
+
+    const createStar = (path) => {
+      return <Icon.Star
+        onClick={() => toggleFavorite(path)}
+        className={classNames('Icon Fetch Star', {'Star--active': (favorites.indexOf(path) > -1)})}
+      />
+    }
 
     return (
       <div className='Split'>
         <div className='Split-left'>
-          <StateAndMethodList statesAndMethods={statesAndMethods} onSelect={this.onSelect} />
+          <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
         </div>
         <div className='Split-right'>
           {children && React.cloneElement(children, {statesAndMethods})}
@@ -67,7 +69,8 @@ class Group extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    groups: state.data.groups._radarGroups,
+    groups: state.data.groups,
+    favorites: state.settings.favorites,
     statesAndMethods: state.data.group,
     connection: state.settings.connection
   }
