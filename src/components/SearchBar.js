@@ -18,10 +18,16 @@ export default class SearchBar extends React.Component {
     this.setState({focused: false})
   }
 
+  onChange = (value) => {
+    this.props.onChange(value.map(v => v.text))
+  }
+
   render () {
-    const {onChange, initialValues, onSubmit} = this.props
+    const {terms, onSubmit} = this.props
     const spaceCode = 32
     const enterCode = 13
+    const termsChips = this.props.terms.map(term => {return {text: term}})
+    console.log('terms', terms, termsChips)
 
     let chips
     return (
@@ -36,8 +42,9 @@ export default class SearchBar extends React.Component {
         </div>
         <Chip
           ref={(s) => { chips = s }}
-          onChange={onChange}
-          initialValues={initialValues}
+          onChange={this.onChange}
+          placeholder='Enter path fragments'
+          value={termsChips}
           delimiters={[spaceCode, enterCode]}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
