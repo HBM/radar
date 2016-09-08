@@ -30,17 +30,17 @@ const ConnectionDetails = ({connection, onChange, connect}) => {
   return (
     <div className='State'>
       <div className='State-hero'>
-        <h1>{connection.name && connection.name || <em>Unnamed</em>}</h1>
+        <h1>
+          <input
+            type='text'
+            value={connection.name || ''}
+            placeholder='Name'
+            name='name'
+            onChange={onChangeInput}
+           />
+        </h1>
       </div>
       <form>
-        <Textfield
-          onChange={onChangeInput}
-          name='name'
-          type='text'
-          value={connection.name || ''}
-          label='Name'
-          placeholder='Some name'
-          />
         <Textfield
           onChange={onChangeInput}
           name='url'
