@@ -53,6 +53,15 @@ const search = (state = [], action) => {
   }
 }
 
+const message = (state = null, action) => {
+  switch (action.type) {
+    case 'JET_CONNECT_SUCCESS':
+      return {text: 'Connection established'}
+    default:
+      return state
+  }
+}
+
 const connection = (state = {isConnected: false}, action) => {
   switch (action.type) {
     case 'JET_CONNECT_REQUEST':
@@ -90,6 +99,6 @@ const data = combineReducers({
 
 const settings = combineReducers({search, favorites, connection, connections})
 
-const radar = combineReducers({settings, data})
+const radar = combineReducers({settings, data, message})
 
 export default radar
