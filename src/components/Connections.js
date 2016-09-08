@@ -147,6 +147,7 @@ const Connections = ({
     <div className='Split Connections'>
       <div className='Split-left'>
         <List>
+          <Row primary='Connections' />
           {connections.map(toConnectionRow)}
           <Row primary='' avatar={<span />} icon={<Icon.AddCircle fill='#333' className='Connections-add' onClick={addConnection} />} />
         </List>
