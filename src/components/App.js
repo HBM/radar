@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Header, Navigation, Snackbar} from 'hbm-react-components'
+import {Link} from 'react-router'
+import {Header, Navigation, Snackbar, Icon} from 'hbm-react-components'
 
 class App extends React.Component {
 
@@ -45,8 +46,7 @@ class App extends React.Component {
     }
     var links = [
       {text: 'Search', link: '/'},
-      {text: 'Favorites', link: '/favorites'},
-      {text: 'Connections', link: '/connections'}
+      {text: 'Favorites', link: '/favorites'}
     ]
 
     if (groups && groups.length > 0) {
@@ -54,7 +54,11 @@ class App extends React.Component {
     }
     return (
       <div>
-        <Header title='Radar' subtitle={this.state.subtitle} />
+        <Header title='Radar' subtitle={this.state.subtitle} >
+          <Link to='/connections' >
+            <Icon.Settings fill='white' />
+          </Link>
+        </Header>
         <Navigation links={links} onChange={this.onChange} />
         <main>
           {this.props.children}
