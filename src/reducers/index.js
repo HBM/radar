@@ -56,7 +56,15 @@ const search = (state = [], action) => {
 const message = (state = null, action) => {
   switch (action.type) {
     case 'JET_CONNECT_SUCCESS':
-      return {text: 'Connection established'}
+      return {text: 'Connection to ' + action.url + ' established'}
+    case 'JET_SET_SUCCESS':
+      return {text: 'State "' + action.path + '" set successfully'}
+    case 'JET_SET_FAILURE':
+      return {text: 'State "' + action.path + '" set failed: ' + action.error.message}
+    case 'JET_CALL_SUCCESS':
+      return {text: 'Method "' + action.path + '" called successfully: ' + JSON.stringify(action.result) }
+    case 'JET_CALL_FAILURE':
+      return {text: 'Method "' + action.path + '" call failed: ' + action.error.message}
     default:
       return state
   }
