@@ -65,7 +65,7 @@ class Search extends React.Component {
     const {statesAndMethods, toggleFavorite, favorites, children} = this.props
 
     return (
-      <div className='Split'>
+      <div className='Split Search'>
         <div className='Split-left'>
           <SearchBar
             onChange={this.onChange}

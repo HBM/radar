@@ -55,7 +55,7 @@ class Group extends React.Component {
     }
 
     return (
-      <div className='Split'>
+      <div className='Split Group'>
         <div className='Split-left'>
           <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
         </div>

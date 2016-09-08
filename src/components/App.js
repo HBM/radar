@@ -22,7 +22,7 @@ class App extends React.Component {
     var links = [
       {text: 'Search', link: '/'},
       {text: 'Favorites', link: '/favorites'},
-      {text: 'Connection', link: '/connection'}
+      {text: 'Connections', link: '/connections'}
     ]
 
     if (this.props.groups && this.props.groups.length > 0) {

@@ -36,7 +36,7 @@ class Favorites extends React.Component {
     }
 
     return (
-      <div className='Split'>
+      <div className='Split Favorites'>
         <div className='Split-left'>
           <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createClear} onSelect={this.onSelect} />
         </div>

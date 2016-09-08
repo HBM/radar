@@ -5,7 +5,7 @@ import App from './App'
 import Search from './Search'
 import Details from './Details'
 import Favorites from './Favorites'
-import Connection from './Connection'
+import Connections from './Connections'
 import Group from './Group'
 
 const Root = ({ store }) => (
@@ -19,7 +19,7 @@ const Root = ({ store }) => (
         <Route path='favorites' component={Favorites}>
           <Route path=':path' component={Details} />
         </Route>
-        <Route path='connection' component={Connection} />
+        <Route path='connections' component={Connections} />
         <Route path='groups/:group' component={Group}>
           <Route path=':path' component={Details} />
         </Route>
