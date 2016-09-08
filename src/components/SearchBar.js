@@ -27,7 +27,6 @@ export default class SearchBar extends React.Component {
     const spaceCode = 32
     const enterCode = 13
     const termsChips = this.props.terms.map(term => {return {text: term}})
-    console.log('terms', terms, termsChips)
 
     let chips
     return (
