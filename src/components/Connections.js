@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { connect as connectJet } from 'redux-jet'
+import { connect as connectJet, close as closeJet } from 'redux-jet'
 import * as actions from '../actions'
 import { Textfield, Button, Icon, List, Row } from 'hbm-react-components'
 import url from 'url'
@@ -49,6 +49,7 @@ const ConnectionDetails = ({connection, onChange, connect}) => {
           label='WebSocket URL'
           placeholder='ws://jetbus.io:8080'
           error={error()}
+          float={false}
           required
           />
         <Textfield
@@ -57,6 +58,7 @@ const ConnectionDetails = ({connection, onChange, connect}) => {
           type='text'
           value={connection.user || ''}
           label='User (optional)'
+          float={false}
           placeholder='admin' />
         <Textfield
           onChange={onChangeInput}
@@ -64,6 +66,7 @@ const ConnectionDetails = ({connection, onChange, connect}) => {
           type='password'
           value={connection.password || ''}
           label='Password (optional)'
+          float={false}
           disabled={!connection.user} />
         <hr />
         <Button onClick={connect} raised disabled={error() && true}>
@@ -78,24 +81,40 @@ const Connections = ({
   connection,
   connections,
   connectJet,
+  closeJet,
   addConnection,
   removeConnection,
   changeConnection,
   selectConnection}) => {
+  const isCurrentConnection = (con) => {
+    return connection &&
+      connection.url === con.url &&
+      connection.user === con.user &&
+      connection.isConnected
+  }
+
   const toConnectionRow = (con, index) => {
     const remove = () => {
+      if (isCurrentConnection(con)) {
+        closeJet(con)
+      }
       removeConnection(index)
     }
     const onSelect = () => {
       selectConnection(index)
     }
-    const isConnected = connection &&
-      connection.url === con.url &&
-      connection.user === con.user &&
-      connection.isConnected
-    const avatar = isConnected ? <Icon.Check /> : <Icon.Close />
-    const icon = <Icon.RemoveCircle onClick={remove} />
-    const subtitle = isConnected ? 'Connected' : 'Disconnected'
+    let avatar
+    let subtitle
+    if (isValidWebSocketUrl(con.url)) {
+      const isConnected = isCurrentConnection(con)
+      avatar = isConnected ? <Icon.CloudDone fill='#333' /> : <Icon.CloudOff fill='#333' />
+
+      subtitle = isConnected ? 'Connected' : 'Disconnected'
+    } else {
+      avatar = <Icon.Report fill='#333' />
+      subtitle = 'Not configured'
+    }
+    const icon = <Icon.RemoveCircle onClick={remove} fill='#333' />
     return <Row avatar={avatar}
       primary={con.name || con.url || 'New Connection'}
       secondary={subtitle}
@@ -129,7 +148,7 @@ const Connections = ({
       <div className='Split-left'>
         <List>
           {connections.map(toConnectionRow)}
-          <Row primary='' avatar={<span />} icon={<Icon.AddCircle className='Connections-add' onClick={addConnection} />} />
+          <Row primary='' avatar={<span />} icon={<Icon.AddCircle fill='#333' className='Connections-add' onClick={addConnection} />} />
         </List>
       </div>
       <div className='Split-right'>
@@ -146,4 +165,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {...actions, connectJet})(Connections)
+export default connect(mapStateToProps, {...actions, connectJet, closeJet})(Connections)
