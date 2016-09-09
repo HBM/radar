@@ -35,8 +35,16 @@
 
 
 .Icon {
-  fill: gray;
+  fill: #505050;
   cursor: pointer;
+}
+
+.Icon.Icon-Remove {
+  fill: #ea6262;
+}
+
+.Icon.Icon-Add {
+  fill: #54c744;
 }
 
 .Star--active {

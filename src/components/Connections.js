@@ -107,14 +107,14 @@ const Connections = ({
     let subtitle
     if (isValidWebSocketUrl(con.url)) {
       const isConnected = isCurrentConnection(con)
-      avatar = isConnected ? <Icon.CloudDone fill='#333' /> : <Icon.CloudOff fill='#333' />
+      avatar = isConnected ? <Icon.CloudDone className='Icon' /> : <Icon.CloudOff className='Icon' />
 
       subtitle = isConnected ? 'Connected' : 'Disconnected'
     } else {
-      avatar = <Icon.Report fill='#333' />
+      avatar = <Icon.Report className='Icon' />
       subtitle = 'Not configured'
     }
-    const icon = <Icon.RemoveCircle onClick={remove} fill='#333' />
+    const icon = <Icon.RemoveCircle onClick={remove} className='Icon Icon-Remove' />
     return <Row avatar={avatar}
       primary={con.name || con.url || 'New Connection'}
       secondary={subtitle}
@@ -149,7 +149,7 @@ const Connections = ({
         <List>
           <Row primary='Connections' />
           {connections.map(toConnectionRow)}
-          <Row primary='' avatar={<span />} icon={<Icon.AddCircle fill='#333' className='Connections-add' onClick={addConnection} />} />
+          <Row primary='' avatar={<span />} icon={<Icon.AddCircle className='Icon Connections-add Icon-Add' onClick={addConnection} />} />
         </List>
       </div>
       <div className='Split-right'>
