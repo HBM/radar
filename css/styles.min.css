@@ -739,11 +739,11 @@ nav.is-visible {
   box-shadow: 0 1px 0 0 #f44336; }
 
 .Textfield-input:focus ~ .Textfield-label,
-.Textfield-label.is-not-empty {
+.Textfield-label--floatup {
   transform: translate3d(0, -4px, 0);
   font-size: 12px; }
 
-.Textfield-label.is-not-empty {
+.Textfield-label--floatup {
   color: rgba(27, 50, 95, 0.6); }
 
 .Textfield-input:focus ~ .Textfield-label {
@@ -759,7 +759,9 @@ nav.is-visible {
   display: block;
   margin-top: 6px;
   font-size: 12px;
-  color: #f44336; }
+  color: #f44336;
+  line-height: 16px;
+  min-height: 16px; }
 
 /**
  * http://www.google.com/design/spec/components/switches.html#switches-checkbox
@@ -958,7 +960,8 @@ nav.is-visible {
     width: 40px; }
 
 .Chip-wrapper {
-  cursor: text; }
+  cursor: text;
+  display: flex; }
 
 .Chip-input {
   outline: none;
@@ -981,34 +984,83 @@ nav.is-visible {
   background-color: rgba(0, 0, 0, 0.54);
   outline: none; }
 
-.Chip:focus .Chip-delete {
-  background-color: #fff;
-  color: rgba(0, 0, 0, 0.54); }
-
 .Chip-delete {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.54);
-  font-size: 20px;
-  color: #e0e0e0;
+  padding: 0;
   border: 0;
-  border-radius: 50%;
   outline: none;
-  height: 20px;
-  width: 20px;
+  background: none;
   margin: 0 4px; }
 
+.Chip svg {
+  fill: rgba(0, 0, 0, 0.54); }
+
+.Chip:focus svg {
+  fill: #fff; }
+
 .Chip-icon {
+  width: 32px;
+  height: 32px; }
+
+/**
+ * http://www.google.com/design/spec/components/snackbars-toasts.html#snackbars-toasts-specs
+ */
+.Snackbar {
+  position: fixed;
+  z-index: 500;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; }
+  @media (min-width: 1200px) {
+    .Snackbar {
+      left: 240px; } }
+
+.Snackbar-background {
+  background-color: #323232;
+  min-width: 100%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+  padding-right: 24px; }
+  @media (min-width: 768px) {
+    .Snackbar-background {
+      border-radius: 2px;
+      min-width: 288px;
+      max-width: 658px; } }
+
+/**
+ * Start opacity animation slightly after translate animation.
+ * Also make it shorter so they both end at the same time.
+ */
+.Snackbar-content {
+  min-width: 100%;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; }
+
+.Snackbar-text {
   color: #fff;
-  width: 32px;
-  height: 32px;
-  background-color: #009587;
-  border-radius: 50%;
-  font-size: 16px; }
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
+/**
+ * Color is blue 400.
+ * http://www.google.com/design/spec/style/color.html#color-color-palette
+ * The darkest blue that is possible with dark background
+ */
+.Snackbar-action {
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  margin: 0 0 0 24px;
+  padding: 0;
+  color: #42A5F5;
+  outline: none; }
 
 .Split {
   display: flex;
@@ -1026,12 +1078,16 @@ nav.is-visible {
       height: calc(100vh - 64px); } }
 
 .Split-left {
-  flex-grow: 2;
-  max-width: 600px; }
+  width: 60%;
+  /** z-index on safari requires position relative/absolute/fixed */
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0px 4px 2px rgba(0, 0, 0, 0.24); }
 
 .Split-right {
   flex-grow: 1;
-  min-width: 320px; }
+  min-width: 320px;
+  z-index: 0; }
 
 .State {
   height: 100%;
@@ -1082,6 +1138,9 @@ form {
   -webkit-overflow-scrolling: touch;
   flex-grow: 1; }
 
+.State .Button {
+  float: right; }
+
 .Searchbar {
   display: flex;
   align-items: center;
@@ -1108,6 +1167,23 @@ form {
   .Searchbar .Chip-wrapper input, .Searchbar .Chip-wrapper .Chip {
     font-size: 16px; }
 
+.Connections.Split .List {
+  flex-grow: 0; }
+
+.Connections .Split-left {
+  background-color: white; }
+
+.Connections-add {
+  align-self: flex-end;
+  padding-right: 24px;
+  margin-top: 15px; }
+
+.Connections h1 input {
+  border: none;
+  background-color: transparent; }
+  .Connections h1 input:focus {
+    outline: none; }
+
 /** overwrite hbm style */
 @media (min-width: 768px) {
   #app main {
@@ -1130,6 +1206,9 @@ form {
   #app main {
     padding-left: 240px;
     width: 100%; } }
+
+#app .Header-title {
+  margin-left: 24px; }
 
 #app .Card {
   margin: 10px; }
@@ -1155,15 +1234,17 @@ form {
   background-color: #4bc6d4; }
 
 .Icon {
-  fill: gray;
+  fill: #505050;
   cursor: pointer; }
+
+.Icon.Icon-Remove {
+  fill: #ea6262; }
+
+.Icon.Icon-Add {
+  fill: #54c744; }
 
 .Star--active {
   fill: orange; }
-
-.Split-left {
-  z-index: 1;
-  box-shadow: 0 0px 4px 2px rgba(0, 0, 0, 0.24); }
 
 .Split-left .Searchbar {
   flex-shrink: 0;
