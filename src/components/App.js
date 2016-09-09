@@ -20,7 +20,7 @@ class App extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.message !== this.props.message) {
       if (this.timer) {
         clearTimeout(this.timer)

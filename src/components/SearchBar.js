@@ -26,7 +26,7 @@ export default class SearchBar extends React.Component {
     const {terms, onSubmit} = this.props
     const spaceCode = 32
     const enterCode = 13
-    const termsChips = this.props.terms.map(term => {return {text: term}})
+    const termsChips = terms.map(term => { return {text: term} })
 
     let chips
     return (
