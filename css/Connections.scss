@@ -1,0 +1,22 @@
+
+.Connections.Split .List {
+  flex-grow: 0;
+}
+
+.Connections .Split-left {
+  background-color: white;
+}
+
+.Connections-add {
+  align-self: flex-end;
+  padding-right: 24px;
+  margin-top: 15px;
+}
+
+.Connections h1 input {
+  border: none;
+  background-color: transparent;
+  &:focus {
+    outline: none;
+  }
+}

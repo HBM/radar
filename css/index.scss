@@ -8,10 +8,12 @@
 @import "../node_modules/hbm-react-components/components/button/Button";
 @import "../node_modules/hbm-react-components/components/list/List";
 @import "../node_modules/hbm-react-components/components/chip/Chip";
+@import "../node_modules/hbm-react-components/components/snackbar/Snackbar";
 @import "../node_modules/hbm-react-components/css/mixins";
 @import "./Split";
 @import "./State";
 @import "./Searchbar";
+@import "./Connections";
 @import "./Overwrites";
 
 .State-avatar, .Method-avatar {
@@ -33,17 +35,20 @@
 
 
 .Icon {
-  fill: gray;
+  fill: #505050;
   cursor: pointer;
+}
+
+.Icon.Icon-Remove {
+  fill: #ea6262;
+}
+
+.Icon.Icon-Add {
+  fill: #54c744;
 }
 
 .Star--active {
   fill: orange;
-}
-
-.Split-left {
-  z-index: 1;
-  box-shadow: 0 0px 4px 2px rgba(0, 0, 0, 0.24);
 }
 
 .Split-left .Searchbar {

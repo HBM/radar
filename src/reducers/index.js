@@ -24,10 +24,47 @@ const favorites = (state = [], action) => {
   }
 }
 
+const connections = (state = [{}], action) => {
+  switch (action.type) {
+    case 'CONNECTION_ADD':
+      return [...state, {}]
+    case 'CONNECTION_CHANGE':
+      return [...state.slice(0, action.index), action.connection, ...state.slice(action.index + 1)]
+    case 'CONNECTION_REMOVE':
+      return [...state.slice(0, action.index), ...state.slice(action.index + 1)]
+    case 'CONNECTION_SELECT':
+      return state.map((con, index) => {
+        return {
+          ...con,
+          isSelected: index === action.index
+        }
+      })
+    default:
+      return state
+  }
+}
+
 const search = (state = [], action) => {
   switch (action.type) {
     case 'SEARCH_SET':
       return action.search
+    default:
+      return state
+  }
+}
+
+const message = (state = null, action) => {
+  switch (action.type) {
+    case 'JET_CONNECT_SUCCESS':
+      return {text: `Connected to ${action.url}`}
+    case 'JET_SET_SUCCESS':
+      return {text: `State ${action.path} set successfully`}
+    case 'JET_SET_FAILURE':
+      return {text: `State ${action.path} set failed (${action.error.message})`}
+    case 'JET_CALL_SUCCESS':
+      return {text: `Method ${action.path} called successfully`}
+    case 'JET_CALL_FAILURE':
+      return {text: `Method ${action.path} call failed (${action.error.message})`}
     default:
       return state
   }
@@ -68,8 +105,8 @@ const data = combineReducers({
   group: array('group')
 })
 
-const settings = combineReducers({search, favorites, connection})
+const settings = combineReducers({search, favorites, connection, connections})
 
-const radar = combineReducers({settings, data})
+const radar = combineReducers({settings, data, message})
 
 export default radar

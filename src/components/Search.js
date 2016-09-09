@@ -40,8 +40,9 @@ class Search extends React.Component {
     this.props.unfetch(this.props.connection, 'search')
   }
 
-  onChange = (values) => {
-    this.setState({containsAllOf: values})
+  onChange = (terms) => {
+    console.log(terms)
+    this.setState({containsAllOf: terms})
   }
 
   onSubmit = (event) => {
@@ -65,12 +66,12 @@ class Search extends React.Component {
     const {statesAndMethods, toggleFavorite, favorites, children} = this.props
 
     return (
-      <div className='Split'>
+      <div className='Split Search'>
         <div className='Split-left'>
           <SearchBar
             onChange={this.onChange}
             onSubmit={this.onSubmit}
-            initialValues={this.state.containsAllOf}
+            terms={this.state.containsAllOf}
           />
           <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
         </div>

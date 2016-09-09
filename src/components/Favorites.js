@@ -7,11 +7,10 @@ import { Icon } from 'hbm-react-components'
 import StateAndMethodList from './StateAndMethodList'
 
 class Favorites extends React.Component {
-  constructor (props) {
-    super(props)
-    this.props.fetch(this.props.connection, {
+  updateFetch (props) {
+    this.props.fetch(props.connection, {
       path: {
-        equalsOneOf: this.props.favorites
+        equalsOneOf: props.favorites
       },
       sort: {
         byPath: true,
@@ -19,6 +18,18 @@ class Favorites extends React.Component {
         to: 1000
       }
     }, 'favorites')
+  }
+
+  componentWillMount () {
+    this.updateFetch(this.props)
+  }
+
+  componentWillReceiveProps (nextProps) {
+    const favNext = JSON.stringify(nextProps.favorites.sort())
+    const favPrev = JSON.stringify(this.props.favorites.sort())
+    if (favNext !== favPrev) {
+      this.updateFetch(nextProps)
+    }
   }
 
   onSelect = (stateOrMethod) => {
@@ -29,14 +40,14 @@ class Favorites extends React.Component {
     const {children, statesAndMethods, removeFavorite} = this.props
 
     const createClear = (path) => {
-      return <Icon.Clear
+      return <Icon.RemoveCircle
         onClick={() => removeFavorite(path)}
-        className='Icon'
+        className='Icon Icon-Remove'
         />
     }
 
     return (
-      <div className='Split'>
+      <div className='Split Favorites'>
         <div className='Split-left'>
           <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createClear} onSelect={this.onSelect} />
         </div>
