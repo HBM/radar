@@ -19,10 +19,15 @@
 
 .Split-left {
   width: 60%;
+  /** z-index on safari requires position relative/absolute/fixed */
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0px 4px 2px rgba(0, 0, 0, 0.24);
 }
 
 .Split-right {
   flex-grow: 1;
   min-width: 320px;
+  z-index: 0;
 }
 
