@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { connect as connectJet, close as closeJet } from 'redux-jet'
 import * as actions from '../actions'
 import { Textfield, Button, Icon, List, Row } from 'hbm-react-components'
+import classNames from 'classnames'
 import url from 'url'
 
 const isValidWebSocketUrl = (urlString) => {
@@ -152,7 +153,7 @@ const Connections = ({
           <Row primary='' avatar={<span />} icon={<Icon.AddCircle className='Icon Connections-add Icon-Add' onClick={addConnection} />} />
         </List>
       </div>
-      <div className='Split-right'>
+      <div className={classNames('Split-right', {'Split-right--visible': isSelected})}>
         {renderSelected()}
       </div>
     </div>

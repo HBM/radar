@@ -19,6 +19,7 @@ export default class SearchBar extends React.Component {
   }
 
   onChange = (value) => {
+    console.log('C', value)
     this.props.onChange(value.map(v => v.text))
   }
 

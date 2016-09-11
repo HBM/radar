@@ -1,5 +1,30 @@
 @import "../node_modules/hbm-react-components/css/mixins";
 
+
+.Split {
+  position: relative;
+}
+
+.Split-left {
+ 
+}
+
+.Split-right {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  transform: translate3d(-100%, 0, 0);
+  transition: transform ease 0.3s;
+  z-index: 1;
+}
+
+.Split-right--visible {
+  transform: translate3d(0, 0, 0);
+}
+
+@include medium {
 .Split {
   display: flex;
   align-items: flex-start;
@@ -29,5 +54,6 @@
   flex-grow: 1;
   min-width: 320px;
   z-index: 0;
+}
 }
 

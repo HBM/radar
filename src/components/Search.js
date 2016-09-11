@@ -6,7 +6,7 @@ import { Icon } from 'hbm-react-components'
 import SearchBar from './SearchBar'
 import classNames from 'classnames'
 import StateAndMethodList from './StateAndMethodList'
-import { withRouter } from 'react-router'
+import { withRouter, Link } from 'react-router'
 
 class Search extends React.Component {
   constructor (props) {
@@ -52,7 +52,8 @@ class Search extends React.Component {
   }
 
   onSelect = (stateOrMethod) => {
-    this.props.router.push('/search/' + encodeURIComponent(stateOrMethod.path))
+    console.log('select', stateOrMethod.path)
+    //this.props.router.push('/search/' + encodeURIComponent(stateOrMethod.path))
   }
 
   render () {
@@ -75,7 +76,7 @@ class Search extends React.Component {
           />
           <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
         </div>
-        <div className='Split-right'>
+        <div className={classNames('Split-right', {'Split-right--visible': children})}>
           {children && React.cloneElement(children, {statesAndMethods})}
         </div>
       </div>

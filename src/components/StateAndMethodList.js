@@ -1,5 +1,6 @@
 import React from 'react'
 import { List, Row } from 'hbm-react-components'
+import { Link } from 'react-router'
 
 const methodAvatar = <span className='Method-avatar'>M</span>
 
@@ -17,6 +18,7 @@ const createMethodRow = (method, icon, onFocus) => (
 const stateAvatar = <span className='State-avatar'>S</span>
 
 const createStateRow = (state, icon, onFocus) => (
+  <Link to={'/search/' + encodeURIComponent(state.path)}>
   <Row
     avatar={stateAvatar}
     primary={state.path}
@@ -25,6 +27,7 @@ const createStateRow = (state, icon, onFocus) => (
     key={state.path}
     onFocus={onFocus}
 	/>
+  </Link>
 )
 
 const StateAndMethodList = ({statesAndMethods, iconCreator = () => {}, onSelect}) => {
