@@ -1104,7 +1104,7 @@ nav.is-visible {
   fill: white; }
 
 @media (min-width: 768px) {
-  .Split-right-back {
+  .Split-right .State-hero > button {
     display: none; } }
 
 .Split-right--visible {
