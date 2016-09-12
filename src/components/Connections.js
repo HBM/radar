@@ -2,8 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { connect as connectJet, close as closeJet } from 'redux-jet'
 import * as actions from '../actions'
-import { Textfield, Button, Icon, List, Row } from 'hbm-react-components'
+import { Icon, List, Row } from 'hbm-react-components'
 import url from 'url'
+import { withRouter } from 'react-router'
+import { Split, SplitRight, SplitLeft } from './Split'
 
 const isValidWebSocketUrl = (urlString) => {
   try {
@@ -14,74 +16,13 @@ const isValidWebSocketUrl = (urlString) => {
   }
 }
 
-const ConnectionDetails = ({connection, onChange, connect}) => {
-  const error = () => {
-    if (!connection.url || connection.url === '') {
-      return 'Required field'
-    }
-    if (!isValidWebSocketUrl(connection.url)) {
-      return 'Invalid WebSocket URL'
-    }
-    return false
-  }
-  const onChangeInput = (e) => {
-    onChange(e.target.name, e.target.value)
-  }
-  return (
-    <div className='State'>
-      <div className='State-hero'>
-        <h1>
-          <input
-            type='text'
-            value={connection.name || ''}
-            placeholder='Name'
-            name='name'
-            onChange={onChangeInput}
-           />
-        </h1>
-      </div>
-      <form>
-        <Textfield
-          onChange={onChangeInput}
-          name='url'
-          type='text'
-          value={connection.url || ''}
-          label='WebSocket URL'
-          placeholder='ws://jetbus.io:8080'
-          error={error()}
-          float={false}
-          required
-          />
-        <Textfield
-          onChange={onChangeInput}
-          name='user'
-          type='text'
-          value={connection.user || ''}
-          label='User (optional)'
-          float={false}
-          placeholder='admin' />
-        <Textfield
-          onChange={onChangeInput}
-          name='password'
-          type='password'
-          value={connection.password || ''}
-          label='Password (optional)'
-          float={false}
-          disabled={!connection.user} />
-        <hr />
-        <Button onClick={connect} raised disabled={error() && true}>
-          Connect
-        </Button>
-      </form>
-    </div>
-  )
-}
-
 const Connections = ({
   connection,
   connections,
   connectJet,
+  children,
   closeJet,
+  router,
   addConnection,
   removeConnection,
   changeConnection,
@@ -101,7 +42,7 @@ const Connections = ({
       removeConnection(index)
     }
     const onSelect = () => {
-      selectConnection(index)
+      router.push('/connections/' + index)
     }
     let avatar
     let subtitle
@@ -119,43 +60,24 @@ const Connections = ({
       primary={con.name || con.url || 'New Connection'}
       secondary={subtitle}
       icon={icon}
+      onClick={() => {}} // iOS Safari does not get focus event if no click handler is installed
       onFocus={onSelect}
       key={index} />
   }
 
-  const renderSelected = () => {
-    const index = connections.findIndex(con => con.isSelected)
-    if (index === -1) {
-      return
-    }
-    let con = connections[index]
-    const onChange = (key, value) => {
-      if (value === '') {
-        delete con[key]
-      } else {
-        con[key] = value
-      }
-      changeConnection(index, con)
-    }
-    const connect = () => {
-      connectJet(con)
-    }
-    return <ConnectionDetails onChange={onChange} connection={con} connect={connect} />
-  }
-
   return (
-    <div className='Split Connections'>
-      <div className='Split-left'>
+    <Split className='Connections'>
+      <SplitLeft>
         <List>
           <Row primary='Connections' />
           {connections.map(toConnectionRow)}
           <Row primary='' avatar={<span />} icon={<Icon.AddCircle className='Icon Connections-add Icon-Add' onClick={addConnection} />} />
         </List>
-      </div>
-      <div className='Split-right'>
-        {renderSelected()}
-      </div>
-    </div>
+      </SplitLeft>
+      <SplitRight>
+        {children}
+      </SplitRight>
+    </Split>
   )
 }
 
@@ -166,4 +88,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {...actions, connectJet, closeJet})(Connections)
+export default withRouter(connect(mapStateToProps, {...actions, connectJet, closeJet})(Connections))

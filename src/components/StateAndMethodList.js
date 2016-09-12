@@ -16,16 +16,19 @@ const createMethodRow = (method, icon, onFocus) => (
 
 const stateAvatar = <span className='State-avatar'>S</span>
 
-const createStateRow = (state, icon, onFocus) => (
-  <Row
-    avatar={stateAvatar}
-    primary={state.path}
-    secondary={'State / ' + JSON.stringify(state.value)}
-    icon={icon}
-    key={state.path}
-    onFocus={onFocus}
-	/>
-)
+const createStateRow = (state, icon, onFocus) => {
+  return (
+    <Row
+      onClick={() => {}} // iOS Safari does not get focus event if no click handler is installed
+      avatar={stateAvatar}
+      primary={state.path}
+      secondary={'State / ' + JSON.stringify(state.value)}
+      icon={icon}
+      key={state.path}
+      onFocus={onFocus}
+    />
+  )
+}
 
 const StateAndMethodList = ({statesAndMethods, iconCreator = () => {}, onSelect}) => {
   const rows = statesAndMethods

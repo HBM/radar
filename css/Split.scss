@@ -1,10 +1,76 @@
 @import "../node_modules/hbm-react-components/css/mixins";
 
+
+.Split {
+  position: relative;
+  overflow: hidden;
+}
+
+.Split-left {
+ 
+}
+
+.Split-right {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  transform: translate3d(100%, 0, 0);
+  transform: translate3d(100%, 0, 0);
+  transition: transform ease 0.3s;
+  z-index: 2;
+  height: 100vh
+}
+
+.Split-right .State-hero {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  color: white;
+  background-color: #1b325f;
+  h1 {
+    height: initial;  
+    line-height: 20px;
+    font-size: 20px;
+  }
+}
+
+@include medium {
+  .Split-right .State-hero {
+    color: inherit;
+    background-color: inherit;
+    min-height: 71px;
+  }
+}
+
+.Split-right-back {
+  fill: white;
+}
+
+@include medium {
+  .Split-right-back {
+    display: none;
+  }
+}
+
+.Split-right--visible {
+  transition: transform ease 0.3s;
+  transform: translate3d(0, 0, 0);
+}
+
+@include medium {
 .Split {
   display: flex;
   align-items: flex-start;
   flex-direction: row;
   overflow: hidden;
+}
+
+.Split-right {
+  position: initial;
+  transform: translate3d(0, 0, 0);
 }
 
 .Split-left, .Split-right {
@@ -29,5 +95,6 @@
   flex-grow: 1;
   min-width: 320px;
   z-index: 0;
+}
 }
 

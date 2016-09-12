@@ -1,8 +1,9 @@
 import React from 'react'
 import * as actions from 'redux-jet'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
 import flatten from 'flat'
-import { Textfield, Button, Checkbox } from 'hbm-react-components'
+import { Textfield, Button, Checkbox, Icon } from 'hbm-react-components'
 
 const flatObject = (value) => {
   if (typeof value === 'object') {
@@ -103,6 +104,7 @@ export class State extends React.Component {
     return (
       <div className='State'>
         <div className='State-hero'>
+          <Icon.ChevronLeft width={30} height={30} className='Split-right-back' onClick={() => this.props.router.goBack()} />
           <h1>{this.props.state.path}</h1>
         </div>
         <form onSubmit={this.onSubmit} >
@@ -122,4 +124,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, actions)(State)
+export default withRouter(connect(mapStateToProps, actions)(State))

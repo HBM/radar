@@ -5,6 +5,7 @@ import * as jetActions from 'redux-jet'
 import { withRouter } from 'react-router'
 import { Icon } from 'hbm-react-components'
 import StateAndMethodList from './StateAndMethodList'
+import { Split, SplitRight, SplitLeft } from './Split'
 
 class Favorites extends React.Component {
   updateFetch (props) {
@@ -47,14 +48,14 @@ class Favorites extends React.Component {
     }
 
     return (
-      <div className='Split Favorites'>
-        <div className='Split-left'>
+      <Split className='Favorites'>
+        <SplitLeft>
           <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createClear} onSelect={this.onSelect} />
-        </div>
-        <div className='Split-right'>
+        </SplitLeft>
+        <SplitRight>
           {children && React.cloneElement(children, {statesAndMethods})}
-        </div>
-      </div>
+        </SplitRight>
+      </Split>
     )
   }
 }
