@@ -1073,11 +1073,11 @@ nav.is-visible {
   right: 0;
   top: 0;
   bottom: 0;
-  transform: translate3d(100%, 0, 0);
-  transform: translate3d(100%, 0, 0);
-  transition: transform ease 0.3s;
+  transform: translate3d(103%, 0, 0);
+  transition: transform ease 0.5s;
   z-index: 2;
-  height: 100vh; }
+  height: 100vh;
+  box-shadow: 0 0px 8px 2px rgba(0, 0, 0, 0.4); }
 
 .Split-right .State-hero {
   height: 48px;
@@ -1090,6 +1090,9 @@ nav.is-visible {
     height: initial;
     line-height: 20px;
     font-size: 20px; }
+
+.Split-right .State-hero > button {
+  margin: 0 0; }
 
 @media (min-width: 768px) {
   .Split-right .State-hero {
@@ -1105,7 +1108,8 @@ nav.is-visible {
     display: none; } }
 
 .Split-right--visible {
-  transition: transform ease 0.3s;
+  transition: transform ease 0.5s;
+  transition-delay: 0.2s;
   transform: translate3d(0, 0, 0); }
 
 @media (min-width: 768px) {
@@ -1191,10 +1195,16 @@ form {
   float: right; }
 
 .Searchbar {
+  padding: 10px 16px; }
+
+@media (min-width: 768px) {
+  .Searchbar {
+    padding: 16px 24px; } }
+
+.Searchbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
   background-color: white;
   border-bottom: 1px solid #e8e8e8;
   transition: box-shadow 0.3s ease;
