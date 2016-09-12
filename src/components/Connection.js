@@ -55,6 +55,10 @@ const Connection = ({params: {index}, connect, connections, connectJet, changeCo
       </div>
       <form>
         <Textfield
+          autoCapitalize='off'
+          autoComplete='off'
+          autoCorrect='off'
+          spellCheck='off'
           onChange={onChangeInput}
           name='url'
           type='text'
