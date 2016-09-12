@@ -27,7 +27,6 @@ store.subscribe(() => {
 const settings = store.getState().settings
 if (settings && settings.connection && settings.connection.url) {
   connect(settings.connection)(store.dispatch)
-  // fetch(settings.connection, radarGroupsExpression, 'groups')(store.dispatch)
 }
 
 render(
