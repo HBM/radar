@@ -18,7 +18,12 @@ const flatObject = (value) => {
 const toNameValue = (flat) => {
   return Object.keys(flat)
     .sort(function (a, b) {
-      return a - b
+      if (a > b) {
+        return 1
+      } else if (a < b) {
+        return -1
+      }
+      return 0
     })
     .map(function (key) {
       return {name: key, value: flat[key]}
