@@ -20,6 +20,7 @@ const stateAvatar = <span className='State-avatar'>S</span>
 const createStateRow = (state, icon, onFocus) => {
   return (
     <Row
+      onClick={() => {}} // iOS Safari does not get focus event if no click handler is installed
       avatar={stateAvatar}
       primary={state.path}
       secondary={'State / ' + JSON.stringify(state.value)}

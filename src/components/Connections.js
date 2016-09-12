@@ -61,6 +61,7 @@ const Connections = ({
       primary={con.name || con.url || 'New Connection'}
       secondary={subtitle}
       icon={icon}
+      onClick={() => {}} // iOS Safari does not get focus event if no click handler is installed
       onFocus={onSelect}
       key={index} />
   }
