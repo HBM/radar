@@ -54,7 +54,7 @@
 }
 
 @include medium {
-  .Split-right-back {
+  .Split-right .State-hero > button {
     display: none;
   }
 }
