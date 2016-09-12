@@ -1,18 +1,28 @@
 @import "../node_modules/hbm-react-components/css/mixins";
 /** overwrite hbm style */
-#app main {
+
+body {
+  padding-top: 48px;
   @include medium {
-    /**
-     * Cards have a margin of 8px => left = 40px and top = 20px
-     */
-    padding-right: 0;
-    padding-left: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    width: 100%;
-    margin-left: initial;
-    margin-right: initial;
+    padding-top: 64px;
   }
+}
+
+html {
+  background-color: white;
+}
+
+#app main {
+  /**
+   * Cards have a margin of 8px => left = 40px and top = 20px
+   */
+  padding-right: 0;
+  padding-left: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  width: 100%;
+  margin-left: initial;
+  margin-right: initial;
 
   @include large {
     width: 100%;
@@ -25,7 +35,9 @@
 }
 
 #app .Header-title {
-  margin-left: 24px;
+  @include xlarge {
+    margin-left: 24px;
+  }
 }
 
 #app .Card {

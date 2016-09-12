@@ -17,18 +17,18 @@ const createMethodRow = (method, icon, onFocus) => (
 
 const stateAvatar = <span className='State-avatar'>S</span>
 
-const createStateRow = (state, icon, onFocus) => (
-  <Link to={'/search/' + encodeURIComponent(state.path)}>
-  <Row
-    avatar={stateAvatar}
-    primary={state.path}
-    secondary={'State / ' + JSON.stringify(state.value)}
-    icon={icon}
-    key={state.path}
-    onFocus={onFocus}
-	/>
-  </Link>
-)
+const createStateRow = (state, icon, onFocus) => {
+  return (
+    <Row
+      avatar={stateAvatar}
+      primary={state.path}
+      secondary={'State / ' + JSON.stringify(state.value)}
+      icon={icon}
+      key={state.path}
+      onFocus={onFocus}
+    />
+  )
+}
 
 const StateAndMethodList = ({statesAndMethods, iconCreator = () => {}, onSelect}) => {
   const rows = statesAndMethods

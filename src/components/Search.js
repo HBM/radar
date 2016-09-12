@@ -6,7 +6,8 @@ import { Icon } from 'hbm-react-components'
 import SearchBar from './SearchBar'
 import classNames from 'classnames'
 import StateAndMethodList from './StateAndMethodList'
-import { withRouter, Link } from 'react-router'
+import { withRouter } from 'react-router'
+import { Split, SplitRight, SplitLeft } from './Split'
 
 class Search extends React.Component {
   constructor (props) {
@@ -52,8 +53,7 @@ class Search extends React.Component {
   }
 
   onSelect = (stateOrMethod) => {
-    console.log('select', stateOrMethod.path)
-    //this.props.router.push('/search/' + encodeURIComponent(stateOrMethod.path))
+    this.props.router.push('/search/' + encodeURIComponent(stateOrMethod.path))
   }
 
   render () {
@@ -67,19 +67,19 @@ class Search extends React.Component {
     const {statesAndMethods, toggleFavorite, favorites, children} = this.props
 
     return (
-      <div className='Split Search'>
-        <div className='Split-left'>
+      <Split className='Search'>
+        <SplitLeft>
           <SearchBar
             onChange={this.onChange}
             onSubmit={this.onSubmit}
             terms={this.state.containsAllOf}
           />
           <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
-        </div>
-        <div className={classNames('Split-right', {'Split-right--visible': children})}>
-          {children && React.cloneElement(children, {statesAndMethods})}
-        </div>
-      </div>
+        </SplitLeft>
+        <SplitRight>
+          {children && React.cloneElement(children, {statesAndMethods, key: 'search/details'})}
+        </SplitRight>
+      </Split>
     )
   }
 }

@@ -6,6 +6,7 @@ import { withRouter } from 'react-router'
 import { Icon } from 'hbm-react-components'
 import classNames from 'classnames'
 import StateAndMethodList from './StateAndMethodList'
+import { Split, SplitRight, SplitLeft } from './Split'
 
 class Group extends React.Component {
   updateFetch (groups, nextGroup) {
@@ -55,14 +56,14 @@ class Group extends React.Component {
     }
 
     return (
-      <div className='Split Group'>
-        <div className='Split-left'>
+      <Split className='Group'>
+        <SplitLeft>
           <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
-        </div>
-        <div className='Split-right'>
+        </SplitLeft>
+        <SplitRight>
           {children && React.cloneElement(children, {statesAndMethods})}
-        </div>
-      </div>
+        </SplitRight>
+      </Split>
     )
   }
 }

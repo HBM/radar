@@ -1,7 +1,8 @@
 import React from 'react'
 import * as actions from 'redux-jet'
 import { connect } from 'react-redux'
-import { Button, Textfield } from 'hbm-react-components'
+import { Button, Textfield, Icon } from 'hbm-react-components'
+import { withRouter } from 'react-router'
 
 export class Method extends React.Component {
 
@@ -33,6 +34,7 @@ export class Method extends React.Component {
     return (
       <div className='State'>
         <div className='State-hero'>
+          <Icon.ChevronLeft width={30} height={30} className='Split-right-back' onClick={() => this.props.router.goBack()} />
           <h1>{this.props.method.path}</h1>
         </div>
         <form onSubmit={this.onSubmit} >
@@ -57,4 +59,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, actions)(Method)
+export default withRouter(connect(mapStateToProps, actions)(Method))
