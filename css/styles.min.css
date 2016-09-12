@@ -1253,6 +1253,10 @@ body {
 html {
   background-color: white; }
 
+#app .Checkbox {
+  position: relative;
+  left: -8px; }
+
 #app main {
   /**
    * Cards have a margin of 8px => left = 40px and top = 20px
