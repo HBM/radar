@@ -55,7 +55,7 @@ class App extends React.Component {
     return (
       <div>
         <Header title='Radar' subtitle={this.state.subtitle} >
-          <Link to='/connections' >
+          <Link to='/connections' onClick={() => { this.setState({subtitle: 'Settings'}) }} >
             <Icon.Settings fill='white' />
           </Link>
         </Header>

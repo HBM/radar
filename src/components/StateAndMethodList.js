@@ -1,6 +1,5 @@
 import React from 'react'
 import { List, Row } from 'hbm-react-components'
-import { Link } from 'react-router'
 
 const methodAvatar = <span className='Method-avatar'>M</span>
 
