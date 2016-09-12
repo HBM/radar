@@ -36,13 +36,20 @@ const Connection = ({params: {index}, connect, connections, connectJet, changeCo
     }
     return false
   }
+
   const onChangeInput = (e) => {
     onChange(e.target.name, e.target.value)
   }
+
+  const goBack = () => {
+    const backUrl = '/' + window.location.hash.split('/').slice(1, -1).join('/')
+    router.push(backUrl)
+  }
+
   return (
     <div className='State'>
       <div className='State-hero'>
-        <Icon.ChevronLeft width={30} height={30} className='Split-right-back' onClick={() => router.goBack()} />
+        <Icon.ChevronLeft width={30} height={30} className='Split-right-back' onClick={() => goBack()} />
         <h1>
           <input
             type='text'
@@ -53,7 +60,7 @@ const Connection = ({params: {index}, connect, connections, connectJet, changeCo
            />
         </h1>
       </div>
-      <form>
+      <form onSubmit={(e) => { e.preventDefault() }}>
         <Textfield
           autoCapitalize='off'
           autoComplete='off'
@@ -86,7 +93,7 @@ const Connection = ({params: {index}, connect, connections, connectJet, changeCo
           float={false}
           disabled={!connection.user} />
         <hr />
-        <Button onClick={() => { connectJet(connection) }} raised disabled={error() && true}>
+        <Button type='submit' onClick={() => { connectJet(connection) }} raised disabled={error() && true}>
           Connect
         </Button>
       </form>

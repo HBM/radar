@@ -22,7 +22,7 @@ const FirstChild = ({children}) => {
   return React.Children.toArray(children)[0] || null
 }
 
-export const SplitRight = ({children, onClose}) => {
+export const SplitRight = ({children}) => {
   return (
     <div className={classNames('Split-right', {'Split-right--visible': children})}>
       <ReactCSSTransitionGroup

@@ -19,7 +19,6 @@ export default class SearchBar extends React.Component {
   }
 
   onChange = (value) => {
-    console.log('C', value)
     this.props.onChange(value.map(v => v.text))
   }
 
@@ -43,7 +42,7 @@ export default class SearchBar extends React.Component {
         <Chip
           ref={(s) => { chips = s }}
           onChange={this.onChange}
-          placeholder='Enter path fragments'
+          placeholder={terms.length === 0 ? 'Enter path fragments' : ''}
           value={termsChips}
           delimiters={[spaceCode, enterCode]}
           onFocus={this.onFocus}

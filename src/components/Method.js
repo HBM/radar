@@ -30,11 +30,18 @@ export class Method extends React.Component {
     }
   }
 
+  goBack = () => {
+    const backUrl = '/' + window.location.hash.split('/').slice(1, -1).join('/')
+    this.props.router.push(backUrl)
+  }
+
   render () {
     return (
       <div className='State'>
         <div className='State-hero'>
-          <Icon.ChevronLeft width={30} height={30} className='Split-right-back' onClick={() => this.props.router.goBack()} />
+          <Icon.Button onClick={() => this.goBack()} >
+            <Icon.ChevronLeft width={30} height={30} className='Split-right-back' />
+          </Icon.Button>
           <h1>{this.props.method.path}</h1>
         </div>
         <form onSubmit={this.onSubmit} >

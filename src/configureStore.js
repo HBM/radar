@@ -11,9 +11,16 @@ const configureStore = () => {
     middlewares.push(createLogger())
   }
 
+  const prevState = loadState()
+  let isCompatible
+  if (prevState && prevState.settings && prevState.settings.version === '1.0.0') {
+    console.log('compat')
+    isCompatible = true
+  }
+
   const store = createStore(
     radar,
-    loadState(),
+    isCompatible ? prevState : {},
     applyMiddleware(...middlewares)
   )
   store.subscribe(throttle(() => {

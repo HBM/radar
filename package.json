@@ -52,6 +52,7 @@
     "handlebars": "^4.0.5",
     "mocha": "^2.5.3",
     "node-sass": "^3.8.0",
+    "react-fastclick": "^2.1.2",
     "selenium-download": "^2.0.1",
     "selenium-webdriver": "^2.53.2",
     "standard": "^7.1.2",

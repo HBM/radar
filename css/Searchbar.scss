@@ -1,10 +1,19 @@
 @import "../node_modules/hbm-react-components/css/mixins";
 
 .Searchbar {
+  padding: 10px 16px;
+}
+
+@include medium {
+  .Searchbar {
+    padding: 16px 24px;
+  }
+}
+
+.Searchbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
   background-color: white;
   border-bottom: 1px solid #e8e8e8;
   transition: box-shadow 0.3s ease;

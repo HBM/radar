@@ -105,7 +105,11 @@ const data = combineReducers({
   group: array('group')
 })
 
-const settings = combineReducers({search, favorites, connection, connections})
+const version = (state = '1.0.0') => {
+  return state
+}
+
+const settings = combineReducers({search, favorites, connection, connections, version})
 
 const radar = combineReducers({settings, data, message})
 
