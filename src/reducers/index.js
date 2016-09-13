@@ -57,6 +57,8 @@ const message = (state = null, action) => {
   switch (action.type) {
     case 'JET_CONNECT_SUCCESS':
       return {text: `Connected to ${action.url}`}
+    case 'JET_CONNECT_FAILURE':
+      return {text: `Failed to connect to ${action.url}`}
     case 'JET_SET_SUCCESS':
       return {text: `State ${action.path} set successfully`}
     case 'JET_SET_FAILURE':
