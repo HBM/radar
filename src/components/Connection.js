@@ -49,7 +49,9 @@ const Connection = ({params: {index}, connect, connections, connectJet, changeCo
   return (
     <div className='State'>
       <div className='State-hero'>
-        <Icon.ChevronLeft width={30} height={30} className='Split-right-back' onClick={() => goBack()} />
+        <Icon.Button onClick={() => goBack()} >
+          <Icon.ChevronLeft width={30} height={30} className='Split-right-back' />
+        </Icon.Button>
         <h1>
           <input
             type='text'

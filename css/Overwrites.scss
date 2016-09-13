@@ -17,6 +17,21 @@ html {
   left: -8px;
 }
 
+#app {
+  @include medium {
+    .List-row {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+  @include xlarge {
+    .List-row {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+  }
+}
+
 #app main {
   /**
    * Cards have a margin of 8px => left = 40px and top = 20px

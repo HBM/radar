@@ -6,7 +6,7 @@ import { Icon } from 'hbm-react-components'
 import SearchBar from './SearchBar'
 import classNames from 'classnames'
 import StateAndMethodList from './StateAndMethodList'
-import { withRouter } from 'react-router'
+import { withRouter, Link } from 'react-router'
 import { Split, SplitRight, SplitLeft } from './Split'
 
 class Search extends React.Component {
@@ -56,13 +56,34 @@ class Search extends React.Component {
     this.props.router.push('/search/' + encodeURIComponent(stateOrMethod.path))
   }
 
-  render () {
-    const createStar = (path) => {
-      return <Icon.Star
-        onClick={() => toggleFavorite(path)}
-        className={classNames('Icon Fetch Star', {'Star--active': (favorites.indexOf(path) > -1)})}
-      />
+  renderContent () {
+    const {statesAndMethods, toggleFavorite, favorites, connection} = this.props
+    if (!connection.isConnected) {
+      return (
+        <div className='Info'>
+          <h3>Not connected</h3>
+	  <span>Please setup a <Link to='connections'>connection</Link> first</span>.
+        </div>
+      )
     }
+    if (statesAndMethods.length > 0) {
+      const createStar = (path) => {
+        return <Icon.Star
+          onClick={() => toggleFavorite(path)}
+          className={classNames('Icon Fetch Star', {'Star--active': (favorites.indexOf(path) > -1)})}
+        />
+      }
+      return <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
+    } else if (this.state.containsAllOf.length > 0) {
+      return <h3 className='Info'>No Matches for search</h3>
+    } else if (this.state.containsAllOf.length === 0) {
+      return <h3 className='Info'>Enter at least one search term</h3>
+    } else {
+      return <h3>ARG</h3>
+    }
+  }
+
+  render () {
 
     const {statesAndMethods, toggleFavorite, favorites, children} = this.props
 
@@ -74,7 +95,7 @@ class Search extends React.Component {
             onSubmit={this.onSubmit}
             terms={this.state.containsAllOf}
           />
-          <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
+	  {this.renderContent()}
         </SplitLeft>
         <SplitRight>
           {children && React.cloneElement(children, {statesAndMethods, key: 'search/details'})}
