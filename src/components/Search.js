@@ -62,7 +62,7 @@ class Search extends React.Component {
       return (
         <div className='Info'>
           <h3>Not connected</h3>
-	  <span>Please setup a <Link to='connections'>connection</Link> first</span>.
+          <span>Please setup a <Link to='connections'>connection</Link> first.</span>
         </div>
       )
     }
@@ -84,8 +84,7 @@ class Search extends React.Component {
   }
 
   render () {
-
-    const {statesAndMethods, toggleFavorite, favorites, children} = this.props
+    const {statesAndMethods, children} = this.props
 
     return (
       <Split className='Search'>
@@ -95,7 +94,7 @@ class Search extends React.Component {
             onSubmit={this.onSubmit}
             terms={this.state.containsAllOf}
           />
-	  {this.renderContent()}
+          {this.renderContent()}
         </SplitLeft>
         <SplitRight>
           {children && React.cloneElement(children, {statesAndMethods, key: 'search/details'})}

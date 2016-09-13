@@ -43,7 +43,7 @@ class Favorites extends React.Component {
       return (
         <div className='Info'>
           <h3>Not connected</h3>
-	  <span>Please setup a <Link to='connections'>connection</Link> first</span>.
+          <span>Please setup a <Link to='connections'>connection</Link> first.</span>
         </div>
       )
     }
@@ -65,11 +65,10 @@ class Favorites extends React.Component {
   render () {
     const {children, statesAndMethods} = this.props
 
-
     return (
       <Split className='Favorites'>
         <SplitLeft>
-	  {this.renderContent()}
+          {this.renderContent()}
         </SplitLeft>
         <SplitRight>
           {children && React.cloneElement(children, {statesAndMethods})}
