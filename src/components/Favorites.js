@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 import * as jetActions from 'redux-jet'
-import { withRouter } from 'react-router'
+import { withRouter, Link } from 'react-router'
 import { Icon } from 'hbm-react-components'
 import StateAndMethodList from './StateAndMethodList'
 import { Split, SplitRight, SplitLeft } from './Split'
@@ -37,20 +37,38 @@ class Favorites extends React.Component {
     this.props.router.push('/favorites/' + encodeURIComponent(stateOrMethod.path))
   }
 
-  render () {
-    const {children, statesAndMethods, removeFavorite} = this.props
-
-    const createClear = (path) => {
-      return <Icon.RemoveCircle
-        onClick={() => removeFavorite(path)}
-        className='Icon Icon-Remove'
-        />
+  renderContent () {
+    const {statesAndMethods, removeFavorite, connection, favorites} = this.props
+    if (!connection.isConnected) {
+      return (
+        <div className='Info'>
+          <h3>Not connected</h3>
+          <span>Please setup a <Link to='connections'>connection</Link> first.</span>
+        </div>
+      )
     }
+    if (statesAndMethods.length > 0) {
+      const createClear = (path) => {
+        return <Icon.RemoveCircle
+          onClick={() => removeFavorite(path)}
+          className='Icon Icon-Remove'
+          />
+      }
+      return <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createClear} onSelect={this.onSelect} />
+    } else if (favorites.length === 0) {
+      return <h3 className='Info'>Your favorites list is empty</h3>
+    } else {
+      return <h3 className='Info'>None of your favorites is available</h3>
+    }
+  }
+
+  render () {
+    const {children, statesAndMethods} = this.props
 
     return (
       <Split className='Favorites'>
         <SplitLeft>
-          <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createClear} onSelect={this.onSelect} />
+          {this.renderContent()}
         </SplitLeft>
         <SplitRight>
           {children && React.cloneElement(children, {statesAndMethods})}
