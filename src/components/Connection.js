@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { connect as connectJet } from 'redux-jet'
+import { connect as connectJet, close as closeJet } from 'redux-jet'
 import * as actions from '../actions'
 import url from 'url'
 import { Textfield, Button, Icon } from 'hbm-react-components'
@@ -15,8 +15,19 @@ const isValidWebSocketUrl = (urlString) => {
   }
 }
 
-const Connection = ({params: {index}, connect, connections, connectJet, changeConnection, router}) => {
+const Connection = ({
+  params: {index},
+  connect,
+  connections,
+  connectJet,
+  closeJet,
+  current,
+  changeConnection,
+  router}) => {
   let connection = connections[index]
+
+  const isConnected = connection.url === current.url && connection.user === current.user
+  console.log(isConnected, connection, current)
 
   const onChange = (key, value) => {
     if (value === '') {
@@ -95,9 +106,14 @@ const Connection = ({params: {index}, connect, connections, connectJet, changeCo
           float={false}
           disabled={!connection.user} />
         <hr />
-        <Button type='submit' onClick={() => { connectJet(connection) }} raised disabled={error() && true}>
-          Connect
-        </Button>
+        {!isConnected
+          ? <Button type='submit' onClick={() => { connectJet(connection) }} raised disabled={error() && true}>
+              Connect
+          </Button>
+          : <Button type='submit' onClick={() => { closeJet(connection) }} raised disabled={error() && true}>
+              Disconnect
+          </Button>
+        }
       </form>
     </div>
   )
@@ -105,8 +121,9 @@ const Connection = ({params: {index}, connect, connections, connectJet, changeCo
 
 const mapStateToProps = (state) => {
   return {
-    connections: state.settings.connections
+    connections: state.settings.connections,
+    current: state.settings.connection
   }
 }
 
-export default withRouter(connect(mapStateToProps, {...actions, connectJet})(Connection))
+export default withRouter(connect(mapStateToProps, {...actions, connectJet, closeJet})(Connection))

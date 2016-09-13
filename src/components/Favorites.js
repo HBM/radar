@@ -56,9 +56,22 @@ class Favorites extends React.Component {
       }
       return <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createClear} onSelect={this.onSelect} />
     } else if (favorites.length === 0) {
-      return <h3 className='Info'>Your favorites list is empty</h3>
+      return (
+        <div className='Info'>
+          <h3>Your favorites list is empty</h3>
+          <span>You can add favorites from the <Link to='/search'>search</Link> view.</span>
+        </div>
+      )
     } else {
-      return <h3 className='Info'>None of your favorites is available</h3>
+      return (
+        <div className='Info'>
+          <h3>None of your favorites is available</h3>
+          <span>There are your favorites:</span>
+          <ul>
+            {favorites.sort().map(fav => <li>{fav}</li>)}
+          </ul>
+        </div>
+      )
     }
   }
 

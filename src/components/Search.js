@@ -75,11 +75,19 @@ class Search extends React.Component {
       }
       return <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
     } else if (this.state.containsAllOf.length > 0) {
-      return <h3 className='Info'>No Matches for search</h3>
-    } else if (this.state.containsAllOf.length === 0) {
-      return <h3 className='Info'>Enter at least one search term</h3>
+      return (
+        <div className='Info'>
+          <h3>No Matches for search</h3>
+          <span>Try a different search term</span>
+        </div>
+      )
     } else {
-      return <h3>ARG</h3>
+      return (
+        <div className='Info'>
+          <h3>Enter at least one search term</h3>
+          <span>State and Method names are matched case insensitive against your search terms</span>
+        </div>
+      )
     }
   }
 
