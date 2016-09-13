@@ -1067,6 +1067,9 @@ nav.is-visible {
   position: relative;
   overflow: hidden; }
 
+.Split-left {
+  background-color: white; }
+
 .Split-right {
   position: fixed;
   left: 0;
@@ -1257,6 +1260,16 @@ html {
   position: relative;
   left: -8px; }
 
+@media (min-width: 768px) {
+  #app .List-row {
+    padding-left: 16px;
+    padding-right: 16px; } }
+
+@media (min-width: 1200px) {
+  #app .List-row {
+    padding-left: 24px;
+    padding-right: 24px; } }
+
 #app main {
   /**
    * Cards have a margin of 8px => left = 40px and top = 20px
@@ -1302,6 +1315,10 @@ html {
 
 .State-avatar {
   background-color: #4bc6d4; }
+
+.Info {
+  text-align: center;
+  margin: 30px auto; }
 
 .Icon {
   fill: #505050;
