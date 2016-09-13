@@ -41,12 +41,13 @@ const typedValue = (type, onChange) => (event) => {
   onChange(event)
 }
 
-const createInput = (onChange) => (nvp) => {
+const createInput = (onChange, disabled) => (nvp) => {
   const type = typeof nvp.value
   switch (typeof nvp.value) {
     case 'string':
     case 'number':
       return <Textfield
+        disabled={disabled}
         name={nvp.name}
         type={type === 'string' ? 'text' : 'number'}
         value={nvp.value}
@@ -56,6 +57,7 @@ const createInput = (onChange) => (nvp) => {
       />
     case 'boolean':
       return <Checkbox
+        disabled={disabled}
         name={nvp.name}
         checked={nvp.value}
         label={nvp.name}
@@ -120,7 +122,7 @@ export class State extends React.Component {
           <h1>{this.props.state.path}</h1>
         </div>
         <form onSubmit={this.onSubmit} >
-          {nvps.map(createInput(this.assignToFormData))}
+          {nvps.map(createInput(this.assignToFormData, this.props.state.fetchOnly))}
           <hr />
           <Button type='submit' raised disabled={!hasChanges}>Apply</Button>
         </form>
