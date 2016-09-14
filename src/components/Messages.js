@@ -38,11 +38,9 @@ class Messages extends React.Component {
       primary = `Single Message - ${message.string.length} bytes`
     }
 
-
     const onSelect = () => {
-      // this.props.router.push('/messages/' + encodeURIComponent(message))
+      this.props.router.push('/messages/' + encodeURIComponent(message.id))
     }
-      console.log(message)
 
     return (
       <Row
