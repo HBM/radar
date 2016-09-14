@@ -26,7 +26,7 @@ store.subscribe(() => {
 
 const settings = store.getState().settings
 if (settings && settings.connection && settings.connection.url) {
-  connect(settings.connection)(store.dispatch)
+  connect(settings.connection, true)(store.dispatch)
 }
 
 render(

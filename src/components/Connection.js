@@ -107,7 +107,7 @@ const Connection = ({
           disabled={!connection.user} />
         <hr />
         {!isConnected
-          ? <Button type='submit' onClick={() => { connectJet(connection) }} raised disabled={error() && true}>
+          ? <Button type='submit' onClick={() => { connectJet(connection, true) }} raised disabled={error() && true}>
               Connect
           </Button>
           : <Button type='submit' onClick={() => { closeJet(connection) }} raised disabled={error() && true}>

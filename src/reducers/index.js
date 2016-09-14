@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import { sorted, array, single } from 'redux-jet'
+import uuid from 'uuid'
 
 const favorites = (state = [], action) => {
   const addFavorite = () => [...state, action.path]
@@ -100,11 +101,22 @@ const connection = (state = {isConnected: false}, action) => {
   }
 }
 
+const messages = (state = [], action) => {
+  const maxLength = 300
+  switch (action.type) {
+    case 'JET_DEBUG':
+      return [{...action, id: uuid.v1()}, ...state.slice(0, maxLength - 1)]
+    default:
+      return state
+  }
+}
+
 const data = combineReducers({
   favorites: sorted('favorites'),
   search: sorted('search'),
   groups: single('groups'),
-  group: array('group')
+  group: array('group'),
+  messages
 })
 
 const version = (state = '1.0.0') => {
