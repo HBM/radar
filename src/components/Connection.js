@@ -27,7 +27,6 @@ const Connection = ({
   let connection = connections[index]
 
   const isConnected = connection.url === current.url && connection.user === current.user
-  console.log(isConnected, connection, current)
 
   const onChange = (key, value) => {
     if (value === '') {
@@ -107,7 +106,7 @@ const Connection = ({
           disabled={!connection.user} />
         <hr />
         {!isConnected
-          ? <Button type='submit' onClick={() => { connectJet(connection) }} raised disabled={error() && true}>
+          ? <Button type='submit' onClick={() => { connectJet(connection, true) }} raised disabled={error() && true}>
               Connect
           </Button>
           : <Button type='submit' onClick={() => { closeJet(connection) }} raised disabled={error() && true}>

@@ -52,6 +52,7 @@ class App extends React.Component {
     if (groups && groups.length > 0) {
       links.push({text: 'Groups', link: '/groups', links: groups.map(groupToLink)})
     }
+    links.push({text: 'Messages', link: '/messages'})
     return (
       <div>
         <Header title='Radar' subtitle={this.state.subtitle} >
