@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux'
 import { sorted, array, single } from 'redux-jet'
-import uuid from 'uuid'
 
 const favorites = (state = [], action) => {
   const addFavorite = () => [...state, action.path]
@@ -101,11 +100,71 @@ const connection = (state = {isConnected: false}, action) => {
   }
 }
 
+const toMessage = (json) => {
+  let message = {
+    messageId: json.id
+  }
+  if (json.method && json.id !== undefined) {
+    message.type = 'Request'
+    message.params = json.params
+    message.method = json.method
+  } else if (json.result !== undefined || json.error !== undefined) {
+    message.type = 'Response'
+    message.result = json.result
+    message.error = json.error
+  } else if (json.method) {
+    message.type = 'Notification'
+    message.params = json.params
+    message.method = json.method
+  } else {
+    console.log(json.result, json.error)
+    message.type = 'Invalid JSON-RPC'
+  }
+  return message
+}
+
+export const toFormatedMessages = (messages) => {
+  let formatedMessages = []
+  messages.forEach(message => {
+    if (!message.json) {
+      formatedMessages.push({
+        type: 'Invalid JSON',
+        payload: message.string,
+	direction: message.direction,
+	uid: message.uid,
+	timestamp: message.timestamp	
+      })
+    } else if (Array.isArray(message.json)) {
+      const tmp = message.json.map((json, index) => {
+        return {
+	  ...toMessage(json),
+	  batchIndex: index,
+	  uid: message.uid,
+	  timestamp: message.timestamp,
+	  direction: message.direction
+	}
+      })
+      formatedMessages = formatedMessages.concat(tmp)
+    } else {
+      formatedMessages.push({
+	...toMessage(message.json),
+	uid: message.uid,
+	timestamp: message.timestamp,
+	direction: message.direction
+      })
+    }
+  })
+  return formatedMessages
+}
+
 const messages = (state = [], action) => {
   const maxLength = 300
   switch (action.type) {
+    case 'JET_CONNECT_REQUEST':
+      return []
     case 'JET_DEBUG':
-      return [{...action, id: uuid.v1()}, ...state.slice(0, maxLength - 1)]
+      const uid = (state[0] && state[0].uid || 0) + 1
+      return [{...action, uid: uid}, ...state.slice(0, maxLength - 1)]
     default:
       return state
   }

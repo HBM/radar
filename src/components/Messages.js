@@ -4,51 +4,20 @@ import * as actions from '../actions'
 import { withRouter } from 'react-router'
 import { Icon, List, Row } from 'hbm-react-components'
 import { Split, SplitRight, SplitLeft } from './Split'
+import { toFormatedMessages } from '../reducers'
 import moment from 'moment'
-
-const isRequest = (message) => {
-  if (message.method && typeof message.id !== 'undefined') {
-    return true
-  }
-  return false
-}
-
-const isResponse = (message) => {
-  if (!message.method && typeof message.id !== 'undefined') {
-    return true
-  }
-  return false
-}
-
-const isNotification = (message) => {
-  if (!message.method && typeof message.id === 'undefined') {
-    return true
-  }
-  return false
-}
 
 class Messages extends React.Component {
 
   toMessageRow = (message) => {
     const icon = message.direction === 'in' ? <Icon.FlightLand /> : <Icon.FlightTakeoff />
-    let primary
-    if (Array.isArray(message.json)) {
-      primary = `Batch Message - ${message.string.length} bytes`
-    } else {
-      primary = `Single Message - ${message.string.length} bytes`
-    }
-
-    const onSelect = () => {
-      this.props.router.push('/messages/' + encodeURIComponent(message.id))
-    }
 
     return (
       <Row
-        primary={primary}
+        primary={message.type}
         secondary={moment(message.timestamp).fromNow()}
-        key={message.id}
+        key={message.uid}
         icon={icon}
-        onFocus={onSelect}
       />
     )
   }
@@ -75,7 +44,7 @@ class Messages extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    messages: state.data.messages
+    messages: toFormatedMessages(state.data.messages)
   }
 }
 
