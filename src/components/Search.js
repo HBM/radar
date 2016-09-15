@@ -42,7 +42,6 @@ class Search extends React.Component {
   }
 
   onChange = (terms) => {
-    console.log(terms)
     this.setState({containsAllOf: terms})
   }
 

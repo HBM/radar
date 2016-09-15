@@ -102,7 +102,8 @@ const connection = (state = {isConnected: false}, action) => {
 
 const toMessage = (json) => {
   let message = {
-    messageId: json.id
+    messageId: json.id,
+    json
   }
   if (json.method && json.id !== undefined) {
     message.type = 'Request'
@@ -117,7 +118,6 @@ const toMessage = (json) => {
     message.params = json.params
     message.method = json.method
   } else {
-    console.log(json.result, json.error)
     message.type = 'Invalid JSON-RPC'
   }
   return message
@@ -130,27 +130,27 @@ export const toFormatedMessages = (messages) => {
       formatedMessages.push({
         type: 'Invalid JSON',
         payload: message.string,
-	direction: message.direction,
-	uid: message.uid,
-	timestamp: message.timestamp	
+        direction: message.direction,
+        uid: message.uid,
+        timestamp: message.timestamp
       })
     } else if (Array.isArray(message.json)) {
       const tmp = message.json.map((json, index) => {
         return {
-	  ...toMessage(json),
-	  batchIndex: index,
-	  uid: message.uid,
-	  timestamp: message.timestamp,
-	  direction: message.direction
-	}
+          ...toMessage(json),
+          batchIndex: index,
+          uid: message.uid,
+          timestamp: message.timestamp,
+          direction: message.direction
+        }
       })
       formatedMessages = formatedMessages.concat(tmp)
     } else {
       formatedMessages.push({
-	...toMessage(message.json),
-	uid: message.uid,
-	timestamp: message.timestamp,
-	direction: message.direction
+        ...toMessage(message.json),
+        uid: message.uid,
+        timestamp: message.timestamp,
+        direction: message.direction
       })
     }
   })
@@ -170,12 +170,26 @@ const messages = (state = [], action) => {
   }
 }
 
+const traffic = (state = {in: 0, out: 0}, action) => {
+  switch (action.type) {
+    case 'JET_CONNECT_REQUEST':
+      return {in: 0, out: 0}
+    case 'JET_DEBUG':
+      let newState = {...state}
+      newState[action.direction] += action.string.length
+      return newState
+    default:
+      return state
+  }
+}
+
 const data = combineReducers({
   favorites: sorted('favorites'),
   search: sorted('search'),
   groups: single('groups'),
   group: array('group'),
-  messages
+  messages,
+  traffic
 })
 
 const version = (state = '1.0.0') => {

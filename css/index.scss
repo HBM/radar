@@ -29,6 +29,73 @@
   background-color: #9f85ea;
 }
 
+.Traffic {
+    padding-left: 16px;
+    padding-right: 16px;
+  @include xlarge {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  padding-bottom: 10px;
+  border-bottom: 1px solid gainsboro;
+}
+
+.Traffic h3 {
+  margin: 0;
+  padding: 14px 0;
+}
+
+.Traffic-stats {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Messages textarea {
+  width: 80%;
+  background-color: transparent;
+  border: none;
+}
+
+.Traffic-stat {
+  display: inline-block;
+  span:first-child {
+    margin-right: 4px;
+  }
+  span:nth-child(2) {
+    margin-right: 20px;
+    font-weight: bold;
+  }
+}
+
+.Traffic-stat-in span:nth-child(2){
+  color: #ae45af;
+}
+
+.Traffic-stat-out span:nth-child(2){
+  color: #71a2ff;
+}
+
+.Message-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  color: white;
+  font-size: 16px;
+}
+
+.Message-avatar-in {
+  background-color: #ae45af;
+}
+
+.Message-avatar-out {
+  background-color: #71a2ff;
+}
+
 .State-avatar {
   background-color: #4bc6d4;
 }

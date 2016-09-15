@@ -9,7 +9,6 @@ import Connections from './Connections'
 import Connection from './Connection'
 import Group from './Group'
 import Messages from './Messages'
-import Message from './Message'
 
 const Root = ({ store }) => (
   <Provider store={store}>
@@ -28,9 +27,7 @@ const Root = ({ store }) => (
         <Route path='groups/:group' component={Group}>
           <Route path=':path' component={Details} />
         </Route>
-        <Route path='messages' component={Messages}>
-          <Route path=':id' component={Message} />
-        </Route>
+        <Route path='messages' component={Messages} />
       </Route>
     </Router>
   </Provider>

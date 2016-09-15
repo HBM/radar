@@ -27,7 +27,6 @@ const Connection = ({
   let connection = connections[index]
 
   const isConnected = connection.url === current.url && connection.user === current.user
-  console.log(isConnected, connection, current)
 
   const onChange = (key, value) => {
     if (value === '') {
