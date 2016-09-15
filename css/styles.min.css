@@ -464,7 +464,7 @@ header {
   left: 0;
   right: 0;
   top: 0;
-  z-index: 2;
+  z-index: 102;
   transition: box-shadow 0.5s ease; }
   @media (min-width: 768px) {
     header {
@@ -540,7 +540,7 @@ nav {
   transform: translateX(-240px);
   transition-duration: 0.2s;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 4;
+  z-index: 104;
   overflow: auto; }
   @media (min-width: 1200px) {
     nav {
@@ -587,7 +587,7 @@ nav.is-visible {
 .Navigation-hamburger {
   fill: #fff;
   position: fixed;
-  z-index: 2;
+  z-index: 102;
   top: 0;
   left: 4px; }
   @media (min-width: 768px) {
@@ -600,7 +600,7 @@ nav.is-visible {
 .Navigation-overlay {
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
-  z-index: 3;
+  z-index: 103;
   top: 0;
   right: 0;
   bottom: 0;
@@ -1312,6 +1312,67 @@ html {
 
 .Method-avatar {
   background-color: #9f85ea; }
+
+.Traffic {
+  padding-left: 16px;
+  padding-right: 16px;
+  min-height: 71px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid gainsboro; }
+  @media (min-width: 1200px) {
+    .Traffic {
+      padding-left: 24px;
+      padding-right: 24px; } }
+
+.Traffic h3 {
+  margin: 0;
+  padding: 14px 0; }
+
+.Traffic-stats {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; }
+  @media (min-width: 768px) {
+    .Traffic-stats {
+      font-size: 16px; } }
+
+.Messages textarea {
+  width: 80%;
+  background-color: transparent;
+  border: none;
+  line-height: 20px;
+  font-size: 14px; }
+
+.Traffic-stat {
+  display: inline-block; }
+  .Traffic-stat span:first-child {
+    margin-right: 4px; }
+  .Traffic-stat span:nth-child(2) {
+    margin-right: 20px;
+    font-weight: bold; }
+
+.Traffic-stat-in span:nth-child(2) {
+  color: #ae45af; }
+
+.Traffic-stat-out span:nth-child(2) {
+  color: #71a2ff; }
+
+.Message-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  color: white;
+  font-size: 16px; }
+
+.Message-avatar-in {
+  background-color: #ae45af; }
+
+.Message-avatar-out {
+  background-color: #71a2ff; }
 
 .State-avatar {
   background-color: #4bc6d4; }
