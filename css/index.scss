@@ -30,12 +30,13 @@
 }
 
 .Traffic {
-    padding-left: 16px;
-    padding-right: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
   @include xlarge {
     padding-left: 24px;
     padding-right: 24px;
   }
+  min-height: 71px;
   padding-bottom: 10px;
   border-bottom: 1px solid gainsboro;
 }
@@ -46,7 +47,10 @@
 }
 
 .Traffic-stats {
-  font-size: 16px;
+  font-size: 14px;
+  @include medium {
+    font-size: 16px;
+  }
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -56,6 +60,8 @@
   width: 80%;
   background-color: transparent;
   border: none;
+  line-height: 20px;
+  font-size: 14px;
 }
 
 .Traffic-stat {
