@@ -58,7 +58,7 @@ class Group extends React.Component {
     return (
       <Split className='Group'>
         <SplitLeft>
-          <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
+          <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} rootPath={'/groups/' + encodeURIComponent(this.props.params.group)} />
         </SplitLeft>
         <SplitRight>
           {children && React.cloneElement(children, {statesAndMethods})}

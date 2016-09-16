@@ -33,10 +33,6 @@ class Favorites extends React.Component {
     }
   }
 
-  onSelect = (stateOrMethod) => {
-    this.props.router.push('/favorites/' + encodeURIComponent(stateOrMethod.path))
-  }
-
   renderContent () {
     const {statesAndMethods, removeFavorite, connection, favorites} = this.props
     if (!connection.isConnected) {
@@ -54,7 +50,7 @@ class Favorites extends React.Component {
           className='Icon Icon-Remove'
           />
       }
-      return <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createClear} onSelect={this.onSelect} />
+      return <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createClear} rootPath='/favorites' />
     } else if (favorites.length === 0) {
       return (
         <div className='Info'>

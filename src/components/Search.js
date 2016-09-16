@@ -72,7 +72,7 @@ class Search extends React.Component {
           className={classNames('Icon Fetch Star', {'Star--active': (favorites.indexOf(path) > -1)})}
         />
       }
-      return <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
+      return <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} rootPath='/search' />
     } else if (this.state.containsAllOf.length > 0) {
       return (
         <div className='Info'>

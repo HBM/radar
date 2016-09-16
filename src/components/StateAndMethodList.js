@@ -17,7 +17,7 @@ const createMethodRow = (method, icon, onFocus) => (
 
 const stateAvatar = <span className='State-avatar'>S</span>
 
-const createStateRow = (state, icon, onFocus) => {
+const createStateRow = (state, icon, link) => {
   return (
     <Row
       onClick={() => {}} // iOS Safari does not get focus event if no click handler is installed
@@ -26,12 +26,12 @@ const createStateRow = (state, icon, onFocus) => {
       secondary={'State / ' + JSON.stringify(state.value)}
       icon={icon}
       key={state.path}
-      onFocus={onFocus}
+      linkTo={link}
     />
   )
 }
 
-const StateAndMethodList = ({statesAndMethods, iconCreator = () => {}, onSelect}) => {
+const StateAndMethodList = ({statesAndMethods, iconCreator = () => {}, rootPath}) => {
   const rows = statesAndMethods
     .sort((a, b) => {
       if (a.path < b.path) {
@@ -45,10 +45,10 @@ const StateAndMethodList = ({statesAndMethods, iconCreator = () => {}, onSelect}
     .map((stateOrMethod) => {
       if (typeof stateOrMethod.value === 'undefined') {
         const method = stateOrMethod
-        return createMethodRow(method, iconCreator(method.path), () => { onSelect(method) })
+        return createMethodRow(method, iconCreator(method.path), rootPath + '/' + encodeURIComponent(method.path))
       } else {
         const state = stateOrMethod
-        return createStateRow(state, iconCreator(state.path), () => { onSelect(state) })
+        return createStateRow(state, iconCreator(state.path), rootPath + '/' + encodeURIComponent(state.path))
       }
     })
 

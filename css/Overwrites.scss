@@ -19,13 +19,13 @@ html {
 
 #app {
   @include medium {
-    .List-row {
+    .List-row > a {
       padding-left: 16px;
       padding-right: 16px;
     }
   }
   @include xlarge {
-    .List-row {
+    .List-row > a {
       padding-left: 24px;
       padding-right: 24px;
     }
