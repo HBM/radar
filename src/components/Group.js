@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 import * as jetActions from 'redux-jet'
 import { withRouter } from 'react-router'
-import { Icon } from 'hbm-react-components'
+import { Icon } from 'md-components'
 import classNames from 'classnames'
 import StateAndMethodList from './StateAndMethodList'
 import { Split, SplitRight, SplitLeft } from './Split'
@@ -58,7 +58,7 @@ class Group extends React.Component {
     return (
       <Split className='Group'>
         <SplitLeft>
-          <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
+          <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} rootPath={'/groups/' + encodeURIComponent(this.props.params.group)} />
         </SplitLeft>
         <SplitRight>
           {children && React.cloneElement(children, {statesAndMethods})}

@@ -1,4 +1,4 @@
-@import "../node_modules/hbm-react-components/css/mixins";
+@import "../node_modules/md-components/css/mixins";
 /** overwrite hbm style */
 
 body {
@@ -19,17 +19,22 @@ html {
 
 #app {
   @include medium {
-    .List-row {
+    .List-row > a {
       padding-left: 16px;
       padding-right: 16px;
     }
   }
   @include xlarge {
-    .List-row {
+    .List-row > a {
       padding-left: 24px;
       padding-right: 24px;
     }
   }
+}
+
+#app .List {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 #app main {

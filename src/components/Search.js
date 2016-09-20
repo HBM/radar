@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 import * as jetActions from 'redux-jet'
-import { Icon } from 'hbm-react-components'
+import { Icon } from 'md-components'
 import SearchBar from './SearchBar'
 import classNames from 'classnames'
 import StateAndMethodList from './StateAndMethodList'
@@ -72,7 +72,7 @@ class Search extends React.Component {
           className={classNames('Icon Fetch Star', {'Star--active': (favorites.indexOf(path) > -1)})}
         />
       }
-      return <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} onSelect={this.onSelect} />
+      return <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} rootPath='/search' />
     } else if (this.state.containsAllOf.length > 0) {
       return (
         <div className='Info'>

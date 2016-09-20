@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, Chip } from 'hbm-react-components'
+import { Icon, Chip } from 'md-components'
 import classNames from 'classnames'
 
 export default class SearchBar extends React.Component {
