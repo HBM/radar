@@ -4,6 +4,8 @@
 @import "../node_modules/md-components/components/icon/Icon";
 @import "../node_modules/md-components/components/card/Card";
 @import "../node_modules/md-components/components/textfield/Textfield";
+@import "../node_modules/md-components/components/radiobutton/Radiobutton";
+@import "../node_modules/md-components/components/select/Select";
 @import "../node_modules/md-components/components/checkbox/Checkbox";
 @import "../node_modules/md-components/components/button/Button";
 @import "../node_modules/md-components/components/list/List";
@@ -150,3 +152,19 @@
   flex-grow: 1;
 }
 
+.State-field {
+  margin-right: 4px;
+}
+
+.State-field + .State-field:before {
+  content: ' - ';
+  margin-right: 4px;
+}
+
+.State-field-name {
+  color: #5a5a5a;
+}
+
+.State-field-value {
+  margin-left: 2px;
+}
