@@ -86,16 +86,35 @@ export class State extends React.Component {
     }
   }
 
+  hasChanges () {
+    return JSON.stringify(this.state.formData) !== JSON.stringify(this.state.formDataBak)
+  }
+
   componentWillReceiveProps (newProps) {
     const state = newProps.state
+    if (!this.hasChanges()) {
+      this.setState({
+        formData: flatObject(state.value)
+      })
+    }
     this.setState({
-      formData: flatObject(state.value),
       formDataBak: flatObject(state.value)
+    })
+  }
+
+  cancel = () => {
+    this.setState({
+      formData: flatObject(flatten.unflatten(this.state.formDataBak))
     })
   }
 
   onSubmit = (event) => {
     event.preventDefault()
+    // set formDataBak = formData so that hasChanges() => false
+    // and componentWillReceiveProps updates formData and formDataBak
+    this.setState({
+      formDataBak: this.state.formData
+    })
     this.props.set(this.props.connection, this.props.state.path, flatten.unflatten(this.state.formData))
   }
 
@@ -112,7 +131,6 @@ export class State extends React.Component {
 
   render () {
     const nvps = toNameValue(this.state.formData)
-    const hasChanges = JSON.stringify(this.state.formData) !== JSON.stringify(this.state.formDataBak)
     return (
       <div className='State'>
         <div className='State-hero'>
@@ -124,7 +142,8 @@ export class State extends React.Component {
         <form onSubmit={this.onSubmit} >
           {nvps.map(createInput(this.assignToFormData, this.props.state.fetchOnly))}
           <hr />
-          <Button type='submit' raised disabled={!hasChanges}>Apply</Button>
+          <Button type='submit' raised disabled={!this.hasChanges()}>Set</Button>
+          <Button type='button' disabled={!this.hasChanges()} onClick={this.cancel} >Cancel</Button>
         </form>
       </div>
     )
