@@ -1,4 +1,4 @@
-@import "../node_modules/hbm-react-components/css/mixins";
+@import "../node_modules/md-components/css/mixins";
 /** overwrite hbm style */
 
 body {
@@ -30,6 +30,11 @@ html {
       padding-right: 24px;
     }
   }
+}
+
+#app .List {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 #app main {

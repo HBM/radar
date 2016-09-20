@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, Textfield } from 'hbm-react-components'
+import { Icon, Textfield } from 'md-components'
 
 const Message = ({message, onClose}) => {
   const jsonString = JSON.stringify(message.json, null, '  ')

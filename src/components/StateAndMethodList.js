@@ -1,9 +1,9 @@
 import React from 'react'
-import { List, Row } from 'hbm-react-components'
+import { List, Row } from 'md-components'
 
 const methodAvatar = <span className='Method-avatar'>M</span>
 
-const createMethodRow = (method, icon, onFocus) => (
+const createMethodRow = (method, icon, link) => (
   <Row
     onClick={() => {}} // iOS Safari does not get focus event if no click handler is installed
     avatar={methodAvatar}
@@ -11,7 +11,7 @@ const createMethodRow = (method, icon, onFocus) => (
     secondary='Method'
     icon={icon}
     key={method.path}
-    onFocus={onFocus}
+    linkTo={link}
 	/>
 )
 

@@ -3,7 +3,7 @@ import * as actions from 'redux-jet'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import flatten from 'flat'
-import { Textfield, Button, Checkbox, Icon } from 'hbm-react-components'
+import { Textfield, Button, Checkbox, Icon } from 'md-components'
 
 const flatObject = (value) => {
   if (typeof value === 'object') {

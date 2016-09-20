@@ -25,9 +25,9 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "flat": "^2.0.1",
-    "hbm-react-components": "hbm/react-components",
     "lodash.throttle": "^4.1.1",
     "moment": "^2.15.0",
+    "md-components": "hbm/md-components",
     "react": "^15.3.0",
     "react-addons-css-transition-group": "^15.3.1",
     "react-dom": "^15.3.0",

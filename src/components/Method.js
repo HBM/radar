@@ -1,7 +1,7 @@
 import React from 'react'
 import * as actions from 'redux-jet'
 import { connect } from 'react-redux'
-import { Button, Textfield, Icon } from 'hbm-react-components'
+import { Button, Textfield, Icon } from 'md-components'
 import { withRouter } from 'react-router'
 
 export class Method extends React.Component {
