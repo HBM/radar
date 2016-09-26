@@ -16,6 +16,7 @@
 @import "./State";
 @import "./Searchbar";
 @import "./Connections";
+@import "./FieldSelection";
 @import "./Overwrites";
 
 .State-avatar, .Method-avatar {
@@ -78,7 +79,7 @@
 }
 
 .Traffic-stat-in span:nth-child(2){
-  color: #ae45af;
+  color: #c576c5;
 }
 
 .Traffic-stat-out span:nth-child(2){
@@ -97,7 +98,7 @@
 }
 
 .Message-avatar-in {
-  background-color: #ae45af;
+  background-color: #c576c5;
 }
 
 .Message-avatar-out {
@@ -167,4 +168,9 @@
 
 .State-field-value {
   margin-left: 2px;
+}
+
+.Split-left .List {
+  margin-top: -1px;
+  border-top: 1px solid #e8e8e8;
 }

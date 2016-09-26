@@ -37,3 +37,8 @@ export const setSearch = (search) => ({
   type: 'SEARCH_SET',
   search
 })
+
+export const setSelectedFields = (fields) => ({
+  type: 'SELECTED_FIELDS_SET',
+  fields
+})

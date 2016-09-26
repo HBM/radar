@@ -1,0 +1,19 @@
+@import "../node_modules/md-components/css/mixins";
+
+.FieldSelection {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px 24px;
+  background-color: #f3f3f3;
+  h3 {
+    min-width: 100%;
+  }
+  .Checkbox {
+    min-width: 100%;
+  }
+  @include large {
+    .Checkbox {
+      min-width: 50%;
+    }
+  }
+}
