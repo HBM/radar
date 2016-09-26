@@ -30,12 +30,13 @@ const createStateRow = (state, icon, link, fields) => {
       <span className='State-field-value'>{JSON.stringify(flat[field])}</span>
     </span> : null
   })
+  const contentEmpty = content.find(child => child !== null) === undefined
   return (
     <Row
       onClick={() => {}} // iOS Safari does not get focus event if no click handler is installed
       avatar={stateAvatar}
       primary={state.path}
-      secondary={content[0] && content || 'No matching fields'}
+      secondary={contentEmpty ? 'No matching fields' : content}
       icon={icon}
       key={state.path}
       linkTo={link}
