@@ -68,7 +68,7 @@ class Group extends React.Component {
   render () {
     const {statesAndMethods, toggleFavorite, favorites, children, selectedFields} = this.props
 
-    const filteredStatesAndMethods = getFilteredStatesAndMethods(statesAndMethods, this.state.searchTerms)
+    const filteredStatesAndMethods = getFilteredStatesAndMethods(statesAndMethods, this.state.searchTerms || [])
 
     const createStar = (path) => {
       return <Icon.Star

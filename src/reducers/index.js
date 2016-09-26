@@ -207,7 +207,7 @@ const settings = combineReducers({search, favorites, connection, connections, ve
 
 const radar = combineReducers({settings, data, message})
 
-export const getFilteredStatesAndMethods = (statesAndMethods, selectedFields, searchTerms) => {
+export const getFilteredStatesAndMethods = (statesAndMethods, searchTerms) => {
   const lsearchTerms = searchTerms.map(term => term.toLowerCase())
   const matchesSearch = (path) => {
     const lpath = path.toLowerCase()
