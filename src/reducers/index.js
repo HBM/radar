@@ -158,7 +158,7 @@ export const toFormatedMessages = (messages) => {
 }
 
 const messages = (state = [], action) => {
-  const maxLength = 300
+  const maxLength = 100
   switch (action.type) {
     case 'JET_CONNECT_REQUEST':
       return []
@@ -183,6 +183,13 @@ const traffic = (state = {in: 0, out: 0}, action) => {
   }
 }
 
+const selectedFields = (state = [], action) => {
+  if (action.type === 'SELECTED_FIELDS_SET') {
+    return action.fields
+  }
+  return state
+}
+
 const data = combineReducers({
   favorites: sorted('favorites'),
   search: sorted('search'),
@@ -196,8 +203,20 @@ const version = (state = '1.0.0') => {
   return state
 }
 
-const settings = combineReducers({search, favorites, connection, connections, version})
+const settings = combineReducers({search, favorites, connection, connections, version, selectedFields})
 
 const radar = combineReducers({settings, data, message})
+
+export const getFilteredStatesAndMethods = (statesAndMethods, searchTerms) => {
+  const lsearchTerms = searchTerms.map(term => term.toLowerCase())
+  const matchesSearch = (path) => {
+    const lpath = path.toLowerCase()
+    const matches = lsearchTerms.reduce((prev, term) => {
+      return prev && lpath.match(term)
+    }, true)
+    return matches
+  }
+  return statesAndMethods.filter(el => matchesSearch(el.path))
+}
 
 export default radar

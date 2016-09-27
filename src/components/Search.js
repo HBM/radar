@@ -13,7 +13,8 @@ class Search extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      containsAllOf: this.props.search || []
+      containsAllOf: this.props.search || [],
+      selectedFields: []
     }
   }
 
@@ -47,6 +48,7 @@ class Search extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault()
+    this.props.setSelectedFields([])
     this.props.fetch(this.props.connection, this.getFetchExpression(), 'search')
     this.props.setSearch(this.state.containsAllOf)
   }
@@ -56,7 +58,7 @@ class Search extends React.Component {
   }
 
   renderContent () {
-    const {statesAndMethods, toggleFavorite, favorites, connection} = this.props
+    const {statesAndMethods, toggleFavorite, favorites, connection, selectedFields} = this.props
     if (!connection.isConnected) {
       return (
         <div className='Info'>
@@ -72,7 +74,12 @@ class Search extends React.Component {
           className={classNames('Icon Fetch Star', {'Star--active': (favorites.indexOf(path) > -1)})}
         />
       }
-      return <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createStar} rootPath='/search' />
+      return <StateAndMethodList
+        statesAndMethods={statesAndMethods}
+        selectedFields={selectedFields}
+        iconCreator={createStar}
+        rootPath='/search'
+        />
     } else if (this.state.containsAllOf.length > 0) {
       return (
         <div className='Info'>
@@ -91,7 +98,7 @@ class Search extends React.Component {
   }
 
   render () {
-    const {statesAndMethods, children} = this.props
+    const {statesAndMethods, children, selectedFields} = this.props
 
     return (
       <Split className='Search'>
@@ -100,6 +107,8 @@ class Search extends React.Component {
             onChange={this.onChange}
             onSubmit={this.onSubmit}
             terms={this.state.containsAllOf}
+            statesAndMethods={statesAndMethods}
+            selectedFields={selectedFields}
           />
           {this.renderContent()}
         </SplitLeft>
@@ -122,7 +131,8 @@ const mapStateToProps = (state) => {
     statesAndMethods: state.data.search,
     favorites: state.settings.favorites,
     search: state.settings.search,
-    connection: state.settings.connection
+    connection: state.settings.connection,
+    selectedFields: state.settings.selectedFields
   }
 }
 

@@ -1,13 +1,21 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
+import { getFilteredStatesAndMethods } from '../reducers'
 import * as jetActions from 'redux-jet'
 import { withRouter, Link } from 'react-router'
 import { Icon } from 'md-components'
 import StateAndMethodList from './StateAndMethodList'
 import { Split, SplitRight, SplitLeft } from './Split'
+import SearchBar from './SearchBar'
 
 class Favorites extends React.Component {
+
+  state = {
+    searchTerms: [],
+    searchTermsChips: []
+  }
+
   updateFetch (props) {
     this.props.fetch(props.connection, {
       path: {
@@ -33,8 +41,21 @@ class Favorites extends React.Component {
     }
   }
 
+  onChange = (terms) => {
+    this.setState({searchTermsChips: terms})
+  }
+
+  onSubmit = (event) => {
+    event.preventDefault()
+    this.props.setSelectedFields([])
+    this.setState({searchTerms: this.state.searchTermsChips})
+  }
+
   renderContent () {
-    const {statesAndMethods, removeFavorite, connection, favorites} = this.props
+    const {statesAndMethods, removeFavorite, connection, favorites, selectedFields} = this.props
+
+    const filteredStatesAndMethods = getFilteredStatesAndMethods(statesAndMethods, this.state.searchTerms)
+
     if (!connection.isConnected) {
       return (
         <div className='Info'>
@@ -50,7 +71,7 @@ class Favorites extends React.Component {
           className='Icon Icon-Remove'
           />
       }
-      return <StateAndMethodList statesAndMethods={statesAndMethods} iconCreator={createClear} rootPath='/favorites' />
+      return <StateAndMethodList statesAndMethods={filteredStatesAndMethods} iconCreator={createClear} rootPath='/favorites' selectedFields={selectedFields} />
     } else if (favorites.length === 0) {
       return (
         <div className='Info'>
@@ -72,11 +93,19 @@ class Favorites extends React.Component {
   }
 
   render () {
-    const {children, statesAndMethods} = this.props
+    const {children, statesAndMethods, selectedFields} = this.props
+    const filteredStatesAndMethods = getFilteredStatesAndMethods(statesAndMethods, this.state.searchTerms)
 
     return (
       <Split className='Favorites'>
         <SplitLeft>
+          <SearchBar
+            onChange={this.onChange}
+            onSubmit={this.onSubmit}
+            terms={this.state.searchTermsChips}
+            statesAndMethods={filteredStatesAndMethods}
+            selectedFields={selectedFields}
+          />
           {this.renderContent()}
         </SplitLeft>
         <SplitRight>
@@ -91,7 +120,8 @@ const mapStateToProps = (state) => {
   return {
     statesAndMethods: state.data.favorites,
     favorites: state.settings.favorites,
-    connection: state.settings.connection
+    connection: state.settings.connection,
+    selectedFields: state.settings.selectedFields
   }
 }
 
