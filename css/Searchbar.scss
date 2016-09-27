@@ -38,3 +38,12 @@
     font-size: 16px;
   }
 }
+
+.Searchbar button svg {
+  transform: rotate(180deg);
+  transition: transform 0.5s ease;
+}
+
+.Searchbar button.collapsed svg {
+  transform: rotate(0);
+}

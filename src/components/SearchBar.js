@@ -59,7 +59,11 @@ class SearchBar extends React.Component {
             onBlur={this.onBlur}
             autoFocus
             />
-          <Icon.Button onClick={this.toggle} disabled={statesAndMethods.length === 0} style={{padding: 0}}>
+          <Icon.Button onClick={this.toggle}
+            disabled={statesAndMethods.length === 0}
+            style={{padding: 0}}
+            className={classNames('IconButton', {collapsed: this.state.visible})}
+            >
             <Icon.FilterList className='Icon' />
           </Icon.Button>
         </form>

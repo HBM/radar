@@ -1,6 +1,6 @@
 import React from 'react'
 import flatten from 'flat'
-import { Checkbox } from 'md-components'
+import { Checkbox, Button } from 'md-components'
 
 const FieldSelection = ({states, selected, onChange}) => {
   const fieldsObj = states
@@ -25,17 +25,20 @@ const FieldSelection = ({states, selected, onChange}) => {
   return (
     <div className='FieldSelection'>
       <h3>Preview fields</h3>
-      {
-        fields.length === 0 ? 'No fields available'
-        : fields.map(field => {
-          return <Checkbox
-            label={field}
-            name={field}
-            checked={selected.indexOf(field) > -1}
-            key={field}
-            onChange={_onChange} />
-        })
-      }
+      <div className='FieldSelection-checkboxes'>
+        {
+          fields.length === 0 ? 'No fields available'
+          : fields.map(field => {
+            return <Checkbox
+              label={field}
+              name={field}
+              checked={selected.indexOf(field) > -1}
+              key={field}
+              onChange={_onChange} />
+          })
+        }
+      </div>
+      {fields.length > 0 && <Button raised onClick={() => onChange([])} disabled={selected.length === 0} >Reset</Button>}
     </div>
   )
 }

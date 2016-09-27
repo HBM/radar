@@ -158,7 +158,7 @@ export const toFormatedMessages = (messages) => {
 }
 
 const messages = (state = [], action) => {
-  const maxLength = 300
+  const maxLength = 100
   switch (action.type) {
     case 'JET_CONNECT_REQUEST':
       return []
