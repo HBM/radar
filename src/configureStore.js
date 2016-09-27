@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import createLogger from 'redux-logger'
 import thunk from 'redux-thunk'
 import radar from './reducers'
@@ -20,7 +20,10 @@ const configureStore = () => {
   const store = createStore(
     radar,
     isCompatible ? prevState : {},
-    applyMiddleware(...middlewares)
+    compose(
+      applyMiddleware(...middlewares),
+      window.devToolsExtension ? window.devToolsExtension() : f => f
+    )
   )
   store.subscribe(throttle(() => {
     const state = {
