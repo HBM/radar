@@ -18,7 +18,7 @@
   bottom: 0;
   transform: translate3d(103%, 0, 0);
   transition: transform ease 0.5s;
-  z-index: 300;
+  z-index: 1;
   height: 100vh;
   box-shadow: 0 0px 8px 2px rgba(0, 0, 0, 0.4);
 }
@@ -92,14 +92,14 @@
   width: 60%;
   /** z-index on safari requires position relative/absolute/fixed */
   position: relative;
-  z-index: 200;
+  z-index: 2;
   box-shadow: 0 0px 4px 2px rgba(0, 0, 0, 0.24);
 }
 
 .Split-right {
   flex-grow: 1;
   min-width: 320px;
-  z-index: 199;
+  z-index: 1;
 }
 }
 

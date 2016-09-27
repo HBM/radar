@@ -17,6 +17,10 @@ html {
   left: -8px;
 }
 
+.Split-left .List {
+  transform: translate3d(0, 0, 0);
+}
+
 #app {
   @include medium {
     .List-row > a {
