@@ -109,11 +109,17 @@ class Favorites extends React.Component {
           />
           {this.renderContent()}
         </SplitLeft>
-        <SplitRight>
-          <Match pattern='/favorites/:path' render={(match) =>
-            <Details statesAndMethods={statesAndMethods} params={match.params} />
-          } />
-        </SplitRight>
+        <Match pattern='/favorites/:path' children={({matched, params}, match) => {
+          if (matched) {
+            return (
+              <SplitRight>
+                <Details statesAndMethods={statesAndMethods} params={params} backUrl='/favorites' />
+              </SplitRight>
+            )
+          }
+          return <SplitRight />
+        }
+        } />
       </Split>
     )
   }

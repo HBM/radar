@@ -174,3 +174,16 @@
   margin-top: -1px;
   border-top: 1px solid #e8e8e8;
 }
+
+.Split-right .IconButton {
+  position: relative;
+  & > a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+
