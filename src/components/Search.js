@@ -6,8 +6,9 @@ import { Icon } from 'md-components'
 import SearchBar from './SearchBar'
 import classNames from 'classnames'
 import StateAndMethodList from './StateAndMethodList'
-import { withRouter, Link } from 'react-router'
+import { Link, Match } from 'react-router'
 import { Split, SplitRight, SplitLeft } from './Split'
+import Details from './Details'
 
 class Search extends React.Component {
   constructor (props) {
@@ -53,10 +54,6 @@ class Search extends React.Component {
     this.props.setSearch(this.state.containsAllOf)
   }
 
-  onSelect = (stateOrMethod) => {
-    this.props.router.push('/search/' + encodeURIComponent(stateOrMethod.path))
-  }
-
   renderContent () {
     const {statesAndMethods, toggleFavorite, favorites, connection, selectedFields} = this.props
     if (!connection.isConnected) {
@@ -98,7 +95,7 @@ class Search extends React.Component {
   }
 
   render () {
-    const {statesAndMethods, children, selectedFields} = this.props
+    const {statesAndMethods, selectedFields} = this.props
 
     return (
       <Split className='Search'>
@@ -113,17 +110,13 @@ class Search extends React.Component {
           {this.renderContent()}
         </SplitLeft>
         <SplitRight>
-          {children && React.cloneElement(children, {statesAndMethods, key: 'search/details'})}
+          <Match pattern='/search/:path' render={(match) =>
+            <Details statesAndMethods={statesAndMethods} params={match.params} />
+          } />
         </SplitRight>
       </Split>
     )
   }
-}
-
-Search.propTypes = {
-  router: React.PropTypes.shape({
-    push: React.PropTypes.func.isRequired
-  }).isRequired
 }
 
 const mapStateToProps = (state) => {
@@ -136,4 +129,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, {...actions, ...jetActions})(Search))
+export default connect(mapStateToProps, {...actions, ...jetActions})(Search)

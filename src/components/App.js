@@ -1,7 +1,12 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router'
+import {Link, Match} from 'react-router'
 import {Header, Navigation, Snackbar, Icon} from 'md-components'
+import Search from './Search'
+import Favorites from './Favorites'
+import Connections from './Connections'
+import Group from './Group'
+import Messages from './Messages'
 
 class App extends React.Component {
 
@@ -60,9 +65,16 @@ class App extends React.Component {
             <Icon.Settings fill='white' />
           </Link>
         </Header>
-        <Navigation links={links} onChange={this.onChange} />
+        <Match pattern='/' render={(location) => (
+          <Navigation location={location} links={links} onChange={this.onChange} />
+        )} />
         <main>
-          {this.props.children}
+          <Match exactly pattern='/' component={Search} />
+          <Match pattern='/search' component={Search} />
+          <Match pattern='/favorites' component={Favorites} />
+          <Match pattern='/connections' component={Connections} />
+          <Match pattern='/groups/:group' component={Group} />
+          <Match pattern='/messages' component={Messages} />
         </main>
         <Snackbar
           text={message && message.text}

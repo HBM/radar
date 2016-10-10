@@ -4,7 +4,6 @@ import { connect as connectJet, close as closeJet } from 'redux-jet'
 import * as actions from '../actions'
 import url from 'url'
 import { Textfield, Button, Icon } from 'md-components'
-import { withRouter } from 'react-router'
 
 const isValidWebSocketUrl = (urlString) => {
   try {
@@ -77,7 +76,7 @@ const Connection = ({
           autoCapitalize='off'
           autoComplete='off'
           autoCorrect='off'
-          spellCheck='off'
+          spellCheck={false}
           onChange={onChangeInput}
           name='url'
           type='text'
@@ -125,4 +124,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, {...actions, connectJet, closeJet})(Connection))
+export default connect(mapStateToProps, {...actions, connectJet, closeJet})(Connection)

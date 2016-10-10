@@ -1,7 +1,6 @@
 import React from 'react'
 import * as actions from 'redux-jet'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router'
 import flatten from 'flat'
 import { Textfield, Button, Checkbox, Icon } from 'md-components'
 
@@ -157,4 +156,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, actions)(State))
+export default connect(mapStateToProps, actions)(State)

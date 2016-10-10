@@ -1,11 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Match } from 'react-router'
 import { connect as connectJet, close as closeJet } from 'redux-jet'
 import * as actions from '../actions'
 import { Icon, List, Row } from 'md-components'
 import url from 'url'
-import { withRouter } from 'react-router'
 import { Split, SplitRight, SplitLeft } from './Split'
+import Connection from './Connection'
 
 const isValidWebSocketUrl = (urlString) => {
   try {
@@ -41,9 +42,6 @@ const Connections = ({
       }
       removeConnection(index)
     }
-    const onSelect = () => {
-      router.push('/connections/' + index)
-    }
     let avatar
     let subtitle
     if (isValidWebSocketUrl(con.url)) {
@@ -57,11 +55,11 @@ const Connections = ({
     }
     const icon = <Icon.RemoveCircle onClick={remove} className='Icon Icon-Remove' />
     return <Row avatar={avatar}
+      linkTo={'/connections/' + index}
       primary={con.name || con.url || 'New Connection'}
       secondary={subtitle}
       icon={icon}
       onClick={() => {}} // iOS Safari does not get focus event if no click handler is installed
-      onFocus={onSelect}
       key={index} />
   }
 
@@ -75,7 +73,7 @@ const Connections = ({
         </List>
       </SplitLeft>
       <SplitRight>
-        {children}
+        <Match pattern='/connections/:index' component={Connection} />
       </SplitRight>
     </Split>
   )
@@ -88,4 +86,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, {...actions, connectJet, closeJet})(Connections))
+export default connect(mapStateToProps, {...actions, connectJet, closeJet})(Connections)

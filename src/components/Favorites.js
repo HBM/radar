@@ -3,11 +3,12 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 import { getFilteredStatesAndMethods } from '../reducers'
 import * as jetActions from 'redux-jet'
-import { withRouter, Link } from 'react-router'
+import { Link, Match } from 'react-router'
 import { Icon } from 'md-components'
 import StateAndMethodList from './StateAndMethodList'
 import { Split, SplitRight, SplitLeft } from './Split'
 import SearchBar from './SearchBar'
+import Details from './Details'
 
 class Favorites extends React.Component {
 
@@ -93,7 +94,7 @@ class Favorites extends React.Component {
   }
 
   render () {
-    const {children, statesAndMethods, selectedFields} = this.props
+    const {statesAndMethods, selectedFields} = this.props
     const filteredStatesAndMethods = getFilteredStatesAndMethods(statesAndMethods, this.state.searchTerms)
 
     return (
@@ -109,7 +110,9 @@ class Favorites extends React.Component {
           {this.renderContent()}
         </SplitLeft>
         <SplitRight>
-          {children && React.cloneElement(children, {statesAndMethods})}
+          <Match pattern='/favorites/:path' render={(match) =>
+            <Details statesAndMethods={statesAndMethods} params={match.params} />
+          } />
         </SplitRight>
       </Split>
     )
@@ -125,4 +128,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, {...actions, ...jetActions})(Favorites))
+export default connect(mapStateToProps, {...actions, ...jetActions})(Favorites)

@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
-import { withRouter } from 'react-router'
 import { List, Row } from 'md-components'
 import { Split, SplitRight, SplitLeft } from './Split'
 import { toFormatedMessages } from '../reducers'
@@ -106,4 +105,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, {...actions})(Messages))
+export default connect(mapStateToProps, {...actions})(Messages)

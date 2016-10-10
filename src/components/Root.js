@@ -1,35 +1,13 @@
 import React, { PropTypes } from 'react'
 import { Provider } from 'react-redux'
-import { Router, Route, hashHistory, IndexRedirect } from 'react-router'
+import HashRouter from 'react-router/HashRouter'
 import App from './App'
-import Search from './Search'
-import Details from './Details'
-import Favorites from './Favorites'
-import Connections from './Connections'
-import Connection from './Connection'
-import Group from './Group'
-import Messages from './Messages'
 
 const Root = ({ store }) => (
   <Provider store={store}>
-    <Router history={hashHistory}>
-      <Route path='/' component={App}>
-        <IndexRedirect to='/search' />
-        <Route path='search' component={Search}>
-          <Route path=':path' component={Details} />
-        </Route>
-        <Route path='favorites' component={Favorites}>
-          <Route path=':path' component={Details} />
-        </Route>
-        <Route path='connections' component={Connections}>
-          <Route path=':index' component={Connection} />
-        </Route>
-        <Route path='groups/:group' component={Group}>
-          <Route path=':path' component={Details} />
-        </Route>
-        <Route path='messages' component={Messages} />
-      </Route>
-    </Router>
+    <HashRouter>
+      <App />
+    </HashRouter>
   </Provider>
 )
 

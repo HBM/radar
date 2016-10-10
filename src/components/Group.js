@@ -3,12 +3,13 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 import { getFilteredStatesAndMethods } from '../reducers'
 import * as jetActions from 'redux-jet'
-import { withRouter } from 'react-router'
 import { Icon } from 'md-components'
 import classNames from 'classnames'
 import StateAndMethodList from './StateAndMethodList'
 import { Split, SplitRight, SplitLeft } from './Split'
 import SearchBar from './SearchBar'
+import Details from './Details'
+import { Match } from 'react-router'
 
 class Group extends React.Component {
   constructor (props) {
@@ -66,7 +67,7 @@ class Group extends React.Component {
   }
 
   render () {
-    const {statesAndMethods, toggleFavorite, favorites, children, selectedFields} = this.props
+    const {statesAndMethods, toggleFavorite, favorites, selectedFields} = this.props
 
     const filteredStatesAndMethods = getFilteredStatesAndMethods(statesAndMethods, this.state.searchTerms || [])
 
@@ -90,7 +91,9 @@ class Group extends React.Component {
           <StateAndMethodList statesAndMethods={filteredStatesAndMethods} iconCreator={createStar} rootPath={'/groups/' + encodeURIComponent(this.props.params.group)} selectedFields={selectedFields} />
         </SplitLeft>
         <SplitRight>
-          {children && React.cloneElement(children, {statesAndMethods})}
+          <Match pattern='/groups/:group/:path' render={(match) =>
+            <Details statesAndMethods={statesAndMethods} params={match.params} />
+          } />
         </SplitRight>
       </Split>
     )
@@ -107,4 +110,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, {...actions, ...jetActions})(Group))
+export default connect(mapStateToProps, {...actions, ...jetActions})(Group)
