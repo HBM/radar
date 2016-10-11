@@ -1260,7 +1260,7 @@ nav.is-visible {
   bottom: 0;
   transform: translate3d(103%, 0, 0);
   transition: transform ease 0.5s;
-  z-index: 1;
+  z-index: 102;
   height: 100vh;
   box-shadow: 0 0px 8px 2px rgba(0, 0, 0, 0.4); }
 
@@ -1632,3 +1632,12 @@ html {
 .Split-left .List {
   margin-top: -1px;
   border-top: 1px solid #e8e8e8; }
+
+.Split-right .IconButton {
+  position: relative; }
+  .Split-right .IconButton > a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0; }
