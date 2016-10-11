@@ -1,6 +1,7 @@
 import React from 'react'
 import * as actions from 'redux-jet'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import flatten from 'flat'
 import { Textfield, Button, Checkbox, Icon } from 'md-components'
 
@@ -123,17 +124,13 @@ export class State extends React.Component {
     })
   }
 
-  goBack = () => {
-    const backUrl = '/' + window.location.hash.split('/').slice(1, -1).join('/')
-    this.props.router.push(backUrl)
-  }
-
   render () {
     const nvps = toNameValue(this.state.formData)
     return (
       <div className='State'>
         <div className='State-hero'>
-          <Icon.Button onClick={() => this.goBack()} >
+          <Icon.Button >
+            <Link to={this.props.backUrl} />
             <Icon.ChevronLeft width={30} height={30} className='Split-right-back' />
           </Icon.Button>
           <h1>{this.props.state.path}</h1>

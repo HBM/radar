@@ -109,11 +109,17 @@ class Search extends React.Component {
           />
           {this.renderContent()}
         </SplitLeft>
-        <SplitRight>
-          <Match pattern='/search/:path' render={(match) =>
-            <Details statesAndMethods={statesAndMethods} params={match.params} />
-          } />
-        </SplitRight>
+        <Match pattern='/search/:path' children={({matched, params}, match) => {
+          if (matched) {
+            return (
+              <SplitRight>
+                <Details statesAndMethods={statesAndMethods} params={params} backUrl='/search' />
+              </SplitRight>
+            )
+          }
+          return <SplitRight />
+        }
+        } />
       </Split>
     )
   }

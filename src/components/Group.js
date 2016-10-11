@@ -90,11 +90,17 @@ class Group extends React.Component {
           />
           <StateAndMethodList statesAndMethods={filteredStatesAndMethods} iconCreator={createStar} rootPath={'/groups/' + encodeURIComponent(this.props.params.group)} selectedFields={selectedFields} />
         </SplitLeft>
-        <SplitRight>
-          <Match pattern='/groups/:group/:path' render={(match) =>
-            <Details statesAndMethods={statesAndMethods} params={match.params} />
-          } />
-        </SplitRight>
+        <Match pattern='/groups/:group/:path' children={({matched, params}, match) => {
+          if (matched) {
+            return (
+              <SplitRight>
+                <Details statesAndMethods={statesAndMethods} params={params} backUrl={'/groups/' + params.group} />
+              </SplitRight>
+            )
+          }
+          return <SplitRight />
+        }
+        } />
       </Split>
     )
   }

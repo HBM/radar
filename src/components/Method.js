@@ -1,7 +1,8 @@
 import React from 'react'
 import * as actions from 'redux-jet'
 import { connect } from 'react-redux'
-import { Button, Textfield, Icon } from 'md-components'
+import { Link } from 'react-router'
+import { Button, Textarea, Icon } from 'md-components'
 
 export class Method extends React.Component {
 
@@ -29,22 +30,18 @@ export class Method extends React.Component {
     }
   }
 
-  goBack = () => {
-    const backUrl = '/' + window.location.hash.split('/').slice(1, -1).join('/')
-    this.props.router.push(backUrl)
-  }
-
   render () {
     return (
       <div className='State'>
         <div className='State-hero'>
-          <Icon.Button onClick={() => this.goBack()} >
+          <Icon.Button>
+            <Link to={this.props.backUrl} />
             <Icon.ChevronLeft width={30} height={30} className='Split-right-back' />
           </Icon.Button>
           <h1>{this.props.method.path}</h1>
         </div>
         <form onSubmit={this.onSubmit} >
-          <Textfield
+          <Textarea
             value={this.state.args}
             label='Arguments'
             onChange={this.onChange}
