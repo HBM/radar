@@ -535,7 +535,7 @@ nav {
   transition-duration: 0.2s;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 104;
-  overflow-y: scroll;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch; }
   @media (min-width: 1200px) {
     nav {
@@ -563,12 +563,17 @@ nav.is-visible {
   list-style: none;
   margin: 0;
   padding: 0;
-  padding: 12px 0 10px; }
+  padding: 12px 0 10px;
+  overflow: hidden;
+  transition: height 0.25s ease-in-out; }
 
 .Navigation-link {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   text-decoration: none;
-  padding: 15px 0 15px 22px;
+  padding-left: 22px;
+  padding-right: 16px;
   color: #333;
   font-weight: 700; }
 
@@ -578,6 +583,13 @@ nav.is-visible {
 .Navigation-link:focus {
   background-color: #eee;
   outline: 0; }
+
+.Navigation-chevron {
+  transform: rotate(90deg);
+  transition: transform 0.25s ease-in-out; }
+
+.Navigation-chevron.is-open {
+  transform: rotate(-90deg); }
 
 .Navigation-hamburger {
   fill: #fff;
