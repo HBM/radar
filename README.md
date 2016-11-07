@@ -7,3 +7,11 @@ The latest release is available for:
 
 * [WebSockets](http://lipp.github.io/radar).
 * [Secure WebSockets](https://lipp.github.io/radar).
+
+# Develop
+
+    $ make react
+    $ make server-debug
+    $ make css
+    
+Open your browser: [localhost:6001](http://localhost:6001).
