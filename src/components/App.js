@@ -46,7 +46,7 @@ class App extends React.Component {
     const groupToLink = (group) => {
       return {
         text: group.title,
-        link: '/groups/' + encodeURIComponent(group.title)
+        link: encodeURIComponent(group.title)
       }
     }
     var links = [
@@ -55,7 +55,7 @@ class App extends React.Component {
     ]
 
     if (groups && groups.length > 0) {
-      links.push({text: 'Groups', link: '/groups', links: groups.map(groupToLink)})
+      links.push({text: 'Groups', link: '/groups/', links: groups.map(groupToLink)})
     }
     links.push({text: 'Messages', link: '/messages'})
     return (
