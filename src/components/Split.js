@@ -23,7 +23,6 @@ const FirstChild = ({children}) => {
 }
 
 export const SplitRight = ({children}) => {
-  console.log(children)
   return (
     <div className={classNames('Split-right', {'Split-right--visible': children})}>
       <ReactCSSTransitionGroup

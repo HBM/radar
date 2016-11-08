@@ -52,10 +52,6 @@ class Group extends React.Component {
     this.fetching = false
   }
 
-  onSelect = (stateOrMethod) => {
-    this.props.router.push('/groups/' + encodeURIComponent(this.props.params.group) + '/' + encodeURIComponent(stateOrMethod.path))
-  }
-
   onChange = (terms) => {
     this.setState({searchTermsChips: terms})
   }
@@ -88,7 +84,7 @@ class Group extends React.Component {
             statesAndMethods={filteredStatesAndMethods}
             selectedFields={selectedFields}
           />
-          <StateAndMethodList statesAndMethods={filteredStatesAndMethods} iconCreator={createStar} rootPath={'/groups/' + this.props.params.group} selectedFields={selectedFields} />
+          <StateAndMethodList statesAndMethods={filteredStatesAndMethods} iconCreator={createStar} rootPath={'/groups/' + encodeURIComponent(this.props.params.group)} selectedFields={selectedFields} />
         </SplitLeft>
         <Match pattern='/groups/:group/:path' children={({matched, params}, match) => {
           if (matched) {
