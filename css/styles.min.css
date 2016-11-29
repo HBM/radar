@@ -359,6 +359,9 @@ td,
 th {
   padding: 0; }
 
+/* https://material.google.com/style/color.html#color-color-palette */
+/* from Pink pallete */
+/* deprecated */
 /**
  * Fonts
  */
@@ -947,68 +950,58 @@ nav.is-visible {
   position: relative;
   height: 48px;
   display: flex;
-  align-items: center; }
-
-.Checkbox-input {
-  position: absolute;
-  opacity: 0;
-  z-index: -1; }
-
-.Checkbox-icon {
-  padding: 10px;
-  line-height: 0;
-  outline: 0;
-  fill: rgba(0, 0, 0, 0.54); }
-  @media (min-width: 768px) {
-    .Checkbox-icon {
-      padding: 5px; } }
-
-.Checkbox-label {
-  color: rgba(0, 0, 0, 0.54); }
-
-/**
- * checked
- */
-.Checkbox-input:checked ~ .Checkbox-icon,
-.Checkbox-input:checked ~ .Checkbox-label {
-  color: #1b325f;
-  fill: #1b325f; }
-
-/**
- * disabled
- */
-.Checkbox-input:disabled ~ .Checkbox-icon,
-.Checkbox-input:disabled ~ .Checkbox-label {
-  fill: rgba(0, 0, 0, 0.26);
-  color: rgba(0, 0, 0, 0.26); }
-
-/**
- * focus
- */
-.Checkbox-focus {
-  position: absolute;
-  /* 48px - 18px = 30px / 2 = 15px */
-  top: 15px;
-  left: 13px;
-  /* use the same width as svg path element for checkbox icon */
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  display: none;
-  transition: all 0.15s ease; }
-  @media (min-width: 768px) {
-    .Checkbox-focus {
-      left: 8px; } }
-
-.Checkbox-input:checked.Checkbox-input--keyboard ~ .Checkbox-focus {
-  box-shadow: 0 0 0 8px rgba(27, 50, 95, 0.12);
-  background-color: rgba(27, 50, 95, 0.12);
-  display: block; }
-
-.Checkbox-input:not(:checked).Checkbox-input--keyboard ~ .Checkbox-focus {
-  box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.12);
-  background-color: rgba(0, 0, 0, 0.12);
-  display: block; }
+  align-items: center;
+  /**
+   * focus
+   */ }
+  .Checkbox-input {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+    /**
+     * checked
+     */
+    /**
+    * disabled
+    */ }
+    .Checkbox-input:checked ~ .Checkbox-icon, .Checkbox-input:checked ~ .Checkbox-label {
+      color: #1b325f;
+      fill: #1b325f; }
+    .Checkbox-input:checked.Checkbox-input--keyboard ~ .Checkbox-focus {
+      box-shadow: 0 0 0 8px rgba(27, 50, 95, 0.12);
+      background-color: rgba(27, 50, 95, 0.12);
+      display: block; }
+    .Checkbox-input:not(:checked).Checkbox-input--keyboard ~ .Checkbox-focus {
+      box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.12);
+      background-color: rgba(0, 0, 0, 0.12);
+      display: block; }
+    .Checkbox-input:disabled ~ .Checkbox-icon, .Checkbox-input:disabled ~ .Checkbox-label {
+      fill: rgba(0, 0, 0, 0.26);
+      color: rgba(0, 0, 0, 0.26); }
+  .Checkbox-icon {
+    padding: 10px;
+    line-height: 0;
+    outline: 0;
+    fill: rgba(0, 0, 0, 0.54); }
+    @media (min-width: 768px) {
+      .Checkbox-icon {
+        padding: 5px; } }
+  .Checkbox-label {
+    color: rgba(0, 0, 0, 0.54); }
+  .Checkbox-focus {
+    position: absolute;
+    /* 48px - 18px = 30px / 2 = 15px */
+    top: 15px;
+    left: 13px;
+    /* use the same width as svg path element for checkbox icon */
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: none;
+    transition: all 0.15s ease; }
+    @media (min-width: 768px) {
+      .Checkbox-focus {
+        left: 8px; } }
 
 /* http://www.google.com/design/spec/components/buttons.html#buttons-usage */
 .Button {
@@ -1021,29 +1014,34 @@ nav.is-visible {
   text-transform: uppercase;
   border-radius: 2px;
   outline: none;
-  color: #1b325f;
-  font-weight: 500; }
-
-.Button:hover,
-.Button:focus {
-  background: rgba(153, 153, 153, 0.2); }
-
-.Button:active {
-  background: rgba(153, 153, 153, 0.4); }
-
-.Button:disabled {
-  color: rgba(0, 0, 0, 0.4);
-  background: none; }
-
-/* http://www.google.com/design/spec/components/buttons.html#buttons-flat-raised-buttons */
-.Button--raised {
-  background: rgba(153, 153, 153, 0.2);
-  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.26);
-  transition: 0.25s; }
-
-.Button--raised:active {
-  background: rgba(153, 153, 153, 0.2);
-  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.3); }
+  color: #e91e63;
+  font-weight: 500;
+  will-change: background;
+  transition: background 0.25s;
+  /* http://www.google.com/design/spec/components/buttons.html#buttons-flat-raised-buttons */ }
+  .Button:hover, .Button:focus {
+    background: rgba(233, 30, 99, 0.12); }
+  .Button:active {
+    background: rgba(233, 30, 99, 0.24); }
+  .Button:disabled {
+    color: rgba(233, 30, 99, 0.5);
+    background: none; }
+  .Button--filled {
+    color: #fff;
+    background: #e91e63; }
+    .Button--filled:disabled {
+      color: rgba(255, 255, 255, 0.5);
+      background: #ce064a; }
+    .Button--filled:hover, .Button--filled:focus {
+      background: #b8124a; }
+    .Button--filled:active {
+      background: #9c0f3f; }
+  .Button--raised {
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.26);
+    transition: background 0.25s, box-shadow 0.25s;
+    will-change: background, box-shadow; }
+    .Button--raised:active {
+      box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.3); }
 
 /**
  * https://material.google.com/components/lists.html#lists-specs
