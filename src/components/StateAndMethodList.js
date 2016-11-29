@@ -19,18 +19,25 @@ const createMethodRow = (method, icon, link) => (
 const stateAvatar = <span className='State-avatar'>S</span>
 
 const createStateRow = (state, icon, link, fields) => {
-  const flat = flatten(state.value)
-  fields = fields || []
-  if (fields.length === 0) {
-    fields = Object.keys(flat).slice(0, 3)
+  let content
+  let contentEmpty
+  if (typeof state.value === 'object') {
+    const flat = flatten(state.value)
+    fields = fields || []
+    if (fields.length === 0) {
+      fields = Object.keys(flat).slice(0, 3)
+    }
+    content = fields.map(field => {
+      return flat[field] !== undefined ? <span className='State-field' key={field} >
+        <span className='State-field-name'>{field}:</span>
+        <span className='State-field-value'>{JSON.stringify(flat[field])}</span>
+      </span> : null
+    })
+    contentEmpty = content.find(child => child !== null) === undefined
+  } else {
+    content = <span className='State-field'><span className='State-field-value'>{JSON.stringify(state.value)}</span></span>
+    contentEmpty = false
   }
-  const content = fields.map(field => {
-    return flat[field] !== undefined ? <span className='State-field' key={field} >
-      <span className='State-field-name'>{field}:</span>
-      <span className='State-field-value'>{JSON.stringify(flat[field])}</span>
-    </span> : null
-  })
-  const contentEmpty = content.find(child => child !== null) === undefined
   return (
     <Row
       onClick={() => {}} // iOS Safari does not get focus event if no click handler is installed

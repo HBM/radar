@@ -15,6 +15,16 @@ const flatObject = (value) => {
   }
 }
 
+const unflatObject = (value) => {
+  if (typeof value === 'object') {
+    const keys = Object.keys(value)
+    if(keys.length === 1 && keys[0] === '') {
+      return value['']
+    }
+  }
+  return flatten.unflatten(value)
+}
+
 const toNameValue = (flat) => {
   return Object.keys(flat)
     .sort(function (a, b) {
@@ -104,7 +114,7 @@ export class State extends React.Component {
 
   cancel = () => {
     this.setState({
-      formData: flatObject(flatten.unflatten(this.state.formDataBak))
+      formData: flatObject(unflatObject(this.state.formDataBak))
     })
   }
 
@@ -115,7 +125,7 @@ export class State extends React.Component {
     this.setState({
       formDataBak: this.state.formData
     })
-    this.props.set(this.props.connection, this.props.state.path, flatten.unflatten(this.state.formData))
+    this.props.set(this.props.connection, this.props.state.path, unflatObject(this.state.formData))
   }
 
   assignToFormData = (event) => {
