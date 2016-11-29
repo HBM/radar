@@ -18,7 +18,7 @@ const flatObject = (value) => {
 const unflatObject = (value) => {
   if (typeof value === 'object') {
     const keys = Object.keys(value)
-    if(keys.length === 1 && keys[0] === '') {
+    if (keys.length === 1 && keys[0] === '') {
       return value['']
     }
   }
