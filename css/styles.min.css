@@ -887,6 +887,9 @@ nav.is-visible {
   text-align: left;
   outline: 0; }
 
+.Select-body:disabled {
+  color: rgba(0, 0, 0, 0.38); }
+
 .Select-placeholder {
   color: rgba(0, 0, 0, 0.54); }
 
@@ -1434,7 +1437,6 @@ form {
 
 .Connections-add {
   align-self: flex-end;
-  padding-right: 24px;
   margin-top: 15px; }
 
 .Connections h1 input {
