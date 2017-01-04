@@ -55,6 +55,8 @@ const search = (state = [], action) => {
 
 const message = (state = null, action) => {
   switch (action.type) {
+    case 'JET_CLOSED':
+      return {text: `Disconnected from ${action.url}`}
     case 'JET_CONNECT_SUCCESS':
       return {text: `Connected to ${action.url}`}
     case 'JET_CONNECT_FAILURE':
@@ -89,6 +91,7 @@ const connection = (state = {isConnected: false}, action) => {
         user: action.user,
         password: action.password
       }
+    case 'JET_CLOSED':
     case 'JET_CLOSE':
       return {
         isConnected: false
