@@ -89,6 +89,10 @@ const connection = (state = {isConnected: false}, action) => {
         user: action.user,
         password: action.password
       }
+    case 'JET_CLOSE':
+      return {
+        isConnected: false
+      }
     case 'JET_CONNECT_FAILURE':
       return {
         isConnected: false,

@@ -25,7 +25,7 @@ const Connection = ({
   router}) => {
   let connection = connections[index]
 
-  const isConnected = connection.url === current.url && connection.user === current.user
+  const isConnected = connection.url === current.url && connection.user === current.user && current.isConnected
 
   const onChange = (key, value) => {
     if (value === '') {
@@ -105,7 +105,7 @@ const Connection = ({
           disabled={!connection.user} />
         <hr />
         {!isConnected
-          ? <Button type='submit' onClick={() => { connectJet(connection, true) }} raised disabled={error() && true}>
+          ? <Button type='submit' onClick={() => { closeJet(current); connectJet(connection, true) }} raised disabled={error() && true}>
               Connect
           </Button>
           : <Button type='submit' onClick={() => { closeJet(connection) }} raised disabled={error() && true}>
@@ -117,11 +117,9 @@ const Connection = ({
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    connections: state.settings.connections,
-    current: state.settings.connection
-  }
-}
+const mapStateToProps = state => ({
+  connections: state.settings.connections,
+  current: state.settings.connection
+})
 
 export default connect(mapStateToProps, {...actions, connectJet, closeJet})(Connection)
