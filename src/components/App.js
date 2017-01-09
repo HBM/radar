@@ -7,6 +7,7 @@ import Favorites from './Favorites'
 import Connections from './Connections'
 import Group from './Group'
 import Messages from './Messages'
+import ImportExport from './ImportExport'
 
 class App extends React.Component {
 
@@ -58,6 +59,7 @@ class App extends React.Component {
       links.push({text: 'Groups', link: '/groups/', links: groups.map(groupToLink)})
     }
     links.push({text: 'Messages', link: '/messages'})
+    links.push({text: 'Import / Export', link: '/impex'})
     return (
       <div>
         <Header title='Radar' subtitle={this.state.subtitle} >
@@ -75,6 +77,7 @@ class App extends React.Component {
           <Match pattern='/connections' component={Connections} />
           <Match pattern='/groups/:group' component={Group} />
           <Match pattern='/messages' component={Messages} />
+          <Match pattern='/impex' component={ImportExport} />
         </main>
         <Snackbar
           text={message && message.text}

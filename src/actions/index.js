@@ -42,3 +42,13 @@ export const setSelectedFields = (fields) => ({
   type: 'SELECTED_FIELDS_SET',
   fields
 })
+
+export const setFavorites = (favorites) => ({
+  type: 'FAVORITE_SET',
+  favorites
+})
+
+export const setFavoritesFailed = (reason) => ({
+  type: 'FAVORITE_FAILURE',
+  reason
+})

@@ -8,6 +8,8 @@ const favorites = (state = [], action) => {
     return [...state.slice(0, index), ...state.slice(index + 1, state.length)]
   }
   switch (action.type) {
+    case 'FAVORITE_SET':
+      return action.favorites
     case 'FAVORITE_ADD':
       return addFavorite()
     case 'FAVORITE_REMOVE':
@@ -55,6 +57,10 @@ const search = (state = [], action) => {
 
 const message = (state = null, action) => {
   switch (action.type) {
+    case 'FAVORITE_FAILURE':
+      return {text: `Favorites import failed: ${action.reason}`}
+    case 'FAVORITE_SET':
+      return {text: `${action.favorites.length} favorites imported successfully`}
     case 'JET_CLOSED':
       return {text: `Disconnected from ${action.url}`}
     case 'JET_CONNECT_SUCCESS':
