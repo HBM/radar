@@ -102,7 +102,7 @@ export class State extends React.Component {
 
   componentWillReceiveProps (newProps) {
     const state = newProps.state
-    if (!this.hasChanges()) {
+    if (!this.hasChanges() || this.props.state.path !== newProps.state.path) {
       this.setState({
         formData: flatObject(state.value)
       })
