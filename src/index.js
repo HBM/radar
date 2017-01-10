@@ -14,12 +14,21 @@ const radarGroupsExpression = {
   }
 }
 
+let reconnectInterval
+
 store.subscribe(() => {
   const con = store.getState().settings.connection
   if (con.isConnected && !wasConnected) {
+    clearInterval(reconnectInterval)
     wasConnected = true
     fetch(con, radarGroupsExpression, 'groups')(store.dispatch)
   } else if (!con.isConnected && wasConnected) {
+    if (con.url) {
+      reconnectInterval = setInterval(() => {
+        console.log('Attempt reconnect to', con)
+        connect(con, true)(store.dispatch)
+      }, 2000)
+    }
     wasConnected = false
   }
 })

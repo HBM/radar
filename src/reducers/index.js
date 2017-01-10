@@ -97,8 +97,12 @@ const connection = (state = {isConnected: false}, action) => {
         user: action.user,
         password: action.password
       }
-    case 'JET_CLOSED':
-    case 'JET_CLOSE':
+    case 'JET_CLOSED': // implicit disconnect (connection lost) -> keep connection info for auto reconnect
+      return {
+        ...state,
+        isConnected: false
+      }
+    case 'JET_CLOSE': // explicit disconnect from ui
       return {
         isConnected: false
       }
