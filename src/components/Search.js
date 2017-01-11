@@ -33,10 +33,20 @@ class Search extends React.Component {
     }
   }
 
-  componentDidMount () {
+  fetch () {
     if (this.state.containsAllOf.length > 0) {
       this.props.fetch(this.props.connection, this.getFetchExpression(), 'search')
     }
+  }
+
+  componentWillReceiveProps (props) {
+    if (!this.props.connection.isConnected && props.connection.isConnected) {
+      this.fetch()
+    }
+  }
+
+  componentDidMount () {
+    this.fetch()
   }
 
   componentWillUnmount () {

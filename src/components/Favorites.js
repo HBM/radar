@@ -37,7 +37,8 @@ class Favorites extends React.Component {
   componentWillReceiveProps (nextProps) {
     const favNext = JSON.stringify(nextProps.favorites.sort())
     const favPrev = JSON.stringify(this.props.favorites.sort())
-    if (favNext !== favPrev) {
+    const isOnlineAgain = !this.props.connection.isConnected && nextProps.connection.isConnected
+    if (favNext !== favPrev || isOnlineAgain) {
       this.updateFetch(nextProps)
     }
   }
