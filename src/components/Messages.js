@@ -36,7 +36,7 @@ const subheader = (message) => {
   }
 }
 
-class Messages extends React.Component {
+class Messages extends React.PureComponent {
 
   state = {
   }
@@ -60,6 +60,19 @@ class Messages extends React.Component {
     )
   }
 
+  shouldComponentUpdate (nextProps) {
+    return false
+  }
+
+  componentWillReceiveProps () {
+    if (!this.debounceTimer) {
+      this.debounceTimer = setTimeout(() => {
+        this.forceUpdate()
+        delete this.debounceTimer
+      }, 300)
+    }
+  }
+
   componentDidMount () {
     this.interval = setInterval(() => {
       this.forceUpdate()
@@ -67,6 +80,10 @@ class Messages extends React.Component {
   }
 
   componentWillUnmount () {
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer)
+      delete this.debounceTimer
+    }
     clearInterval(this.interval)
   }
 

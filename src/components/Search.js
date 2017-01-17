@@ -28,7 +28,7 @@ class Search extends React.Component {
       sort: {
         byPath: true,
         from: 1,
-        to: 300
+        to: 50
       }
     }
   }

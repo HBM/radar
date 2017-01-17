@@ -4,6 +4,7 @@ import thunk from 'redux-thunk'
 import radar from './reducers'
 import { loadState, saveState } from './localStorage'
 import throttle from 'lodash.throttle'
+import deepEqual from 'deep-equal'
 
 const configureStore = () => {
   const middlewares = [thunk]
@@ -25,12 +26,14 @@ const configureStore = () => {
       window.devToolsExtension ? window.devToolsExtension() : f => f
     )
   )
+  let lastSettings = {}
   store.subscribe(throttle(() => {
     const state = {
       settings: store.getState().settings
     }
-    console.log('save', state)
-    saveState(state)
+    if (!deepEqual(lastSettings, state.settings)) {
+      saveState(state)
+    }
   }, 1000))
   return store
 }

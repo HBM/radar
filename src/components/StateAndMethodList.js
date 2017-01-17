@@ -1,6 +1,7 @@
 import React from 'react'
 import { List, Row } from 'md-components'
 import flatten from 'flat'
+import deepEqual from 'deep-equal'
 
 const methodAvatar = <span className='Method-avatar'>M</span>
 
@@ -45,13 +46,52 @@ const createStateRow = (state, icon, link, fields) => {
       primary={state.path}
       secondary={contentEmpty ? 'No matching fields' : content}
       icon={icon}
-      key={state.path}
       linkTo={link}
     />
   )
 }
 
+class StateOrMethod extends React.Component {
+  shouldComponentUpdate (nextProps) {
+    return !deepEqual(nextProps.stateOrMethod, this.props.stateOrMethod)
+  }
+
+  render () {
+    const {stateOrMethod, iconCreator, rootPath, selectedFields} = this.props
+    if (typeof stateOrMethod.value === 'undefined') {
+      const method = stateOrMethod
+      return createMethodRow(method, iconCreator(method.path), rootPath + '/' + encodeURIComponent(method.path))
+    } else {
+      const state = stateOrMethod
+      return createStateRow(state, iconCreator(state.path), rootPath + '/' + encodeURIComponent(state.path), selectedFields)
+    }
+  }
+}
+
 class StateAndMethodList extends React.Component {
+  shouldComponentUpdate (nextProps) {
+    if (nextProps.selectedFields !== this.props.selectedFields || nextProps.rootPath !== this.props.rootPath) {
+      return true
+    }
+    return false
+  }
+
+  componentWillUnmount () {
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer)
+      delete this.debounceTimer
+    }
+  }
+
+  componentWillReceiveProps () {
+    if (!this.debounceTimer) {
+      this.debounceTimer = setTimeout(() => {
+        this.forceUpdate()
+        delete this.debounceTimer
+      }, 100)
+    }
+  }
+
   render () {
     const {statesAndMethods, iconCreator = () => {}, rootPath, selectedFields} = this.props
     const rows = statesAndMethods
@@ -64,15 +104,7 @@ class StateAndMethodList extends React.Component {
         }
         return 0
       })
-      .map((stateOrMethod) => {
-        if (typeof stateOrMethod.value === 'undefined') {
-          const method = stateOrMethod
-          return createMethodRow(method, iconCreator(method.path), rootPath + '/' + encodeURIComponent(method.path))
-        } else {
-          const state = stateOrMethod
-          return createStateRow(state, iconCreator(state.path), rootPath + '/' + encodeURIComponent(state.path), selectedFields)
-        }
-      })
+      .map(stateOrMethod => <StateOrMethod key={stateOrMethod.path} stateOrMethod={stateOrMethod} iconCreator={iconCreator} selectedFields={selectedFields} rootPath={rootPath} />)
 
     return (
       <List>

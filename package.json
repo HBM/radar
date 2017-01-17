@@ -24,6 +24,7 @@
   "homepage": "https://github.com/lipp/radar",
   "dependencies": {
     "classnames": "^2.2.5",
+    "deep-equal": "^1.0.1",
     "flat": "^2.0.1",
     "lodash.throttle": "^4.1.1",
     "md-components": "^6.0.0",

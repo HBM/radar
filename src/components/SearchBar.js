@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import Collapse from 'react-collapse'
 import FieldSelection from './FieldSelection'
 
-class SearchBar extends React.Component {
+class SearchBar extends React.PureComponent {
   constructor (props) {
     super(props)
     this.state = {
