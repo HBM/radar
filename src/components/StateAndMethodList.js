@@ -2,6 +2,7 @@ import React from 'react'
 import { List, Row } from 'md-components'
 import flatten from 'flat'
 import deepEqual from 'deep-equal'
+import { connect } from 'react-redux'
 
 const methodAvatar = <span className='Method-avatar'>M</span>
 
@@ -51,9 +52,13 @@ const createStateRow = (state, icon, link, fields) => {
   )
 }
 
-class StateOrMethod extends React.Component {
+class StateOrMethod_ extends React.Component {
   shouldComponentUpdate (nextProps) {
-    return !deepEqual(nextProps.stateOrMethod, this.props.stateOrMethod)
+    const path = nextProps.stateOrMethod.path
+    if (nextProps.favorites.indexOf(path) > -1 !== this.props.favorites.indexOf(path) > -1) {
+      return true
+    }
+    return !deepEqual(nextProps.stateOrMethod, this.props.stateOrMethod) || nextProps.favorites !== this.props.favorites
   }
 
   render () {
@@ -68,9 +73,17 @@ class StateOrMethod extends React.Component {
   }
 }
 
+const mapStateToFavorites = state => ({
+  favorites: state.settings.favorites
+})
+
+const StateOrMethod = connect(mapStateToFavorites)(StateOrMethod_)
+
 class StateAndMethodList extends React.Component {
   shouldComponentUpdate (nextProps) {
-    if (nextProps.selectedFields !== this.props.selectedFields || nextProps.rootPath !== this.props.rootPath) {
+    if (nextProps.selectedFields !== this.props.selectedFields ||
+        nextProps.rootPath !== this.props.rootPath ||
+        nextProps.favorites !== this.props.favorites) {
       return true
     }
     return false
@@ -114,4 +127,4 @@ class StateAndMethodList extends React.Component {
   }
 }
 
-export default StateAndMethodList
+export default connect(mapStateToFavorites)(StateAndMethodList)

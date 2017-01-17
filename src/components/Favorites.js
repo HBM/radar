@@ -9,6 +9,7 @@ import StateAndMethodList from './StateAndMethodList'
 import { Split, SplitRight, SplitLeft } from './Split'
 import SearchBar from './SearchBar'
 import Details from './Details'
+import deepEqual from 'deep-equal'
 
 class Favorites extends React.Component {
 
@@ -35,10 +36,10 @@ class Favorites extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    const favNext = JSON.stringify(nextProps.favorites.sort())
-    const favPrev = JSON.stringify(this.props.favorites.sort())
+    const favNext = nextProps.favorites.sort()
+    const favPrev = this.props.favorites.sort()
     const isOnlineAgain = !this.props.connection.isConnected && nextProps.connection.isConnected
-    if (favNext !== favPrev || isOnlineAgain) {
+    if (!deepEqual(favNext, favPrev) || isOnlineAgain) {
       this.updateFetch(nextProps)
     }
   }
