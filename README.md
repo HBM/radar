@@ -15,3 +15,7 @@ The latest release is available for:
     $ make css
     
 Open your browser: [localhost:6001](http://localhost:6001).
+
+# Usage
+
+...
