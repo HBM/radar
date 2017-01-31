@@ -3,38 +3,110 @@ import 'react-fastclick'
 import { render } from 'react-dom'
 import Root from './components/Root'
 import configureStore from './configureStore'
-import { connect, fetch } from 'redux-jet'
+import { connect, fetch, close } from 'redux-jet'
+import { setConnectionDead } from './actions'
 
 const store = configureStore()
 
-let wasConnected = false
 const radarGroupsExpression = {
   path: {
     equals: '_radarGroups'
   }
 }
 
-let reconnectInterval
+const heartbeatExpression = {
+  path: {
+    equals: '_heartbeat'
+  }
+}
+
+const createAutoReconnect = reconnect => {
+  let timer
+  return ({settings: {connection = {}}}) => {
+    if ((connection.reconnect || connection.error) && !timer) {
+      console.log('activate reconect')
+      timer = setTimeout(() => {
+        console.log('reonnection')
+        timer = false
+        reconnect(connection)
+      }, 1000)
+    }
+    if (connection.new) {
+      clearTimeout(timer)
+      timer = false
+    }
+  }
+}
+
+const autoReconnect = createAutoReconnect(connection => {
+  connect(connection, true)(store.dispatch)
+})
+
+const createAutoFetchRadarStates = fetch => {
+  let wasConnected = false
+  return ({settings: {connection = {}}}) => {
+    if (connection.isConnected && !wasConnected) {
+      wasConnected = true
+      fetch(connection, radarGroupsExpression, 'groups')
+      fetch(connection, heartbeatExpression, 'heartbeat')
+    } else if (!connection.isConnected && wasConnected) {
+      wasConnected = false
+    }
+  }
+}
+
+const autoFetchRadarStates = createAutoFetchRadarStates((connection, expression, id) => {
+  fetch(connection, expression, id)(store.dispatch)
+})
+
+const isSameConnection = (a, b) => (
+  a.user === b.user &&
+  a.url === b.url &&
+  a.password === b.password
+)
+
+const createHeartbeatChecker = (onDead) => {
+  let now
+  let timer
+  let prevConnection = {}
+  return ({settings: {connection = {}}, data: {heartbeat}}) => {
+    if (!isSameConnection(prevConnection, connection)) {
+      clearTimeout(timer)
+      now = false
+    }
+    prevConnection = connection
+    if (!connection.isConnected) {
+      clearTimeout(timer)
+    }
+    if (!heartbeat || !heartbeat.value) {
+      return
+    }
+    if (heartbeat.value.now !== now) {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        onDead(connection)
+      }, 2 * heartbeat.value.next)
+      now = heartbeat.value.now
+    }
+  }
+}
+
+const heartbeatChecker = createHeartbeatChecker(connection => {
+  console.log('DEAD', connection, typeof close)
+  store.dispatch(setConnectionDead())
+  store.dispatch(close(connection, true))
+})
 
 store.subscribe(() => {
-  const con = store.getState().settings.connection
-  if (con.isConnected && !wasConnected) {
-    clearInterval(reconnectInterval)
-    wasConnected = true
-    fetch(con, radarGroupsExpression, 'groups')(store.dispatch)
-  } else if (!con.isConnected && wasConnected) {
-    if (con.url) {
-      reconnectInterval = setInterval(() => {
-        console.log('Attempt reconnect to', con)
-        connect(con, true)(store.dispatch)
-      }, 2000)
-    }
-    wasConnected = false
-  }
+  const state = store.getState()
+  autoReconnect(state)
+  autoFetchRadarStates(state)
+  heartbeatChecker(state)
 })
 
 const settings = store.getState().settings
 if (settings && settings.connection && settings.connection.url) {
+  settings.connection.lost = false
   connect(settings.connection, true)(store.dispatch)
 }
 

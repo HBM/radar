@@ -61,6 +61,8 @@ const message = (state = null, action) => {
       return {text: `Favorites import failed: ${action.reason}`}
     case 'FAVORITE_SET':
       return {text: `${action.favorites.length} favorites imported successfully`}
+    case 'CONNECTION_DEAD':
+      return {text: `Disconnected from ${action.url} / no heartbeat`}
     case 'JET_CLOSED':
       return {text: `Disconnected from ${action.url}`}
     case 'JET_CONNECT_SUCCESS':
@@ -80,37 +82,48 @@ const message = (state = null, action) => {
   }
 }
 
+let lastConReq
+
 const connection = (state = {isConnected: false}, action) => {
   switch (action.type) {
     case 'JET_CONNECT_REQUEST':
-      return {
+      let res = {
+        new: lastConReq !== action.url,
         isConnected: false,
         url: action.url,
         user: action.user,
         password: action.password
       }
+      lastConReq = action.url
+      return res
     case 'JET_CONNECT_SUCCESS':
       return {
         ...state,
-        isConnected: true,
-        url: action.url,
-        user: action.user,
-        password: action.password
+        new: false,
+        reconnect: false,
+        isConnected: true
       }
+    case 'CONNECTION_DEAD':
     case 'JET_CLOSED': // implicit disconnect (connection lost) -> keep connection info for auto reconnect
       return {
         ...state,
+        new: false,
+        reconnect: !state.explicitClose,
         isConnected: false
       }
     case 'JET_CLOSE': // explicit disconnect from ui
       return {
+        ...state,
+        new: false,
+        explicitClose: state.isConnected,
         isConnected: false
       }
     case 'JET_CONNECT_FAILURE':
       return {
+        ...state,
+        new: false,
         isConnected: false,
-        url: action.url,
-        error: action.message
+        error: action.error
       }
     default:
       return state
@@ -212,6 +225,7 @@ const data = combineReducers({
   search: sorted('search'),
   groups: single('groups'),
   group: array('group'),
+  heartbeat: single('heartbeat'),
   messages,
   traffic
 })

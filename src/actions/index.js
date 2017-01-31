@@ -52,3 +52,7 @@ export const setFavoritesFailed = (reason) => ({
   type: 'FAVORITE_FAILURE',
   reason
 })
+
+export const setConnectionDead = () => ({
+  type: 'CONNECTION_DEAD'
+})

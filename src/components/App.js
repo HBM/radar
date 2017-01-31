@@ -55,8 +55,12 @@ class App extends React.Component {
       {text: 'Favorites', link: '/favorites'}
     ]
 
-    if (groups && groups.length > 0) {
-      links.push({text: 'Groups', link: '/groups/', links: groups.map(groupToLink)})
+    try {
+      if (groups && groups.length > 0) {
+        links.push({text: 'Groups', link: '/groups/', links: groups.map(groupToLink)})
+      }
+    } catch (err) {
+      console.log('Invalid _radarGroups', err)
     }
     links.push({text: 'Messages', link: '/messages'})
     links.push({text: 'Import / Export', link: '/impex'})
@@ -92,7 +96,7 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    groups: state.data.groups,
+    groups: state.data.groups ? state.data.groups.value : null,
     message: state.message
   }
 }

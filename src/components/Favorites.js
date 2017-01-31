@@ -88,7 +88,7 @@ class Favorites extends React.Component {
           <h3>None of your favorites is available</h3>
           <span>There are your favorites:</span>
           <ul>
-            {favorites.sort().map(fav => <li>{fav}</li>)}
+            {favorites.sort().map(fav => <li key={fav}>{fav}</li>)}
           </ul>
         </div>
       )
