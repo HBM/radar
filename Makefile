@@ -12,6 +12,8 @@ react:
 	mkdir -p debug/js
 	mkdir -p debug/css
 	mkdir -p debug/fonts
+	# reinstall react router alpha 4 -> *SOMEHOW* fixes build
+	npm i react-router@4.0.0-alpha.4 --save
 	NODE_ENV=development node ./html/compile.js
 	cp -r fonts/* debug/fonts/
 	./node_modules/.bin/node-sass ./css/index.scss ./debug/css/styles.css
@@ -23,6 +25,8 @@ build:
 	mkdir -p prod/css
 	mkdir -p prod/fonts
 	cp -r fonts/* prod/fonts/
+	# reinstall react router alpha 4 -> *SOMEHOW* fixes build
+	npm i react-router@4.0.0-alpha.4 --save
 	# create index.html with paths to min js and css
 	NODE_ENV=production node ./html/compile.js
 	# minify css
