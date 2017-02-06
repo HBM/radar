@@ -9,7 +9,6 @@ const getSelected = (statesOrMethods, path) => {
 }
 
 const Details = ({params: {path}, statesAndMethods, backUrl}) => {
-  // const method = getSelected(methods, path)
   const stateOrMethod = getSelected(statesAndMethods, path)
   if (!stateOrMethod) {
     return <div></div>

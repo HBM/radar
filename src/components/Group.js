@@ -22,12 +22,13 @@ class Group extends React.Component {
 
   updateFetch (groups, nextGroup) {
     let group = {...groups.find(group => group.title === nextGroup)}
-    if (!group) {
+    if (!group || !group.expression) {
       return
     }
     if (!this.fetching || this.lastGroup !== nextGroup) {
       this.lastGroup = nextGroup
       this.props.unfetch(this.props.connection, 'group')
+      console.log('FETCH GROUP', group.expression)
       this.props.fetch(this.props.connection, group.expression, 'group')
       this.fetching = true
     }
@@ -84,7 +85,7 @@ class Group extends React.Component {
             statesAndMethods={filteredStatesAndMethods}
             selectedFields={selectedFields}
           />
-          <StateAndMethodList statesAndMethods={filteredStatesAndMethods} iconCreator={createStar} rootPath={'/groups/' + encodeURIComponent(this.props.params.group)} selectedFields={selectedFields} />
+          <StateAndMethodList statesAndMethods={filteredStatesAndMethods} iconCreator={createStar} rootPath={'/groups/' + this.props.params.group} selectedFields={selectedFields} />
         </SplitLeft>
         <Match pattern='/groups/:group/:path' children={({matched, params}, match) => {
           if (matched) {
@@ -104,7 +105,7 @@ class Group extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    groups: state.data.groups,
+    groups: state.data.groups ? state.data.groups.value : [],
     favorites: state.settings.favorites,
     statesAndMethods: state.data.group,
     connection: state.settings.connection,

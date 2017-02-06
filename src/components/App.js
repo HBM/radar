@@ -96,7 +96,7 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    groups: state.data.groups,
+    groups: state.data.groups ? state.data.groups.value : [],
     message: state.message
   }
 }
