@@ -43,6 +43,24 @@
   height: 60px;
 }
 
+.State-Input-Dec-Hex {
+  display: flex;
+}
+
+.State-Input-Dec-Hex > .Textfield:first-child {
+  width: 55%;
+}
+
+.State-Input-Dec-Hex > .Textfield {
+  width: 35%;
+  display: inline-block;
+  flex-grow: 1;
+}
+
+.State-Input-Dec-Hex > .Textfield:nth-child(2) {
+  margin-left: 10%;
+}
+
 hr {
   display: block;
   height: 1px;

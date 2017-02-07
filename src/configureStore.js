@@ -1,5 +1,4 @@
 import { createStore, applyMiddleware, compose } from 'redux'
-import createLogger from 'redux-logger'
 import thunk from 'redux-thunk'
 import radar from './reducers'
 import { loadState, saveState } from './localStorage'
@@ -8,9 +7,6 @@ import deepEqual from 'deep-equal'
 
 const configureStore = () => {
   const middlewares = [thunk]
-  if (process.env.NODE_ENV !== 'production') {
-    middlewares.push(createLogger())
-  }
 
   const prevState = loadState()
   let isCompatible

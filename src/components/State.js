@@ -51,20 +51,52 @@ const typedValue = (type, onChange) => (event) => {
   onChange(event)
 }
 
+const toHex = (number) => {
+  const hex = number.toString(16)
+  const zeros = 8 - hex.length
+  const hex8 = '0'.repeat(zeros) + hex
+  const bytes = []
+  for (let i = 0; i < 8; i = i + 2) {
+    bytes.push(hex8.substr(i, 2))
+  }
+  return '0x ' + bytes.join(' ')
+}
+
 const createInput = (onChange, disabled) => (nvp) => {
   const type = typeof nvp.value
   switch (typeof nvp.value) {
     case 'string':
-    case 'number':
       return <Textfield
         disabled={disabled}
         name={nvp.name}
-        type={type === 'string' ? 'text' : 'number'}
+        type='text'
         value={nvp.value}
         label={nvp.name}
         onChange={typedValue(type, onChange)}
         key={nvp.name}
       />
+    case 'number':
+      return (
+        <div className='State-Input-Dec-Hex' key={nvp.name}>
+          <Textfield
+            disabled={disabled}
+            name={nvp.name}
+            type='number'
+            value={nvp.value}
+            label={nvp.name}
+            onChange={typedValue(type, onChange)}
+            key={nvp.name + '_dec'}
+          />
+          {Math.round(nvp.value) === nvp.value && <Textfield
+            disabled
+            name={nvp.name}
+            type='text'
+            value={toHex(nvp.value)}
+            label={nvp.name ? 'As HEX' : null}
+            key={nvp.name + '_hex'}
+          />}
+        </div>
+      )
     case 'boolean':
       return <Checkbox
         disabled={disabled}
