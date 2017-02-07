@@ -62,6 +62,10 @@ const toHex = (number) => {
   return '0x ' + bytes.join(' ')
 }
 
+const isInt = (number) => {
+  return parseInt(number) === number
+}
+
 const createInput = (onChange, disabled) => (nvp) => {
   const type = typeof nvp.value
   switch (typeof nvp.value) {
@@ -87,7 +91,7 @@ const createInput = (onChange, disabled) => (nvp) => {
             onChange={typedValue(type, onChange)}
             key={nvp.name + '_dec'}
           />
-          {Math.round(nvp.value) === nvp.value && <Textfield
+          {isInt(nvp.value) && <Textfield
             disabled
             name={nvp.name}
             type='text'
