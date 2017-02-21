@@ -40,20 +40,9 @@ const toNameValue = (flat) => {
     })
 }
 
-const typedValue = (type, onChange) => (event) => {
-  if (type === 'number') {
-    event.target.typedValue = parseFloat(event.target.value)
-  } else if (type === 'boolean') {
-    event.target.typedValue = event.target.checked
-  } else {
-    event.target.typedValue = event.target.value
-  }
-  onChange(event)
-}
-
 const toHex = (number) => {
-  const hex = number.toString(16)
-  const zeros = 8 - hex.length
+  const hex = Math.abs(number).toString(16).slice(-8)
+  const zeros = 8 - Math.min(hex.length, 8)
   const hex8 = '0'.repeat(zeros) + hex
   const bytes = []
   for (let i = 0; i < 8; i = i + 2) {
@@ -66,30 +55,91 @@ const isInt = (number) => {
   return parseInt(number) === number
 }
 
-const createInput = (onChange, disabled) => (nvp) => {
-  const type = typeof nvp.value
+class TypedInput extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = this.getState(props)
+  }
+
+  componentWillReceiveProps (props) {
+    if (this.state.bak !== props.value) {
+      this.setState({
+        ...this.state,
+        ...this.getState(props),
+        error: false
+      })
+    }
+  }
+
+  getState (props) {
+    return {
+      bak: props.value,
+      value: props.value,
+      type: typeof props.value
+    }
+  }
+
+  onChange = ({target}) => {
+    this.setState({value: target.value})
+    switch (this.state.type) {
+      case 'boolean':
+        this.props.onChange(this.props.name, target.checked)
+        break
+      case 'number':
+        if (target.value.endsWith('.')) {
+          return
+        }
+        const value = parseFloat(target.value)
+        if (!isNaN(value) && target.value.match(/[0-9]$/)) {
+          this.setState({error: false}, () => {
+            this.props.onChange(this.props.name, value)
+            this.props.onError(this.props.name, false)
+          })
+        } else {
+          this.setState({error: 'Not a number'}, () => {
+            this.props.onError(this.props.name, true)
+          })
+        }
+        break
+      default:
+        this.props.onChange(this.props.name, target.value)
+    }
+  }
+
+  render () {
+    if (this.state.type === 'boolean') {
+      return <Checkbox {...this.props} checked={this.state.value} onChange={this.onChange} />
+    } else {
+      return <Textfield {...this.props} value={this.state.value} onChange={this.onChange} error={this.state.error} />
+    }
+  }
+}
+
+const createInput = (onChange, disabled, onError) => (nvp) => {
   switch (typeof nvp.value) {
     case 'string':
-      return <Textfield
+    case 'boolean':
+      return <TypedInput
         disabled={disabled}
         name={nvp.name}
-        type='text'
         value={nvp.value}
         label={nvp.name}
-        onChange={typedValue(type, onChange)}
+        onChange={onChange}
         key={nvp.name}
+        onError={onError}
       />
     case 'number':
       return (
         <div className='State-Input-Dec-Hex' key={nvp.name}>
-          <Textfield
+          <TypedInput
             disabled={disabled}
             name={nvp.name}
-            type='number'
+            type='string'
             value={nvp.value}
             label={nvp.name}
-            onChange={typedValue(type, onChange)}
+            onChange={onChange}
             key={nvp.name + '_dec'}
+            onError={onError}
           />
           {isInt(nvp.value) && <Textfield
             disabled
@@ -101,15 +151,6 @@ const createInput = (onChange, disabled) => (nvp) => {
           />}
         </div>
       )
-    case 'boolean':
-      return <Checkbox
-        disabled={disabled}
-        name={nvp.name}
-        checked={nvp.value}
-        label={nvp.name}
-        onChange={typedValue('boolean', onChange)}
-        key={nvp.name}
-      />
     default:
       return <Textfield
         name={nvp.name}
@@ -128,7 +169,8 @@ export class State extends React.Component {
     const state = props.state
     this.state = {
       formData: flatObject(state.value),
-      formDataBak: flatObject(state.value)
+      formDataBak: flatObject(state.value),
+      error: {}
     }
   }
 
@@ -140,7 +182,8 @@ export class State extends React.Component {
     const state = newProps.state
     if (!this.hasChanges() || this.props.state.path !== newProps.state.path) {
       this.setState({
-        formData: flatObject(state.value)
+        formData: flatObject(state.value),
+        error: {}
       })
     }
     this.setState({
@@ -164,10 +207,18 @@ export class State extends React.Component {
     this.props.set(this.props.connection, this.props.state.path, unflatObject(this.state.formData))
   }
 
-  assignToFormData = (event) => {
+  assignToFormData = (name, value) => {
     this.setState({
-      formData: { ...this.state.formData, [event.target.name]: event.target.typedValue }
+      formData: { ...this.state.formData, [name]: value }
     })
+  }
+
+  onError = (name, hasError) => {
+    this.setState({error: {...this.state.error, [name]: hasError}})
+  }
+
+  hasError () {
+    return Object.keys(this.state.error).reduce((prev, name) => prev || this.state.error[name], false)
   }
 
   render () {
@@ -182,10 +233,10 @@ export class State extends React.Component {
           <h1>{this.props.state.path}</h1>
         </div>
         <form onSubmit={this.onSubmit} >
-          {nvps.map(createInput(this.assignToFormData, this.props.state.fetchOnly))}
+          {nvps.map(createInput(this.assignToFormData, this.props.state.fetchOnly, this.onError))}
           <hr />
-          <Button type='submit' raised disabled={!this.hasChanges()}>Set</Button>
-          <Button type='button' disabled={!this.hasChanges()} onClick={this.cancel} >Cancel</Button>
+          <Button type='submit' raised disabled={!(this.hasChanges() && !this.hasError())}>Set</Button>
+          <Button type='button' disabled={!this.hasChanges() && !this.hasError()} onClick={this.cancel} >Cancel</Button>
         </form>
       </div>
     )
