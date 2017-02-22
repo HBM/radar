@@ -2,118 +2,9 @@ import React from 'react'
 import * as actions from 'redux-jet'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import flatten from 'flat'
-import { Textfield, Button, Checkbox, Icon } from 'md-components'
-
-export const flatObject = (value) => {
-  if (typeof value === 'object') {
-    return flatten(value)
-  } else {
-    var fv = {}
-    fv[''] = value
-    return fv
-  }
-}
-
-export const unflatObject = (value) => {
-  if (typeof value === 'object') {
-    const keys = Object.keys(value)
-    if (keys.length === 1 && keys[0] === '') {
-      return value['']
-    }
-  }
-  return flatten.unflatten(value)
-}
-
-const toNameValue = (flat) => {
-  return Object.keys(flat)
-    .sort(function (a, b) {
-      if (a > b) {
-        return 1
-      } else if (a < b) {
-        return -1
-      }
-      return 0
-    })
-    .map(function (key) {
-      return {name: key, value: flat[key]}
-    })
-}
-
-const toHex = (number) => {
-  const hex = Math.abs(number).toString(16).slice(-8)
-  const zeros = 8 - Math.min(hex.length, 8)
-  const hex8 = '0'.repeat(zeros) + hex
-  const bytes = []
-  for (let i = 0; i < 8; i = i + 2) {
-    bytes.push(hex8.substr(i, 2))
-  }
-  return '0x ' + bytes.join(' ')
-}
-
-const isInt = (number) => {
-  return parseInt(number) === number
-}
-
-class TypedInput extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = this.getState(props)
-  }
-
-  componentWillReceiveProps (props) {
-    if (this.state.bak !== props.value) {
-      this.setState({
-        ...this.state,
-        ...this.getState(props),
-        error: false
-      })
-    }
-  }
-
-  getState (props) {
-    return {
-      bak: props.value,
-      value: props.value,
-      type: typeof props.value
-    }
-  }
-
-  onChange = ({target}) => {
-    this.setState({value: target.value})
-    switch (this.state.type) {
-      case 'boolean':
-        this.props.onChange(this.props.name, target.checked)
-        break
-      case 'number':
-        if (target.value.endsWith('.')) {
-          return
-        }
-        const value = parseFloat(target.value)
-        if (!isNaN(value) && target.value.match(/[0-9]$/)) {
-          this.setState({error: false}, () => {
-            this.props.onChange(this.props.name, value)
-            this.props.onError(this.props.name, false)
-          })
-        } else {
-          this.setState({error: 'Not a number'}, () => {
-            this.props.onError(this.props.name, true)
-          })
-        }
-        break
-      default:
-        this.props.onChange(this.props.name, target.value)
-    }
-  }
-
-  render () {
-    if (this.state.type === 'boolean') {
-      return <Checkbox {...this.props} checked={this.state.value} onChange={this.onChange} />
-    } else {
-      return <Textfield {...this.props} value={this.state.value} onChange={this.onChange} error={this.state.error} />
-    }
-  }
-}
+import { Textfield, Button, Icon } from 'md-components'
+import { flatObject, unflatObject, flatToNameValue, toHex, isInt } from './helpers'
+import TypedInput from './TypedInput'
 
 const createInput = (onChange, disabled, onError) => (nvp) => {
   switch (typeof nvp.value) {
@@ -152,14 +43,7 @@ const createInput = (onChange, disabled, onError) => (nvp) => {
         </div>
       )
     default:
-      return <Textfield
-        name={nvp.name}
-        type='text'
-        disabled
-        value={nvp.value}
-        label={nvp.name}
-        key={nvp.name}
-      />
+      return <div>unsported type {typeof nvp.value}</div>
   }
 }
 
@@ -222,7 +106,7 @@ export class State extends React.Component {
   }
 
   render () {
-    const nvps = toNameValue(this.state.formData)
+    const nvps = flatToNameValue(this.state.formData)
     return (
       <div className='State'>
         <div className='State-hero'>
