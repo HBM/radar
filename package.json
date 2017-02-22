@@ -4,7 +4,9 @@
   "description": "Webinterface for Jet",
   "main": "index.js",
   "scripts": {
-    "test": "standard && make build && mocha test/selenium.js",
+    "build": "make build",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "test": "standard && nyc mocha ./test/**/*.js",
     "gh-pages-travis": "gh-pages-travis"
   },
   "repository": {
@@ -45,18 +47,25 @@
   "devDependencies": {
     "babel-core": "^6.7.7",
     "babel-eslint": "^6.1.2",
+    "babel-istanbul": "^0.12.1",
     "babel-plugin-__coverage__": "^0.111111.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.6.0",
+    "babel-preset-es2017": "^6.22.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
+    "coveralls": "^2.11.16",
     "envify": "^3.4.0",
+    "enzyme": "^2.7.1",
     "express": "^4.14.0",
     "gh-pages-travis": "^1.0.0",
     "handlebars": "^4.0.5",
+    "jsdom": "^9.11.0",
     "mocha": "^2.5.3",
     "node-sass": "^3.8.0",
+    "nyc": "^10.1.2",
     "react-fastclick": "^2.1.2",
     "selenium-download": "^2.0.1",
     "selenium-webdriver": "^2.53.2",
@@ -64,6 +73,19 @@
     "standard-format": "^2.2.2",
     "uglify-js": "^2.4.23",
     "watchify": "^3.2.1"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.js"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "require": [
+      "./test/.setup.js"
+    ],
+    "all": true
   },
   "standard": {
     "parser": "babel-eslint",

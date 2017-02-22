@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import flatten from 'flat'
 import { Textfield, Button, Checkbox, Icon } from 'md-components'
 
-const flatObject = (value) => {
+export const flatObject = (value) => {
   if (typeof value === 'object') {
     return flatten(value)
   } else {
@@ -15,7 +15,7 @@ const flatObject = (value) => {
   }
 }
 
-const unflatObject = (value) => {
+export const unflatObject = (value) => {
   if (typeof value === 'object') {
     const keys = Object.keys(value)
     if (keys.length === 1 && keys[0] === '') {

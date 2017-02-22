@@ -6,3 +6,5 @@ node_modules
 *.swm
 debug/*
 prod/*
+coverage
+.nyc_output
