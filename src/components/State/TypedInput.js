@@ -32,7 +32,7 @@ export default class TypedInput extends React.Component {
       return
     }
     const value = parseFloat(target.value)
-    if (!isNaN(value) && target.value.match(/[0-9]$/)) {
+    if (!isNaN(value) && target.value.match(/^[-+]?[0-9]*\.?[0-9]+$/)) { // regex from here: http://www.regular-expressions.info/floatingpoint.html
       this.setState({error: false}, () => {
         this.props.onChange(this.props.name, value)
         this.props.onError(this.props.name, false)

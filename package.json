@@ -67,6 +67,7 @@
     "node-sass": "^3.8.0",
     "nyc": "^10.1.2",
     "react-addons-test-utils": "^15.4.2",
+    "react-broadcast": "^0.1.2",
     "react-fastclick": "^2.1.2",
     "selenium-download": "^2.0.1",
     "selenium-webdriver": "^2.53.2",

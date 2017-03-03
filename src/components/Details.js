@@ -1,6 +1,6 @@
 import React from 'react'
-import State from './State'
-import Method from './Method'
+import State from '../containers/State'
+import Method from '../containers/Method'
 
 const getSelected = (statesOrMethods, path) => {
   return statesOrMethods.filter((stateOrMethod) => {

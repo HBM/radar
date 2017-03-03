@@ -1,6 +1,4 @@
 import React from 'react'
-import * as actions from 'redux-jet'
-import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Textfield, Button, Icon } from 'md-components'
 import { flatObject, unflatObject, flatToNameValue, toHex, isInt } from './helpers'
@@ -127,11 +125,4 @@ export class State extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    favorites: state.settings.favorites,
-    connection: state.settings.connection
-  }
-}
-
-export default connect(mapStateToProps, actions)(State)
+export default State

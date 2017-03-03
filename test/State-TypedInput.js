@@ -166,6 +166,22 @@ describe('State - TypedInput', () => {
       assert.deepEqual(onErrorArguments, ['foo', true])
     })
 
+    it('should render "Not a number" error 2', () => {
+      let onErrorArguments
+      const onError = (...args) => {
+        onErrorArguments = args
+      }
+      const wrapper = mount(<TypedInput name='foo' label='bar' value={123} onError={onError} onChange={() => {}} />)
+      wrapper.instance().onChange({
+        target: {
+          value: '12a3.2'
+        }
+      })
+      assert.equal(wrapper.find('.Textfield input').node.value, '12a3.2')
+      assert.equal(wrapper.find('.Textfield-error').text(), 'Not a number')
+      assert.deepEqual(onErrorArguments, ['foo', true])
+    })
+
     it('should reset error', () => {
       let onErrorArguments
       const onError = (...args) => {
