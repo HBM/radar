@@ -8,6 +8,7 @@ import Connections from './Connections'
 import Group from './Group'
 import Messages from './Messages'
 import ImportExport from './ImportExport'
+import '../styles.scss'
 
 class App extends React.Component {
 

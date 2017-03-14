@@ -1,23 +1,11 @@
-@import "../node_modules/md-components/css/base";
-@import "../node_modules/md-components/components/header/Header";
-@import "../node_modules/md-components/components/navigation/Navigation";
-@import "../node_modules/md-components/components/icon/Icon";
-@import "../node_modules/md-components/components/card/Card";
-@import "../node_modules/md-components/components/textfield/Textfield";
-@import "../node_modules/md-components/components/radiobutton/Radiobutton";
-@import "../node_modules/md-components/components/select/Select";
-@import "../node_modules/md-components/components/checkbox/Checkbox";
-@import "../node_modules/md-components/components/button/Button";
-@import "../node_modules/md-components/components/list/List";
-@import "../node_modules/md-components/components/chip/Chip";
-@import "../node_modules/md-components/components/snackbar/Snackbar";
-@import "../node_modules/md-components/css/mixins";
-@import "./Split";
-@import "./State";
-@import "./Searchbar";
-@import "./Connections";
-@import "./FieldSelection";
-@import "./Overwrites";
+@import "../node_modules/md-components/lib/css/mixins";
+@import "../node_modules/md-components/lib/css/base";
+@import "./css/Split";
+@import "./css/State";
+@import "./css/Searchbar";
+@import "./css/Connections";
+@import "./css/FieldSelection";
+@import "./css/Overwrites";
 
 .State-avatar, .Method-avatar {
   text-align: center;
