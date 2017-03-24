@@ -105,10 +105,17 @@ store.subscribe(() => {
   heartbeatChecker(state)
 })
 
-const settings = store.getState().settings
-if (settings && settings.connection && settings.connection.url) {
-  settings.connection.lost = false
-  connect(settings.connection, true)(store.dispatch)
+try {
+  const connection = JSON.parse(decodeURIComponent(window.location.search.match(/connection=([^&]+)/)[1]))
+  console.log('reconnect from URL')
+  connect(connection, true)(store.dispatch)
+} catch (_) {
+  const settings = store.getState().settings
+  if (settings && settings.connection && settings.connection.url) {
+    console.log('reconnect from localStorage')
+    settings.connection.lost = false
+    connect(settings.connection, true)(store.dispatch)
+  }
 }
 
 render(
