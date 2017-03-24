@@ -6,7 +6,7 @@ import { Icon } from 'md-components'
 import SearchBar from './SearchBar'
 import classNames from 'classnames'
 import StateAndMethodList from '../containers/StateAndMethodList'
-import { Link, Match } from 'react-router'
+import { Link, Route } from 'react-router-dom'
 import { Split, SplitRight, SplitLeft } from './Split'
 import Details from './Details'
 
@@ -119,11 +119,11 @@ class Search extends React.Component {
           />
           {this.renderContent()}
         </SplitLeft>
-        <Match pattern='/search/:path' children={({matched, params}, match) => {
-          if (matched) {
+        <Route path='/search/:path' children={({match}) => {
+          if (match && match.params.path) {
             return (
               <SplitRight>
-                <Details statesAndMethods={statesAndMethods} params={params} backUrl='/search' />
+                <Details statesAndMethods={statesAndMethods} params={match.params} backUrl='/search' />
               </SplitRight>
             )
           }

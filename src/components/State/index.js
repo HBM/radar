@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { Textfield, Button, Icon } from 'md-components'
 import { flatObject, unflatObject, flatToNameValue, toHex, isInt } from './helpers'
 import TypedInput from './TypedInput'

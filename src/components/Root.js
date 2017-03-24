@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { Provider } from 'react-redux'
-import HashRouter from 'react-router/HashRouter'
+import { HashRouter } from 'react-router-dom'
 import App from './App'
 
 const Root = ({ store }) => (

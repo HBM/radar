@@ -1,7 +1,7 @@
 import React from 'react'
 import * as actions from 'redux-jet'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { Button, Textarea, Icon } from 'md-components'
 
 export class Method extends React.Component {

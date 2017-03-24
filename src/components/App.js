@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Link, Match} from 'react-router'
+import {Link, Route, Redirect, withRouter} from 'react-router-dom'
 import {Header, Navigation, Snackbar, Icon} from 'md-components'
 import Search from './Search'
 import Favorites from './Favorites'
@@ -52,7 +52,7 @@ class App extends React.Component {
       }
     }
     var links = [
-      {text: 'Search', link: '/'},
+      {text: 'Search', link: '/search'},
       {text: 'Favorites', link: '/favorites'}
     ]
 
@@ -72,17 +72,17 @@ class App extends React.Component {
             <Icon.Settings fill='white' />
           </Link>
         </Header>
-        <Match pattern='/' render={(location) => (
+        <Route path='/' render={(location) => (
           <Navigation location={location} links={links} onChange={this.onChange} />
         )} />
         <main>
-          <Match exactly pattern='/' component={Search} />
-          <Match pattern='/search' component={Search} />
-          <Match pattern='/favorites' component={Favorites} />
-          <Match pattern='/connections' component={Connections} />
-          <Match pattern='/groups/:group' component={Group} />
-          <Match pattern='/messages' component={Messages} />
-          <Match pattern='/impex' component={ImportExport} />
+          <Redirect exact from='/' to='/search' />
+          <Route path='/search' component={Search} />
+          <Route path='/favorites' component={Favorites} />
+          <Route path='/connections' component={Connections} />
+          <Route path='/groups/:group' component={Group} />
+          <Route path='/messages' component={Messages} />
+          <Route path='/impex' component={ImportExport} />
         </main>
         <Snackbar
           text={message && message.text}
@@ -102,4 +102,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(App)
+export default withRouter(connect(mapStateToProps)(App))

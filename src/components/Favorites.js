@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 import { getFilteredStatesAndMethods } from '../reducers'
 import * as jetActions from 'redux-jet'
-import { Link, Match } from 'react-router'
+import { Link, Route } from 'react-router-dom'
 import { Icon } from 'md-components'
 import StateAndMethodList from '../containers/StateAndMethodList'
 import { Split, SplitRight, SplitLeft } from './Split'
@@ -111,11 +111,11 @@ class Favorites extends React.Component {
           />
           {this.renderContent()}
         </SplitLeft>
-        <Match pattern='/favorites/:path' children={({matched, params}, match) => {
-          if (matched) {
+        <Route path='/favorites/:path' children={({match}) => {
+          if (match) {
             return (
               <SplitRight>
-                <Details statesAndMethods={statesAndMethods} params={params} backUrl='/favorites' />
+                <Details statesAndMethods={statesAndMethods} params={match.params} backUrl='/favorites' />
               </SplitRight>
             )
           }

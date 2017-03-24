@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import { connect as connectJet, close as closeJet } from 'redux-jet'
 import * as actions from '../actions'
@@ -15,14 +16,14 @@ const isValidWebSocketUrl = (urlString) => {
 }
 
 const Connection = ({
-  params: {index},
+  match: {params: {index}},
   connect,
   connections,
   connectJet,
   closeJet,
   current,
   changeConnection,
-  router}) => {
+  history}) => {
   let connection = connections[index]
 
   const isConnected = connection.url === current.url && connection.user === current.user && current.isConnected
@@ -55,8 +56,7 @@ const Connection = ({
   }
 
   const goBack = () => {
-    const backUrl = '/' + window.location.hash.split('/').slice(1, -1).join('/')
-    router.push(backUrl)
+    history.goBack()
   }
 
   return (
@@ -132,4 +132,4 @@ const mapStateToProps = state => ({
   current: state.settings.connection
 })
 
-export default connect(mapStateToProps, {...actions, connectJet, closeJet})(Connection)
+export default withRouter(connect(mapStateToProps, {...actions, connectJet, closeJet})(Connection))

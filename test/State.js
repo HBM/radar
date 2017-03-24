@@ -2,7 +2,7 @@
 import State from '../src/components/State'
 import assert from 'assert'
 import {mount} from 'enzyme'
-import {Broadcast} from 'react-broadcast'
+import {MemoryRouter} from 'react-router-dom'
 import React from 'react'
 
 describe('State', () => {
@@ -10,9 +10,9 @@ describe('State', () => {
     location = {pathname: '', search: '', hash: ''}
     render () {
       return (
-        <Broadcast channel='location' value={this.location}>
-          <State {...this.props} />
-        </Broadcast>
+        <MemoryRouter>
+          <State {...this.props} backUrl='' />
+        </MemoryRouter>
       )
     }
   }

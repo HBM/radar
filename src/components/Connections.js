@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Match } from 'react-router'
+import { Route } from 'react-router-dom'
 import { connect as connectJet, close as closeJet } from 'redux-jet'
 import * as actions from '../actions'
 import { Icon, List, Row } from 'md-components'
@@ -47,7 +47,6 @@ const Connections = ({
     if (isValidWebSocketUrl(con.url)) {
       const isConnected = isCurrentConnection(con)
       avatar = isConnected ? <Icon.CloudDone className='Icon' /> : <Icon.CloudOff className='Icon' />
-
       subtitle = isConnected ? 'Connected' : 'Disconnected'
     } else {
       avatar = <Icon.Report className='Icon' />
@@ -72,9 +71,18 @@ const Connections = ({
           <Row primary='' avatar={<span />} icon={<Icon.AddCircle className='Icon Connections-add Icon-Add' onClick={addConnection} />} />
         </List>
       </SplitLeft>
-      <SplitRight>
-        <Match pattern='/connections/:index' component={Connection} />
-      </SplitRight>
+      {
+        <Route path='/connections/:index' children={({match}) => {
+          if (match) {
+            return (
+              <SplitRight>
+                <Connection />
+              </SplitRight>
+            )
+          }
+          return <SplitRight />
+        }} />
+      }
     </Split>
   )
 }

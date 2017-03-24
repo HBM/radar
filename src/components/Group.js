@@ -9,7 +9,7 @@ import StateAndMethodList from '../containers/StateAndMethodList'
 import { Split, SplitRight, SplitLeft } from './Split'
 import SearchBar from './SearchBar'
 import Details from './Details'
-import { Match } from 'react-router'
+import { Route } from 'react-router-dom'
 
 class Group extends React.Component {
   constructor (props) {
@@ -28,7 +28,6 @@ class Group extends React.Component {
     if (!this.fetching || this.lastGroup !== nextGroup) {
       this.lastGroup = nextGroup
       this.props.unfetch(this.props.connection, 'group')
-      console.log('FETCH GROUP', group.expression)
       this.props.fetch(this.props.connection, group.expression, 'group')
       this.fetching = true
     }
@@ -87,11 +86,11 @@ class Group extends React.Component {
           />
           <StateAndMethodList statesAndMethods={filteredStatesAndMethods} iconCreator={createStar} rootPath={'/groups/' + encodeURIComponent(this.props.params.group)} selectedFields={selectedFields} />
         </SplitLeft>
-        <Match pattern='/groups/:group/:path' children={({matched, params}, match) => {
-          if (matched) {
+        <Route path='/groups/:group/:path' children={({match}) => {
+          if (match) {
             return (
               <SplitRight>
-                <Details statesAndMethods={statesAndMethods} params={params} backUrl={'/groups/' + params.group} />
+                <Details statesAndMethods={statesAndMethods} params={match.params} backUrl={'/groups/' + match.params.group} />
               </SplitRight>
             )
           }

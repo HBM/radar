@@ -4,7 +4,7 @@ import StateRow from '../src/components/StateAndMethodList/StateRow'
 import StateAndMethodList from '../src/components/StateAndMethodList'
 import assert from 'assert'
 import {mount} from 'enzyme'
-import {Broadcast} from 'react-broadcast'
+import {MemoryRouter} from 'react-router-dom'
 import React from 'react'
 
 describe('StateAndMethodList', () => {
@@ -18,11 +18,10 @@ describe('StateAndMethodList', () => {
     }
 
     it('should mount', () => {
-      const location = {pathname: '', search: '', hash: ''}
       mount(
-        <Broadcast channel='location' value={location}>
+        <MemoryRouter>
           <MethodRow {...props} />
-        </Broadcast>
+        </MemoryRouter>
       )
     })
 
@@ -30,11 +29,10 @@ describe('StateAndMethodList', () => {
       let wrapper
 
       before(() => {
-        const location = {pathname: '', search: '', hash: ''}
         wrapper = mount(
-          <Broadcast channel='location' value={location}>
+          <MemoryRouter>
             <MethodRow {...props} />
-          </Broadcast>
+          </MemoryRouter>
         )
       })
 
@@ -75,11 +73,10 @@ describe('StateAndMethodList', () => {
     }
 
     it('should mount', () => {
-      const location = {pathname: '', search: '', hash: ''}
       mount(
-        <Broadcast channel='location' value={location}>
+        <MemoryRouter>
           <StateRow {...props} />
-        </Broadcast>
+        </MemoryRouter>
       )
     })
 
@@ -87,11 +84,10 @@ describe('StateAndMethodList', () => {
       let wrapper
 
       before(() => {
-        const location = {pathname: '', search: '', hash: ''}
         wrapper = mount(
-          <Broadcast channel='location' value={location}>
+          <MemoryRouter>
             <StateRow {...props} fields={['this']} />
-          </Broadcast>
+          </MemoryRouter>
         )
       })
 
@@ -118,39 +114,36 @@ describe('StateAndMethodList', () => {
     })
 
     it('should render max 3 fields as secondary', () => {
-      const location = {pathname: '', search: '', hash: ''}
       const propsBig = {...props, state: {...props.state}}
       propsBig.state.value = {a: 1, b: 2, c: 3, d: 4}
       const wrapper = mount(
-        <Broadcast channel='location' value={location}>
+        <MemoryRouter>
           <StateRow {...propsBig} />
-        </Broadcast>
+        </MemoryRouter>
       )
 
       assert.equal(wrapper.find('.List-row-text-secondary .State-field').length, 3)
     })
 
     it('should render "No matching fields" if not field matches', () => {
-      const location = {pathname: '', search: '', hash: ''}
       const propsBig = {...props, state: {...props.state}}
       propsBig.state.value = {a: 1, b: 2, c: 3, d: 4}
       const wrapper = mount(
-        <Broadcast channel='location' value={location}>
+        <MemoryRouter>
           <StateRow {...propsBig} fields={['baz']} />
-        </Broadcast>
+        </MemoryRouter>
       )
 
       assert.equal(wrapper.find('.List-row-text-secondary').text(), 'No matching fields')
     })
 
     it('should render primitive types regardless of the field prop', () => {
-      const location = {pathname: '', search: '', hash: ''}
       const propsBig = {...props, state: {...props.state}}
       propsBig.state.value = 333
       const wrapper = mount(
-        <Broadcast channel='location' value={location}>
+        <MemoryRouter>
           <StateRow {...propsBig} fields={['baz']} />
-        </Broadcast>
+        </MemoryRouter>
       )
 
       assert.equal(wrapper.find('.List-row-text-secondary').text(), '333')
@@ -168,12 +161,11 @@ describe('StateAndMethodList', () => {
   ]
 
   class TestContainer extends React.PureComponent {
-    location = {pathname: '', search: '', hash: ''}
     render () {
       return (
-        <Broadcast channel='location' value={this.location}>
+        <MemoryRouter>
           <StateAndMethodList {...this.props} />
-        </Broadcast>
+        </MemoryRouter>
       )
     }
   }
