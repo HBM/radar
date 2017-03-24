@@ -1,9 +1,3 @@
-require('babel-register')({
-  ignore: /node_modules\/(?!md-components)/,
-  presets: ['es2015', 'es2017', 'react', 'stage-0'],
-  plugins: ['transform-runtime']
-})
-
 var jsdom = require('jsdom').jsdom
 
 global.document = jsdom('')

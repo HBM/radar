@@ -1,3 +1,13 @@
 {
-  "presets": ["es2015", "es2017", "react", "stage-0"]
+  "presets": [
+    "react",
+    ["env", {
+      "targets": {
+        "browsers": ["last 2 versions", "safari >= 9"]
+      },
+      "useBuiltIns": true,
+      "debug": true
+    }]
+  ],
+  "plugins": ["transform-object-rest-spread", "transform-class-properties"]
 }
