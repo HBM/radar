@@ -28,6 +28,7 @@
   "dependencies": {
     "babel-polyfill": "^6.23.0",
     "classnames": "^2.2.5",
+    "clipboard": "^1.6.1",
     "deep-equal": "^1.0.1",
     "flat": "^2.0.1",
     "lodash.throttle": "^4.1.1",

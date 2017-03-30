@@ -106,7 +106,7 @@ store.subscribe(() => {
 })
 
 try {
-  const connection = JSON.parse(decodeURIComponent(window.location.search.match(/connection=([^&]+)/)[1]))
+  const connection = JSON.parse(decodeURIComponent(window.location.hash.match(/connection=([^&]+)/)[1]))
   console.log('reconnect from URL')
   connect(connection, true)(store.dispatch)
 } catch (_) {

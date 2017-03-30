@@ -56,3 +56,7 @@ export const setFavoritesFailed = (reason) => ({
 export const setConnectionDead = () => ({
   type: 'CONNECTION_DEAD'
 })
+
+export const copiedToClipboard = () => ({
+  type: 'COPIED_TO_CLIPBOARD'
+})

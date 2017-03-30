@@ -47,10 +47,6 @@ const Connection = ({
     return false
   }
 
-  const getLink = () => {
-    return `${window.location.origin}?connection=${encodeURIComponent(JSON.stringify(connection))}`
-  }
-
   const onChangeInput = (e) => {
     onChange(e.target.name, e.target.value)
   }
@@ -107,12 +103,6 @@ const Connection = ({
           label='Password (optional)'
           float={false}
           disabled={!connection.user} />
-        <Textfield
-          disabled
-          type='text'
-          label='Bookmark Link'
-          defaultValue={getLink()}
-          />
         <hr />
         {!isConnected
           ? <Button type='submit' onClick={() => { closeJet(current); connectJet(connection, true) }} raised disabled={error() && true}>

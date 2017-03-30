@@ -57,6 +57,8 @@ const search = (state = [], action) => {
 
 const message = (state = null, action) => {
   switch (action.type) {
+    case 'COPIED_TO_CLIPBOARD':
+      return {text: 'Link copied to clipboard'}
     case 'FAVORITE_FAILURE':
       return {text: `Favorites import failed: ${action.reason}`}
     case 'FAVORITE_SET':
@@ -187,6 +189,21 @@ export const toFormatedMessages = (messages) => {
   return formatedMessages
 }
 
+const throttledReducer = (reducer, delay = 500) => {
+  let prev
+  let current
+  let t = Date.now()
+  return (state, action) => {
+    current = reducer(current, action)
+    const now = Date.now()
+    if ((now - t) > delay || !prev) {
+      prev = current
+      t = now
+    }
+    return prev
+  }
+}
+
 const messages = (state = [], action) => {
   const maxLength = 100
   switch (action.type) {
@@ -226,8 +243,8 @@ const data = combineReducers({
   groups: single('groups'),
   group: array('group'),
   heartbeat: single('heartbeat'),
-  messages,
-  traffic
+  messages: throttledReducer(messages),
+  traffic: throttledReducer(traffic)
 })
 
 const version = (state = '1.0.0') => {

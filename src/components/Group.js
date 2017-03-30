@@ -9,7 +9,7 @@ import StateAndMethodList from '../containers/StateAndMethodList'
 import { Split, SplitRight, SplitLeft } from './Split'
 import SearchBar from './SearchBar'
 import Details from './Details'
-import { Route } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom'
 
 class Group extends React.Component {
   constructor (props) {
@@ -37,14 +37,14 @@ class Group extends React.Component {
     if (!this.props.groups) {
       return
     }
-    this.updateFetch(this.props.groups, decodeURIComponent(this.props.params.group))
+    this.updateFetch(this.props.groups, decodeURIComponent(this.props.match.params.group))
   }
 
   componentWillReceiveProps (nextProps) {
     if (!nextProps.groups) {
       return
     }
-    this.updateFetch(nextProps.groups, decodeURIComponent(nextProps.params.group))
+    this.updateFetch(nextProps.groups, decodeURIComponent(nextProps.match.params.group))
   }
 
   componentWillUnmount () {
@@ -63,7 +63,7 @@ class Group extends React.Component {
   }
 
   render () {
-    const {statesAndMethods, toggleFavorite, favorites, selectedFields} = this.props
+    const {statesAndMethods, toggleFavorite, favorites, selectedFields, match} = this.props
 
     const filteredStatesAndMethods = getFilteredStatesAndMethods(statesAndMethods, this.state.searchTerms || [])
 
@@ -84,7 +84,7 @@ class Group extends React.Component {
             statesAndMethods={filteredStatesAndMethods}
             selectedFields={selectedFields}
           />
-          <StateAndMethodList statesAndMethods={filteredStatesAndMethods} iconCreator={createStar} rootPath={'/groups/' + encodeURIComponent(this.props.params.group)} selectedFields={selectedFields} />
+          <StateAndMethodList statesAndMethods={filteredStatesAndMethods} iconCreator={createStar} rootPath={'/groups/' + encodeURIComponent(match.params.group)} selectedFields={selectedFields} />
         </SplitLeft>
         <Route path='/groups/:group/:path' children={({match}) => {
           if (match) {
@@ -112,4 +112,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {...actions, ...jetActions})(Group)
+export default withRouter(connect(mapStateToProps, {...actions, ...jetActions})(Group))
