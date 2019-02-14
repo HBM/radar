@@ -5,8 +5,8 @@
 Radar is a Web Application for [Jet](http://jetbus.io).
 The latest release is available for:
 
-* [WebSockets](http://lipp.github.io/radar).
-* [Secure WebSockets](https://lipp.github.io/radar).
+* [WebSockets](http://hbm.github.io/radar).
+* [Secure WebSockets](https://hbm.github.io/radar).
 
 # Develop
 
