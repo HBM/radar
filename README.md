@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/lipp/radar.svg?branch=master)](https://travis-ci.org/lipp/radar)
-
+[![Build Status](https://travis-ci.org/HBM/radar.svg?branch=master)](https://travis-ci.org/HBM/radar)
 # Radar
 
 Radar is a Web Application for [Jet](http://jetbus.io).
