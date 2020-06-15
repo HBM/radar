@@ -13,7 +13,7 @@ describe('StateAndMethodList', () => {
       method: {
         path: 'foo'
       },
-      link: 'bar',
+      link: '/bar',
       icon: 'pop'
     }
 
