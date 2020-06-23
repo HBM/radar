@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 import { getFilteredStatesAndMethods } from '../reducers'
@@ -11,55 +11,50 @@ import SearchBar from './SearchBar'
 import Details from './Details'
 import deepEqual from 'deep-equal'
 
-class Favorites extends React.Component {
+const Favorites = (props) => {
+  const [searchTerms, setSearchTerms] = useState([])
+  const [searchTermsChips, setSearchTermsChips] = useState([])
+  const prevFavorites = useRef(props.favorites)
+  const prevIsConnected = useRef(props.connection.isConnected)
 
-  state = {
-    searchTerms: [],
-    searchTermsChips: []
-  }
-
-  updateFetch (props) {
-    this.props.fetch(props.connection, {
-      path: {
-        equalsOneOf: props.favorites
-      },
-      sort: {
-        byPath: true,
-        from: 1,
-        to: 1000
-      }
-    }, 'favorites')
-  }
-
-  componentWillMount () {
-    this.updateFetch(this.props)
-  }
-
-  componentWillReceiveProps (nextProps) {
-    const favNext = nextProps.favorites.sort()
-    const favPrev = this.props.favorites.sort()
-    const isOnlineAgain = !this.props.connection.isConnected && nextProps.connection.isConnected
-    if (!deepEqual(favNext, favPrev) || isOnlineAgain) {
-      this.updateFetch(nextProps)
+  useEffect(() => {
+    const updateFetch = () => {
+      props.fetch(props.connection, {
+        path: {
+          equalsOneOf: props.favorites
+        },
+        sort: {
+          byPath: true,
+          from: 1,
+          to: 1000
+        }
+      }, 'favorites')
     }
+
+    const favNext = props.favorites.sort()
+    const favPrev = prevFavorites.current.sort()
+    const isOnlineAgain = !prevIsConnected.current && props.connection.isConnected
+    if (!deepEqual(favNext, favPrev) || isOnlineAgain) {
+      prevFavorites.current = props.favorites
+      prevIsConnected.current = props.connection.isConnected
+      updateFetch()
+    }
+  }, [props.favorites, props.connection.isConnected])
+
+  const onChange = (terms) => {
+    setSearchTermsChips(terms)
   }
 
-  onChange = (terms) => {
-    this.setState({searchTermsChips: terms})
-  }
-
-  onSubmit = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault()
-    this.props.setSelectedFields([])
-    this.setState({searchTerms: this.state.searchTermsChips})
+    props.setSelectedFields([])
+    setSearchTerms(setSearchTermsChips)
   }
 
-  renderContent () {
-    const {statesAndMethods, removeFavorite, connection, favorites, selectedFields} = this.props
+  const renderContent = () => {
+    const filteredStatesAndMethods = getFilteredStatesAndMethods(props.statesAndMethods, searchTerms || [])
 
-    const filteredStatesAndMethods = getFilteredStatesAndMethods(statesAndMethods, this.state.searchTerms)
-
-    if (!connection.isConnected) {
+    if (!props.connection.isConnected) {
       return (
         <div className='Info'>
           <h3>Not connected</h3>
@@ -67,15 +62,15 @@ class Favorites extends React.Component {
         </div>
       )
     }
-    if (statesAndMethods.length > 0) {
+    if (props.statesAndMethods.length > 0) {
       const createClear = (path) => {
         return <Icon.RemoveCircle
-          onClick={() => removeFavorite(path)}
+          onClick={() => props.removeFavorite(path)}
           className='Icon Icon-Remove'
           />
       }
-      return <StateAndMethodList statesAndMethods={filteredStatesAndMethods} iconCreator={createClear} rootPath='/favorites' selectedFields={selectedFields} />
-    } else if (favorites.length === 0) {
+      return <StateAndMethodList statesAndMethods={filteredStatesAndMethods} iconCreator={createClear} rootPath='/favorites' selectedFields={props.selectedFields} />
+    } else if (props.favorites.length === 0) {
       return (
         <div className='Info'>
           <h3>Your favorites list is empty</h3>
@@ -88,43 +83,40 @@ class Favorites extends React.Component {
           <h3>None of your favorites is available</h3>
           <span>There are your favorites:</span>
           <ul>
-            {favorites.sort().map(fav => <li key={fav}>{fav}</li>)}
+            {props.favorites.sort().map(fav => <li key={fav}>{fav}</li>)}
           </ul>
         </div>
       )
     }
   }
 
-  render () {
-    const {statesAndMethods, selectedFields} = this.props
-    const filteredStatesAndMethods = getFilteredStatesAndMethods(statesAndMethods, this.state.searchTerms)
+  const filteredStatesAndMethods = getFilteredStatesAndMethods(props.statesAndMethods, searchTerms || [])
 
-    return (
-      <Split className='Favorites'>
-        <SplitLeft>
-          <SearchBar
-            onChange={this.onChange}
-            onSubmit={this.onSubmit}
-            terms={this.state.searchTermsChips}
-            statesAndMethods={filteredStatesAndMethods}
-            selectedFields={selectedFields}
-          />
-          {this.renderContent()}
-        </SplitLeft>
-        <Route path='/favorites/:path' children={({match}) => {
-          if (match) {
-            return (
-              <SplitRight>
-                <Details statesAndMethods={statesAndMethods} params={match.params} backUrl='/favorites' />
-              </SplitRight>
-            )
-          }
-          return <SplitRight />
+  return (
+    <Split className='Favorites'>
+      <SplitLeft>
+        <SearchBar
+          onChange={onChange}
+          onSubmit={onSubmit}
+          terms={searchTermsChips}
+          statesAndMethods={filteredStatesAndMethods}
+          selectedFields={props.selectedFields}
+        />
+        {renderContent()}
+      </SplitLeft>
+      <Route path='/favorites/:path' children={({match}) => {
+        if (match) {
+          return (
+            <SplitRight>
+              <Details statesAndMethods={props.statesAndMethods} params={match.params} backUrl='/favorites' />
+            </SplitRight>
+          )
         }
-        } />
-      </Split>
-    )
-  }
+        return <SplitRight />
+      }
+      } />
+    </Split>
+  )
 }
 
 const mapStateToProps = (state) => {

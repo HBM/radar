@@ -1,13 +1,13 @@
 {
   "presets": [
-    "react",
-    ["env", {
+    "@babel/preset-react",
+    ["@babel/env", {
       "targets": {
         "browsers": ["last 2 versions", "safari >= 9"]
       },
-      "useBuiltIns": true,
+      "useBuiltIns": "usage",
       "debug": true
     }]
   ],
-  "plugins": ["transform-object-rest-spread", "transform-class-properties"]
+  "plugins": ["transform-class-properties"]
 }

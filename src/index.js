@@ -1,4 +1,3 @@
-import 'babel-polyfill'
 import React from 'react'
 import 'react-fastclick'
 import { render } from 'react-dom'

@@ -6,15 +6,13 @@ import {MemoryRouter} from 'react-router-dom'
 import React from 'react'
 
 describe('State', () => {
-  class TestContainer extends React.PureComponent {
-    location = {pathname: '', search: '', hash: ''}
-    render () {
-      return (
-        <MemoryRouter>
-          <State {...this.props} backUrl='' />
-        </MemoryRouter>
-      )
-    }
+  const TestContainer = (props) => {
+    const location = {pathname: '', search: '', hash: ''}
+    return (
+      <MemoryRouter initialEntries={[location]}>
+        <State {...this.props} backUrl='' />
+      </MemoryRouter>
+    )
   }
 
   it('should mount', () => {

@@ -1,5 +1,28 @@
-@import "../node_modules/md-components/lib/css/mixins";
-@import "../node_modules/md-components/lib/css/base";
+@import "../node_modules/md-components/scss/normalize";
+@import "../node_modules/md-components/scss/mixins";
+@import "../node_modules/md-components/scss/colors";
+@import "../node_modules/md-components/scss/base";
+@import "../node_modules/md-components/scss/button";
+@import "../node_modules/md-components/scss/card";
+@import "../node_modules/md-components/scss/checkbox";
+@import "../node_modules/md-components/scss/expansionpanel";
+@import "../node_modules/md-components/scss/header";
+@import "../node_modules/md-components/scss/icon";
+@import "../node_modules/md-components/scss/list";
+@import "../node_modules/md-components/scss/menu";
+@import "../node_modules/md-components/scss/navigation";
+@import "../node_modules/md-components/scss/progress";
+@import "../node_modules/md-components/scss/select";
+@import "../node_modules/md-components/scss/selectnative";
+@import "../node_modules/md-components/scss/snackbar";
+@import "../node_modules/md-components/scss/switch";
+@import "../node_modules/md-components/scss/table";
+@import "../node_modules/md-components/scss/tabs";
+@import "../node_modules/md-components/scss/tabscontrolled";
+@import "../node_modules/md-components/scss/textfield";
+@import "../node_modules/md-components/scss/chip";
+@import "../node_modules/md-components/scss/radiobutton";
+@import "../node_modules/md-components/scss/modal";
 @import "./css/Split";
 @import "./css/State";
 @import "./css/Searchbar";
@@ -134,7 +157,7 @@
 }
 
 
-.Split-left .List {
+.Split-left .mdc-List {
   margin: 0 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;

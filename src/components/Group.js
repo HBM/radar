@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 import { getFilteredStatesAndMethods } from '../reducers'
@@ -11,95 +11,79 @@ import SearchBar from './SearchBar'
 import Details from './Details'
 import { Route, withRouter } from 'react-router-dom'
 
-class Group extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      searchTermsChips: [],
-      searchTerms: []
-    }
-  }
+const Group = (props) => {
+  const lastGroup = useRef()
+  const fetching = useRef(false)
+  const [searchTerms, setSearchTerms] = useState([])
+  const [searchTermsChips, setSearchTermsChips] = useState([])
 
-  updateFetch (groups, nextGroup) {
+  const updateFetch = (groups, nextGroup) => {
     let group = {...groups.find(group => group.title === nextGroup)}
     if (!group || !group.expression) {
       return
     }
-    if (!this.fetching || this.lastGroup !== nextGroup) {
-      this.lastGroup = nextGroup
-      this.props.unfetch(this.props.connection, 'group')
-      this.props.fetch(this.props.connection, group.expression, 'group')
-      this.fetching = true
+    if (!fetching.current || lastGroup.current !== nextGroup) {
+      lastGroup.current = nextGroup
+      props.unfetch(props.connection, 'group')
+      props.fetch(props.connection, group.expression, 'group')
+      fetching.current = true
     }
   }
 
-  componentWillMount () {
-    if (!this.props.groups) {
-      return
+  useEffect(() => {
+    updateFetch(props.groups, decodeURIComponent(props.match.params.group))
+    return () => {
+      props.unfetch(this.props.connection, 'group')
+      fetching.current = false
     }
-    this.updateFetch(this.props.groups, decodeURIComponent(this.props.match.params.group))
+  }, [props.groups])
+
+  const onChange = (terms) => {
+    setSearchTermsChips(terms)
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (!nextProps.groups) {
-      return
-    }
-    this.updateFetch(nextProps.groups, decodeURIComponent(nextProps.match.params.group))
-  }
-
-  componentWillUnmount () {
-    this.props.unfetch(this.props.connection, 'group')
-    this.fetching = false
-  }
-
-  onChange = (terms) => {
-    this.setState({searchTermsChips: terms})
-  }
-
-  onSubmit = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault()
-    this.props.setSelectedFields([])
-    this.setState({searchTerms: this.state.searchTermsChips})
+    props.setSelectedFields([])
+    setSearchTerms(setSearchTermsChips)
   }
 
-  render () {
-    const {statesAndMethods, toggleFavorite, favorites, selectedFields, match} = this.props
+  const {statesAndMethods, toggleFavorite, favorites, selectedFields, match} = props
 
-    const filteredStatesAndMethods = getFilteredStatesAndMethods(statesAndMethods, this.state.searchTerms || [])
+  const filteredStatesAndMethods = getFilteredStatesAndMethods(statesAndMethods, searchTerms || [])
 
-    const createStar = (path) => {
-      return <Icon.Star
-        onClick={() => toggleFavorite(path)}
-        className={classNames('Icon Fetch Star', {'Star--active': (favorites.indexOf(path) > -1)})}
-      />
-    }
+  const createStar = (path) => {
+    return <Icon.Star
+      onClick={() => toggleFavorite(path)}
+      className={classNames('Icon Fetch Star', {'Star--active': (favorites.indexOf(path) > -1)})}
+    />
+  }
 
-    return (
-      <Split className='Group'>
-        <SplitLeft>
-          <SearchBar
-            onChange={this.onChange}
-            onSubmit={this.onSubmit}
-            terms={this.state.searchTermsChips}
-            statesAndMethods={filteredStatesAndMethods}
-            selectedFields={selectedFields}
-          />
-          <StateAndMethodList statesAndMethods={filteredStatesAndMethods} iconCreator={createStar} rootPath={'/groups/' + encodeURIComponent(match.params.group)} selectedFields={selectedFields} />
-        </SplitLeft>
-        <Route path='/groups/:group/:path' children={({match}) => {
-          if (match) {
-            return (
-              <SplitRight>
-                <Details statesAndMethods={statesAndMethods} params={match.params} backUrl={'/groups/' + match.params.group} />
-              </SplitRight>
-            )
-          }
-          return <SplitRight />
+  return (
+    <Split className='Group'>
+      <SplitLeft>
+        <SearchBar
+          onChange={onChange}
+          onSubmit={onSubmit}
+          terms={searchTermsChips}
+          statesAndMethods={filteredStatesAndMethods}
+          selectedFields={selectedFields}
+        />
+        <StateAndMethodList statesAndMethods={filteredStatesAndMethods} iconCreator={createStar} rootPath={'/groups/' + encodeURIComponent(match.params.group)} selectedFields={selectedFields} />
+      </SplitLeft>
+      <Route path='/groups/:group/:path' children={({match}) => {
+        if (match) {
+          return (
+            <SplitRight>
+              <Details statesAndMethods={statesAndMethods} params={match.params} backUrl={'/groups/' + match.params.group} />
+            </SplitRight>
+          )
         }
-        } />
-      </Split>
-    )
-  }
+        return <SplitRight />
+      }
+      } />
+    </Split>
+  )
 }
 
 const mapStateToProps = (state) => {

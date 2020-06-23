@@ -1,6 +1,7 @@
 import React from 'react'
 import { Row } from 'md-components'
 import flatten from 'flat'
+import { useHistory } from 'react-router-dom'
 
 const stateAvatar = <span className='State-avatar'>S</span>
 
@@ -26,16 +27,25 @@ const StatePreviewFields = ({stateValue, fields = []}) => {
   return <div>{contentEmpty ? 'No matching fields' : content}</div>
 }
 
-const StateRow = ({state, icon, link, fields}) => (
-  <Row
-    onClick={() => {}} // iOS Safari does not get focus event if no click handler is installed
-    avatar={stateAvatar}
-    primary={state.path}
-    secondary={<StatePreviewFields stateValue={state.value} fields={fields} />}
-    icon={icon}
-    linkTo={link}
-  />
-)
+const StateRow = ({state, icon, link, fields}) => {
+  const history = useHistory()
+  return (
+    <Row
+      onClick={() => {
+        if (history.location.pathname === link) {
+          history.replace(link)
+        } else {
+          history.push(link)
+        }
+      }}
+      onFocus={() => {}}
+      avatar={stateAvatar}
+      primary={state.path}
+      secondary={<StatePreviewFields stateValue={state.value} fields={fields} />}
+      icon={icon}
+    />
+  )
+}
 
 export default StateRow
 

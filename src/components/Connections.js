@@ -27,7 +27,8 @@ const Connections = ({
   addConnection,
   removeConnection,
   changeConnection,
-  selectConnection}) => {
+  selectConnection,
+  history}) => {
   const isCurrentConnection = (con) => {
     return connection &&
       connection.url === con.url &&
@@ -54,11 +55,13 @@ const Connections = ({
     }
     const icon = <Icon.RemoveCircle onClick={remove} className='Icon Icon-Remove' />
     return <Row avatar={avatar}
-      linkTo={'/connections/' + index}
       primary={con.name || con.url || 'New Connection'}
       secondary={subtitle}
       icon={icon}
-      onClick={() => {}} // iOS Safari does not get focus event if no click handler is installed
+      onClick={() => {
+        history.push('/connections/' + index)
+      }} // iOS Safari does not get focus event if no click handler is installed
+      onFocus={() => {}}
       key={index} />
   }
 

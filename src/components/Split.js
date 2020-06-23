@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import classNames from 'classnames'
 
 export const Split = ({className, children}) => {
@@ -18,21 +17,10 @@ export const SplitLeft = ({children}) => {
   )
 }
 
-const FirstChild = ({children}) => {
-  return React.Children.toArray(children)[0] || null
-}
-
 export const SplitRight = ({children}) => {
   return (
     <div className={classNames('Split-right', {'Split-right--visible': children})}>
-      <ReactCSSTransitionGroup
-        component={FirstChild}
-        transitionName='split'
-        transitionEnterTimeout={500}
-        transitionLeaveTimeout={500}
-      >
-        {children}
-      </ReactCSSTransitionGroup>
+      {children}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 import { List, Row } from 'md-components'
@@ -36,17 +36,13 @@ const subheader = (message) => {
   }
 }
 
-class Messages extends React.PureComponent {
+const Messages = ({messages, traffic}) => {
+  const [selected, setSelected] = useState(null)
 
-  state = {
-  }
-
-  toMessageRow = (message) => {
+  const toMessageRow = (message) => {
     const avatar = message.direction === 'in' ? avatarIn(message) : avatarOut(message)
     const onSelect = () => {
-      this.setState({
-        selected: message
-      })
+      setSelected(message)
     }
     return (
       <Row
@@ -59,60 +55,28 @@ class Messages extends React.PureComponent {
       />
     )
   }
-
-  shouldComponentUpdate (nextProps) {
-    return false
-  }
-
-  componentWillReceiveProps () {
-    if (!this.debounceTimer) {
-      this.debounceTimer = setTimeout(() => {
-        this.forceUpdate()
-        delete this.debounceTimer
-      }, 300)
-    }
-  }
-
-  componentDidMount () {
-    this.interval = setInterval(() => {
-      this.forceUpdate()
-    }, 10000)
-  }
-
-  componentWillUnmount () {
-    if (this.debounceTimer) {
-      clearTimeout(this.debounceTimer)
-      delete this.debounceTimer
-    }
-    clearInterval(this.interval)
-  }
-
-  render () {
-    const {messages, traffic} = this.props
-
-    return (
-      <Split className='Messages'>
-        <SplitLeft>
-          <div className='Traffic'>
-            <h3>Traffic</h3>
-            <div className='Traffic-stats'>
-              <div className='Traffic-stat Traffic-stat-in'><span>In:</span><span>{traffic.in} Bytes</span></div>
-              <div className='Traffic-stat Traffic-stat-out'><span>Out:</span><span>{traffic.out} Bytes</span></div>
-              <div className='Traffic-stat'><span>Total:</span><span>{traffic.in + traffic.out} Bytes</span></div>
-            </div>
+  return (
+    <Split className='Messages'>
+      <SplitLeft>
+        <div className='Traffic'>
+          <h3>Traffic</h3>
+          <div className='Traffic-stats'>
+            <div className='Traffic-stat Traffic-stat-in'><span>In:</span><span>{traffic.in} Bytes</span></div>
+            <div className='Traffic-stat Traffic-stat-out'><span>Out:</span><span>{traffic.out} Bytes</span></div>
+            <div className='Traffic-stat'><span>Total:</span><span>{traffic.in + traffic.out} Bytes</span></div>
           </div>
-          <List>
-            {
-              messages.map(this.toMessageRow)
-            }
-          </List>
-        </SplitLeft>
-        <SplitRight>
-          {this.state.selected && <Message message={this.state.selected} onClose={() => this.setState({selected: null})} />}
-        </SplitRight>
-      </Split>
-    )
-  }
+        </div>
+        <List>
+          {
+            messages.map(toMessageRow)
+          }
+        </List>
+      </SplitLeft>
+      <SplitRight>
+        {selected && <Message message={selected} onClose={() => setSelected(null)} />}
+      </SplitRight>
+    </Split>
+  )
 }
 
 const mapStateToProps = (state) => {

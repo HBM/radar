@@ -1,58 +1,51 @@
-import React from 'react'
+import React, { useState } from 'react'
 import * as actions from 'redux-jet'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button, Textarea, Icon } from 'md-components'
 
-export class Method extends React.Component {
+const Method = (props) => {
+  const [args, setArgs] = useState('[]')
 
-  state = {
-    args: '[]'
-  }
-
-  onSubmit = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault()
-    this.props.call(this.props.connection, this.props.method.path, JSON.parse(this.state.args))
+    props.call(props.connection, props.method.path, JSON.parse(args))
   }
 
-  onChange = (event) => {
-    this.setState({
-      args: event.target.value
-    })
+  const onChange = (event) => {
+    setArgs(event.target.value)
   }
 
-  isValid = () => {
+  const isValid = () => {
     try {
-      const args = JSON.parse(this.state.args)
-      return Array.isArray(args)
+      const parseArgs = JSON.parse(args)
+      return Array.isArray(parseArgs)
     } catch (_) {
       return false
     }
   }
 
-  render () {
-    return (
-      <div className='State'>
-        <div className='State-hero'>
-          <Icon.Button>
-            <Link to={this.props.backUrl} />
-            <Icon.ChevronLeft width={30} height={30} className='Split-right-back' />
-          </Icon.Button>
-          <h1>{this.props.method.path}</h1>
-        </div>
-        <form onSubmit={this.onSubmit} >
-          <Textarea
-            value={this.state.args}
-            label='Arguments'
-            onChange={this.onChange}
-            error={!this.isValid() && 'Not a JSON Array'}
-          />
-          <hr />
-          <Button type='submit' raised disabled={!this.isValid()}>Call</Button>
-        </form>
+  return (
+    <div className='State'>
+      <div className='State-hero'>
+        <Icon.Button>
+          <Link to={props.backUrl} />
+          <Icon.ChevronLeft width={30} height={30} className='Split-right-back' />
+        </Icon.Button>
+        <h1>{props.method.path}</h1>
       </div>
-    )
-  }
+      <form onSubmit={onSubmit} >
+        <Textarea
+          value={args}
+          label='Arguments'
+          onChange={onChange}
+          error={!isValid() && 'Not a JSON Array'}
+        />
+        <hr />
+        <Button type='submit' raised disabled={!isValid()}>Call</Button>
+      </form>
+    </div>
+  )
 }
 
 const mapStateToProps = (state) => {

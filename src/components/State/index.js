@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Textfield, Button, Icon } from 'md-components'
 import { flatObject, unflatObject, flatToNameValue, toHex, isInt } from './helpers'
@@ -45,84 +45,60 @@ const createInput = (onChange, disabled, onError) => (nvp) => {
   }
 }
 
-export class State extends React.Component {
-  constructor (props) {
-    super(props)
-    const state = props.state
-    this.state = {
-      formData: flatObject(state.value),
-      formDataBak: flatObject(state.value),
-      error: {}
+const State = (props) => {
+  const [formData, setFormData] = useState(props.state.value)
+  const [formDataBak, setFormDataBak] = useState(props.state.value)
+  const [path, setPath] = useState(props.state.path)
+  const [error, setError] = useState({})
+
+  useEffect(() => {
+    if (!hasChanges() || path !== props.state.path) {
+      setFormData(flatObject(props.state.value))
+      setError({})
     }
-  }
+    setPath(props.state.path)
+    setFormDataBak(flatObject(props.state.value))
+  }, [props.state.value, props.state.path])
 
-  hasChanges () {
-    return JSON.stringify(this.state.formData) !== JSON.stringify(this.state.formDataBak)
-  }
+  const hasChanges = () => JSON.stringify(formData) !== JSON.stringify(formDataBak)
+  const cancel = () => setFormData(flatObject(unflatObject(formDataBak)))
 
-  componentWillReceiveProps (newProps) {
-    const state = newProps.state
-    if (!this.hasChanges() || this.props.state.path !== newProps.state.path) {
-      this.setState({
-        formData: flatObject(state.value),
-        error: {}
-      })
-    }
-    this.setState({
-      formDataBak: flatObject(state.value)
-    })
-  }
-
-  cancel = () => {
-    this.setState({
-      formData: flatObject(unflatObject(this.state.formDataBak))
-    })
-  }
-
-  onSubmit = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault()
     // set formDataBak = formData so that hasChanges() => false
-    // and componentWillReceiveProps updates formData and formDataBak
-    this.setState({
-      formDataBak: this.state.formData
-    })
-    this.props.set(this.props.connection, this.props.state.path, unflatObject(this.state.formData))
+    // and UNSAFE_componentWillReceiveProps updates formData and formDataBak
+    setFormDataBak(formData)
+    props.set(props.connection, path, unflatObject(formData))
   }
 
-  assignToFormData = (name, value) => {
-    this.setState({
-      formData: { ...this.state.formData, [name]: value }
-    })
+  const assignToFormData = (name, value) => {
+    setFormData({...formData, [name]: value})
   }
 
-  onError = (name, hasError) => {
-    this.setState({error: {...this.state.error, [name]: hasError}})
+  const onError = (name, hasError) => {
+    setError({...error, [name]: hasError})
   }
 
-  hasError () {
-    return Object.keys(this.state.error).reduce((prev, name) => prev || this.state.error[name], false)
-  }
+  const hasError = () => Object.keys(error).reduce((prev, name) => prev || error[name], false)
 
-  render () {
-    const nvps = flatToNameValue(this.state.formData)
-    return (
-      <div className='State'>
-        <div className='State-hero'>
-          <Icon.Button >
-            <Link to={this.props.backUrl} />
-            <Icon.ChevronLeft width={30} height={30} className='Split-right-back' />
-          </Icon.Button>
-          <h1>{this.props.state.path}</h1>
-        </div>
-        <form onSubmit={this.onSubmit} >
-          {nvps.map(createInput(this.assignToFormData, this.props.state.fetchOnly, this.onError))}
-          <hr />
-          <Button type='submit' raised disabled={!(this.hasChanges() && !this.hasError())}>Set</Button>
-          <Button type='button' disabled={!this.hasChanges() && !this.hasError()} onClick={this.cancel} >Cancel</Button>
-        </form>
+  const nvps = flatToNameValue(formData)
+  return (
+    <div className='State'>
+      <div className='State-hero'>
+        <Icon.Button >
+          <Link to={props.backUrl} />
+          <Icon.ChevronLeft width={30} height={30} className='Split-right-back' />
+        </Icon.Button>
+        <h1>{path}</h1>
       </div>
-    )
-  }
+      <form onSubmit={onSubmit} >
+        {nvps.map(createInput(assignToFormData, props.state.fetchOnly, onError))}
+        <hr />
+        <Button type='submit' raised disabled={!(hasChanges() && !hasError())}>Set</Button>
+        <Button type='button' disabled={!hasChanges() && !hasError()} onClick={cancel} >Cancel</Button>
+      </form>
+    </div>
+  )
 }
 
 export default State

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 import * as jetActions from 'redux-jet'
@@ -10,20 +10,35 @@ import { Link, Route } from 'react-router-dom'
 import { Split, SplitRight, SplitLeft } from './Split'
 import Details from './Details'
 
-class Search extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      containsAllOf: this.props.search || [],
-      selectedFields: []
-    }
-  }
+const Search = (props) => {
+  const [containsAllOf, setContainsAllOf] = useState([])
+  const isConnected = useRef(false)
 
-  getFetchExpression () {
+  useEffect(() => {
+    if (!isConnected.current && props.connection.isConnected) {
+      fetch()
+    }
+    isConnected.current = props.connection.isConnected
+
+    return () => {
+      isConnected.current = false
+      props.unfetch(props.connection, 'search')
+    }
+  }, [props.connection.isConnected])
+
+  useEffect(() => {
+    fetch()
+  }, [containsAllOf])
+
+  useEffect(() => {
+    setContainsAllOf(props.search)
+  }, [props.search])
+
+  const getFetchExpression = () => {
     return {
       path: {
         caseInsensitive: true,
-        containsAllOf: this.state.containsAllOf
+        containsAllOf
       },
       sort: {
         byPath: true,
@@ -33,40 +48,14 @@ class Search extends React.Component {
     }
   }
 
-  fetch () {
-    if (this.state.containsAllOf.length > 0) {
-      this.props.fetch(this.props.connection, this.getFetchExpression(), 'search')
+  const fetch = () => {
+    if (containsAllOf.length > 0) {
+      props.fetch(props.connection, getFetchExpression(), 'search')
     }
   }
 
-  componentWillReceiveProps (props) {
-    if (!this.props.connection.isConnected && props.connection.isConnected) {
-      this.fetch()
-    }
-  }
-
-  componentDidMount () {
-    this.fetch()
-  }
-
-  componentWillUnmount () {
-    this.props.unfetch(this.props.connection, 'search')
-  }
-
-  onChange = (terms) => {
-    this.setState({containsAllOf: terms})
-  }
-
-  onSubmit = (event) => {
-    event.preventDefault()
-    this.props.setSelectedFields([])
-    this.props.fetch(this.props.connection, this.getFetchExpression(), 'search')
-    this.props.setSearch(this.state.containsAllOf)
-  }
-
-  renderContent () {
-    const {statesAndMethods, toggleFavorite, favorites, connection, selectedFields} = this.props
-    if (!connection.isConnected) {
+  const renderContent = () => {
+    if (!isConnected) {
       return (
         <div className='Info'>
           <h3>Not connected</h3>
@@ -74,20 +63,20 @@ class Search extends React.Component {
         </div>
       )
     }
-    if (statesAndMethods.length > 0) {
+    if (props.statesAndMethods.length > 0) {
       const createStar = (path) => {
         return <Icon.Star
-          onClick={() => toggleFavorite(path)}
-          className={classNames('Icon Fetch Star', {'Star--active': (favorites.indexOf(path) > -1)})}
+          onClick={() => props.toggleFavorite(path)}
+          className={classNames('Icon Fetch Star', {'Star--active': (props.favorites.indexOf(path) > -1)})}
         />
       }
       return <StateAndMethodList
-        statesAndMethods={statesAndMethods}
-        selectedFields={selectedFields}
+        statesAndMethods={props.statesAndMethods}
+        selectedFields={props.selectedFields}
         iconCreator={createStar}
         rootPath='/search'
         />
-    } else if (this.state.containsAllOf.length > 0) {
+    } else if (containsAllOf.length > 0) {
       return (
         <div className='Info'>
           <h3>No Matches for search</h3>
@@ -104,35 +93,42 @@ class Search extends React.Component {
     }
   }
 
-  render () {
-    const {statesAndMethods, selectedFields} = this.props
-
-    return (
-      <Split className='Search'>
-        <SplitLeft>
-          <SearchBar
-            onChange={this.onChange}
-            onSubmit={this.onSubmit}
-            terms={this.state.containsAllOf}
-            statesAndMethods={statesAndMethods}
-            selectedFields={selectedFields}
-          />
-          {this.renderContent()}
-        </SplitLeft>
-        <Route path='/search/:path' children={({match}) => {
-          if (match && match.params.path) {
-            return (
-              <SplitRight>
-                <Details statesAndMethods={statesAndMethods} params={match.params} backUrl='/search' />
-              </SplitRight>
-            )
-          }
-          return <SplitRight />
-        }
-        } />
-      </Split>
-    )
+  const onChange = (terms) => {
+    setContainsAllOf(terms)
   }
+
+  const onSubmit = (event) => {
+    event.preventDefault()
+    props.setSelectedFields([])
+    props.fetch(props.connection, getFetchExpression(), 'search')
+    props.setSearch(containsAllOf)
+  }
+
+  return (
+    <Split className='Search'>
+      <SplitLeft>
+        <SearchBar
+          onChange={onChange}
+          onSubmit={onSubmit}
+          terms={containsAllOf}
+          statesAndMethods={props.statesAndMethods}
+          selectedFields={props.selectedFields}
+        />
+        {renderContent()}
+      </SplitLeft>
+      <Route path='/search/:path' children={({match}) => {
+        if (match && match.params.path) {
+          return (
+            <SplitRight>
+              <Details statesAndMethods={props.statesAndMethods} params={match.params} backUrl='/search' />
+            </SplitRight>
+          )
+        }
+        return <SplitRight />
+      }
+      } />
+    </Split>
+  )
 }
 
 const mapStateToProps = (state) => {
