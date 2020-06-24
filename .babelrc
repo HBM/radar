@@ -5,6 +5,7 @@
       "targets": {
         "browsers": ["last 2 versions", "safari >= 9"]
       },
+      "corejs": 3,
       "useBuiltIns": "usage",
       "debug": true
     }]
