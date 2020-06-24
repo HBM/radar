@@ -8,10 +8,10 @@ const getSelected = (statesOrMethods, path) => {
   })[0]
 }
 
-const Details = ({params: {path}, statesAndMethods, backUrl}) => {
+const Details = ({ params: { path }, statesAndMethods, backUrl }) => {
   const stateOrMethod = getSelected(statesAndMethods, path)
   if (!stateOrMethod) {
-    return <div></div>
+    return <div />
   }
   if (typeof stateOrMethod.value === 'undefined') {
     return <Method method={stateOrMethod} backUrl={backUrl} />

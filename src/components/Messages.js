@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 import { List, Row } from 'md-components'
@@ -36,7 +36,7 @@ const subheader = (message) => {
   }
 }
 
-const Messages = ({messages, traffic}) => {
+const Messages = ({ messages, traffic }) => {
   const [selected, setSelected] = useState(null)
 
   const toMessageRow = (message) => {
@@ -86,4 +86,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {...actions})(Messages)
+export default connect(mapStateToProps, { ...actions })(Messages)

@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 
-export const Split = ({className, children}) => {
+export const Split = ({ className, children }) => {
   return (
     <div className={className + ' Split'}>
       {children}
@@ -9,7 +9,7 @@ export const Split = ({className, children}) => {
   )
 }
 
-export const SplitLeft = ({children}) => {
+export const SplitLeft = ({ children }) => {
   return (
     <div className='Split-left'>
       {children}
@@ -17,9 +17,9 @@ export const SplitLeft = ({children}) => {
   )
 }
 
-export const SplitRight = ({children}) => {
+export const SplitRight = ({ children }) => {
   return (
-    <div className={classNames('Split-right', {'Split-right--visible': children})}>
+    <div className={classNames('Split-right', { 'Split-right--visible': children })}>
       {children}
     </div>
   )

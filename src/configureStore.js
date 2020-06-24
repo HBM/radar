@@ -9,10 +9,7 @@ const configureStore = () => {
   const middlewares = [thunk]
 
   const prevState = loadState()
-  let isCompatible
-  if (prevState && prevState.settings && prevState.settings.version === '1.0.0') {
-    isCompatible = true
-  }
+  const isCompatible = prevState && prevState.settings && prevState.settings.version === '1.0.0'
 
   const store = createStore(
     radar,
@@ -22,7 +19,7 @@ const configureStore = () => {
       window.devToolsExtension ? window.devToolsExtension() : f => f
     )
   )
-  let lastSettings = {}
+  const lastSettings = {}
   store.subscribe(throttle(() => {
     const state = {
       settings: store.getState().settings

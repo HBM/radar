@@ -32,7 +32,7 @@ const TypedInput = (props) => {
     }
   }
 
-  const onChange = ({target}) => {
+  const onChange = ({ target }) => {
     setValue(target.value)
     switch (type) {
       case 'boolean':

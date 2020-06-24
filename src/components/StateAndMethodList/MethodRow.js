@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 
 const methodAvatar = <span className='Method-avatar'>M</span>
 
-const MethodRow = ({method, icon, link}) => {
+const MethodRow = ({ method, icon, link }) => {
   const history = useHistory()
   return (
     <Row

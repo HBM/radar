@@ -64,10 +64,12 @@ const Favorites = (props) => {
     }
     if (props.statesAndMethods.length > 0) {
       const createClear = (path) => {
-        return <Icon.RemoveCircle
-          onClick={() => props.removeFavorite(path)}
-          className='Icon Icon-Remove'
+        return (
+          <Icon.RemoveCircle
+            onClick={() => props.removeFavorite(path)}
+            className='Icon Icon-Remove'
           />
+        )
       }
       return <StateAndMethodList statesAndMethods={filteredStatesAndMethods} iconCreator={createClear} rootPath='/favorites' selectedFields={props.selectedFields} />
     } else if (props.favorites.length === 0) {
@@ -104,17 +106,18 @@ const Favorites = (props) => {
         />
         {renderContent()}
       </SplitLeft>
-      <Route path='/favorites/:path' children={({match}) => {
-        if (match) {
-          return (
-            <SplitRight>
-              <Details statesAndMethods={props.statesAndMethods} params={match.params} backUrl='/favorites' />
-            </SplitRight>
-          )
-        }
-        return <SplitRight />
-      }
-      } />
+      <Route
+        path='/favorites/:path' children={({ match }) => {
+          if (match) {
+            return (
+              <SplitRight>
+                <Details statesAndMethods={props.statesAndMethods} params={match.params} backUrl='/favorites' />
+              </SplitRight>
+            )
+          }
+          return <SplitRight />
+        }}
+      />
     </Split>
   )
 }
@@ -128,4 +131,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {...actions, ...jetActions})(Favorites)
+export default connect(mapStateToProps, { ...actions, ...jetActions })(Favorites)

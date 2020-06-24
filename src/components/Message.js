@@ -1,12 +1,12 @@
 import React from 'react'
 import { Icon, Textfield } from 'md-components'
 
-const Message = ({message, onClose}) => {
+const Message = ({ message, onClose }) => {
   const jsonString = JSON.stringify(message.json, null, '  ')
   return (
     <div className='State'>
       <div className='State-hero'>
-        <Icon.Button onClick={onClose} >
+        <Icon.Button onClick={onClose}>
           <Icon.ChevronLeft width={30} height={30} className='Split-right-back' />
         </Icon.Button>
         <h1>#{message.uid} - {message.type}</h1>

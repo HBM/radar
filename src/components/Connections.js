@@ -4,18 +4,8 @@ import { Route } from 'react-router-dom'
 import { connect as connectJet, close as closeJet } from 'redux-jet'
 import * as actions from '../actions'
 import { Icon, List, Row } from 'md-components'
-import url from 'url'
 import { Split, SplitRight, SplitLeft } from './Split'
-import Connection from './Connection'
-
-const isValidWebSocketUrl = (urlString) => {
-  try {
-    const protocol = url.parse(urlString).protocol
-    return protocol === 'ws:' || protocol === 'wss:'
-  } catch (_) {
-    return false
-  }
-}
+import Connection, { isValidWebSocketUrl } from './Connection'
 
 const Connections = ({
   connection,
@@ -28,7 +18,8 @@ const Connections = ({
   removeConnection,
   changeConnection,
   selectConnection,
-  history}) => {
+  history
+}) => {
   const isCurrentConnection = (con) => {
     return connection &&
       connection.url === con.url &&
@@ -54,15 +45,19 @@ const Connections = ({
       subtitle = 'Not configured'
     }
     const icon = <Icon.RemoveCircle onClick={remove} className='Icon Icon-Remove' />
-    return <Row avatar={avatar}
-      primary={con.name || con.url || 'New Connection'}
-      secondary={subtitle}
-      icon={icon}
-      onClick={() => {
-        history.push('/connections/' + index)
-      }} // iOS Safari does not get focus event if no click handler is installed
-      onFocus={() => {}}
-      key={index} />
+    return (
+      <Row
+        avatar={avatar}
+        primary={con.name || con.url || 'New Connection'}
+        secondary={subtitle}
+        icon={icon}
+        onClick={() => {
+          history.push('/connections/' + index)
+        }} // iOS Safari does not get focus event if no click handler is installed
+        onFocus={() => {}}
+        key={index}
+      />
+    )
   }
 
   return (
@@ -75,16 +70,18 @@ const Connections = ({
         </List>
       </SplitLeft>
       {
-        <Route path='/connections/:index' children={({match}) => {
-          if (match) {
-            return (
-              <SplitRight>
-                <Connection />
-              </SplitRight>
-            )
-          }
-          return <SplitRight />
-        }} />
+        <Route
+          path='/connections/:index' children={({ match }) => {
+            if (match) {
+              return (
+                <SplitRight>
+                  <Connection />
+                </SplitRight>
+              )
+            }
+            return <SplitRight />
+          }}
+        />
       }
     </Split>
   )
@@ -97,4 +94,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {...actions, connectJet, closeJet})(Connections)
+export default connect(mapStateToProps, { ...actions, connectJet, closeJet })(Connections)

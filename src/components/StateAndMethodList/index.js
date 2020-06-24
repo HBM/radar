@@ -4,7 +4,7 @@ import MethodRow from './MethodRow'
 import StateRow from './StateRow'
 
 const StateAndMethodList = (props) => {
-  const {statesAndMethods, iconCreator = () => {}, rootPath, selectedFields} = props
+  const { statesAndMethods, iconCreator = () => {}, rootPath, selectedFields } = props
   const rows = statesAndMethods
     .sort((a, b) => {
       if (a.path < b.path) {
@@ -34,4 +34,3 @@ const StateAndMethodList = (props) => {
 }
 
 export default StateAndMethodList
-

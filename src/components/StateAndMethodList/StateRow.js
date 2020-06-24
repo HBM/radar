@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 
 const stateAvatar = <span className='State-avatar'>S</span>
 
-const StatePreviewFields = ({stateValue, fields = []}) => {
+const StatePreviewFields = ({ stateValue, fields = [] }) => {
   let content
   let contentEmpty
   if (typeof stateValue === 'object') {
@@ -14,10 +14,15 @@ const StatePreviewFields = ({stateValue, fields = []}) => {
       fields = Object.keys(flat).slice(0, 3)
     }
     content = fields.map(field => {
-      return flat[field] !== undefined ? <span className='State-field' key={field} >
-        <span className='State-field-name'>{field}:</span>
-        <span className='State-field-value'>{JSON.stringify(flat[field])}</span>
-      </span> : null
+      return (
+        flat[field] !== undefined
+          ? (
+            <span className='State-field' key={field}>
+              <span className='State-field-name'>{field}:</span>
+              <span className='State-field-value'>{JSON.stringify(flat[field])}</span>
+            </span>
+          ) : null
+      )
     })
     contentEmpty = content.find(child => child !== null) === undefined
   } else {
@@ -27,7 +32,7 @@ const StatePreviewFields = ({stateValue, fields = []}) => {
   return <div>{contentEmpty ? 'No matching fields' : content}</div>
 }
 
-const StateRow = ({state, icon, link, fields}) => {
+const StateRow = ({ state, icon, link, fields }) => {
   const history = useHistory()
   return (
     <Row
@@ -48,4 +53,3 @@ const StateRow = ({state, icon, link, fields}) => {
 }
 
 export default StateRow
-

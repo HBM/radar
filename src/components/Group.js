@@ -18,7 +18,7 @@ const Group = (props) => {
   const [searchTermsChips, setSearchTermsChips] = useState([])
 
   const updateFetch = (groups, nextGroup) => {
-    let group = {...groups.find(group => group.title === nextGroup)}
+    const group = { ...groups.find(group => group.title === nextGroup) }
     if (!group || !group.expression) {
       return
     }
@@ -48,15 +48,17 @@ const Group = (props) => {
     setSearchTerms(setSearchTermsChips)
   }
 
-  const {statesAndMethods, toggleFavorite, favorites, selectedFields, match} = props
+  const { statesAndMethods, toggleFavorite, favorites, selectedFields, match } = props
 
   const filteredStatesAndMethods = getFilteredStatesAndMethods(statesAndMethods, searchTerms || [])
 
   const createStar = (path) => {
-    return <Icon.Star
-      onClick={() => toggleFavorite(path)}
-      className={classNames('Icon Fetch Star', {'Star--active': (favorites.indexOf(path) > -1)})}
-    />
+    return (
+      <Icon.Star
+        onClick={() => toggleFavorite(path)}
+        className={classNames('Icon Fetch Star', { 'Star--active': (favorites.indexOf(path) > -1) })}
+      />
+    )
   }
 
   return (
@@ -71,17 +73,18 @@ const Group = (props) => {
         />
         <StateAndMethodList statesAndMethods={filteredStatesAndMethods} iconCreator={createStar} rootPath={'/groups/' + encodeURIComponent(match.params.group)} selectedFields={selectedFields} />
       </SplitLeft>
-      <Route path='/groups/:group/:path' children={({match}) => {
-        if (match) {
-          return (
-            <SplitRight>
-              <Details statesAndMethods={statesAndMethods} params={match.params} backUrl={'/groups/' + match.params.group} />
-            </SplitRight>
-          )
-        }
-        return <SplitRight />
-      }
-      } />
+      <Route
+        path='/groups/:group/:path' children={({ match }) => {
+          if (match) {
+            return (
+              <SplitRight>
+                <Details statesAndMethods={statesAndMethods} params={match.params} backUrl={'/groups/' + match.params.group} />
+              </SplitRight>
+            )
+          }
+          return <SplitRight />
+        }}
+      />
     </Split>
   )
 }
@@ -96,4 +99,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, {...actions, ...jetActions})(Group))
+export default withRouter(connect(mapStateToProps, { ...actions, ...jetActions })(Group))

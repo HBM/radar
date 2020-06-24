@@ -1,9 +1,9 @@
 /* globals FileReader */
 import React from 'react'
-import {connect} from 'react-redux'
-import {setFavorites, setFavoritesFailed} from '../actions'
+import { connect } from 'react-redux'
+import { setFavorites, setFavoritesFailed } from '../actions'
 
-const ImportExport = ({favoritesDataUri, setFavorites, setFavoritesFailed}) => {
+const ImportExport = ({ favoritesDataUri, setFavorites, setFavoritesFailed }) => {
   const loadFavorites = (event) => {
     const file = event.target.files[0]
     const fileReader = new FileReader()
@@ -24,9 +24,9 @@ const ImportExport = ({favoritesDataUri, setFavorites, setFavoritesFailed}) => {
   return (
     <div className='ImportExport'>
       <h1>Favorites</h1>
-      <a className='Button' href={favoritesDataUri} download='favorites.json' >Export</a>
-      <input type='file' style={{display: 'none'}} onChange={loadFavorites} accept='.json' />
-      <a className='Button' href='#' onClick={openFileDialog} >Import</a>
+      <a className='Button' href={favoritesDataUri} download='favorites.json'>Export</a>
+      <input type='file' style={{ display: 'none' }} onChange={loadFavorites} accept='.json' />
+      <a className='Button' href='#' onClick={openFileDialog}>Import</a>
     </div>
   )
 }

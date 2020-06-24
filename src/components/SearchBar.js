@@ -26,19 +26,19 @@ const SearchBar = (props) => {
   const toggle = () => {
     setVisible(!visible)
   }
-  const {terms, onSubmit, statesAndMethods, selectedFields, setSelectedFields} = props
+  const { terms, onSubmit, statesAndMethods, selectedFields, setSelectedFields } = props
   const spaceCode = 32
   const enterCode = 13
-  const termsChips = terms.map(term => { return {text: term} })
+  const termsChips = terms.map(term => { return { text: term } })
 
   return (
     <div>
       <form
-        className={classNames('Searchbar', {'Searchbar--focused': focused})}
+        className={classNames('Searchbar', { 'Searchbar--focused': focused })}
         onSubmit={onSubmit}
         onClick={() => chips.current.input.focus()}
-        >
-        <button type='submit' style={{display: 'none'}} onSubmit={onSubmit} />
+      >
+        <button type='submit' style={{ display: 'none' }} onSubmit={onSubmit} />
         <div className='Searchbar-icon'>
           <Icon.Search width={36} height={36} />
         </div>
@@ -51,16 +51,17 @@ const SearchBar = (props) => {
           onFocus={onFocus}
           onBlur={onBlur}
           autoFocus
-          />
-        <Icon.Button onClick={toggle}
+        />
+        <Icon.Button
+          onClick={toggle}
           disabled={statesAndMethods.length === 0}
-          style={{padding: 0}}
-          className={classNames('IconButton', {collapsed: visible})}
-          >
+          style={{ padding: 0 }}
+          className={classNames('IconButton', { collapsed: visible })}
+        >
           <Icon.FilterList className='Icon' />
         </Icon.Button>
       </form>
-      <Collapse isOpened={visible} >
+      <Collapse isOpened={visible}>
         <FieldSelection selected={selectedFields} states={statesAndMethods} onChange={setSelectedFields} />
       </Collapse>
     </div>
@@ -71,4 +72,4 @@ const mapStateToProps = (state) => ({
   selectedFields: state.settings.selectedFields
 })
 
-export default connect(mapStateToProps, {setSelectedFields})(SearchBar)
+export default connect(mapStateToProps, { setSelectedFields })(SearchBar)

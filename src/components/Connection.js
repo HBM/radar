@@ -3,12 +3,11 @@ import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import { connect as connectJet, close as closeJet } from 'redux-jet'
 import * as actions from '../actions'
-import url from 'url'
 import { Textfield, Button, Icon } from 'md-components'
 
-const isValidWebSocketUrl = (urlString) => {
+export const isValidWebSocketUrl = (urlString) => {
   try {
-    const protocol = url.parse(urlString).protocol
+    const protocol = (new URL(urlString)).protocol
     return protocol === 'ws:' || protocol === 'wss:'
   } catch (_) {
     return false
@@ -16,15 +15,16 @@ const isValidWebSocketUrl = (urlString) => {
 }
 
 const Connection = ({
-  match: {params: {index}},
+  match: { params: { index } },
   connect,
   connections,
   connectJet,
   closeJet,
   current,
   changeConnection,
-  history}) => {
-  let connection = connections[index]
+  history
+}) => {
+  const connection = connections[index]
 
   const isConnected = connection.url === current.url && connection.user === current.user && current.isConnected
 
@@ -58,7 +58,7 @@ const Connection = ({
   return (
     <div className='State'>
       <div className='State-hero'>
-        <Icon.Button onClick={() => goBack()} >
+        <Icon.Button onClick={() => goBack()}>
           <Icon.ChevronLeft width={30} height={30} className='Split-right-back' />
         </Icon.Button>
         <h1>
@@ -68,7 +68,7 @@ const Connection = ({
             placeholder='Name'
             name='name'
             onChange={onChangeInput}
-           />
+          />
         </h1>
       </div>
       <form onSubmit={(e) => { e.preventDefault() }}>
@@ -86,7 +86,7 @@ const Connection = ({
           error={error()}
           float={false}
           required
-          />
+        />
         <Textfield
           onChange={onChangeInput}
           name='user'
@@ -94,7 +94,8 @@ const Connection = ({
           value={connection.user || ''}
           label='User (optional)'
           float={false}
-          placeholder='admin' />
+          placeholder='admin'
+        />
         <Textfield
           onChange={onChangeInput}
           name='password'
@@ -102,16 +103,19 @@ const Connection = ({
           value={connection.password || ''}
           label='Password (optional)'
           float={false}
-          disabled={!connection.user} />
+          disabled={!connection.user}
+        />
         <hr />
-        {!isConnected
-          ? <Button type='submit' onClick={() => { closeJet(current); connectJet(connection, true) }} raised disabled={error() && true}>
-              Connect
+        {!isConnected ? (
+          <Button type='submit' onClick={() => { closeJet(current); connectJet(connection, true) }} raised disabled={error() && true}>
+                Connect
           </Button>
-          : <Button type='submit' onClick={() => { closeJet(connection) }} raised disabled={error() && true}>
-              Disconnect
-          </Button>
-        }
+        )
+          : (
+            <Button type='submit' onClick={() => { closeJet(connection) }} raised disabled={error() && true}>
+                Disconnect
+            </Button>
+          )}
       </form>
     </div>
   )
@@ -122,4 +126,4 @@ const mapStateToProps = state => ({
   current: state.settings.connection
 })
 
-export default withRouter(connect(mapStateToProps, {...actions, connectJet, closeJet})(Connection))
+export default withRouter(connect(mapStateToProps, { ...actions, connectJet, closeJet })(Connection))

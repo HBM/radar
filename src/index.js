@@ -22,7 +22,7 @@ const heartbeatExpression = {
 
 const createAutoReconnect = reconnect => {
   let timer
-  return ({settings: {connection = {}}}) => {
+  return ({ settings: { connection = {} } }) => {
     if ((connection.reconnect || connection.error) && !timer) {
       console.log('activate reconect')
       timer = setTimeout(() => {
@@ -44,7 +44,7 @@ const autoReconnect = createAutoReconnect(connection => {
 
 const createAutoFetchRadarStates = fetch => {
   let wasConnected = false
-  return ({settings: {connection = {}}}) => {
+  return ({ settings: { connection = {} } }) => {
     if (connection.isConnected && !wasConnected) {
       wasConnected = true
       fetch(connection, radarGroupsExpression, 'groups')
@@ -69,7 +69,7 @@ const createHeartbeatChecker = (onDead) => {
   let now
   let timer
   let prevConnection = {}
-  return ({settings: {connection = {}}, data: {heartbeat}}) => {
+  return ({ settings: { connection = {} }, data: { heartbeat } }) => {
     if (!isSameConnection(prevConnection, connection)) {
       clearTimeout(timer)
       now = false

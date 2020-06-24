@@ -65,17 +65,20 @@ const Search = (props) => {
     }
     if (props.statesAndMethods.length > 0) {
       const createStar = (path) => {
-        return <Icon.Star
-          onClick={() => props.toggleFavorite(path)}
-          className={classNames('Icon Fetch Star', {'Star--active': (props.favorites.indexOf(path) > -1)})}
-        />
+        return (
+          <Icon.Star
+            onClick={() => props.toggleFavorite(path)}
+            className={classNames('Icon Fetch Star', { 'Star--active': (props.favorites.indexOf(path) > -1) })}
+          />
+        )
       }
-      return <StateAndMethodList
-        statesAndMethods={props.statesAndMethods}
-        selectedFields={props.selectedFields}
-        iconCreator={createStar}
-        rootPath='/search'
-        />
+      return (
+        <StateAndMethodList
+          statesAndMethods={props.statesAndMethods}
+          selectedFields={props.selectedFields}
+          iconCreator={createStar}
+          rootPath='/search'
+        />)
     } else if (containsAllOf.length > 0) {
       return (
         <div className='Info'>
@@ -116,17 +119,18 @@ const Search = (props) => {
         />
         {renderContent()}
       </SplitLeft>
-      <Route path='/search/:path' children={({match}) => {
-        if (match && match.params.path) {
-          return (
-            <SplitRight>
-              <Details statesAndMethods={props.statesAndMethods} params={match.params} backUrl='/search' />
-            </SplitRight>
-          )
-        }
-        return <SplitRight />
-      }
-      } />
+      <Route
+        path='/search/:path' children={({ match }) => {
+          if (match && match.params.path) {
+            return (
+              <SplitRight>
+                <Details statesAndMethods={props.statesAndMethods} params={match.params} backUrl='/search' />
+              </SplitRight>
+            )
+          }
+          return <SplitRight />
+        }}
+      />
     </Split>
   )
 }
@@ -141,4 +145,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {...actions, ...jetActions})(Search)
+export default connect(mapStateToProps, { ...actions, ...jetActions })(Search)

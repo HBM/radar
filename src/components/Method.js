@@ -34,7 +34,7 @@ const Method = (props) => {
         </Icon.Button>
         <h1>{props.method.path}</h1>
       </div>
-      <form onSubmit={onSubmit} >
+      <form onSubmit={onSubmit}>
         <Textarea
           value={args}
           label='Arguments'

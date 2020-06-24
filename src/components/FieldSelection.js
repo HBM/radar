@@ -2,7 +2,7 @@ import React from 'react'
 import flatten from 'flat'
 import { Checkbox, Button } from 'md-components'
 
-const FieldSelection = ({states, selected, onChange}) => {
+const FieldSelection = ({ states, selected, onChange }) => {
   const fieldsObj = states
     .map(state => Object.keys(flatten(state.value || {})))
     .reduce((pre, fields) => {
@@ -28,17 +28,20 @@ const FieldSelection = ({states, selected, onChange}) => {
       <div className='FieldSelection-checkboxes'>
         {
           fields.length === 0 ? 'No fields available'
-          : fields.map(field => {
-            return <Checkbox
-              label={field}
-              name={field}
-              checked={selected.indexOf(field) > -1}
-              key={field}
-              onChange={_onChange} />
-          })
+            : fields.map(field => {
+              return (
+                <Checkbox
+                  label={field}
+                  name={field}
+                  checked={selected.indexOf(field) > -1}
+                  key={field}
+                  onChange={_onChange}
+                />
+              )
+            })
         }
       </div>
-      {fields.length > 0 && <Button raised onClick={() => onChange([])} disabled={selected.length === 0} >Reset</Button>}
+      {fields.length > 0 && <Button raised onClick={() => onChange([])} disabled={selected.length === 0}>Reset</Button>}
     </div>
   )
 }

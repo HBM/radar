@@ -31,7 +31,7 @@ export const flatToNameValue = (flat) => {
       return 0
     })
     .map(function (key) {
-      return {name: key, value: flat[key]}
+      return { name: key, value: flat[key] }
     })
 }
 

@@ -9,87 +9,87 @@ const favorites = (state = [], action) => {
   }
   switch (action.type) {
     case 'FAVORITE_SET':
-      return action.favorites
+    { return action.favorites }
     case 'FAVORITE_ADD':
-      return addFavorite()
+    { return addFavorite() }
     case 'FAVORITE_REMOVE':
-      return removeFavorite()
+    { return removeFavorite() }
     case 'FAVORITE_TOGGLE':
-      const index = state.indexOf(action.path)
+    { const index = state.indexOf(action.path)
       if (index > -1) {
         return removeFavorite()
       } else {
         return addFavorite()
-      }
+      } }
     default:
-      return state
+    { return state }
   }
 }
 
 const connections = (state = [{}], action) => {
   switch (action.type) {
     case 'CONNECTION_ADD':
-      return [...state, {}]
+    { return [...state, {}] }
     case 'CONNECTION_CHANGE':
-      return [...state.slice(0, action.index), action.connection, ...state.slice(action.index + 1)]
+    { return [...state.slice(0, action.index), action.connection, ...state.slice(action.index + 1)] }
     case 'CONNECTION_REMOVE':
-      return [...state.slice(0, action.index), ...state.slice(action.index + 1)]
+    { return [...state.slice(0, action.index), ...state.slice(action.index + 1)] }
     case 'CONNECTION_SELECT':
-      return state.map((con, index) => {
-        return {
-          ...con,
-          isSelected: index === action.index
-        }
-      })
+    { return state.map((con, index) => {
+      return {
+        ...con,
+        isSelected: index === action.index
+      }
+    }) }
     default:
-      return state
+    { return state }
   }
 }
 
 const search = (state = [], action) => {
   switch (action.type) {
     case 'SEARCH_SET':
-      return action.search
+    { return action.search }
     default:
-      return state
+    { return state }
   }
 }
 
 const message = (state = null, action) => {
   switch (action.type) {
     case 'COPIED_TO_CLIPBOARD':
-      return {text: 'Link copied to clipboard'}
+    { return { text: 'Link copied to clipboard' } }
     case 'FAVORITE_FAILURE':
-      return {text: `Favorites import failed: ${action.reason}`}
+    { return { text: `Favorites import failed: ${action.reason}` } }
     case 'FAVORITE_SET':
-      return {text: `${action.favorites.length} favorites imported successfully`}
+    { return { text: `${action.favorites.length} favorites imported successfully` } }
     case 'CONNECTION_DEAD':
-      return {text: `Disconnected from ${action.url} / no heartbeat`}
+    { return { text: `Disconnected from ${action.url} / no heartbeat` } }
     case 'JET_CLOSED':
-      return {text: `Disconnected from ${action.url}`}
+    { return { text: `Disconnected from ${action.url}` } }
     case 'JET_CONNECT_SUCCESS':
-      return {text: `Connected to ${action.url}`}
+    { return { text: `Connected to ${action.url}` } }
     case 'JET_CONNECT_FAILURE':
-      return {text: `Failed to connect to ${action.url}`}
+    { return { text: `Failed to connect to ${action.url}` } }
     case 'JET_SET_SUCCESS':
-      return {text: `State ${action.path} set successfully`}
+    { return { text: `State ${action.path} set successfully` } }
     case 'JET_SET_FAILURE':
-      return {text: `State ${action.path} set failed (${action.error.message})`}
+    { return { text: `State ${action.path} set failed (${action.error.message})` } }
     case 'JET_CALL_SUCCESS':
-      return {text: `Method ${action.path} called successfully`}
+    { return { text: `Method ${action.path} called successfully` } }
     case 'JET_CALL_FAILURE':
-      return {text: `Method ${action.path} call failed (${action.error.message})`}
+    { return { text: `Method ${action.path} call failed (${action.error.message})` } }
     default:
-      return state
+    { return state }
   }
 }
 
 let lastConReq
 
-const connection = (state = {isConnected: false}, action) => {
+const connection = (state = { isConnected: false }, action) => {
   switch (action.type) {
-    case 'JET_CONNECT_REQUEST':
-      let res = {
+    case 'JET_CONNECT_REQUEST': {
+      const res = {
         new: lastConReq !== action.url,
         isConnected: false,
         url: action.url,
@@ -98,42 +98,47 @@ const connection = (state = {isConnected: false}, action) => {
       }
       lastConReq = action.url
       return res
-    case 'JET_CONNECT_SUCCESS':
+    }
+    case 'JET_CONNECT_SUCCESS': {
       return {
         ...state,
         new: false,
         reconnect: false,
         isConnected: true
       }
+    }
     case 'CONNECTION_DEAD':
-    case 'JET_CLOSED': // implicit disconnect (connection lost) -> keep connection info for auto reconnect
+    case 'JET_CLOSED': { // implicit disconnect (connection lost) -> keep connection info for auto reconnect
       return {
         ...state,
         new: false,
         reconnect: !state.explicitClose,
         isConnected: false
-      }
-    case 'JET_CLOSE': // explicit disconnect from ui
+      } }
+    case 'JET_CLOSE': { // explicit disconnect from ui
       return {
         ...state,
         new: false,
         explicitClose: state.isConnected,
         isConnected: false
       }
-    case 'JET_CONNECT_FAILURE':
+    }
+    case 'JET_CONNECT_FAILURE': {
       return {
         ...state,
         new: false,
         isConnected: false,
         error: action.error
       }
-    default:
+    }
+    default: {
       return state
+    }
   }
 }
 
 const toMessage = (json) => {
-  let message = {
+  const message = {
     messageId: json.id,
     json
   }
@@ -207,26 +212,32 @@ const throttledReducer = (reducer, delay = 500) => {
 const messages = (state = [], action) => {
   const maxLength = 100
   switch (action.type) {
-    case 'JET_CONNECT_REQUEST':
+    case 'JET_CONNECT_REQUEST': {
       return []
-    case 'JET_DEBUG':
-      const uid = (state[0] && state[0].uid || 0) + 1
-      return [{...action, uid: uid}, ...state.slice(0, maxLength - 1)]
-    default:
+    }
+    case 'JET_DEBUG': {
+      const uid = ((state[0] && state[0].uid) || 0) + 1
+      return [{ ...action, uid: uid }, ...state.slice(0, maxLength - 1)]
+    }
+    default: {
       return state
+    }
   }
 }
 
-const traffic = (state = {in: 0, out: 0}, action) => {
+const traffic = (state = { in: 0, out: 0 }, action) => {
   switch (action.type) {
-    case 'JET_CONNECT_REQUEST':
-      return {in: 0, out: 0}
-    case 'JET_DEBUG':
-      let newState = {...state}
+    case 'JET_CONNECT_REQUEST': {
+      return { in: 0, out: 0 }
+    }
+    case 'JET_DEBUG': {
+      const newState = { ...state }
       newState[action.direction] += action.string.length
       return newState
-    default:
+    }
+    default: {
       return state
+    }
   }
 }
 
@@ -251,9 +262,9 @@ const version = (state = '1.0.0') => {
   return state
 }
 
-const settings = combineReducers({search, favorites, connection, connections, version, selectedFields})
+const settings = combineReducers({ search, favorites, connection, connections, version, selectedFields })
 
-const radar = combineReducers({settings, data, message})
+const radar = combineReducers({ settings, data, message })
 
 export const getFilteredStatesAndMethods = (statesAndMethods, searchTerms) => {
   const lsearchTerms = searchTerms.map(term => term.toLowerCase())
