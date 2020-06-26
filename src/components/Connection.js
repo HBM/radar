@@ -2,12 +2,14 @@ import React from 'react'
 import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import { connect as connectJet, close as closeJet } from 'redux-jet'
+import url from 'url'
 import * as actions from '../actions'
 import { Textfield, Button, Icon } from 'md-components'
 
 export const isValidWebSocketUrl = (urlString) => {
   try {
-    const protocol = (new URL(urlString)).protocol
+    // eslint-disable-next-line
+    const protocol = url.parse(urlString).protocol
     return protocol === 'ws:' || protocol === 'wss:'
   } catch (_) {
     return false
@@ -25,7 +27,6 @@ const Connection = ({
   history
 }) => {
   const connection = connections[index]
-
   const isConnected = connection.url === current.url && connection.user === current.user && current.isConnected
 
   const onChange = (key, value) => {

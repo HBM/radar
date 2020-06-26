@@ -18,11 +18,12 @@ const App = (props) => {
 
   useEffect(() => {
     window.clearTimeout(timeoutId.current)
-
-    timeoutId.current = window.setTimeout(() => {
-      setSnackbarVisible(false)
-    }, 4000)
-    setSnackbarVisible(true)
+    if (props.message) {
+      timeoutId.current = window.setTimeout(() => {
+        setSnackbarVisible(false)
+      }, 4000)
+      setSnackbarVisible(true)
+    }
 
     return () => {
       window.clearTimeout(timeoutId.current)

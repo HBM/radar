@@ -52,7 +52,12 @@ const Connections = ({
         secondary={subtitle}
         icon={icon}
         onClick={() => {
-          history.push('/connections/' + index)
+          const link = '/connections/' + index
+          if (history.location.pathname === link) {
+            history.replace(link)
+          } else {
+            history.push(link)
+          }
         }} // iOS Safari does not get focus event if no click handler is installed
         onFocus={() => {}}
         key={index}

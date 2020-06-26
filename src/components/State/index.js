@@ -45,9 +45,10 @@ const createInput = (onChange, disabled, onError) => (nvp) => {
               />
           }
         </div>
-      ) }
+      )
+    }
     default:
-    { return <div>unsported type {typeof nvp.value}</div> }
+      return <div>unsported type {typeof nvp.value}</div>
   }
 }
 

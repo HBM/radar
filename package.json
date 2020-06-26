@@ -44,12 +44,12 @@
     "redux": "^4.0.5",
     "redux-jet": "2.3.2",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0",
-    "uuid": "^8.2.0"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.3",
     "@babel/core": "^7.10.3",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/plugin-transform-runtime": "^7.10.3",
     "@babel/preset-env": "^7.10.3",
     "@babel/preset-react": "^7.10.1",
@@ -57,7 +57,6 @@
     "babel-eslint": "^10.1.0",
     "babel-istanbul": "^0.12.2",
     "babel-loader": "^8.1.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
     "babelify": "^10.0.0",
     "browserify": "^16.5.1",
     "coveralls": "^3.1.0",

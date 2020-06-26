@@ -1,3 +1,5 @@
+// import 'core-js/stable'
+// import 'regenerator-runtime/runtime'
 import React from 'react'
 import 'react-fastclick'
 import { render } from 'react-dom'
