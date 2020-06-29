@@ -27,7 +27,7 @@ const Connection = ({
   history
 }) => {
   const connection = connections[index]
-  const isConnected = connection.url === current.url && connection.user === current.user && current.isConnected
+  const isConnected = connection && connection.url === current.url && connection.user === current.user && current.isConnected
 
   const onChange = (key, value) => {
     if (value === '') {
@@ -54,6 +54,10 @@ const Connection = ({
 
   const goBack = () => {
     history.goBack()
+  }
+
+  if (!connection) {
+    return null
   }
 
   return (

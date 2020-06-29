@@ -9,13 +9,16 @@ import StateAndMethodList from '../containers/StateAndMethodList'
 import { Split, SplitRight, SplitLeft } from './Split'
 import SearchBar from './SearchBar'
 import Details from './Details'
-import { Route, withRouter } from 'react-router-dom'
+import { Route, withRouter, useLocation } from 'react-router-dom'
 
 const Group = (props) => {
   const lastGroup = useRef()
   const fetching = useRef(false)
   const [searchTerms, setSearchTerms] = useState([])
   const [searchTermsChips, setSearchTermsChips] = useState([])
+  // const loc = useLocation()
+
+  // console.log(loc)
 
   const updateFetch = (groups, nextGroup) => {
     const group = { ...groups.find(group => group.title === nextGroup) }
@@ -23,6 +26,7 @@ const Group = (props) => {
       return
     }
     if (!fetching.current || lastGroup.current !== nextGroup) {
+      // console.log('update Fetch', nextGroup)
       lastGroup.current = nextGroup
       props.unfetch(props.connection, 'group')
       props.fetch(props.connection, group.expression, 'group')
@@ -33,10 +37,10 @@ const Group = (props) => {
   useEffect(() => {
     updateFetch(props.groups, decodeURIComponent(props.match.params.group))
     return () => {
-      props.unfetch(this.props.connection, 'group')
+      props.unfetch(props.connection, 'group')
       fetching.current = false
     }
-  }, [props.groups])
+  }, [props.groups, props.match.params.group])
 
   const onChange = (terms) => {
     setSearchTermsChips(terms)
@@ -49,7 +53,6 @@ const Group = (props) => {
   }
 
   const { statesAndMethods, toggleFavorite, favorites, selectedFields, match } = props
-
   const filteredStatesAndMethods = getFilteredStatesAndMethods(statesAndMethods, searchTerms || [])
 
   const createStar = (path) => {

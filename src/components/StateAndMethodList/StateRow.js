@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Row } from 'md-components'
 import flatten from 'flat'
 import { useHistory } from 'react-router-dom'
@@ -34,6 +34,8 @@ const StatePreviewFields = ({ stateValue, fields = [] }) => {
 
 const StateRow = ({ state, icon, link, fields }) => {
   const history = useHistory()
+  const value = useMemo(() => <StatePreviewFields stateValue={state.value} fields={fields} />, [state.value])
+
   return (
     <Row
       onClick={() => {
@@ -46,7 +48,7 @@ const StateRow = ({ state, icon, link, fields }) => {
       onFocus={() => {}}
       avatar={stateAvatar}
       primary={state.path}
-      secondary={<StatePreviewFields stateValue={state.value} fields={fields} />}
+      secondary={value}
       icon={icon}
     />
   )
