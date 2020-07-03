@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
 import { Link, Route, Redirect, withRouter, Switch, NavLink } from 'react-router-dom'
 import { Header, Navigation, Snackbar, Icon, Button } from 'md-components'
@@ -11,6 +11,7 @@ import ImportExport from './ImportExport'
 import Clipboard from 'clipboard'
 import '../styles.scss'
 import { copiedToClipboard } from '../actions'
+import { flatObject } from './State/helpers'
 
 const App = (props) => {
   const [snackbarVisible, setSnackbarVisible] = useState(false)
@@ -53,53 +54,66 @@ const App = (props) => {
       link: encodeURIComponent(group.title)
     }
   }
-  var links = [
-    { text: 'Search', link: '/search' },
-    { text: 'Favorites', link: '/favorites' }
-  ]
+  const groupsString = JSON.stringify(flatObject(groups))
+  const links = useMemo(() => {
+    const links = [
+      { text: 'Search', link: '/search' },
+      { text: 'Favorites', link: '/favorites' }
+    ]
 
-  try {
-    if (groups && groups.length > 0) {
-      links.push({ text: 'Groups', link: '/groups/', links: groups.map(groupToLink) })
+    try {
+      if (groups && groups.length > 0) {
+        links.push({ text: 'Groups', link: '/groups/', links: groups.map(groupToLink) })
+      }
+    } catch (err) {
+      console.log('Invalid _radarGroups', err)
     }
-  } catch (err) {
-    console.log('Invalid _radarGroups', err)
-  }
-  links.push({ text: 'Messages', link: '/messages' })
-  links.push({ text: 'Import / Export', link: '/impex' })
-  links.push({ text: 'Settings', link: '/connections', isHeader: true })
+    links.push({ text: 'Messages', link: '/messages' })
+    links.push({ text: 'Import / Export', link: '/impex' })
+    links.push({ text: 'Settings', link: '/connections', isHeader: true })
+
+    return links
+  }, [groupsString])
+
+  const navLinks = useMemo(() =>
+    links.filter(item => !item.isHeader).map(({ text, link, links }, index) => {
+      if (links) {
+        return (
+          <Navigation.Group key={index} title={text}>
+            {links.map((item, index) => <NavLink key={index} replace to={`${link}${item.link}`}>{item.text}</NavLink>)}
+          </Navigation.Group>
+        )
+      }
+      return (<NavLink key={index} replace to={link}>{text}</NavLink>)
+    })
+  , [groupsString])
+
+  const navHeader = useMemo(() =>
+    links.map(({ text, link }, index) => (
+      <Route
+        key={index} path={link} render={(() => (
+          <Header title='Radar' subtitle={text}>
+            <Button onClick={copyLocationToClipboard} disabled={!props.connection}>
+              <Icon.Link fill={props.connection ? 'white' : 'gray'} />
+            </Button>
+            <Link to='/connections' replace>
+              <Icon.Settings fill='white' />
+            </Link>
+          </Header>
+        ))}
+      />
+    ))
+  , [groupsString])
 
   return (
     <div>
       <Switch>
-        {links.map(({ text, link }, index) => (
-          <Route
-            key={index} path={link} render={(() => (
-              <Header title='Radar' subtitle={text}>
-                <Button onClick={copyLocationToClipboard} disabled={!props.connection}>
-                  <Icon.Link fill={props.connection ? 'white' : 'gray'} />
-                </Button>
-                <Link to='/connections' replace>
-                  <Icon.Settings fill='white' />
-                </Link>
-              </Header>
-            ))}
-          />
-        ))}
+        {navHeader}
       </Switch>
       <Route
         path='/' render={() => (
           <Navigation>
-            {links.filter(item => !item.isHeader).map(({ text, link, links }, index) => {
-              if (links) {
-                return (
-                  <Navigation.Group key={index} title={text}>
-                    {links.map((item, index) => <NavLink key={index} replace to={`${link}${item.link}`}>{item.text}</NavLink>)}
-                  </Navigation.Group>
-                )
-              }
-              return (<NavLink key={index} replace to={link}>{text}</NavLink>)
-            })}
+            {navLinks}
           </Navigation>
         )}
       />

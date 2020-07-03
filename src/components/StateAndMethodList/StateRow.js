@@ -26,7 +26,9 @@ const StatePreviewFields = ({ stateValue, fields = [] }) => {
     })
     contentEmpty = content.find(child => child !== null) === undefined
   } else {
-    content = <span className='State-field'><span className='State-field-value'>{JSON.stringify(stateValue)}</span></span>
+    content = useMemo(() =>
+      <span className='State-field'><span className='State-field-value'>{JSON.stringify(stateValue)}</span></span>
+    , [JSON.stringify(stateValue)])
     contentEmpty = false
   }
   return <div>{contentEmpty ? 'No matching fields' : content}</div>
@@ -34,9 +36,7 @@ const StatePreviewFields = ({ stateValue, fields = [] }) => {
 
 const StateRow = ({ state, icon, link, fields }) => {
   const history = useHistory()
-  const value = useMemo(() => <StatePreviewFields stateValue={state.value} fields={fields} />, [state.value])
-
-  return (
+  const row = useMemo(() =>
     <Row
       onClick={() => {
         if (history.location.pathname === link) {
@@ -48,9 +48,13 @@ const StateRow = ({ state, icon, link, fields }) => {
       onFocus={() => {}}
       avatar={stateAvatar}
       primary={state.path}
-      secondary={value}
+      secondary={<StatePreviewFields stateValue={state.value} fields={fields} />}
       icon={icon}
-    />
+    />, [state.path, state.value, JSON.stringify(fields)]
+  )
+
+  return (
+    <>{row}</>
   )
 }
 

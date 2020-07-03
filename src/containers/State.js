@@ -1,4 +1,4 @@
-import * as actions from 'redux-jet'
+import * as jetActions from 'redux-jet'
 import { connect } from 'react-redux'
 import State_ from '../components/State'
 
@@ -9,4 +9,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, actions)(State_)
+export default connect(mapStateToProps, jetActions)(State_)

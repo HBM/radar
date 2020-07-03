@@ -1,12 +1,12 @@
-import React, { memo } from 'react'
+import React, { useMemo } from 'react'
 import { Row } from 'md-components'
 import { useHistory } from 'react-router-dom'
 
 const methodAvatar = <span className='Method-avatar'>M</span>
 
-const MethodRow = memo(({ method, icon, link }) => {
+const MethodRow = ({ method, icon, link }) => {
   const history = useHistory()
-  return (
+  const row = useMemo(() =>
     <Row
       onClick={() => {
         if (history.location.pathname === link) {
@@ -21,7 +21,10 @@ const MethodRow = memo(({ method, icon, link }) => {
       secondary='Method'
       icon={icon}
     />
+  , [method.path])
+  return (
+    <>{row}</>
   )
-})
+}
 
 export default MethodRow

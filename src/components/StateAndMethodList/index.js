@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { List } from 'md-components'
 import MethodRow from './MethodRow'
 import StateRow from './StateRow'
 
 const StateAndMethodList = (props) => {
   const { statesAndMethods, iconCreator = () => {}, rootPath, selectedFields } = props
-  const rows = statesAndMethods
+  const rows = useMemo(() => statesAndMethods
     .sort((a, b) => {
       if (a.path < b.path) {
         return -1
@@ -24,7 +24,7 @@ const StateAndMethodList = (props) => {
       return typeof stateOrMethod.value === 'undefined'
         ? <MethodRow method={stateOrMethod} {...rowProps} />
         : <StateRow state={stateOrMethod} fields={selectedFields} {...rowProps} />
-    })
+    }), [JSON.stringify(statesAndMethods)])
 
   return (
     <List>

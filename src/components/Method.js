@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import * as actions from 'redux-jet'
+import * as jetActions from 'redux-jet'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button, Textarea, Icon } from 'md-components'
@@ -55,4 +55,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, actions)(Method)
+export default connect(mapStateToProps, jetActions)(Method)
