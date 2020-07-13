@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Textfield, Checkbox } from 'md-components'
 
 const TypedInput = (props) => {
-  const [bak, setBak] = useState(0)
-  const [value, setValue] = useState(1)
-  const [type, setType] = useState(typeof 0)
+  const [bak, setBak] = useState(props.value)
+  const [value, setValue] = useState(props.value)
+  const [type, setType] = useState(typeof props.value)
   const [error, setError] = useState(false)
 
   useEffect(() => {
@@ -45,7 +45,6 @@ const TypedInput = (props) => {
         props.onChange(props.name, target.value)
     }
   }
-
   if (type === 'boolean') {
     return <Checkbox {...props} checked={value} onChange={onChange} />
   } else {

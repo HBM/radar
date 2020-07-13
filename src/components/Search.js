@@ -35,11 +35,17 @@ const Search = (props) => {
   }, [props.search])
 
   const getFetchExpression = () => {
+    let searchParam = {}
+    if(containsAllOf.length > 0) {
+      searchParam = {
+        path: {
+          caseInsensitive: true,
+          containsAllOf
+        }
+      }
+    }
     return {
-      path: {
-        caseInsensitive: true,
-        containsAllOf
-      },
+      ...searchParam,
       sort: {
         byPath: true,
         from: 1,
@@ -50,6 +56,7 @@ const Search = (props) => {
 
   const fetch = () => {
     if (containsAllOf.length > 0) {
+      props.unfetch(props.connection, 'search')
       props.fetch(props.connection, getFetchExpression(), 'search')
     }
   }
