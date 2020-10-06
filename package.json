@@ -86,7 +86,7 @@
     "url-loader": "^0.5.9",
     "watchify": "^3.2.1",
     "webpack": "^2.7.0",
-    "webpack-dev-server": "^2.11.5"
+    "webpack-dev-server": "^3.11.0"
   },
   "nyc": {
     "include": [
